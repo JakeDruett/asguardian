@@ -2154,3 +2154,28 @@ def add_mcp_server_args(parser: argparse.ArgumentParser) -> None:
         dest="project_path",
         help="Default project path for analysis tools (default: current directory)",
     )
+
+
+def add_dashboard_args(parser: argparse.ArgumentParser) -> None:
+    """Add arguments for the dashboard command."""
+    parser.add_argument(
+        "--path",
+        default=".",
+        help="Project path to display in dashboard",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=8080,
+        help="Port to serve dashboard on (default: 8080)",
+    )
+    parser.add_argument(
+        "--host",
+        default="localhost",
+        help="Host to bind to (default: localhost)",
+    )
+    parser.add_argument(
+        "--no-open-browser",
+        action="store_true",
+        help="Do not automatically open browser on launch",
+    )

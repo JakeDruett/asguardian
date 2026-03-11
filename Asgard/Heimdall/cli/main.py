@@ -61,6 +61,7 @@ from Asgard.Heimdall.cli.common import (
     add_sbom_args,
     add_codefix_args,
     add_mcp_server_args,
+    add_dashboard_args,
 )
 
 # Import handlers from the original CLI (will be refactored into separate modules)
@@ -115,6 +116,7 @@ from Asgard.Heimdall.cli.handlers import (
     run_sbom_generation,
     run_codefix_suggestions,
     run_mcp_server,
+    run_dashboard,
 )
 
 
@@ -230,6 +232,9 @@ def create_parser() -> argparse.ArgumentParser:
 
     # MCP server command (top-level)
     _setup_mcp_server_command(subparsers)
+
+    # Dashboard command (top-level)
+    _setup_dashboard_command(subparsers)
 
     return parser
 
@@ -1204,6 +1209,22 @@ def _setup_mcp_server_command(subparsers) -> None:
     add_mcp_server_args(mcp_server_parser)
 
 
+def _setup_dashboard_command(subparsers) -> None:
+    """Set up the dashboard top-level command."""
+    dashboard_parser = subparsers.add_parser(
+        "dashboard",
+        help="Launch web dashboard for browsing analysis results",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  heimdall dashboard --path ./my-project\n"
+            "  heimdall dashboard --path ./my-project --port 9090\n"
+            "  heimdall dashboard --path ./my-project --no-open-browser\n"
+        ),
+    )
+    add_dashboard_args(dashboard_parser)
+
+
 COMMAND_DEFAULT_SUBCOMMANDS = {
     "security": "scan",
     "performance": "scan",
@@ -1606,6 +1627,10 @@ def main(args=None):
     # Handle mcp-server command
     elif args.command == "mcp-server":
         sys.exit(run_mcp_server(args, verbose))
+
+    # Handle dashboard command
+    elif args.command == "dashboard":
+        sys.exit(run_dashboard(args, verbose))
 
     else:
         print(f"Unknown command: {args.command}")

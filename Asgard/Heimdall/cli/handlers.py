@@ -253,6 +253,8 @@ from Asgard.Heimdall.Dependencies.services.sbom_generator import SBOMGenerator
 from Asgard.Heimdall.CodeFix.services.codefix_service import CodeFixService
 from Asgard.MCP.models.mcp_models import MCPServerConfig
 from Asgard.MCP.server.asgard_mcp_server import AsgardMCPServer
+from Asgard.Dashboard.models.dashboard_models import DashboardConfig
+from Asgard.Dashboard.services.dashboard_server import DashboardServer
 
 
 _HTML_SEVERITY_COLORS = {
@@ -3828,3 +3830,21 @@ def run_mcp_server(args: argparse.Namespace, verbose: bool = False) -> int:
         if verbose:
             _traceback.print_exc()
         return 1
+
+
+# ---------------------------------------------------------------------------
+# Dashboard command handler
+# ---------------------------------------------------------------------------
+
+
+def run_dashboard(args: argparse.Namespace, verbose: bool = False) -> int:
+    """Start the Asgard web dashboard server."""
+    config = DashboardConfig(
+        host=args.host,
+        port=args.port,
+        project_path=args.path,
+        open_browser=not args.no_open_browser,
+    )
+    server = DashboardServer(config)
+    server.run()
+    return 0

@@ -58,6 +58,7 @@ forseti = "Asgard.Forseti.cli:main"
 verdandi = "Asgard.Verdandi.cli:main"
 volundr = "Asgard.Volundr.cli:main"
 asgard-mcp = "Asgard.MCP.server:main"
+asgard-dashboard = "Asgard.Dashboard.server:main"
 
 [project.urls]
 Homepage = "https://github.com/JakeDruett/asgard"
