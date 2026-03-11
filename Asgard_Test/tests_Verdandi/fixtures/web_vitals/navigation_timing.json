@@ -1,0 +1,172 @@
+{
+  "description": "Raw Navigation Timing API data for page load analysis",
+  "collected_at": "2024-06-20T14:30:00Z",
+  "page_url": "https://example.com/product/12345",
+  "entries": [
+    {
+      "name": "https://example.com/product/12345",
+      "entry_type": "navigation",
+      "navigation_type": "navigate",
+      "redirect_count": 0,
+      "timings": {
+        "start_time": 0,
+        "unload_event_start": 0,
+        "unload_event_end": 0,
+        "redirect_start": 0,
+        "redirect_end": 0,
+        "fetch_start": 2.5,
+        "domain_lookup_start": 5.8,
+        "domain_lookup_end": 28.3,
+        "connect_start": 28.3,
+        "secure_connection_start": 45.2,
+        "connect_end": 98.7,
+        "request_start": 99.1,
+        "response_start": 285.4,
+        "response_end": 342.8,
+        "dom_interactive": 892.3,
+        "dom_content_loaded_event_start": 915.6,
+        "dom_content_loaded_event_end": 928.4,
+        "dom_complete": 1842.5,
+        "load_event_start": 1843.2,
+        "load_event_end": 1856.8
+      },
+      "transfer_size": 45230,
+      "encoded_body_size": 44850,
+      "decoded_body_size": 182450
+    }
+  ],
+  "calculated_metrics": {
+    "dns_lookup_ms": 22.5,
+    "tcp_connection_ms": 70.4,
+    "ssl_handshake_ms": 53.5,
+    "ttfb_ms": 186.3,
+    "content_download_ms": 57.4,
+    "dom_processing_ms": 549.5,
+    "dom_content_loaded_ms": 915.6,
+    "page_load_ms": 1856.8,
+    "frontend_time_ms": 1514.0,
+    "backend_time_ms": 342.8
+  },
+  "expected_bottleneck": "dom_processing",
+  "expected_recommendations": [
+    "DOM processing is taking 549ms - consider reducing DOM complexity",
+    "SSL handshake is 53ms - ensure TLS session resumption is enabled",
+    "Content is compressed (ratio: 4.07x) - good"
+  ],
+  "waterfall_data": [
+    {
+      "phase": "redirect",
+      "start_ms": 0,
+      "end_ms": 0,
+      "duration_ms": 0
+    },
+    {
+      "phase": "app_cache",
+      "start_ms": 0,
+      "end_ms": 2.5,
+      "duration_ms": 2.5
+    },
+    {
+      "phase": "dns",
+      "start_ms": 5.8,
+      "end_ms": 28.3,
+      "duration_ms": 22.5
+    },
+    {
+      "phase": "tcp",
+      "start_ms": 28.3,
+      "end_ms": 98.7,
+      "duration_ms": 70.4
+    },
+    {
+      "phase": "ssl",
+      "start_ms": 45.2,
+      "end_ms": 98.7,
+      "duration_ms": 53.5
+    },
+    {
+      "phase": "request",
+      "start_ms": 99.1,
+      "end_ms": 285.4,
+      "duration_ms": 186.3
+    },
+    {
+      "phase": "response",
+      "start_ms": 285.4,
+      "end_ms": 342.8,
+      "duration_ms": 57.4
+    },
+    {
+      "phase": "processing",
+      "start_ms": 342.8,
+      "end_ms": 1842.5,
+      "duration_ms": 1499.7
+    },
+    {
+      "phase": "onload",
+      "start_ms": 1843.2,
+      "end_ms": 1856.8,
+      "duration_ms": 13.6
+    }
+  ],
+  "multiple_samples": [
+    {
+      "sample_id": 1,
+      "dns_lookup_ms": 22.5,
+      "tcp_connection_ms": 70.4,
+      "ssl_handshake_ms": 53.5,
+      "ttfb_ms": 186.3,
+      "dom_processing_ms": 549.5,
+      "page_load_ms": 1856.8
+    },
+    {
+      "sample_id": 2,
+      "dns_lookup_ms": 0.5,
+      "tcp_connection_ms": 0.8,
+      "ssl_handshake_ms": 0.3,
+      "ttfb_ms": 165.2,
+      "dom_processing_ms": 542.1,
+      "page_load_ms": 1720.3
+    },
+    {
+      "sample_id": 3,
+      "dns_lookup_ms": 0.4,
+      "tcp_connection_ms": 0.6,
+      "ssl_handshake_ms": 0.2,
+      "ttfb_ms": 172.8,
+      "dom_processing_ms": 538.9,
+      "page_load_ms": 1695.5
+    },
+    {
+      "sample_id": 4,
+      "dns_lookup_ms": 18.3,
+      "tcp_connection_ms": 65.2,
+      "ssl_handshake_ms": 48.1,
+      "ttfb_ms": 195.4,
+      "dom_processing_ms": 561.2,
+      "page_load_ms": 1925.6
+    },
+    {
+      "sample_id": 5,
+      "dns_lookup_ms": 0.3,
+      "tcp_connection_ms": 0.5,
+      "ssl_handshake_ms": 0.2,
+      "ttfb_ms": 158.6,
+      "dom_processing_ms": 535.4,
+      "page_load_ms": 1678.2
+    }
+  ],
+  "cache_analysis": {
+    "first_visit": {
+      "dns_lookup_ms": 22.5,
+      "tcp_connection_ms": 70.4,
+      "page_load_ms": 1856.8
+    },
+    "repeat_visit": {
+      "dns_lookup_ms": 0.4,
+      "tcp_connection_ms": 0.6,
+      "page_load_ms": 1695.5
+    },
+    "improvement_percent": 8.7
+  }
+}

@@ -1,0 +1,48 @@
+openapi: 3.0.3
+info:
+  title: Invalid API - Missing Paths
+  description: |
+    This OpenAPI spec is intentionally invalid because it is missing
+    the required 'paths' field. Use for testing validation error detection.
+  version: 1.0.0
+  contact:
+    name: API Team
+    email: api@example.com
+
+servers:
+  - url: https://api.example.com/v1
+    description: Production
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - bearerAuth: []

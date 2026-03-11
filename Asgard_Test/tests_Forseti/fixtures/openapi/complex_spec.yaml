@@ -1,0 +1,939 @@
+openapi: 3.1.0
+info:
+  title: Complex API Specification
+  summary: Comprehensive API demonstrating advanced OpenAPI features
+  description: |
+    This specification demonstrates complex OpenAPI features including:
+    - Security schemes (OAuth2, API Key, HTTP)
+    - Callbacks for webhooks
+    - Links for HATEOAS
+    - Discriminators for polymorphism
+    - Complex schema compositions
+  version: 4.0.0
+  contact:
+    name: API Architecture Team
+    email: architecture@example.com
+  license:
+    name: Apache 2.0
+    identifier: Apache-2.0
+
+servers:
+  - url: https://api.example.com/{environment}/{version}
+    variables:
+      environment:
+        default: prod
+        enum:
+          - prod
+          - staging
+          - dev
+      version:
+        default: v4
+
+webhooks:
+  newSubscription:
+    post:
+      operationId: newSubscriptionWebhook
+      summary: New subscription webhook
+      description: Called when a new subscription is created
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscriptionEvent"
+      responses:
+        "200":
+          description: Webhook acknowledged
+        "400":
+          description: Invalid payload
+
+  paymentReceived:
+    post:
+      operationId: paymentReceivedWebhook
+      summary: Payment received webhook
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentEvent"
+      responses:
+        "200":
+          description: Acknowledged
+
+tags:
+  - name: subscriptions
+    description: Subscription management
+  - name: payments
+    description: Payment processing
+  - name: notifications
+    description: Notification management
+
+security:
+  - oauth2:
+      - read
+      - write
+  - apiKey: []
+
+paths:
+  /subscriptions:
+    get:
+      tags:
+        - subscriptions
+      summary: List subscriptions
+      operationId: listSubscriptions
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/SubscriptionStatus"
+          style: form
+          explode: true
+        - $ref: "#/components/parameters/PaginationOffset"
+        - $ref: "#/components/parameters/PaginationLimit"
+      responses:
+        "200":
+          description: Subscription list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Subscription"
+                  links:
+                    $ref: "#/components/schemas/PaginationLinks"
+          links:
+            GetSubscriptionById:
+              operationId: getSubscription
+              parameters:
+                subscriptionId: "$response.body#/data/0/id"
+
+    post:
+      tags:
+        - subscriptions
+      summary: Create subscription
+      operationId: createSubscription
+      security:
+        - oauth2:
+            - write
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSubscriptionRequest"
+      callbacks:
+        subscriptionCreated:
+          "{$request.body#/webhook_url}":
+            post:
+              summary: Subscription created callback
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/SubscriptionEvent"
+              responses:
+                "200":
+                  description: Callback acknowledged
+        statusChanged:
+          "{$request.body#/webhook_url}":
+            post:
+              summary: Status change callback
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        subscription_id:
+                          type: string
+                        old_status:
+                          $ref: "#/components/schemas/SubscriptionStatus"
+                        new_status:
+                          $ref: "#/components/schemas/SubscriptionStatus"
+                        changed_at:
+                          type: string
+                          format: date-time
+              responses:
+                "200":
+                  description: Acknowledged
+      responses:
+        "201":
+          description: Subscription created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Subscription"
+          links:
+            GetSubscription:
+              operationId: getSubscription
+              parameters:
+                subscriptionId: "$response.body#/id"
+            CancelSubscription:
+              operationId: cancelSubscription
+              parameters:
+                subscriptionId: "$response.body#/id"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+
+  /subscriptions/{subscriptionId}:
+    parameters:
+      - $ref: "#/components/parameters/SubscriptionId"
+    get:
+      tags:
+        - subscriptions
+      summary: Get subscription
+      operationId: getSubscription
+      responses:
+        "200":
+          description: Subscription details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Subscription"
+          links:
+            GetInvoices:
+              operationId: getSubscriptionInvoices
+              parameters:
+                subscriptionId: "$response.body#/id"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    patch:
+      tags:
+        - subscriptions
+      summary: Update subscription
+      operationId: updateSubscription
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSubscriptionRequest"
+      responses:
+        "200":
+          description: Subscription updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Subscription"
+
+  /subscriptions/{subscriptionId}/cancel:
+    parameters:
+      - $ref: "#/components/parameters/SubscriptionId"
+    post:
+      tags:
+        - subscriptions
+      summary: Cancel subscription
+      operationId: cancelSubscription
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                immediate:
+                  type: boolean
+                  default: false
+                feedback:
+                  $ref: "#/components/schemas/CancellationFeedback"
+      responses:
+        "200":
+          description: Subscription cancelled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Subscription"
+
+  /subscriptions/{subscriptionId}/invoices:
+    parameters:
+      - $ref: "#/components/parameters/SubscriptionId"
+    get:
+      tags:
+        - subscriptions
+        - payments
+      summary: Get subscription invoices
+      operationId: getSubscriptionInvoices
+      responses:
+        "200":
+          description: Invoice list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Invoice"
+
+  /payments:
+    post:
+      tags:
+        - payments
+      summary: Process payment
+      operationId: processPayment
+      security:
+        - oauth2:
+            - write
+        - apiKey: []
+          httpBearer: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentRequest"
+      callbacks:
+        paymentComplete:
+          "{$request.body#/callback_url}":
+            post:
+              summary: Payment complete callback
+              requestBody:
+                content:
+                  application/json:
+                    schema:
+                      $ref: "#/components/schemas/PaymentEvent"
+              responses:
+                "200":
+                  description: Acknowledged
+      responses:
+        "201":
+          description: Payment processed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Payment"
+        "402":
+          description: Payment failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentError"
+
+  /notifications:
+    get:
+      tags:
+        - notifications
+      summary: List notifications
+      operationId: listNotifications
+      parameters:
+        - name: type
+          in: query
+          schema:
+            type: string
+        - name: read
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Notification list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Notification"
+
+    post:
+      tags:
+        - notifications
+      summary: Create notification
+      operationId: createNotification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateNotificationRequest"
+      responses:
+        "201":
+          description: Notification created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Notification"
+
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.example.com/authorize
+          tokenUrl: https://auth.example.com/token
+          refreshUrl: https://auth.example.com/refresh
+          scopes:
+            read: Read access
+            write: Write access
+            admin: Admin access
+        clientCredentials:
+          tokenUrl: https://auth.example.com/token
+          scopes:
+            read: Read access
+            write: Write access
+    apiKey:
+      type: apiKey
+      name: X-API-Key
+      in: header
+    httpBearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    SubscriptionId:
+      name: subscriptionId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    PaginationOffset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+    PaginationLimit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+
+  schemas:
+    SubscriptionStatus:
+      type: string
+      enum:
+        - trial
+        - active
+        - past_due
+        - canceled
+        - expired
+
+    Subscription:
+      type: object
+      required:
+        - id
+        - plan
+        - status
+        - customer_id
+      properties:
+        id:
+          type: string
+          format: uuid
+        plan:
+          $ref: "#/components/schemas/Plan"
+        status:
+          $ref: "#/components/schemas/SubscriptionStatus"
+        customer_id:
+          type: string
+          format: uuid
+        current_period_start:
+          type: string
+          format: date-time
+        current_period_end:
+          type: string
+          format: date-time
+        cancel_at_period_end:
+          type: boolean
+        canceled_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        trial_end:
+          type:
+            - string
+            - "null"
+          format: date-time
+        metadata:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Plan:
+      type: object
+      required:
+        - id
+        - name
+        - amount
+        - interval
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        amount:
+          type: integer
+          description: Amount in cents
+        currency:
+          type: string
+          pattern: "^[A-Z]{3}$"
+          default: USD
+        interval:
+          type: string
+          enum:
+            - day
+            - week
+            - month
+            - year
+        interval_count:
+          type: integer
+          default: 1
+        features:
+          type: array
+          items:
+            type: string
+
+    CreateSubscriptionRequest:
+      type: object
+      required:
+        - plan_id
+        - customer_id
+      properties:
+        plan_id:
+          type: string
+        customer_id:
+          type: string
+          format: uuid
+        payment_method_id:
+          type: string
+        trial_days:
+          type: integer
+          minimum: 0
+        coupon_code:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+        webhook_url:
+          type: string
+          format: uri
+
+    UpdateSubscriptionRequest:
+      type: object
+      properties:
+        plan_id:
+          type: string
+        cancel_at_period_end:
+          type: boolean
+        metadata:
+          type: object
+
+    CancellationFeedback:
+      type: object
+      properties:
+        reason_code:
+          type: string
+          enum:
+            - too_expensive
+            - missing_features
+            - switched_competitor
+            - no_longer_needed
+            - other
+        comment:
+          type: string
+          maxLength: 1000
+        would_return:
+          type: boolean
+
+    SubscriptionEvent:
+      type: object
+      required:
+        - event_type
+        - subscription
+      properties:
+        event_id:
+          type: string
+          format: uuid
+        event_type:
+          type: string
+          enum:
+            - subscription.created
+            - subscription.updated
+            - subscription.canceled
+            - subscription.expired
+        subscription:
+          $ref: "#/components/schemas/Subscription"
+        timestamp:
+          type: string
+          format: date-time
+
+    Invoice:
+      type: object
+      properties:
+        id:
+          type: string
+        subscription_id:
+          type: string
+        amount:
+          type: integer
+        currency:
+          type: string
+        status:
+          type: string
+          enum:
+            - draft
+            - open
+            - paid
+            - void
+            - uncollectible
+        period_start:
+          type: string
+          format: date-time
+        period_end:
+          type: string
+          format: date-time
+        line_items:
+          type: array
+          items:
+            type: object
+            properties:
+              description:
+                type: string
+              amount:
+                type: integer
+              quantity:
+                type: integer
+        pdf_url:
+          type: string
+          format: uri
+
+    PaymentRequest:
+      type: object
+      required:
+        - amount
+        - currency
+        - payment_method
+      properties:
+        amount:
+          type: integer
+          minimum: 1
+        currency:
+          type: string
+          pattern: "^[A-Z]{3}$"
+        payment_method:
+          $ref: "#/components/schemas/PaymentMethod"
+        description:
+          type: string
+        metadata:
+          type: object
+        callback_url:
+          type: string
+          format: uri
+
+    PaymentMethod:
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          card: "#/components/schemas/CardPaymentMethod"
+          bank_account: "#/components/schemas/BankPaymentMethod"
+          wallet: "#/components/schemas/WalletPaymentMethod"
+      required:
+        - type
+      properties:
+        type:
+          type: string
+      oneOf:
+        - $ref: "#/components/schemas/CardPaymentMethod"
+        - $ref: "#/components/schemas/BankPaymentMethod"
+        - $ref: "#/components/schemas/WalletPaymentMethod"
+
+    CardPaymentMethod:
+      allOf:
+        - type: object
+          properties:
+            type:
+              const: card
+        - type: object
+          required:
+            - card_token
+          properties:
+            card_token:
+              type: string
+            save_card:
+              type: boolean
+              default: false
+
+    BankPaymentMethod:
+      allOf:
+        - type: object
+          properties:
+            type:
+              const: bank_account
+        - type: object
+          required:
+            - account_token
+          properties:
+            account_token:
+              type: string
+            account_type:
+              type: string
+              enum:
+                - checking
+                - savings
+
+    WalletPaymentMethod:
+      allOf:
+        - type: object
+          properties:
+            type:
+              const: wallet
+        - type: object
+          required:
+            - wallet_type
+            - wallet_token
+          properties:
+            wallet_type:
+              type: string
+              enum:
+                - apple_pay
+                - google_pay
+                - paypal
+            wallet_token:
+              type: string
+
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        amount:
+          type: integer
+        currency:
+          type: string
+        status:
+          type: string
+          enum:
+            - pending
+            - succeeded
+            - failed
+            - refunded
+        payment_method_type:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    PaymentEvent:
+      type: object
+      required:
+        - event_type
+        - payment
+      properties:
+        event_id:
+          type: string
+          format: uuid
+        event_type:
+          type: string
+          enum:
+            - payment.succeeded
+            - payment.failed
+            - payment.refunded
+        payment:
+          $ref: "#/components/schemas/Payment"
+        timestamp:
+          type: string
+          format: date-time
+
+    PaymentError:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        decline_code:
+          type: string
+        param:
+          type: string
+
+    Notification:
+      type: object
+      discriminator:
+        propertyName: type
+        mapping:
+          email: "#/components/schemas/EmailNotification"
+          sms: "#/components/schemas/SmsNotification"
+          push: "#/components/schemas/PushNotification"
+      required:
+        - id
+        - type
+        - created_at
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+        read:
+          type: boolean
+          default: false
+        created_at:
+          type: string
+          format: date-time
+      oneOf:
+        - $ref: "#/components/schemas/EmailNotification"
+        - $ref: "#/components/schemas/SmsNotification"
+        - $ref: "#/components/schemas/PushNotification"
+
+    EmailNotification:
+      allOf:
+        - $ref: "#/components/schemas/BaseNotification"
+        - type: object
+          properties:
+            type:
+              const: email
+            to_email:
+              type: string
+              format: email
+            subject:
+              type: string
+            body_html:
+              type: string
+            body_text:
+              type: string
+
+    SmsNotification:
+      allOf:
+        - $ref: "#/components/schemas/BaseNotification"
+        - type: object
+          properties:
+            type:
+              const: sms
+            to_phone:
+              type: string
+            message:
+              type: string
+              maxLength: 160
+
+    PushNotification:
+      allOf:
+        - $ref: "#/components/schemas/BaseNotification"
+        - type: object
+          properties:
+            type:
+              const: push
+            device_token:
+              type: string
+            title:
+              type: string
+            body:
+              type: string
+            data:
+              type: object
+
+    BaseNotification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        type:
+          type: string
+        read:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+
+    CreateNotificationRequest:
+      type: object
+      required:
+        - type
+        - recipient_id
+      properties:
+        type:
+          type: string
+          enum:
+            - email
+            - sms
+            - push
+        recipient_id:
+          type: string
+          format: uuid
+        template_id:
+          type: string
+        template_data:
+          type: object
+
+    PaginationLinks:
+      type: object
+      properties:
+        self:
+          type: string
+          format: uri
+        first:
+          type: string
+          format: uri
+        prev:
+          type:
+            - string
+            - "null"
+          format: uri
+        next:
+          type:
+            - string
+            - "null"
+          format: uri
+        last:
+          type: string
+          format: uri
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        request_id:
+          type: string
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+
+  responses:
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

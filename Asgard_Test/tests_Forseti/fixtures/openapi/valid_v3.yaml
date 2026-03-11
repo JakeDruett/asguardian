@@ -1,0 +1,642 @@
+openapi: 3.0.3
+info:
+  title: Product Catalog API
+  description: OpenAPI 3.0 specification for product catalog management
+  version: 2.0.0
+  contact:
+    name: API Team
+    email: api@example.com
+    url: https://api.example.com/docs
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://example.com/terms
+
+servers:
+  - url: https://api.example.com/v2
+    description: Production server
+  - url: https://staging-api.example.com/v2
+    description: Staging server
+  - url: http://localhost:8080/v2
+    description: Local development server
+
+tags:
+  - name: products
+    description: Product management operations
+  - name: categories
+    description: Category management
+  - name: inventory
+    description: Inventory operations
+
+security:
+  - bearerAuth: []
+  - apiKeyAuth: []
+
+paths:
+  /products:
+    get:
+      tags:
+        - products
+      summary: List products
+      description: Returns a paginated list of products with optional filtering
+      operationId: listProducts
+      parameters:
+        - $ref: "#/components/parameters/PageParam"
+        - $ref: "#/components/parameters/LimitParam"
+        - name: category
+          in: query
+          description: Filter by category ID
+          schema:
+            type: string
+            format: uuid
+        - name: min_price
+          in: query
+          description: Minimum price filter
+          schema:
+            type: number
+            format: float
+            minimum: 0
+        - name: max_price
+          in: query
+          description: Maximum price filter
+          schema:
+            type: number
+            format: float
+            minimum: 0
+        - name: in_stock
+          in: query
+          description: Filter by stock availability
+          schema:
+            type: boolean
+        - name: search
+          in: query
+          description: Search query for product name or description
+          schema:
+            type: string
+            minLength: 2
+            maxLength: 100
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Product"
+                  meta:
+                    $ref: "#/components/schemas/PaginationMeta"
+              examples:
+                products_list:
+                  $ref: "#/components/examples/ProductListExample"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalError"
+
+    post:
+      tags:
+        - products
+      summary: Create product
+      description: Creates a new product in the catalog
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateProductRequest"
+            examples:
+              new_product:
+                $ref: "#/components/examples/CreateProductExample"
+      responses:
+        "201":
+          description: Product created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+          headers:
+            Location:
+              description: URL of the created product
+              schema:
+                type: string
+                format: uri
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "409":
+          description: Product with SKU already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /products/{productId}:
+    parameters:
+      - $ref: "#/components/parameters/ProductIdParam"
+    get:
+      tags:
+        - products
+      summary: Get product by ID
+      description: Returns a single product by its ID
+      operationId: getProductById
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    put:
+      tags:
+        - products
+      summary: Update product
+      description: Updates an existing product
+      operationId: updateProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateProductRequest"
+      responses:
+        "200":
+          description: Product updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    delete:
+      tags:
+        - products
+      summary: Delete product
+      description: Deletes a product from the catalog
+      operationId: deleteProduct
+      responses:
+        "204":
+          description: Product deleted successfully
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /products/{productId}/inventory:
+    parameters:
+      - $ref: "#/components/parameters/ProductIdParam"
+    get:
+      tags:
+        - inventory
+      summary: Get product inventory
+      operationId: getProductInventory
+      responses:
+        "200":
+          description: Inventory details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Inventory"
+
+    patch:
+      tags:
+        - inventory
+      summary: Update product inventory
+      operationId: updateProductInventory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InventoryUpdate"
+      responses:
+        "200":
+          description: Inventory updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Inventory"
+
+  /categories:
+    get:
+      tags:
+        - categories
+      summary: List categories
+      operationId: listCategories
+      responses:
+        "200":
+          description: Category list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Category"
+
+    post:
+      tags:
+        - categories
+      summary: Create category
+      operationId: createCategory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCategoryRequest"
+      responses:
+        "201":
+          description: Category created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+
+  /categories/{categoryId}:
+    parameters:
+      - name: categoryId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    get:
+      tags:
+        - categories
+      summary: Get category by ID
+      operationId: getCategoryById
+      responses:
+        "200":
+          description: Category details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Category"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      description: Page number
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    LimitParam:
+      name: limit
+      in: query
+      description: Items per page
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+    ProductIdParam:
+      name: productId
+      in: path
+      required: true
+      description: Product ID
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    Product:
+      type: object
+      required:
+        - id
+        - sku
+        - name
+        - price
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        sku:
+          type: string
+          pattern: "^[A-Z]{3}-[0-9]{6}$"
+          description: Stock keeping unit
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 2000
+        price:
+          type: number
+          format: float
+          minimum: 0
+          exclusiveMinimum: true
+        currency:
+          type: string
+          pattern: "^[A-Z]{3}$"
+          default: USD
+        category_id:
+          type: string
+          format: uuid
+        tags:
+          type: array
+          items:
+            type: string
+          maxItems: 10
+        images:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProductImage"
+          maxItems: 20
+        metadata:
+          type: object
+          additionalProperties: true
+        status:
+          type: string
+          enum:
+            - draft
+            - active
+            - discontinued
+          default: draft
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+
+    ProductImage:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          format: uri
+        alt_text:
+          type: string
+          maxLength: 200
+        is_primary:
+          type: boolean
+          default: false
+
+    CreateProductRequest:
+      type: object
+      required:
+        - sku
+        - name
+        - price
+      properties:
+        sku:
+          type: string
+          pattern: "^[A-Z]{3}-[0-9]{6}$"
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 2000
+        price:
+          type: number
+          format: float
+          minimum: 0
+          exclusiveMinimum: true
+        currency:
+          type: string
+          pattern: "^[A-Z]{3}$"
+          default: USD
+        category_id:
+          type: string
+          format: uuid
+        tags:
+          type: array
+          items:
+            type: string
+
+    UpdateProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 2000
+        price:
+          type: number
+          format: float
+          minimum: 0
+        status:
+          type: string
+          enum:
+            - draft
+            - active
+            - discontinued
+        tags:
+          type: array
+          items:
+            type: string
+
+    Category:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        slug:
+          type: string
+          pattern: "^[a-z0-9-]+$"
+        description:
+          type: string
+        parent_id:
+          type: string
+          format: uuid
+          nullable: true
+        product_count:
+          type: integer
+          readOnly: true
+
+    CreateCategoryRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        slug:
+          type: string
+          pattern: "^[a-z0-9-]+$"
+        description:
+          type: string
+        parent_id:
+          type: string
+          format: uuid
+
+    Inventory:
+      type: object
+      properties:
+        product_id:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          minimum: 0
+        reserved:
+          type: integer
+          minimum: 0
+        available:
+          type: integer
+          minimum: 0
+          readOnly: true
+        low_stock_threshold:
+          type: integer
+          minimum: 0
+        reorder_point:
+          type: integer
+          minimum: 0
+        warehouse_location:
+          type: string
+        last_restocked:
+          type: string
+          format: date-time
+
+    InventoryUpdate:
+      type: object
+      properties:
+        quantity:
+          type: integer
+          minimum: 0
+        low_stock_threshold:
+          type: integer
+          minimum: 0
+        reorder_point:
+          type: integer
+          minimum: 0
+        warehouse_location:
+          type: string
+
+    PaginationMeta:
+      type: object
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        total_pages:
+          type: integer
+        has_next:
+          type: boolean
+        has_prev:
+          type: boolean
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        request_id:
+          type: string
+          format: uuid
+        details:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              error:
+                type: string
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+  examples:
+    ProductListExample:
+      summary: Example product list
+      value:
+        data:
+          - id: "550e8400-e29b-41d4-a716-446655440000"
+            sku: "PRD-123456"
+            name: "Example Product"
+            price: 29.99
+            currency: "USD"
+            status: "active"
+        meta:
+          page: 1
+          limit: 20
+          total: 1
+          total_pages: 1
+    CreateProductExample:
+      summary: Example create product request
+      value:
+        sku: "PRD-123456"
+        name: "New Product"
+        description: "Product description"
+        price: 49.99
+        currency: "USD"
+        tags:
+          - electronics
+          - gadgets

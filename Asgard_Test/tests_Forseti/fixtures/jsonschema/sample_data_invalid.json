@@ -1,0 +1,248 @@
+{
+  "draft4_user_invalid": {
+    "_description": "Invalid user data for Draft 4 schema testing",
+    "_violations": [
+      "Missing required field 'email'",
+      "Invalid UUID format for 'id'",
+      "Role value not in enum",
+      "Age exceeds maximum",
+      "Username too short",
+      "Invalid country code length",
+      "Duplicate tags"
+    ],
+    "id": "not-a-valid-uuid",
+    "name": "J",
+    "username": "ab",
+    "role": "superuser",
+    "status": "active",
+    "age": 200,
+    "profile": {
+      "bio": "Bio text",
+      "avatarUrl": "not-a-valid-url",
+      "location": {
+        "city": "New York",
+        "country": "USA",
+        "timezone": "America/New_York"
+      }
+    },
+    "preferences": {
+      "theme": "blue",
+      "language": "english",
+      "notifications": {
+        "email": "yes",
+        "push": true
+      }
+    },
+    "tags": ["tag1", "tag1", "tag2"],
+    "addresses": [
+      {
+        "type": "office",
+        "street": "123 Main St",
+        "city": "Boston",
+        "country": "United States",
+        "postalCode": "02101"
+      }
+    ],
+    "extraField": "This field is not allowed"
+  },
+  "draft7_order_invalid": {
+    "_description": "Invalid order data for Draft 7 schema testing",
+    "_violations": [
+      "Missing required 'customerId'",
+      "Empty items array",
+      "Invalid order number format",
+      "Negative total",
+      "Invalid status value",
+      "Shipped order missing shipment",
+      "Invalid currency format"
+    ],
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "orderNumber": "ORDER-123",
+    "items": [],
+    "status": "in_progress",
+    "subtotal": -10.00,
+    "tax": 0,
+    "shippingCost": 0,
+    "total": -10.00,
+    "currency": "dollars",
+    "shippingAddress": {
+      "street": "123 Main St",
+      "city": "Boston",
+      "country": "USA",
+      "postalCode": "02101"
+    },
+    "shippingMethod": "same-day",
+    "payment": {
+      "method": "cash",
+      "status": "pending",
+      "amount": "free",
+      "cardLast4": "12345"
+    },
+    "notes": 12345,
+    "createdAt": "2024/06/20"
+  },
+  "draft7_order_conditional_invalid": {
+    "_description": "Order with shipped status but missing required shipment",
+    "_violations": [
+      "Conditional schema: shipped status requires shipment with carrier and trackingNumber"
+    ],
+    "id": "b2c3d4e5-f6a7-8901-bcde-f23456789012",
+    "orderNumber": "ORD-20240621",
+    "customerId": "550e8400-e29b-41d4-a716-446655440000",
+    "items": [
+      {
+        "productId": "prod-123",
+        "quantity": 1,
+        "unitPrice": 99.99
+      }
+    ],
+    "status": "shipped",
+    "subtotal": 99.99,
+    "tax": 8.00,
+    "shippingCost": 5.00,
+    "total": 112.99,
+    "currency": "USD",
+    "shippingAddress": {
+      "street": "456 Oak Ave",
+      "city": "Chicago",
+      "state": "IL",
+      "country": "US",
+      "postalCode": "60601"
+    }
+  },
+  "draft2020_catalog_invalid": {
+    "_description": "Invalid catalog data for Draft 2020-12 schema testing",
+    "_violations": [
+      "Physical product missing required variants",
+      "Digital product missing required price",
+      "Invalid product type discriminator",
+      "Bundle with only 1 item (requires minItems: 2)",
+      "Percentage promotion with value > 100",
+      "Invalid localized string property names"
+    ],
+    "catalog": {
+      "id": "cat-001",
+      "name": "Test Catalog",
+      "version": "1.0",
+      "lastUpdated": "not-a-date"
+    },
+    "products": [
+      {
+        "id": "prod-invalid-001",
+        "type": "physical",
+        "name": {
+          "english": "Invalid locale key",
+          "123": "Numeric key not allowed"
+        },
+        "status": "available",
+        "visibility": "public"
+      },
+      {
+        "id": "prod-invalid-002",
+        "type": "digital",
+        "name": {
+          "en": "Missing Price Digital Product"
+        },
+        "status": "active",
+        "downloadUrl": "https://example.com/download.zip"
+      },
+      {
+        "id": "prod-invalid-003",
+        "type": "subscription",
+        "name": {
+          "en": "Invalid Subscription"
+        },
+        "status": "active",
+        "billingInterval": "biweekly",
+        "price": {
+          "amount": "free",
+          "currency": "usd"
+        }
+      },
+      {
+        "id": "prod-invalid-004",
+        "type": "bundle",
+        "name": {
+          "en": "Single Item Bundle"
+        },
+        "status": "active",
+        "bundleItems": [
+          {
+            "productId": "prod-001",
+            "quantity": 1
+          }
+        ],
+        "bundlePrice": {
+          "amount": 50.00,
+          "currency": "USD"
+        }
+      },
+      {
+        "id": "prod-invalid-005",
+        "type": "unknown_type",
+        "name": {
+          "en": "Unknown Type Product"
+        },
+        "status": "active"
+      }
+    ],
+    "categories": [
+      {
+        "name": {"en": "Category without ID"},
+        "slug": "no-id"
+      }
+    ],
+    "promotions": [
+      {
+        "id": "promo-invalid-001",
+        "name": "Over 100% Discount",
+        "type": "percentage",
+        "value": 150,
+        "validity": {
+          "end": "2024-12-31T23:59:59Z"
+        },
+        "isActive": true
+      }
+    ],
+    "extraProperty": "Not allowed by unevaluatedProperties: false"
+  },
+  "additional_invalid_cases": {
+    "type_mismatch": {
+      "_description": "Type mismatch errors",
+      "string_as_number": 12345,
+      "number_as_string": "not a number",
+      "boolean_as_string": "true",
+      "array_as_object": {"0": "item1", "1": "item2"},
+      "null_when_required": null
+    },
+    "format_violations": {
+      "_description": "Format constraint violations",
+      "invalid_email": "not.an.email",
+      "invalid_uri": "not://a/valid/uri",
+      "invalid_date": "2024-13-45",
+      "invalid_datetime": "2024-06-20T25:61:61Z",
+      "invalid_uuid": "12345-not-uuid"
+    },
+    "numeric_constraints": {
+      "_description": "Numeric constraint violations",
+      "below_minimum": -5,
+      "above_maximum": 1000,
+      "not_multiple_of": 10.333,
+      "exclusive_min_fail": 0,
+      "exclusive_max_fail": 100
+    },
+    "string_constraints": {
+      "_description": "String constraint violations",
+      "too_short": "ab",
+      "too_long": "This string is way too long and exceeds the maximum allowed length for this field which should be at most 50 characters",
+      "pattern_mismatch": "Invalid-Pattern_123!"
+    },
+    "array_constraints": {
+      "_description": "Array constraint violations",
+      "too_few_items": [],
+      "too_many_items": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+      "non_unique_items": ["a", "b", "a", "c"],
+      "invalid_item_type": [1, "two", 3, "four"]
+    }
+  }
+}

@@ -1,0 +1,337 @@
+"""
+Freya Baseline Manager
+
+Manages visual baselines for regression testing.
+"""
+
+import hashlib
+import json
+import shutil
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Optional
+
+from Asgard.Freya.Integration.models.integration_models import (
+    BaselineConfig,
+    BaselineEntry,
+)
+from Asgard.Freya.Visual.services import ScreenshotCapture, VisualRegressionTester
+
+
+class BaselineManager:
+    """
+    Baseline management service.
+
+    Manages visual baselines for regression testing.
+    """
+
+    def __init__(self, config: Optional[BaselineConfig] = None):
+        """
+        Initialize the Baseline Manager.
+
+        Args:
+            config: Baseline configuration
+        """
+        self.config = config or BaselineConfig()
+        self.storage_dir = Path(self.config.storage_directory)
+        self.storage_dir.mkdir(parents=True, exist_ok=True)
+        self.index_file = self.storage_dir / "baselines.json"
+        self._load_index()
+
+    def _load_index(self) -> None:
+        """Load baseline index from file."""
+        if self.index_file.exists():
+            with open(self.index_file, "r") as f:
+                data = json.load(f)
+                self.baselines: Dict[str, BaselineEntry] = {
+                    k: BaselineEntry(**v) for k, v in data.items()
+                }
+        else:
+            self.baselines = {}
+
+    def _save_index(self) -> None:
+        """Save baseline index to file."""
+        data = {k: v.model_dump() for k, v in self.baselines.items()}
+        with open(self.index_file, "w") as f:
+            json.dump(data, f, indent=2, default=str)
+
+    async def create_baseline(
+        self,
+        url: str,
+        name: str,
+        viewport_width: int = 1920,
+        viewport_height: int = 1080,
+        device: Optional[str] = None
+    ) -> BaselineEntry:
+        """
+        Create a new baseline for a URL.
+
+        Args:
+            url: URL to capture
+            name: Baseline name
+            viewport_width: Viewport width
+            viewport_height: Viewport height
+            device: Optional device name
+
+        Returns:
+            Created BaselineEntry
+        """
+        capture = ScreenshotCapture(output_directory=str(self.storage_dir / "screenshots"))
+
+        if device:
+            screenshots = await capture.capture_with_devices(url, devices=[device])
+            if not screenshots:
+                raise ValueError(f"Device '{device}' not found")
+            screenshot = screenshots[0]
+        else:
+            screenshot = await capture.capture_full_page(url)
+
+        baseline_key = self._generate_key(url, name, device)
+        baseline_dir = self.storage_dir / baseline_key
+        baseline_dir.mkdir(parents=True, exist_ok=True)
+
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        baseline_path = baseline_dir / f"baseline_{timestamp}.png"
+
+        shutil.copy(screenshot.file_path, baseline_path)
+
+        image_hash = self._calculate_hash(str(baseline_path))
+
+        entry = BaselineEntry(
+            url=url,
+            name=name,
+            created_at=datetime.now().isoformat(),
+            updated_at=datetime.now().isoformat(),
+            screenshot_path=str(baseline_path),
+            viewport_width=viewport_width,
+            viewport_height=viewport_height,
+            device=device,
+            hash=image_hash,
+            metadata={
+                "format": screenshot.metadata.get("format", "png"),
+                "file_size": screenshot.file_size_bytes,
+            },
+        )
+
+        self.baselines[baseline_key] = entry
+        self._save_index()
+
+        if self.config.version_baselines:
+            self._version_baseline(baseline_key, str(baseline_path))
+
+        return entry
+
+    async def update_baseline(
+        self,
+        url: str,
+        name: str,
+        device: Optional[str] = None
+    ) -> BaselineEntry:
+        """
+        Update an existing baseline.
+
+        Args:
+            url: URL to capture
+            name: Baseline name
+            device: Optional device name
+
+        Returns:
+            Updated BaselineEntry
+        """
+        baseline_key = self._generate_key(url, name, device)
+
+        if baseline_key in self.baselines:
+            existing = self.baselines[baseline_key]
+            viewport_width = existing.viewport_width
+            viewport_height = existing.viewport_height
+        else:
+            viewport_width = 1920
+            viewport_height = 1080
+
+        return await self.create_baseline(url, name, viewport_width, viewport_height, device)
+
+    async def compare_to_baseline(
+        self,
+        url: str,
+        name: str,
+        device: Optional[str] = None,
+        threshold: Optional[float] = None
+    ) -> Dict:
+        """
+        Compare current page to baseline.
+
+        Args:
+            url: URL to compare
+            name: Baseline name
+            device: Optional device name
+            threshold: Difference threshold
+
+        Returns:
+            Comparison result dict
+        """
+        baseline_key = self._generate_key(url, name, device)
+
+        if baseline_key not in self.baselines:
+            return {
+                "success": False,
+                "error": f"Baseline not found: {name}",
+                "baseline_key": baseline_key,
+            }
+
+        baseline = self.baselines[baseline_key]
+
+        capture = ScreenshotCapture(output_directory=str(self.storage_dir / "current"))
+
+        if device:
+            current = await capture.capture_device(url, device, full_page=True)
+        else:
+            current = await capture.capture(
+                url,
+                viewport_width=baseline.viewport_width,
+                viewport_height=baseline.viewport_height,
+                full_page=True
+            )
+
+        threshold = threshold or self.config.diff_threshold
+        regression = VisualRegressionTester(threshold=threshold)
+
+        result = regression.compare(baseline.screenshot_path, current.file_path)
+
+        if result.has_difference and self.config.auto_update:
+            await self.update_baseline(url, name, device)
+
+        return {
+            "success": True,
+            "baseline": baseline.model_dump(),
+            "current_screenshot": current.file_path,
+            "has_difference": result.has_difference,
+            "difference_percentage": result.difference_percentage,
+            "diff_image_path": result.diff_image_path,
+            "passed": not result.has_difference,
+        }
+
+    def list_baselines(self, url: Optional[str] = None) -> List[BaselineEntry]:
+        """
+        List all baselines.
+
+        Args:
+            url: Optional URL filter
+
+        Returns:
+            List of baseline entries
+        """
+        if url:
+            return [b for b in self.baselines.values() if b.url == url]
+        return list(self.baselines.values())
+
+    def get_baseline(
+        self,
+        url: str,
+        name: str,
+        device: Optional[str] = None
+    ) -> Optional[BaselineEntry]:
+        """
+        Get a specific baseline.
+
+        Args:
+            url: URL
+            name: Baseline name
+            device: Optional device name
+
+        Returns:
+            BaselineEntry if found
+        """
+        baseline_key = self._generate_key(url, name, device)
+        return self.baselines.get(baseline_key)
+
+    def delete_baseline(
+        self,
+        url: str,
+        name: str,
+        device: Optional[str] = None
+    ) -> bool:
+        """
+        Delete a baseline.
+
+        Args:
+            url: URL
+            name: Baseline name
+            device: Optional device name
+
+        Returns:
+            True if deleted
+        """
+        baseline_key = self._generate_key(url, name, device)
+
+        if baseline_key not in self.baselines:
+            return False
+
+        baseline = self.baselines[baseline_key]
+        baseline_path = Path(baseline.screenshot_path)
+
+        if baseline_path.exists():
+            baseline_path.unlink()
+
+        baseline_dir = self.storage_dir / baseline_key
+        if baseline_dir.exists():
+            shutil.rmtree(baseline_dir)
+
+        del self.baselines[baseline_key]
+        self._save_index()
+
+        return True
+
+    def get_versions(
+        self,
+        url: str,
+        name: str,
+        device: Optional[str] = None
+    ) -> List[str]:
+        """
+        Get all versions of a baseline.
+
+        Args:
+            url: URL
+            name: Baseline name
+            device: Optional device name
+
+        Returns:
+            List of version paths
+        """
+        baseline_key = self._generate_key(url, name, device)
+        versions_dir = self.storage_dir / baseline_key / "versions"
+
+        if not versions_dir.exists():
+            return []
+
+        versions = sorted(versions_dir.glob("*.png"))
+        return [str(v) for v in versions]
+
+    def _generate_key(self, url: str, name: str, device: Optional[str]) -> str:
+        """Generate a unique key for a baseline."""
+        key_parts = [url, name]
+        if device:
+            key_parts.append(device)
+
+        key_string = ":".join(key_parts)
+        return hashlib.md5(key_string.encode()).hexdigest()[:16]
+
+    def _calculate_hash(self, image_path: str) -> str:
+        """Calculate hash of an image file."""
+        with open(image_path, "rb") as f:
+            return hashlib.sha256(f.read()).hexdigest()[:32]
+
+    def _version_baseline(self, baseline_key: str, screenshot_path: str) -> None:
+        """Create a versioned copy of a baseline."""
+        versions_dir = self.storage_dir / baseline_key / "versions"
+        versions_dir.mkdir(parents=True, exist_ok=True)
+
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        version_path = versions_dir / f"v_{timestamp}.png"
+
+        shutil.copy(screenshot_path, version_path)
+
+        versions = sorted(versions_dir.glob("*.png"))
+        if len(versions) > self.config.max_versions:
+            for old_version in versions[:-self.config.max_versions]:
+                old_version.unlink()

@@ -1,0 +1,76 @@
+{
+  "description": "CPU usage metrics over time for system performance analysis",
+  "metric_name": "cpu_usage_percent",
+  "start_time": "2024-06-20T12:00:00Z",
+  "end_time": "2024-06-20T14:00:00Z",
+  "interval_seconds": 60,
+  "host": "api-server-01",
+  "cores": 8,
+  "data_points": [
+    {"timestamp": "2024-06-20T12:00:00Z", "total": 35.2, "user": 28.5, "system": 5.8, "iowait": 0.9},
+    {"timestamp": "2024-06-20T12:05:00Z", "total": 38.5, "user": 31.2, "system": 6.2, "iowait": 1.1},
+    {"timestamp": "2024-06-20T12:10:00Z", "total": 42.8, "user": 35.5, "system": 6.5, "iowait": 0.8},
+    {"timestamp": "2024-06-20T12:15:00Z", "total": 45.2, "user": 37.8, "system": 6.2, "iowait": 1.2},
+    {"timestamp": "2024-06-20T12:20:00Z", "total": 52.5, "user": 44.2, "system": 7.1, "iowait": 1.2},
+    {"timestamp": "2024-06-20T12:25:00Z", "total": 58.8, "user": 50.5, "system": 7.5, "iowait": 0.8},
+    {"timestamp": "2024-06-20T12:30:00Z", "total": 65.2, "user": 56.8, "system": 7.8, "iowait": 0.6},
+    {"timestamp": "2024-06-20T12:35:00Z", "total": 72.5, "user": 63.2, "system": 8.5, "iowait": 0.8},
+    {"timestamp": "2024-06-20T12:40:00Z", "total": 78.8, "user": 69.5, "system": 8.8, "iowait": 0.5},
+    {"timestamp": "2024-06-20T12:45:00Z", "total": 85.2, "user": 75.8, "system": 9.2, "iowait": 0.2},
+    {"timestamp": "2024-06-20T12:50:00Z", "total": 88.5, "user": 78.5, "system": 9.5, "iowait": 0.5},
+    {"timestamp": "2024-06-20T12:55:00Z", "total": 82.8, "user": 73.2, "system": 9.1, "iowait": 0.5},
+    {"timestamp": "2024-06-20T13:00:00Z", "total": 75.5, "user": 66.2, "system": 8.8, "iowait": 0.5},
+    {"timestamp": "2024-06-20T13:05:00Z", "total": 68.2, "user": 59.5, "system": 8.2, "iowait": 0.5},
+    {"timestamp": "2024-06-20T13:10:00Z", "total": 62.5, "user": 54.2, "system": 7.8, "iowait": 0.5},
+    {"timestamp": "2024-06-20T13:15:00Z", "total": 55.8, "user": 48.5, "system": 6.8, "iowait": 0.5},
+    {"timestamp": "2024-06-20T13:20:00Z", "total": 48.2, "user": 41.2, "system": 6.5, "iowait": 0.5},
+    {"timestamp": "2024-06-20T13:25:00Z", "total": 45.5, "user": 38.8, "system": 6.2, "iowait": 0.5},
+    {"timestamp": "2024-06-20T13:30:00Z", "total": 42.8, "user": 36.2, "system": 6.1, "iowait": 0.5},
+    {"timestamp": "2024-06-20T13:35:00Z", "total": 48.5, "user": 41.5, "system": 6.5, "iowait": 0.5},
+    {"timestamp": "2024-06-20T13:40:00Z", "total": 55.2, "user": 47.8, "system": 6.9, "iowait": 0.5},
+    {"timestamp": "2024-06-20T13:45:00Z", "total": 62.8, "user": 54.5, "system": 7.8, "iowait": 0.5},
+    {"timestamp": "2024-06-20T13:50:00Z", "total": 58.5, "user": 50.2, "system": 7.8, "iowait": 0.5},
+    {"timestamp": "2024-06-20T13:55:00Z", "total": 52.2, "user": 44.5, "system": 7.2, "iowait": 0.5}
+  ],
+  "per_core_sample": {
+    "timestamp": "2024-06-20T12:50:00Z",
+    "cores": [
+      {"core": 0, "usage": 92.5},
+      {"core": 1, "usage": 88.2},
+      {"core": 2, "usage": 90.8},
+      {"core": 3, "usage": 85.5},
+      {"core": 4, "usage": 88.0},
+      {"core": 5, "usage": 86.2},
+      {"core": 6, "usage": 84.5},
+      {"core": 7, "usage": 92.0}
+    ]
+  },
+  "load_average": {
+    "1m": 6.85,
+    "5m": 5.42,
+    "15m": 4.28
+  },
+  "statistics": {
+    "min": 35.2,
+    "max": 88.5,
+    "mean": 58.42,
+    "median": 55.5,
+    "std_dev": 15.28,
+    "p95": 85.67,
+    "p99": 88.12
+  },
+  "status_thresholds": {
+    "healthy": {"max": 70},
+    "warning": {"min": 70, "max": 85},
+    "critical": {"min": 85}
+  },
+  "expected_status": "warning",
+  "expected_health_score": 72.5,
+  "expected_recommendations": [
+    "CPU usage peaked at 88.5% - consider scaling horizontally",
+    "Load average (6.85) exceeds core count (8) - high contention",
+    "User CPU consistently high (75%+ of total) - application-bound workload",
+    "Consider adding more API server instances during peak hours"
+  ],
+  "correlation_with_traffic": 0.92
+}

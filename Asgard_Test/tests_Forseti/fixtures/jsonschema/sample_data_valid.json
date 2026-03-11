@@ -1,0 +1,309 @@
+{
+  "draft4_user": {
+    "id": "550e8400-e29b-41d4-a716-446655440000",
+    "email": "john.doe@example.com",
+    "name": "John Doe",
+    "username": "johndoe123",
+    "role": "user",
+    "status": "active",
+    "age": 32,
+    "profile": {
+      "bio": "Software developer passionate about clean code and best practices.",
+      "avatarUrl": "https://example.com/avatars/johndoe.jpg",
+      "location": {
+        "city": "San Francisco",
+        "country": "US",
+        "timezone": "America/Los_Angeles"
+      },
+      "socialLinks": {
+        "twitter": "https://twitter.com/johndoe",
+        "github": "https://github.com/johndoe",
+        "linkedin": "https://linkedin.com/in/johndoe"
+      }
+    },
+    "preferences": {
+      "theme": "dark",
+      "language": "en-US",
+      "notifications": {
+        "email": true,
+        "push": true,
+        "sms": false
+      }
+    },
+    "tags": ["developer", "javascript", "python"],
+    "addresses": [
+      {
+        "type": "home",
+        "name": "John Doe",
+        "street": "123 Main Street",
+        "street2": "Apt 4B",
+        "city": "San Francisco",
+        "state": "California",
+        "postalCode": "94102",
+        "country": "US",
+        "phone": "+1-415-555-1234",
+        "isDefault": true
+      }
+    ],
+    "metadata": {
+      "signupSource": "organic",
+      "referralCode": "REF123"
+    },
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-06-20T14:45:30Z"
+  },
+  "draft7_order": {
+    "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "orderNumber": "ORD-20240620",
+    "customerId": "550e8400-e29b-41d4-a716-446655440000",
+    "items": [
+      {
+        "id": "item-001",
+        "productId": "prod-123-456",
+        "productName": "Wireless Headphones",
+        "sku": "WH-PRO-BLK",
+        "quantity": 2,
+        "unitPrice": 149.99,
+        "totalPrice": 299.98,
+        "discount": 0,
+        "options": [
+          {"name": "color", "value": "black"},
+          {"name": "warranty", "value": "2-year"}
+        ]
+      },
+      {
+        "id": "item-002",
+        "productId": "prod-789-012",
+        "productName": "USB-C Cable",
+        "sku": "USB-C-2M",
+        "quantity": 3,
+        "unitPrice": 19.99,
+        "totalPrice": 59.97,
+        "discount": 5.00
+      }
+    ],
+    "status": "shipped",
+    "subtotal": 359.95,
+    "tax": 32.40,
+    "shippingCost": 9.99,
+    "discount": 5.00,
+    "total": 397.34,
+    "currency": "USD",
+    "shippingAddress": {
+      "name": "John Doe",
+      "street": "123 Main Street",
+      "street2": "Apt 4B",
+      "city": "San Francisco",
+      "state": "CA",
+      "postalCode": "94102",
+      "country": "US",
+      "phone": "+1-415-555-1234"
+    },
+    "billingAddress": {
+      "name": "John Doe",
+      "street": "123 Main Street",
+      "city": "San Francisco",
+      "state": "CA",
+      "postalCode": "94102",
+      "country": "US"
+    },
+    "shippingMethod": "express",
+    "payment": {
+      "id": "pay-abc-123",
+      "method": "credit_card",
+      "status": "captured",
+      "transactionId": "txn_1234567890",
+      "amount": 397.34,
+      "currency": "USD",
+      "processedAt": "2024-06-20T15:30:00Z",
+      "cardLast4": "4242",
+      "cardBrand": "visa"
+    },
+    "shipment": {
+      "id": "ship-xyz-789",
+      "carrier": "fedex",
+      "trackingNumber": "794644790220",
+      "trackingUrl": "https://www.fedex.com/fedextrack/?tracknumbers=794644790220",
+      "status": "in_transit",
+      "estimatedDelivery": "2024-06-25",
+      "shippedAt": "2024-06-21T09:00:00Z"
+    },
+    "couponCode": "SUMMER20",
+    "notes": "Please leave at door if no one is home.",
+    "metadata": {
+      "sessionId": "sess_abc123",
+      "userAgent": "Mozilla/5.0"
+    },
+    "createdAt": "2024-06-20T15:00:00Z",
+    "updatedAt": "2024-06-21T09:00:00Z"
+  },
+  "draft2020_catalog": {
+    "catalog": {
+      "id": "cat-main-001",
+      "name": "Main Product Catalog",
+      "version": "2.1.0",
+      "lastUpdated": "2024-06-20T12:00:00Z"
+    },
+    "products": [
+      {
+        "id": "prod-phys-001",
+        "type": "physical",
+        "name": {
+          "en": "Premium Wireless Headphones",
+          "es": "Auriculares Inalambricos Premium",
+          "fr": "Casque Sans Fil Premium"
+        },
+        "slug": "premium-wireless-headphones",
+        "description": {
+          "en": "High-quality wireless headphones with noise cancellation.",
+          "es": "Auriculares inalambricos de alta calidad con cancelacion de ruido."
+        },
+        "status": "active",
+        "visibility": "public",
+        "tags": ["electronics", "audio", "wireless", "premium"],
+        "weight": {
+          "value": 250,
+          "unit": "g"
+        },
+        "dimensions": {
+          "length": {"value": 20, "unit": "cm"},
+          "width": {"value": 18, "unit": "cm"},
+          "height": {"value": 8, "unit": "cm"}
+        },
+        "shippingClass": "standard",
+        "variants": [
+          {
+            "id": "var-001-blk",
+            "sku": "WH-PRO-BLK",
+            "name": {"en": "Black"},
+            "price": {"amount": 149.99, "currency": "USD"},
+            "compareAtPrice": {"amount": 199.99, "currency": "USD"},
+            "attributes": {
+              "color": "black",
+              "material": "leather"
+            },
+            "inventory": {
+              "quantity": 150,
+              "reserved": 10,
+              "available": 140
+            },
+            "images": [
+              {
+                "url": "https://example.com/images/wh-pro-blk-1.jpg",
+                "altText": {"en": "Black headphones front view"},
+                "width": 800,
+                "height": 800,
+                "isPrimary": true
+              }
+            ]
+          },
+          {
+            "id": "var-001-wht",
+            "sku": "WH-PRO-WHT",
+            "name": {"en": "White"},
+            "price": {"amount": 149.99, "currency": "USD"},
+            "attributes": {
+              "color": "white",
+              "material": "leather"
+            },
+            "inventory": {
+              "quantity": 75,
+              "reserved": 5,
+              "available": 70
+            }
+          }
+        ],
+        "metadata": {
+          "brand": "AudioPro",
+          "warranty": "2 years"
+        },
+        "createdAt": "2024-01-01T00:00:00Z",
+        "updatedAt": "2024-06-15T10:30:00Z"
+      },
+      {
+        "id": "prod-dig-001",
+        "type": "digital",
+        "name": {
+          "en": "Professional Photo Editing Software"
+        },
+        "slug": "pro-photo-editor",
+        "description": {
+          "en": "Complete photo editing suite for professionals."
+        },
+        "status": "active",
+        "visibility": "public",
+        "tags": ["software", "photo", "editing"],
+        "downloadUrl": "https://downloads.example.com/pro-photo-v2.zip",
+        "fileSize": 524288000,
+        "fileFormat": "zip",
+        "downloadLimit": 5,
+        "expirationDays": 365,
+        "price": {"amount": 299.99, "currency": "USD"},
+        "licenseType": "commercial",
+        "createdAt": "2024-03-01T00:00:00Z",
+        "updatedAt": "2024-06-01T00:00:00Z"
+      },
+      {
+        "id": "prod-sub-001",
+        "type": "subscription",
+        "name": {
+          "en": "Pro Membership"
+        },
+        "slug": "pro-membership",
+        "description": {
+          "en": "Access all premium features with our Pro membership."
+        },
+        "status": "active",
+        "visibility": "public",
+        "tags": ["membership", "subscription"],
+        "billingInterval": "monthly",
+        "billingIntervalCount": 1,
+        "trialPeriodDays": 14,
+        "price": {"amount": 29.99, "currency": "USD"},
+        "features": [
+          {"name": {"en": "Unlimited downloads"}, "included": true},
+          {"name": {"en": "Priority support"}, "included": true},
+          {"name": {"en": "API access"}, "included": true, "limit": 10000}
+        ],
+        "createdAt": "2024-02-01T00:00:00Z",
+        "updatedAt": "2024-05-15T00:00:00Z"
+      }
+    ],
+    "categories": [
+      {
+        "id": "cat-elec-001",
+        "name": {"en": "Electronics", "es": "Electronica"},
+        "slug": "electronics",
+        "description": {"en": "Electronic devices and accessories"},
+        "parentId": null,
+        "sortOrder": 1,
+        "isActive": true
+      },
+      {
+        "id": "cat-audio-001",
+        "name": {"en": "Audio"},
+        "slug": "audio",
+        "parentId": "cat-elec-001",
+        "sortOrder": 1,
+        "isActive": true
+      }
+    ],
+    "promotions": [
+      {
+        "id": "promo-summer-001",
+        "name": "Summer Sale 2024",
+        "code": "SUMMER20",
+        "type": "percentage",
+        "value": 20,
+        "validity": {
+          "start": "2024-06-01T00:00:00Z",
+          "end": "2024-08-31T23:59:59Z"
+        },
+        "usageLimit": 1000,
+        "usageCount": 150,
+        "minimumPurchase": {"amount": 50.00, "currency": "USD"},
+        "isActive": true
+      }
+    ]
+  }
+}

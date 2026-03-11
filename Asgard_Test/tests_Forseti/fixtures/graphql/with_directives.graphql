@@ -1,0 +1,564 @@
+"""
+GraphQL schema demonstrating custom directives for various purposes:
+- Authorization and access control
+- Field transformation
+- Caching
+- Rate limiting
+- Deprecation with migration paths
+- Validation
+"""
+
+scalar DateTime
+scalar JSON
+scalar UUID
+
+# Custom directive definitions
+
+"""
+Authorization directive to restrict field access based on roles.
+"""
+directive @auth(
+  requires: [Role!]!
+  allowSelf: Boolean = false
+) on FIELD_DEFINITION | OBJECT
+
+"""
+Deprecated with migration path directive.
+"""
+directive @deprecated(
+  reason: String = "No longer supported"
+  deadline: String
+  replacement: String
+) on FIELD_DEFINITION | ENUM_VALUE | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+"""
+Caching directive for query results.
+"""
+directive @cacheControl(
+  maxAge: Int
+  scope: CacheScope = PUBLIC
+  inheritMaxAge: Boolean = false
+) on FIELD_DEFINITION | OBJECT | INTERFACE | UNION
+
+enum CacheScope {
+  PUBLIC
+  PRIVATE
+}
+
+"""
+Rate limiting directive.
+"""
+directive @rateLimit(
+  max: Int!
+  window: String!
+  message: String
+) on FIELD_DEFINITION | OBJECT
+
+"""
+Validation directive for input fields.
+"""
+directive @constraint(
+  minLength: Int
+  maxLength: Int
+  startsWith: String
+  endsWith: String
+  contains: String
+  notContains: String
+  pattern: String
+  format: String
+  min: Float
+  max: Float
+  exclusiveMin: Float
+  exclusiveMax: Float
+  multipleOf: Float
+  uniqueItems: Boolean
+  minItems: Int
+  maxItems: Int
+) on INPUT_FIELD_DEFINITION | ARGUMENT_DEFINITION | FIELD_DEFINITION
+
+"""
+Field complexity for query cost analysis.
+"""
+directive @complexity(
+  value: Int!
+  multipliers: [String!]
+) on FIELD_DEFINITION
+
+"""
+Feature flag directive.
+"""
+directive @feature(
+  flag: String!
+  default: Boolean = false
+) on FIELD_DEFINITION | OBJECT
+
+"""
+Audit logging directive.
+"""
+directive @audit(
+  action: String!
+  level: AuditLevel = INFO
+) on FIELD_DEFINITION
+
+enum AuditLevel {
+  DEBUG
+  INFO
+  WARN
+  ERROR
+}
+
+"""
+Transform directive for field values.
+"""
+directive @transform(
+  operation: TransformOperation!
+) on FIELD_DEFINITION
+
+enum TransformOperation {
+  UPPERCASE
+  LOWERCASE
+  TRIM
+  CAPITALIZE
+  MASK_EMAIL
+  MASK_PHONE
+}
+
+"""
+Default value directive.
+"""
+directive @default(value: String!) on FIELD_DEFINITION
+
+"""
+Computed field directive.
+"""
+directive @computed(
+  expression: String!
+  dependencies: [String!]
+) on FIELD_DEFINITION
+
+"""
+Federation directive stubs for schema stitching.
+"""
+directive @key(fields: String!) repeatable on OBJECT | INTERFACE
+directive @external on FIELD_DEFINITION
+directive @requires(fields: String!) on FIELD_DEFINITION
+directive @provides(fields: String!) on FIELD_DEFINITION
+directive @extends on OBJECT | INTERFACE
+
+# Enums
+enum Role {
+  GUEST
+  USER
+  MODERATOR
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED @deprecated(reason: "Use BANNED instead", replacement: "BANNED")
+  BANNED
+  PENDING_VERIFICATION
+}
+
+# Types with directive usage
+
+type User @auth(requires: [USER]) @key(fields: "id") @cacheControl(maxAge: 300) {
+  id: UUID!
+
+  email: String!
+    @auth(requires: [ADMIN], allowSelf: true)
+    @transform(operation: MASK_EMAIL)
+
+  username: String!
+    @constraint(minLength: 3, maxLength: 30, pattern: "^[a-zA-Z0-9_]+$")
+
+  displayName: String!
+    @transform(operation: TRIM)
+
+  phone: String
+    @auth(requires: [ADMIN], allowSelf: true)
+    @transform(operation: MASK_PHONE)
+
+  role: Role!
+    @auth(requires: [ADMIN])
+
+  status: UserStatus!
+
+  profile: UserProfile
+    @cacheControl(maxAge: 600, scope: PRIVATE)
+
+  posts(limit: Int @constraint(min: 1, max: 100) = 20): [Post!]!
+    @complexity(value: 10, multipliers: ["limit"])
+
+  followers: [User!]!
+    @complexity(value: 5)
+    @rateLimit(max: 100, window: "1m")
+
+  following: [User!]!
+    @complexity(value: 5)
+
+  privateData: PrivateUserData
+    @auth(requires: [ADMIN], allowSelf: true)
+    @feature(flag: "private_data_access")
+
+  sensitiveMetrics: UserMetrics
+    @auth(requires: [SUPER_ADMIN])
+    @audit(action: "SENSITIVE_DATA_ACCESS", level: WARN)
+
+  legacyField: String
+    @deprecated(
+      reason: "This field will be removed in v3.0"
+      deadline: "2025-01-01"
+      replacement: "Use profile.legacyData instead"
+    )
+
+  fullName: String!
+    @computed(
+      expression: "firstName + ' ' + lastName"
+      dependencies: ["firstName", "lastName"]
+    )
+
+  createdAt: DateTime! @cacheControl(inheritMaxAge: true)
+  updatedAt: DateTime! @cacheControl(inheritMaxAge: true)
+}
+
+type UserProfile @cacheControl(maxAge: 600) {
+  bio: String @constraint(maxLength: 500)
+  website: String @constraint(format: "uri")
+  location: String
+  avatarUrl: String @constraint(format: "uri")
+  coverImageUrl: String @constraint(format: "uri")
+  socialLinks: SocialLinks
+  settings: UserSettings @auth(requires: [USER], allowSelf: true)
+  legacyData: JSON
+}
+
+type SocialLinks {
+  twitter: String @constraint(pattern: "^@?[a-zA-Z0-9_]{1,15}$")
+  github: String @constraint(pattern: "^[a-zA-Z0-9-]+$")
+  linkedin: String @constraint(format: "uri", contains: "linkedin.com")
+  website: String @constraint(format: "uri")
+}
+
+type UserSettings @auth(requires: [USER], allowSelf: true) {
+  emailNotifications: Boolean! @default(value: "true")
+  pushNotifications: Boolean! @default(value: "true")
+  newsletter: Boolean! @default(value: "false")
+  privateProfile: Boolean! @default(value: "false")
+  twoFactorEnabled: Boolean!
+}
+
+type PrivateUserData @auth(requires: [ADMIN]) {
+  ssn: String @transform(operation: MASK_EMAIL)
+  dateOfBirth: DateTime
+  address: Address
+  paymentMethods: [PaymentMethod!]!
+}
+
+type Address {
+  street: String!
+  city: String!
+  state: String
+  postalCode: String! @constraint(pattern: "^[0-9]{5}(-[0-9]{4})?$")
+  country: String! @constraint(minLength: 2, maxLength: 2)
+}
+
+type PaymentMethod @auth(requires: [ADMIN], allowSelf: true) {
+  id: UUID!
+  type: String!
+  last4: String!
+  expiryMonth: Int @constraint(min: 1, max: 12)
+  expiryYear: Int @constraint(min: 2024)
+  isDefault: Boolean!
+}
+
+type UserMetrics @auth(requires: [SUPER_ADMIN]) @audit(action: "METRICS_ACCESS") {
+  totalRevenue: Float!
+  lifetimeValue: Float!
+  riskScore: Float! @constraint(min: 0, max: 100)
+  fraudFlags: [String!]!
+}
+
+type Post @cacheControl(maxAge: 60) @key(fields: "id") {
+  id: UUID!
+
+  title: String!
+    @constraint(minLength: 1, maxLength: 200)
+    @transform(operation: TRIM)
+
+  slug: String!
+    @constraint(pattern: "^[a-z0-9-]+$")
+    @transform(operation: LOWERCASE)
+
+  content: String!
+    @constraint(minLength: 10)
+
+  excerpt: String
+    @constraint(maxLength: 300)
+    @computed(expression: "substr(content, 0, 300)")
+
+  author: User!
+    @cacheControl(inheritMaxAge: true)
+
+  tags: [String!]!
+    @constraint(uniqueItems: true, maxItems: 10)
+
+  status: PostStatus!
+
+  viewCount: Int!
+    @auth(requires: [ADMIN])
+    @feature(flag: "view_analytics")
+
+  likeCount: Int!
+
+  comments(
+    limit: Int @constraint(min: 1, max: 50) = 10
+    offset: Int @constraint(min: 0) = 0
+  ): [Comment!]!
+    @complexity(value: 5, multipliers: ["limit"])
+    @rateLimit(max: 30, window: "1m", message: "Too many comment requests")
+
+  relatedPosts(limit: Int = 5): [Post!]!
+    @complexity(value: 20)
+    @cacheControl(maxAge: 300)
+
+  publishedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+
+  oldSlug: String
+    @deprecated(reason: "Use slug field instead")
+}
+
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+  SCHEDULED
+  DELETED @deprecated(reason: "Posts are now soft-deleted, use ARCHIVED")
+}
+
+type Comment @cacheControl(maxAge: 30) {
+  id: UUID!
+
+  body: String!
+    @constraint(minLength: 1, maxLength: 2000)
+
+  author: User!
+  post: Post!
+  parent: Comment
+  replies: [Comment!]!
+    @complexity(value: 3)
+
+  likeCount: Int!
+
+  isEdited: Boolean!
+
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# Input types with validation directives
+input CreateUserInput {
+  email: String!
+    @constraint(format: "email", maxLength: 255)
+
+  username: String!
+    @constraint(minLength: 3, maxLength: 30, pattern: "^[a-zA-Z0-9_]+$")
+
+  password: String!
+    @constraint(minLength: 8, maxLength: 128)
+
+  displayName: String
+    @constraint(maxLength: 100)
+}
+
+input UpdateUserInput {
+  displayName: String @constraint(maxLength: 100)
+  bio: String @constraint(maxLength: 500)
+  website: String @constraint(format: "uri")
+}
+
+input CreatePostInput {
+  title: String!
+    @constraint(minLength: 1, maxLength: 200)
+
+  content: String!
+    @constraint(minLength: 10)
+
+  tags: [String!]
+    @constraint(uniqueItems: true, maxItems: 10)
+
+  status: PostStatus = DRAFT
+
+  scheduledFor: DateTime
+}
+
+input PaginationInput {
+  limit: Int
+    @constraint(min: 1, max: 100)
+    @default(value: "20")
+
+  offset: Int
+    @constraint(min: 0)
+    @default(value: "0")
+
+  cursor: String
+}
+
+# Root types
+type Query {
+  me: User
+    @auth(requires: [USER])
+    @cacheControl(maxAge: 0, scope: PRIVATE)
+
+  user(id: UUID!): User
+    @cacheControl(maxAge: 300)
+    @rateLimit(max: 100, window: "1m")
+
+  users(
+    pagination: PaginationInput
+    role: Role
+    status: UserStatus
+  ): UserConnection!
+    @auth(requires: [ADMIN])
+    @complexity(value: 20, multipliers: ["pagination.limit"])
+    @rateLimit(max: 50, window: "1m")
+
+  post(id: UUID!): Post
+    @cacheControl(maxAge: 60)
+
+  postBySlug(slug: String! @constraint(pattern: "^[a-z0-9-]+$")): Post
+    @cacheControl(maxAge: 60)
+
+  posts(
+    pagination: PaginationInput
+    status: PostStatus
+    authorId: UUID
+    tag: String
+  ): PostConnection!
+    @complexity(value: 15, multipliers: ["pagination.limit"])
+
+  searchPosts(
+    query: String! @constraint(minLength: 2, maxLength: 100)
+    limit: Int @constraint(min: 1, max: 50) = 20
+  ): [Post!]!
+    @complexity(value: 30)
+    @rateLimit(max: 30, window: "1m", message: "Search rate limit exceeded")
+
+  adminDashboard: AdminDashboard
+    @auth(requires: [ADMIN])
+    @audit(action: "ADMIN_DASHBOARD_ACCESS")
+
+  experimentalFeature: JSON
+    @feature(flag: "experimental_api", default: false)
+    @auth(requires: [SUPER_ADMIN])
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+    @rateLimit(max: 5, window: "1h", message: "Account creation rate limit exceeded")
+    @audit(action: "USER_CREATE")
+
+  updateUser(id: UUID!, input: UpdateUserInput!): User!
+    @auth(requires: [USER], allowSelf: true)
+    @audit(action: "USER_UPDATE")
+
+  deleteUser(id: UUID!): Boolean!
+    @auth(requires: [ADMIN])
+    @audit(action: "USER_DELETE", level: WARN)
+
+  createPost(input: CreatePostInput!): Post!
+    @auth(requires: [USER])
+    @rateLimit(max: 10, window: "1h")
+    @audit(action: "POST_CREATE")
+
+  updatePost(id: UUID!, input: CreatePostInput!): Post!
+    @auth(requires: [USER])
+    @audit(action: "POST_UPDATE")
+
+  deletePost(id: UUID!): Boolean!
+    @auth(requires: [USER])
+    @audit(action: "POST_DELETE")
+
+  addComment(
+    postId: UUID!
+    body: String! @constraint(minLength: 1, maxLength: 2000)
+    parentId: UUID
+  ): Comment!
+    @auth(requires: [USER])
+    @rateLimit(max: 20, window: "5m", message: "Comment rate limit exceeded")
+
+  dangerousOperation(confirm: Boolean!): Boolean!
+    @auth(requires: [SUPER_ADMIN])
+    @audit(action: "DANGEROUS_OPERATION", level: ERROR)
+    @rateLimit(max: 1, window: "1h")
+}
+
+type Subscription {
+  postPublished: Post!
+    @auth(requires: [USER])
+
+  commentAdded(postId: UUID!): Comment!
+    @auth(requires: [USER])
+    @rateLimit(max: 10, window: "1m")
+
+  userStatusChanged: User!
+    @auth(requires: [ADMIN])
+}
+
+# Connection types
+type UserConnection {
+  edges: [UserEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type UserEdge {
+  node: User!
+  cursor: String!
+}
+
+type PostConnection {
+  edges: [PostEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type PostEdge {
+  node: Post!
+  cursor: String!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type AdminDashboard @auth(requires: [ADMIN]) {
+  userCount: Int!
+  postCount: Int!
+  commentCount: Int!
+  activeUsers24h: Int!
+  newUsersToday: Int!
+  recentActivity: [ActivityEntry!]!
+}
+
+type ActivityEntry {
+  id: UUID!
+  type: String!
+  actor: User
+  target: String!
+  metadata: JSON
+  occurredAt: DateTime!
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}

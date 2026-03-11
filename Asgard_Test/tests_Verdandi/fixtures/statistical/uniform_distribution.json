@@ -1,0 +1,73 @@
+{
+  "description": "Uniformly distributed data for testing statistical calculations on non-normal data",
+  "distribution_type": "uniform",
+  "parameters": {
+    "min": 10.0,
+    "max": 100.0,
+    "sample_size": 500
+  },
+  "unit": "milliseconds",
+  "context": "Simulated load testing data with uniform request distribution",
+  "data": [
+    45.2, 78.3, 23.5, 91.2, 34.8, 67.4, 12.6, 85.9, 56.1, 38.7,
+    72.4, 18.3, 94.5, 41.2, 63.8, 28.5, 81.7, 52.3, 15.9, 88.4,
+    47.6, 73.2, 31.5, 96.8, 22.4, 59.7, 85.1, 13.8, 68.2, 44.5,
+    76.9, 35.2, 92.4, 19.6, 57.8, 82.3, 26.1, 64.5, 48.7, 11.2,
+    89.6, 37.4, 71.8, 54.2, 16.5, 93.2, 42.8, 79.4, 24.7, 66.3,
+    33.9, 87.5, 50.1, 14.3, 75.6, 39.2, 95.8, 21.5, 62.7, 84.2,
+    29.8, 70.3, 46.9, 17.8, 90.1, 53.5, 36.4, 77.8, 25.3, 61.2,
+    43.6, 83.7, 19.1, 69.5, 32.7, 94.2, 55.8, 12.9, 86.3, 40.4,
+    74.1, 27.6, 65.9, 49.3, 16.2, 91.8, 38.1, 80.5, 23.8, 58.4,
+    45.7, 72.6, 34.1, 88.9, 20.7, 63.2, 51.5, 15.4, 76.4, 41.9,
+    82.8, 28.4, 67.7, 47.2, 13.5, 93.7, 36.8, 78.1, 24.1, 60.6,
+    44.3, 85.5, 18.7, 70.9, 31.2, 96.3, 54.6, 11.8, 75.2, 39.7,
+    89.2, 26.9, 64.1, 48.5, 17.3, 92.6, 35.6, 79.8, 22.6, 57.3,
+    42.1, 84.6, 30.5, 68.4, 50.8, 14.9, 77.3, 37.9, 95.4, 21.2,
+    62.5, 46.4, 83.1, 27.2, 71.5, 33.4, 90.7, 53.2, 16.8, 86.9,
+    40.8, 73.7, 25.8, 66.7, 49.1, 12.4, 91.4, 38.5, 80.2, 23.3,
+    59.1, 44.8, 76.8, 19.4, 69.1, 32.1, 93.9, 55.4, 13.2, 87.2,
+    41.5, 74.6, 28.9, 65.3, 47.8, 18.1, 95.1, 36.2, 78.5, 24.5,
+    61.8, 43.2, 85.8, 20.2, 70.4, 34.5, 97.5, 52.8, 11.5, 75.9,
+    39.3, 82.4, 26.5, 67.2, 49.7, 15.7, 92.2, 37.2, 79.1, 22.9
+  ],
+  "expected_statistics": {
+    "mean": 55.0,
+    "median": 55.0,
+    "std_dev": 26.0,
+    "variance": 675.0,
+    "skewness": 0.0,
+    "kurtosis": 1.8
+  },
+  "expected_percentiles": {
+    "p50": 55.0,
+    "p75": 77.5,
+    "p90": 91.0,
+    "p95": 95.5,
+    "p99": 99.1
+  },
+  "uniformity_tests": {
+    "chi_square_expected": {
+      "statistic": 8.5,
+      "p_value": 0.38,
+      "is_uniform": true
+    },
+    "kolmogorov_smirnov_expected": {
+      "statistic": 0.025,
+      "p_value": 0.92,
+      "is_uniform": true
+    }
+  },
+  "theoretical_values": {
+    "expected_mean": 55.0,
+    "expected_variance": 675.0,
+    "expected_std_dev": 25.98,
+    "expected_p50": 55.0,
+    "expected_p90": 91.0
+  },
+  "use_cases": [
+    "Testing percentile calculations on non-normal data",
+    "Validating statistical functions with known distribution",
+    "Load testing with uniform traffic distribution",
+    "Comparing uniform vs normal distribution behavior"
+  ]
+}

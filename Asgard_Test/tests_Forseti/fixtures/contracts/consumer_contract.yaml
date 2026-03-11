@@ -1,0 +1,315 @@
+openapi: 3.0.3
+info:
+  title: User Service Consumer Contract
+  description: |
+    Consumer contract specifying the subset of the User Service API
+    that this consumer depends on. Used for contract testing.
+
+    Consumer: Order Service
+    Provider: User Service
+  version: 1.0.0
+  contact:
+    name: Order Service Team
+    email: orders@example.com
+
+servers:
+  - url: https://api.example.com/v1
+
+paths:
+  /users/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: The user ID to look up
+        schema:
+          type: string
+          format: uuid
+        examples:
+          valid_user:
+            value: "550e8400-e29b-41d4-a716-446655440000"
+    get:
+      operationId: getUser
+      summary: Get user by ID
+      description: |
+        The Order Service requires this endpoint to validate user existence
+        and retrieve user details for order processing.
+      tags:
+        - users
+      responses:
+        "200":
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+              examples:
+                active_user:
+                  summary: Active user example
+                  value:
+                    id: "550e8400-e29b-41d4-a716-446655440000"
+                    email: "john.doe@example.com"
+                    name: "John Doe"
+                    status: "active"
+        "404":
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                not_found:
+                  value:
+                    code: "USER_NOT_FOUND"
+                    message: "User with the specified ID was not found"
+
+  /users:
+    get:
+      operationId: listUsers
+      summary: List users
+      description: |
+        The Order Service uses this endpoint to search for users
+        when processing bulk orders.
+      tags:
+        - users
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: status
+          in: query
+          description: Filter by user status (only active users can place orders)
+          schema:
+            type: string
+            enum:
+              - active
+              - inactive
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/UserSummary"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+
+  /users/{userId}/validate:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    post:
+      operationId: validateUser
+      summary: Validate user for order placement
+      description: |
+        Consumer expectation: This endpoint should validate if a user
+        is eligible to place orders (active status, valid payment method, etc.)
+      tags:
+        - users
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderAmount:
+                  type: number
+                  description: Total order amount for credit limit validation
+                currency:
+                  type: string
+                  pattern: "^[A-Z]{3}$"
+      responses:
+        "200":
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - isValid
+                properties:
+                  isValid:
+                    type: boolean
+                  userId:
+                    type: string
+                    format: uuid
+                  validationErrors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                        message:
+                          type: string
+              examples:
+                valid_user:
+                  value:
+                    isValid: true
+                    userId: "550e8400-e29b-41d4-a716-446655440000"
+                invalid_user:
+                  value:
+                    isValid: false
+                    userId: "550e8400-e29b-41d4-a716-446655440000"
+                    validationErrors:
+                      - code: "INACTIVE_USER"
+                        message: "User account is not active"
+
+components:
+  schemas:
+    UserResponse:
+      type: object
+      description: |
+        Consumer expects these fields for order processing.
+        Additional fields from the provider are acceptable but not required.
+      required:
+        - id
+        - email
+        - name
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique user identifier
+        email:
+          type: string
+          format: email
+          description: User email for order confirmations
+        name:
+          type: string
+          description: User name for shipping labels
+        status:
+          type: string
+          enum:
+            - active
+            - inactive
+            - pending
+          description: |
+            User status. Only 'active' users can place orders.
+            Consumer depends on these specific enum values.
+
+    UserSummary:
+      type: object
+      required:
+        - id
+        - name
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        status:
+          type: string
+          enum:
+            - active
+            - inactive
+            - pending
+
+    Pagination:
+      type: object
+      description: Consumer expects standard pagination structure
+      properties:
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+
+    ErrorResponse:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+          description: Machine-readable error code
+        message:
+          type: string
+          description: Human-readable error message
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Service-to-service JWT authentication
+
+security:
+  - bearerAuth: []
+
+x-consumer-info:
+  consumer_name: Order Service
+  consumer_version: "2.3.0"
+  contact: orders@example.com
+  dependencies:
+    - operation: getUser
+      required: true
+      description: Required for order creation and validation
+    - operation: listUsers
+      required: false
+      description: Used for bulk order processing
+    - operation: validateUser
+      required: true
+      description: Required for pre-order validation
+
+x-contract-tests:
+  - name: Get active user
+    request:
+      method: GET
+      path: /users/550e8400-e29b-41d4-a716-446655440000
+    expected_response:
+      status: 200
+      body_contains:
+        - id
+        - email
+        - name
+        - status
+
+  - name: Get non-existent user
+    request:
+      method: GET
+      path: /users/00000000-0000-0000-0000-000000000000
+    expected_response:
+      status: 404
+      body_contains:
+        - code
+        - message
+
+  - name: Validate eligible user
+    request:
+      method: POST
+      path: /users/550e8400-e29b-41d4-a716-446655440000/validate
+      body:
+        orderAmount: 100.00
+        currency: USD
+    expected_response:
+      status: 200
+      body_contains:
+        - isValid

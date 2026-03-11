@@ -1,0 +1,76 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# Distribution / packaging
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+sdist/
+wheels/
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.json
+coverage.xml
+htmlcov/
+regression_output/
+.tox/
+.nox/
+
+# Type checking / Linting
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.pyre/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# C extensions
+*.so
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Security / Secrets
+.env
+.env.*
+!.env.example
+secrets.*
+*.pem
+*.key
+
+# Asgard-generated output
+reports/
+baselines/
+scan_results/
+*.baseline.json
+
+# Misc
+*.log
+*.bak
+*.tmp

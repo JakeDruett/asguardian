@@ -1,0 +1,720 @@
+openapi: 3.1.0
+info:
+  title: Order Management API
+  summary: API for managing customer orders
+  description: |
+    OpenAPI 3.1 specification for order management.
+
+    This API supports:
+    - Order creation and management
+    - Order status tracking
+    - Payment processing
+    - Shipping integration
+  version: 3.0.0
+  contact:
+    name: Order API Team
+    email: orders@example.com
+    url: https://docs.example.com/orders
+  license:
+    name: Apache 2.0
+    identifier: Apache-2.0
+  termsOfService: https://example.com/terms
+
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+
+servers:
+  - url: https://api.example.com/{version}
+    description: Production
+    variables:
+      version:
+        default: v3
+        enum:
+          - v2
+          - v3
+
+webhooks:
+  orderStatusChanged:
+    post:
+      summary: Order status webhook
+      description: Called when order status changes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderStatusEvent"
+      responses:
+        "200":
+          description: Webhook processed
+
+tags:
+  - name: orders
+    description: Order operations
+  - name: payments
+    description: Payment operations
+  - name: shipping
+    description: Shipping operations
+
+security:
+  - oauth2:
+      - orders:read
+      - orders:write
+
+paths:
+  /orders:
+    get:
+      tags:
+        - orders
+      summary: List orders
+      operationId: listOrders
+      parameters:
+        - name: status
+          in: query
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/OrderStatus"
+        - name: customer_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: date_from
+          in: query
+          schema:
+            type: string
+            format: date
+        - name: date_to
+          in: query
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Order list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Order"
+                  pagination:
+                    $ref: "#/components/schemas/Pagination"
+
+    post:
+      tags:
+        - orders
+      summary: Create order
+      operationId: createOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrderRequest"
+      responses:
+        "201":
+          description: Order created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        "400":
+          $ref: "#/components/responses/ValidationError"
+
+  /orders/{orderId}:
+    parameters:
+      - $ref: "#/components/parameters/OrderId"
+    get:
+      tags:
+        - orders
+      summary: Get order
+      operationId: getOrder
+      responses:
+        "200":
+          description: Order details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    patch:
+      tags:
+        - orders
+      summary: Update order
+      operationId: updateOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateOrderRequest"
+      responses:
+        "200":
+          description: Order updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+  /orders/{orderId}/cancel:
+    parameters:
+      - $ref: "#/components/parameters/OrderId"
+    post:
+      tags:
+        - orders
+      summary: Cancel order
+      operationId: cancelOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  maxLength: 500
+      responses:
+        "200":
+          description: Order cancelled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        "409":
+          description: Order cannot be cancelled
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /orders/{orderId}/payments:
+    parameters:
+      - $ref: "#/components/parameters/OrderId"
+    get:
+      tags:
+        - payments
+      summary: Get order payments
+      operationId: getOrderPayments
+      responses:
+        "200":
+          description: Payment list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Payment"
+
+    post:
+      tags:
+        - payments
+      summary: Process payment
+      operationId: processPayment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PaymentRequest"
+      responses:
+        "201":
+          description: Payment processed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Payment"
+        "402":
+          description: Payment failed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentError"
+
+  /orders/{orderId}/shipping:
+    parameters:
+      - $ref: "#/components/parameters/OrderId"
+    get:
+      tags:
+        - shipping
+      summary: Get shipping info
+      operationId: getShippingInfo
+      responses:
+        "200":
+          description: Shipping information
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShippingInfo"
+
+    post:
+      tags:
+        - shipping
+      summary: Create shipment
+      operationId: createShipment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateShipmentRequest"
+      responses:
+        "201":
+          description: Shipment created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShippingInfo"
+
+components:
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://auth.example.com/authorize
+          tokenUrl: https://auth.example.com/token
+          refreshUrl: https://auth.example.com/refresh
+          scopes:
+            orders:read: Read order information
+            orders:write: Create and modify orders
+            payments:process: Process payments
+        clientCredentials:
+          tokenUrl: https://auth.example.com/token
+          scopes:
+            orders:read: Read order information
+
+  parameters:
+    OrderId:
+      name: orderId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    OrderStatus:
+      type: string
+      enum:
+        - pending
+        - confirmed
+        - processing
+        - shipped
+        - delivered
+        - cancelled
+        - refunded
+
+    Order:
+      type: object
+      required:
+        - id
+        - customer_id
+        - items
+        - total
+        - status
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        order_number:
+          type: string
+          pattern: "^ORD-[0-9]{8}$"
+          readOnly: true
+        customer_id:
+          type: string
+          format: uuid
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+          minItems: 1
+        subtotal:
+          type: number
+          exclusiveMinimum: 0
+        tax:
+          type: number
+          minimum: 0
+        shipping_cost:
+          type: number
+          minimum: 0
+        discount:
+          type: number
+          minimum: 0
+          default: 0
+        total:
+          type: number
+          exclusiveMinimum: 0
+        currency:
+          type: string
+          pattern: "^[A-Z]{3}$"
+          default: USD
+        status:
+          $ref: "#/components/schemas/OrderStatus"
+        shipping_address:
+          $ref: "#/components/schemas/Address"
+        billing_address:
+          $ref: "#/components/schemas/Address"
+        notes:
+          type:
+            - string
+            - "null"
+          maxLength: 1000
+        metadata:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+
+    OrderItem:
+      type: object
+      required:
+        - product_id
+        - quantity
+        - unit_price
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        product_id:
+          type: string
+          format: uuid
+        product_name:
+          type: string
+        sku:
+          type: string
+        quantity:
+          type: integer
+          minimum: 1
+        unit_price:
+          type: number
+          exclusiveMinimum: 0
+        total_price:
+          type: number
+          readOnly: true
+        discount:
+          type: number
+          minimum: 0
+          default: 0
+
+    Address:
+      type: object
+      required:
+        - street
+        - city
+        - country
+        - postal_code
+      properties:
+        name:
+          type: string
+          maxLength: 100
+        company:
+          type: string
+          maxLength: 100
+        street:
+          type: string
+          maxLength: 200
+        street2:
+          type: string
+          maxLength: 200
+        city:
+          type: string
+          maxLength: 100
+        state:
+          type: string
+          maxLength: 100
+        postal_code:
+          type: string
+          maxLength: 20
+        country:
+          type: string
+          pattern: "^[A-Z]{2}$"
+          description: ISO 3166-1 alpha-2 country code
+        phone:
+          type: string
+          pattern: "^\\+?[0-9\\s-]+$"
+
+    CreateOrderRequest:
+      type: object
+      required:
+        - customer_id
+        - items
+        - shipping_address
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+        items:
+          type: array
+          items:
+            type: object
+            required:
+              - product_id
+              - quantity
+            properties:
+              product_id:
+                type: string
+                format: uuid
+              quantity:
+                type: integer
+                minimum: 1
+          minItems: 1
+        shipping_address:
+          $ref: "#/components/schemas/Address"
+        billing_address:
+          $ref: "#/components/schemas/Address"
+        coupon_code:
+          type: string
+        notes:
+          type: string
+
+    UpdateOrderRequest:
+      type: object
+      properties:
+        shipping_address:
+          $ref: "#/components/schemas/Address"
+        notes:
+          type: string
+          maxLength: 1000
+
+    Payment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        order_id:
+          type: string
+          format: uuid
+        amount:
+          type: number
+          exclusiveMinimum: 0
+        currency:
+          type: string
+        method:
+          type: string
+          enum:
+            - credit_card
+            - debit_card
+            - paypal
+            - bank_transfer
+            - crypto
+        status:
+          type: string
+          enum:
+            - pending
+            - authorized
+            - captured
+            - failed
+            - refunded
+        transaction_id:
+          type: string
+        processed_at:
+          type: string
+          format: date-time
+
+    PaymentRequest:
+      type: object
+      required:
+        - amount
+        - method
+      properties:
+        amount:
+          type: number
+          exclusiveMinimum: 0
+        currency:
+          type: string
+          pattern: "^[A-Z]{3}$"
+          default: USD
+        method:
+          type: string
+          enum:
+            - credit_card
+            - debit_card
+            - paypal
+            - bank_transfer
+        payment_token:
+          type: string
+          description: Payment method token from payment provider
+        save_method:
+          type: boolean
+          default: false
+
+    PaymentError:
+      allOf:
+        - $ref: "#/components/schemas/Error"
+        - type: object
+          properties:
+            decline_code:
+              type: string
+            payment_method_type:
+              type: string
+
+    ShippingInfo:
+      type: object
+      properties:
+        order_id:
+          type: string
+          format: uuid
+        carrier:
+          type: string
+        service:
+          type: string
+        tracking_number:
+          type: string
+        tracking_url:
+          type: string
+          format: uri
+        status:
+          type: string
+          enum:
+            - pending
+            - label_created
+            - in_transit
+            - out_for_delivery
+            - delivered
+            - exception
+        estimated_delivery:
+          type: string
+          format: date
+        actual_delivery:
+          type: string
+          format: date-time
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              timestamp:
+                type: string
+                format: date-time
+              location:
+                type: string
+              description:
+                type: string
+              status:
+                type: string
+
+    CreateShipmentRequest:
+      type: object
+      required:
+        - carrier
+        - service
+      properties:
+        carrier:
+          type: string
+          enum:
+            - ups
+            - fedex
+            - usps
+            - dhl
+        service:
+          type: string
+        package_weight:
+          type: number
+          minimum: 0
+        package_dimensions:
+          type: object
+          properties:
+            length:
+              type: number
+            width:
+              type: number
+            height:
+              type: number
+            unit:
+              type: string
+              enum:
+                - in
+                - cm
+        signature_required:
+          type: boolean
+          default: false
+        insurance:
+          type: boolean
+          default: false
+
+    OrderStatusEvent:
+      type: object
+      required:
+        - event_type
+        - order_id
+        - new_status
+      properties:
+        event_type:
+          const: order.status.changed
+        event_id:
+          type: string
+          format: uuid
+        order_id:
+          type: string
+          format: uuid
+        order_number:
+          type: string
+        previous_status:
+          $ref: "#/components/schemas/OrderStatus"
+        new_status:
+          $ref: "#/components/schemas/OrderStatus"
+        changed_at:
+          type: string
+          format: date-time
+        changed_by:
+          type: string
+
+    Pagination:
+      type: object
+      properties:
+        page:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
+        total_pages:
+          type: integer
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        request_id:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        details:
+          type: array
+          items:
+            type: object
+
+  responses:
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"

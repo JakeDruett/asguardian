@@ -1,0 +1,98 @@
+"""
+This GraphQL schema contains intentional syntax errors for testing
+schema validation error detection.
+"""
+
+# Missing closing brace
+type User {
+  id: ID!
+  name: String!
+  email: String!
+
+
+# Invalid field definition - missing type
+type Product {
+  id: ID!
+  name
+  price: Float!
+  description: String
+}
+
+# Invalid enum - missing values
+enum OrderStatus {
+
+}
+
+# Typo in type keyword
+typo InvalidType {
+  field: String!
+}
+
+# Invalid directive syntax
+type Category @deprecated(reason) {
+  id: ID!
+  name: String!
+}
+
+# Missing field type after colon
+type Order {
+  id: ID!
+  items:
+  total: Float!
+}
+
+# Duplicate field names
+type Customer {
+  id: ID!
+  name: String!
+  email: String!
+  name: String
+}
+
+# Invalid input type - using interface
+input CreateUserInput implements Node {
+  name: String!
+  email: String!
+}
+
+# Missing required closing parenthesis
+type Query {
+  user(id: ID!: User
+  users: [User!]!
+}
+
+# Invalid union - single type
+union SearchResult = User
+
+# Interface missing required field in implementation
+interface Entity {
+  id: ID!
+  createdAt: DateTime!
+}
+
+type Post implements Entity {
+  id: ID!
+  title: String!
+  # Missing createdAt field required by Entity interface
+}
+
+# Recursive type without proper nullability (will cause infinite loop)
+type Node {
+  id: ID!
+  children: [Node!]!
+  parent: Node!
+}
+
+# Invalid scalar - missing definition
+scalar InvalidDate
+
+type Event {
+  id: ID!
+  date: UndefinedScalar!
+}
+
+# Missing mutation type definition but referenced in schema
+schema {
+  query: Query
+  mutation: UndefinedMutation
+}

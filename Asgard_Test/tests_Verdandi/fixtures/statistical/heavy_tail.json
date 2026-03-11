@@ -1,0 +1,75 @@
+{
+  "description": "Heavy-tailed (log-normal) distribution with significant outliers for p99 testing",
+  "distribution_type": "log-normal",
+  "parameters": {
+    "mu": 3.9,
+    "sigma": 0.8,
+    "sample_size": 1000
+  },
+  "unit": "milliseconds",
+  "context": "API response times with occasional slow requests due to GC, network issues, or cold starts",
+  "data": [
+    42.5, 35.8, 58.2, 45.6, 125.4, 38.9, 52.3, 41.2, 285.6, 48.7,
+    55.1, 39.4, 72.8, 44.3, 850.2, 47.6, 36.2, 63.5, 51.8, 145.3,
+    43.9, 58.7, 40.5, 95.4, 46.2, 1250.8, 54.3, 37.8, 82.1, 49.5,
+    38.2, 65.4, 42.8, 175.6, 53.7, 41.6, 78.3, 45.1, 320.5, 50.2,
+    35.4, 62.8, 47.3, 112.5, 44.8, 2150.4, 56.2, 39.7, 88.4, 52.6,
+    40.3, 71.5, 46.8, 195.2, 54.8, 43.2, 98.6, 48.2, 425.8, 51.4,
+    36.7, 68.3, 45.5, 135.8, 49.8, 38.5, 75.2, 42.1, 265.4, 55.6,
+    41.8, 82.4, 47.9, 165.3, 53.2, 1850.6, 58.4, 40.2, 92.5, 50.8,
+    37.2, 64.8, 44.6, 148.2, 52.1, 42.5, 85.6, 46.3, 385.2, 54.1,
+    39.1, 72.1, 48.5, 125.6, 51.6, 2450.2, 57.8, 41.4, 102.4, 49.2,
+    35.9, 67.5, 45.2, 178.5, 53.9, 40.8, 88.2, 47.1, 295.8, 55.3,
+    42.2, 78.6, 49.6, 142.8, 52.8, 38.8, 95.3, 44.1, 545.2, 50.5,
+    36.4, 62.3, 46.5, 115.4, 54.5, 1425.8, 59.2, 39.5, 82.8, 48.8,
+    40.6, 75.8, 45.8, 192.5, 51.2, 43.8, 98.2, 47.4, 365.4, 56.8,
+    38.1, 68.8, 44.4, 158.6, 53.5, 41.1, 85.1, 46.9, 235.2, 52.4,
+    35.2, 71.8, 49.1, 128.4, 55.8, 2850.5, 58.8, 40.9, 92.8, 50.1,
+    42.8, 65.2, 47.8, 175.2, 54.2, 39.2, 78.9, 45.4, 415.6, 51.8,
+    36.9, 74.5, 48.2, 145.5, 56.2, 43.5, 88.5, 46.6, 285.8, 53.8,
+    38.4, 69.2, 44.9, 168.4, 52.2, 1685.4, 60.5, 41.5, 95.8, 49.5,
+    40.1, 72.5, 47.2, 138.2, 55.2, 42.1, 82.2, 45.7, 525.4, 50.9
+  ],
+  "expected_statistics": {
+    "mean": 125.8,
+    "median": 52.5,
+    "std_dev": 285.4,
+    "skewness": 5.2,
+    "kurtosis": 42.5
+  },
+  "expected_percentiles": {
+    "p50": 52.5,
+    "p75": 95.2,
+    "p90": 285.6,
+    "p95": 545.2,
+    "p99": 2150.4,
+    "p999": 2850.5
+  },
+  "outlier_analysis": {
+    "outlier_threshold_iqr": 178.5,
+    "outlier_count": 45,
+    "outlier_percentage": 4.5,
+    "max_value": 2850.5,
+    "outliers_above_1s": 12,
+    "outliers_above_2s": 5
+  },
+  "tail_analysis": {
+    "ratio_p99_to_p50": 41.0,
+    "ratio_p95_to_p50": 10.4,
+    "ratio_p90_to_p50": 5.4,
+    "tail_index": 1.8
+  },
+  "sla_impact": {
+    "sla_threshold_ms": 500,
+    "violations": 32,
+    "violation_rate": 0.032,
+    "sla_compliant": false
+  },
+  "recommendations": [
+    "P99 (2150ms) is 41x higher than P50 (52ms) - investigate outlier causes",
+    "3.2% of requests exceed 500ms SLA threshold",
+    "Consider circuit breaker pattern for slow dependencies",
+    "Investigate requests above 1s for GC pauses or network timeouts",
+    "Add request timeout to prevent cascading failures"
+  ]
+}

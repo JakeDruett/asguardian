@@ -1,0 +1,328 @@
+openapi: 3.0.3
+info:
+  title: User Service API
+  description: |
+    Provider API contract - Version 2.0 (BREAKING CHANGES)
+
+    Breaking changes from v1.0:
+    - REMOVED: /users/{userId}/profile endpoint
+    - REMOVED: 'moderator' role from enum
+    - CHANGED: 'name' field renamed to 'fullName' in User
+    - CHANGED: 'status' field type changed to object
+    - ADDED: Required 'organizationId' field in CreateUserRequest
+    - CHANGED: Response structure for list endpoint
+    - REMOVED: 'password' from CreateUserRequest (now separate endpoint)
+    - CHANGED: userId parameter type from uuid to integer
+  version: 2.0.0
+  contact:
+    name: API Team
+    email: api@example.com
+
+servers:
+  - url: https://api.example.com/v2
+
+paths:
+  /users:
+    get:
+      operationId: listUsers
+      summary: List all users
+      tags:
+        - users
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          required: true
+          schema:
+            type: integer
+            maximum: 50
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - users
+                  - meta
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/User"
+                  meta:
+                    $ref: "#/components/schemas/PaginationMeta"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+    post:
+      operationId: createUser
+      summary: Create a new user
+      tags:
+        - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserRequest"
+      responses:
+        "201":
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /users/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+    get:
+      operationId: getUser
+      summary: Get user by ID
+      tags:
+        - users
+      responses:
+        "200":
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    patch:
+      operationId: updateUser
+      summary: Update user
+      tags:
+        - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserRequest"
+      responses:
+        "200":
+          description: User updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+    delete:
+      operationId: deleteUser
+      summary: Delete user
+      tags:
+        - users
+      responses:
+        "204":
+          description: User deleted
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /users/{userId}/set-password:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+    post:
+      operationId: setUserPassword
+      summary: Set user password (new separate endpoint)
+      tags:
+        - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+              properties:
+                password:
+                  type: string
+                  minLength: 12
+      responses:
+        "200":
+          description: Password set
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - id
+        - email
+        - fullName
+        - role
+        - status
+        - organizationId
+        - createdAt
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+          format: email
+        fullName:
+          type: string
+          minLength: 1
+          maxLength: 100
+        role:
+          type: string
+          enum:
+            - user
+            - admin
+            - superadmin
+        status:
+          type: object
+          required:
+            - code
+            - label
+          properties:
+            code:
+              type: string
+              enum:
+                - ACT
+                - INA
+                - PEN
+            label:
+              type: string
+        organizationId:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    CreateUserRequest:
+      type: object
+      required:
+        - email
+        - fullName
+        - organizationId
+      properties:
+        email:
+          type: string
+          format: email
+        fullName:
+          type: string
+          minLength: 1
+          maxLength: 100
+        organizationId:
+          type: integer
+        role:
+          type: string
+          enum:
+            - user
+            - admin
+            - superadmin
+          default: user
+
+    UpdateUserRequest:
+      type: object
+      properties:
+        fullName:
+          type: string
+          minLength: 1
+          maxLength: 100
+        role:
+          type: string
+          enum:
+            - user
+            - admin
+            - superadmin
+        status:
+          type: object
+          properties:
+            code:
+              type: string
+              enum:
+                - ACT
+                - INA
+                - PEN
+
+    PaginationMeta:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+        perPage:
+          type: integer
+        totalItems:
+          type: integer
+        totalPages:
+          type: integer
+        hasMore:
+          type: boolean
+
+    Error:
+      type: object
+      required:
+        - errorCode
+        - errorMessage
+      properties:
+        errorCode:
+          type: string
+        errorMessage:
+          type: string
+        validationErrors:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+security:
+  - bearerAuth: []

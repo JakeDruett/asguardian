@@ -1,0 +1,334 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/schemas/order-v1.json",
+  "title": "Order Schema (Draft 7)",
+  "description": "JSON Schema Draft 7 for order data validation with conditional schemas",
+  "type": "object",
+  "required": ["id", "customerId", "items", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "readOnly": true
+    },
+    "orderNumber": {
+      "type": "string",
+      "pattern": "^ORD-[0-9]{8}$",
+      "readOnly": true
+    },
+    "customerId": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/orderItem"
+      },
+      "minItems": 1,
+      "maxItems": 100
+    },
+    "status": {
+      "type": "string",
+      "enum": ["pending", "confirmed", "processing", "shipped", "delivered", "cancelled", "refunded"],
+      "default": "pending"
+    },
+    "subtotal": {
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 0.01
+    },
+    "tax": {
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 0.01
+    },
+    "shippingCost": {
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 0.01
+    },
+    "discount": {
+      "type": "number",
+      "minimum": 0,
+      "multipleOf": 0.01,
+      "default": 0
+    },
+    "total": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "multipleOf": 0.01
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$",
+      "default": "USD"
+    },
+    "shippingAddress": {
+      "$ref": "#/definitions/address"
+    },
+    "billingAddress": {
+      "$ref": "#/definitions/address"
+    },
+    "shippingMethod": {
+      "type": "string",
+      "enum": ["standard", "express", "overnight", "pickup"]
+    },
+    "payment": {
+      "$ref": "#/definitions/payment"
+    },
+    "shipment": {
+      "$ref": "#/definitions/shipment"
+    },
+    "couponCode": {
+      "type": "string",
+      "pattern": "^[A-Z0-9]{4,20}$"
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "maxLength": 1000
+    },
+    "giftMessage": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "to": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "message": {
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "required": ["message"]
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    }
+  },
+  "definitions": {
+    "orderItem": {
+      "type": "object",
+      "required": ["productId", "quantity", "unitPrice"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "productId": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "productName": {
+          "type": "string"
+        },
+        "sku": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "unitPrice": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "multipleOf": 0.01
+        },
+        "totalPrice": {
+          "type": "number",
+          "minimum": 0,
+          "multipleOf": 0.01,
+          "readOnly": true
+        },
+        "discount": {
+          "type": "number",
+          "minimum": 0,
+          "default": 0
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string"},
+              "value": {"type": "string"}
+            },
+            "required": ["name", "value"]
+          }
+        }
+      }
+    },
+    "address": {
+      "type": "object",
+      "required": ["street", "city", "country", "postalCode"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "company": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "street": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "street2": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "city": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "state": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "postalCode": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "country": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2
+        },
+        "phone": {
+          "type": "string"
+        }
+      }
+    },
+    "payment": {
+      "type": "object",
+      "required": ["method", "status"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "method": {
+          "type": "string",
+          "enum": ["credit_card", "debit_card", "paypal", "bank_transfer", "crypto"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "authorized", "captured", "failed", "refunded"]
+        },
+        "transactionId": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "processedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "if": {
+        "properties": {
+          "method": {"const": "credit_card"}
+        }
+      },
+      "then": {
+        "properties": {
+          "cardLast4": {
+            "type": "string",
+            "pattern": "^[0-9]{4}$"
+          },
+          "cardBrand": {
+            "type": "string",
+            "enum": ["visa", "mastercard", "amex", "discover"]
+          }
+        }
+      }
+    },
+    "shipment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "carrier": {
+          "type": "string",
+          "enum": ["ups", "fedex", "usps", "dhl"]
+        },
+        "trackingNumber": {
+          "type": "string"
+        },
+        "trackingUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "label_created", "in_transit", "out_for_delivery", "delivered", "exception"]
+        },
+        "estimatedDelivery": {
+          "type": "string",
+          "format": "date"
+        },
+        "shippedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "deliveredAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "if": {
+    "properties": {
+      "status": {"const": "shipped"}
+    }
+  },
+  "then": {
+    "required": ["shipment"],
+    "properties": {
+      "shipment": {
+        "required": ["carrier", "trackingNumber"]
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "shippingMethod": {"const": "pickup"}
+        }
+      },
+      "then": {
+        "properties": {
+          "shippingCost": {"const": 0}
+        }
+      }
+    }
+  ]
+}

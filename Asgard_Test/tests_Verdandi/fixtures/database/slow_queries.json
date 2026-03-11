@@ -1,0 +1,186 @@
+{
+  "description": "Slow query log data for performance analysis",
+  "collection_period": {
+    "start": "2024-06-20T00:00:00Z",
+    "end": "2024-06-21T00:00:00Z"
+  },
+  "slow_query_threshold_ms": 500,
+  "total_slow_queries": 45,
+  "slow_queries": [
+    {
+      "id": "sq001",
+      "query_hash": "h1a2b3c4d5e6",
+      "query_template": "SELECT o.*, u.name, u.email FROM orders o JOIN users u ON o.user_id = u.id WHERE o.created_at BETWEEN ? AND ? ORDER BY o.total DESC",
+      "execution_count": 12,
+      "total_time_ms": 18500.5,
+      "avg_time_ms": 1541.7,
+      "max_time_ms": 2850.2,
+      "min_time_ms": 820.5,
+      "rows_examined_avg": 125000,
+      "rows_returned_avg": 500,
+      "first_seen": "2024-06-20T02:15:00Z",
+      "last_seen": "2024-06-20T22:45:00Z",
+      "tables_involved": ["orders", "users"],
+      "missing_indexes": ["orders.created_at"],
+      "query_plan": {
+        "type": "ALL",
+        "possible_keys": "idx_orders_user_id",
+        "key": null,
+        "rows": 145000,
+        "filtered": 35.0,
+        "extra": "Using where; Using filesort"
+      }
+    },
+    {
+      "id": "sq002",
+      "query_hash": "h2b3c4d5e6f7",
+      "query_template": "SELECT p.*, COUNT(r.id) as review_count, AVG(r.rating) as avg_rating FROM products p LEFT JOIN reviews r ON p.id = r.product_id WHERE p.category_id IN (?) GROUP BY p.id HAVING avg_rating > ?",
+      "execution_count": 8,
+      "total_time_ms": 12400.8,
+      "avg_time_ms": 1550.1,
+      "max_time_ms": 2200.5,
+      "min_time_ms": 950.2,
+      "rows_examined_avg": 85000,
+      "rows_returned_avg": 120,
+      "first_seen": "2024-06-20T08:30:00Z",
+      "last_seen": "2024-06-20T20:15:00Z",
+      "tables_involved": ["products", "reviews"],
+      "missing_indexes": ["reviews.product_id", "reviews.rating"],
+      "query_plan": {
+        "type": "ref",
+        "possible_keys": "idx_products_category_id",
+        "key": "idx_products_category_id",
+        "rows": 2500,
+        "filtered": 100.0,
+        "extra": "Using temporary; Using filesort"
+      }
+    },
+    {
+      "id": "sq003",
+      "query_hash": "h3c4d5e6f7a8",
+      "query_template": "SELECT * FROM audit_log WHERE entity_type = ? AND created_at > ? ORDER BY created_at DESC LIMIT ?",
+      "execution_count": 15,
+      "total_time_ms": 9800.5,
+      "avg_time_ms": 653.4,
+      "max_time_ms": 1200.8,
+      "min_time_ms": 505.2,
+      "rows_examined_avg": 450000,
+      "rows_returned_avg": 100,
+      "first_seen": "2024-06-20T00:05:00Z",
+      "last_seen": "2024-06-20T23:55:00Z",
+      "tables_involved": ["audit_log"],
+      "missing_indexes": ["audit_log(entity_type, created_at)"],
+      "query_plan": {
+        "type": "ALL",
+        "possible_keys": null,
+        "key": null,
+        "rows": 2500000,
+        "filtered": 10.0,
+        "extra": "Using where; Using filesort"
+      }
+    },
+    {
+      "id": "sq004",
+      "query_hash": "h4d5e6f7a8b9",
+      "query_template": "UPDATE products SET view_count = view_count + 1 WHERE id = ?",
+      "execution_count": 5,
+      "total_time_ms": 3500.2,
+      "avg_time_ms": 700.04,
+      "max_time_ms": 1500.5,
+      "min_time_ms": 520.1,
+      "rows_examined_avg": 1,
+      "rows_returned_avg": 0,
+      "first_seen": "2024-06-20T14:15:00Z",
+      "last_seen": "2024-06-20T14:45:00Z",
+      "tables_involved": ["products"],
+      "lock_wait_time_ms": 450.5,
+      "query_plan": {
+        "type": "const",
+        "possible_keys": "PRIMARY",
+        "key": "PRIMARY",
+        "rows": 1,
+        "filtered": 100.0,
+        "extra": "Lock wait"
+      }
+    },
+    {
+      "id": "sq005",
+      "query_hash": "h5e6f7a8b9c0",
+      "query_template": "DELETE FROM sessions WHERE last_activity < ?",
+      "execution_count": 5,
+      "total_time_ms": 4200.8,
+      "avg_time_ms": 840.16,
+      "max_time_ms": 1800.5,
+      "min_time_ms": 550.2,
+      "rows_examined_avg": 50000,
+      "rows_returned_avg": 0,
+      "first_seen": "2024-06-20T03:00:00Z",
+      "last_seen": "2024-06-20T23:00:00Z",
+      "tables_involved": ["sessions"],
+      "missing_indexes": ["sessions.last_activity"],
+      "query_plan": {
+        "type": "ALL",
+        "possible_keys": null,
+        "key": null,
+        "rows": 250000,
+        "filtered": 20.0,
+        "extra": "Using where"
+      }
+    }
+  ],
+  "summary": {
+    "by_query_type": {
+      "select": {
+        "count": 35,
+        "total_time_ms": 40701.8,
+        "avg_time_ms": 1162.9
+      },
+      "update": {
+        "count": 5,
+        "total_time_ms": 3500.2,
+        "avg_time_ms": 700.04
+      },
+      "delete": {
+        "count": 5,
+        "total_time_ms": 4200.8,
+        "avg_time_ms": 840.16
+      }
+    },
+    "by_table": {
+      "orders": {"count": 12, "total_time_ms": 18500.5},
+      "products": {"count": 13, "total_time_ms": 15900.3},
+      "audit_log": {"count": 15, "total_time_ms": 9800.5},
+      "sessions": {"count": 5, "total_time_ms": 4200.8}
+    },
+    "top_patterns": [
+      {
+        "pattern": "Full table scan",
+        "count": 25,
+        "recommendation": "Add appropriate indexes"
+      },
+      {
+        "pattern": "Filesort",
+        "count": 18,
+        "recommendation": "Add index covering ORDER BY columns"
+      },
+      {
+        "pattern": "Temporary table",
+        "count": 8,
+        "recommendation": "Optimize GROUP BY or increase tmp_table_size"
+      },
+      {
+        "pattern": "Lock wait",
+        "count": 5,
+        "recommendation": "Review concurrent write patterns"
+      }
+    ]
+  },
+  "expected_recommendations": [
+    "Add composite index on orders(created_at, total) for date range queries",
+    "Add index on reviews(product_id, rating) for aggregation queries",
+    "Add composite index on audit_log(entity_type, created_at) - most impactful",
+    "Consider partitioning audit_log table by date",
+    "Add index on sessions.last_activity for cleanup queries",
+    "Review lock contention on products table during peak hours"
+  ]
+}

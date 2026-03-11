@@ -1,0 +1,205 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "https://example.com/schemas/user-v1.json",
+  "title": "User Schema (Draft 4)",
+  "description": "JSON Schema Draft 4 for user data validation",
+  "type": "object",
+  "required": ["id", "email", "name", "role"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+      "description": "UUID v4 identifier"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "maxLength": 255,
+      "description": "User email address"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "User full name"
+    },
+    "username": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_]{3,30}$",
+      "description": "Unique username"
+    },
+    "role": {
+      "type": "string",
+      "enum": ["user", "admin", "moderator", "guest"],
+      "default": "user",
+      "description": "User role"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "inactive", "pending", "suspended"],
+      "default": "pending",
+      "description": "Account status"
+    },
+    "age": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 150,
+      "description": "User age in years"
+    },
+    "profile": {
+      "type": "object",
+      "properties": {
+        "bio": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "avatarUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "location": {
+          "type": "object",
+          "properties": {
+            "city": {
+              "type": "string"
+            },
+            "country": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 2
+            },
+            "timezone": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "socialLinks": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "preferences": {
+      "type": "object",
+      "properties": {
+        "theme": {
+          "type": "string",
+          "enum": ["light", "dark", "system"],
+          "default": "system"
+        },
+        "language": {
+          "type": "string",
+          "pattern": "^[a-z]{2}(-[A-Z]{2})?$"
+        },
+        "notifications": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "boolean",
+              "default": true
+            },
+            "push": {
+              "type": "boolean",
+              "default": true
+            },
+            "sms": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 50
+      },
+      "uniqueItems": true,
+      "maxItems": 10,
+      "description": "User tags for categorization"
+    },
+    "addresses": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/address"
+      },
+      "maxItems": 5
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Additional custom metadata"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Account creation timestamp"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    }
+  },
+  "definitions": {
+    "address": {
+      "type": "object",
+      "required": ["street", "city", "country", "postalCode"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["home", "work", "billing", "shipping"]
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "street": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "street2": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "city": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "state": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "postalCode": {
+          "type": "string",
+          "maxLength": 20
+        },
+        "country": {
+          "type": "string",
+          "minLength": 2,
+          "maxLength": 2,
+          "description": "ISO 3166-1 alpha-2 country code"
+        },
+        "phone": {
+          "type": "string",
+          "pattern": "^\\+?[0-9\\s\\-\\(\\)]+$"
+        },
+        "isDefault": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,271 @@
+{
+  "description": "Resource Timing API data for page resource analysis",
+  "collected_at": "2024-06-20T14:30:00Z",
+  "page_url": "https://example.com/product/12345",
+  "resources": [
+    {
+      "name": "https://example.com/css/main.css",
+      "initiator_type": "link",
+      "start_time_ms": 150.2,
+      "duration_ms": 85.4,
+      "transfer_size_bytes": 28540,
+      "encoded_body_size_bytes": 28120,
+      "decoded_body_size_bytes": 142350,
+      "dns_lookup_ms": 0,
+      "tcp_connection_ms": 0,
+      "ttfb_ms": 42.3,
+      "is_render_blocking": true,
+      "cache_status": "miss"
+    },
+    {
+      "name": "https://example.com/js/bundle.js",
+      "initiator_type": "script",
+      "start_time_ms": 160.5,
+      "duration_ms": 245.8,
+      "transfer_size_bytes": 185420,
+      "encoded_body_size_bytes": 184950,
+      "decoded_body_size_bytes": 892450,
+      "dns_lookup_ms": 0,
+      "tcp_connection_ms": 0,
+      "ttfb_ms": 68.2,
+      "is_render_blocking": true,
+      "cache_status": "miss"
+    },
+    {
+      "name": "https://cdn.example.com/images/hero.webp",
+      "initiator_type": "img",
+      "start_time_ms": 425.3,
+      "duration_ms": 320.5,
+      "transfer_size_bytes": 245800,
+      "encoded_body_size_bytes": 245800,
+      "decoded_body_size_bytes": 245800,
+      "dns_lookup_ms": 15.2,
+      "tcp_connection_ms": 45.8,
+      "ttfb_ms": 125.4,
+      "is_render_blocking": false,
+      "cache_status": "miss"
+    },
+    {
+      "name": "https://fonts.googleapis.com/css2?family=Roboto",
+      "initiator_type": "link",
+      "start_time_ms": 165.8,
+      "duration_ms": 92.3,
+      "transfer_size_bytes": 1250,
+      "encoded_body_size_bytes": 1180,
+      "decoded_body_size_bytes": 3420,
+      "dns_lookup_ms": 12.5,
+      "tcp_connection_ms": 28.3,
+      "ttfb_ms": 35.6,
+      "is_render_blocking": true,
+      "cache_status": "hit"
+    },
+    {
+      "name": "https://fonts.gstatic.com/s/roboto/v30/regular.woff2",
+      "initiator_type": "css",
+      "start_time_ms": 280.2,
+      "duration_ms": 68.9,
+      "transfer_size_bytes": 15840,
+      "encoded_body_size_bytes": 15840,
+      "decoded_body_size_bytes": 15840,
+      "dns_lookup_ms": 0,
+      "tcp_connection_ms": 0,
+      "ttfb_ms": 28.4,
+      "is_render_blocking": false,
+      "cache_status": "hit"
+    },
+    {
+      "name": "https://example.com/api/product/12345",
+      "initiator_type": "fetch",
+      "start_time_ms": 450.8,
+      "duration_ms": 185.2,
+      "transfer_size_bytes": 4580,
+      "encoded_body_size_bytes": 4250,
+      "decoded_body_size_bytes": 18920,
+      "dns_lookup_ms": 0,
+      "tcp_connection_ms": 0,
+      "ttfb_ms": 162.5,
+      "is_render_blocking": false,
+      "cache_status": "no-cache"
+    },
+    {
+      "name": "https://analytics.example.com/collect",
+      "initiator_type": "beacon",
+      "start_time_ms": 1850.2,
+      "duration_ms": 45.8,
+      "transfer_size_bytes": 0,
+      "encoded_body_size_bytes": 0,
+      "decoded_body_size_bytes": 0,
+      "dns_lookup_ms": 8.5,
+      "tcp_connection_ms": 18.2,
+      "ttfb_ms": 15.4,
+      "is_render_blocking": false,
+      "cache_status": "no-store"
+    },
+    {
+      "name": "https://example.com/images/product-1.webp",
+      "initiator_type": "img",
+      "start_time_ms": 680.5,
+      "duration_ms": 125.8,
+      "transfer_size_bytes": 45200,
+      "encoded_body_size_bytes": 45200,
+      "decoded_body_size_bytes": 45200,
+      "dns_lookup_ms": 0,
+      "tcp_connection_ms": 0,
+      "ttfb_ms": 48.2,
+      "is_render_blocking": false,
+      "cache_status": "miss"
+    },
+    {
+      "name": "https://example.com/images/product-2.webp",
+      "initiator_type": "img",
+      "start_time_ms": 720.3,
+      "duration_ms": 118.5,
+      "transfer_size_bytes": 42800,
+      "encoded_body_size_bytes": 42800,
+      "decoded_body_size_bytes": 42800,
+      "dns_lookup_ms": 0,
+      "tcp_connection_ms": 0,
+      "ttfb_ms": 45.1,
+      "is_render_blocking": false,
+      "cache_status": "miss"
+    },
+    {
+      "name": "https://example.com/images/product-3.webp",
+      "initiator_type": "img",
+      "start_time_ms": 760.8,
+      "duration_ms": 112.4,
+      "transfer_size_bytes": 38500,
+      "encoded_body_size_bytes": 38500,
+      "decoded_body_size_bytes": 38500,
+      "dns_lookup_ms": 0,
+      "tcp_connection_ms": 0,
+      "ttfb_ms": 42.8,
+      "is_render_blocking": false,
+      "cache_status": "miss"
+    }
+  ],
+  "summary": {
+    "total_resources": 10,
+    "total_transfer_bytes": 607930,
+    "total_duration_ms": 1400.6,
+    "blocking_resources_count": 3,
+    "blocking_resources_time_ms": 423.5
+  },
+  "by_type": {
+    "script": {
+      "count": 1,
+      "total_bytes": 185420,
+      "total_duration_ms": 245.8,
+      "avg_duration_ms": 245.8
+    },
+    "css": {
+      "count": 1,
+      "total_bytes": 28540,
+      "total_duration_ms": 85.4,
+      "avg_duration_ms": 85.4
+    },
+    "link": {
+      "count": 1,
+      "total_bytes": 1250,
+      "total_duration_ms": 92.3,
+      "avg_duration_ms": 92.3
+    },
+    "img": {
+      "count": 4,
+      "total_bytes": 372300,
+      "total_duration_ms": 677.2,
+      "avg_duration_ms": 169.3
+    },
+    "fetch": {
+      "count": 1,
+      "total_bytes": 4580,
+      "total_duration_ms": 185.2,
+      "avg_duration_ms": 185.2
+    },
+    "font": {
+      "count": 1,
+      "total_bytes": 15840,
+      "total_duration_ms": 68.9,
+      "avg_duration_ms": 68.9
+    },
+    "beacon": {
+      "count": 1,
+      "total_bytes": 0,
+      "total_duration_ms": 45.8,
+      "avg_duration_ms": 45.8
+    }
+  },
+  "largest_resources": [
+    {
+      "name": "hero.webp",
+      "size_bytes": 245800,
+      "duration_ms": 320.5
+    },
+    {
+      "name": "bundle.js",
+      "size_bytes": 185420,
+      "duration_ms": 245.8
+    },
+    {
+      "name": "product-1.webp",
+      "size_bytes": 45200,
+      "duration_ms": 125.8
+    },
+    {
+      "name": "product-2.webp",
+      "size_bytes": 42800,
+      "duration_ms": 118.5
+    },
+    {
+      "name": "product-3.webp",
+      "size_bytes": 38500,
+      "duration_ms": 112.4
+    }
+  ],
+  "slowest_resources": [
+    {
+      "name": "hero.webp",
+      "size_bytes": 245800,
+      "duration_ms": 320.5
+    },
+    {
+      "name": "bundle.js",
+      "size_bytes": 185420,
+      "duration_ms": 245.8
+    },
+    {
+      "name": "api/product/12345",
+      "size_bytes": 4580,
+      "duration_ms": 185.2
+    },
+    {
+      "name": "product-1.webp",
+      "size_bytes": 45200,
+      "duration_ms": 125.8
+    },
+    {
+      "name": "product-2.webp",
+      "size_bytes": 42800,
+      "duration_ms": 118.5
+    }
+  ],
+  "blocking_resources": [
+    "main.css",
+    "bundle.js",
+    "fonts.googleapis.com/css2"
+  ],
+  "cache_analysis": {
+    "hits": 2,
+    "misses": 6,
+    "no_cache": 1,
+    "no_store": 1,
+    "hit_rate": 0.2
+  },
+  "expected_recommendations": [
+    "Defer or async load bundle.js (185KB blocking resource)",
+    "Preload hero.webp as it is the LCP element",
+    "Consider inlining critical CSS from main.css",
+    "Enable caching for product images",
+    "Lazy load below-the-fold images (product-2, product-3)"
+  ]
+}

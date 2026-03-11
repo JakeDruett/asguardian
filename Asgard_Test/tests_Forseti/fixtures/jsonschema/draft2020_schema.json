@@ -1,0 +1,543 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/product-catalog.json",
+  "title": "Product Catalog Schema (Draft 2020-12)",
+  "description": "JSON Schema 2020-12 with advanced features",
+  "type": "object",
+  "required": ["products"],
+  "$defs": {
+    "uuid": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "money": {
+      "type": "object",
+      "required": ["amount", "currency"],
+      "properties": {
+        "amount": {
+          "type": "number",
+          "multipleOf": 0.01
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "dateRange": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "dependentRequired": {
+        "end": ["start"]
+      }
+    },
+    "localizedString": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z]{2}(-[A-Z]{2})?$"
+      },
+      "additionalProperties": {
+        "type": "string"
+      },
+      "minProperties": 1
+    },
+    "dimension": {
+      "type": "object",
+      "required": ["value", "unit"],
+      "properties": {
+        "value": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit": {
+          "type": "string",
+          "enum": ["mm", "cm", "m", "in", "ft"]
+        }
+      }
+    },
+    "weight": {
+      "type": "object",
+      "required": ["value", "unit"],
+      "properties": {
+        "value": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "unit": {
+          "type": "string",
+          "enum": ["g", "kg", "oz", "lb"]
+        }
+      }
+    },
+    "productImage": {
+      "type": "object",
+      "required": ["url"],
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "altText": {
+          "$ref": "#/$defs/localizedString"
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "isPrimary": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "productVariant": {
+      "type": "object",
+      "required": ["sku", "price"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "sku": {
+          "type": "string",
+          "pattern": "^[A-Z0-9-]{5,20}$"
+        },
+        "name": {
+          "$ref": "#/$defs/localizedString"
+        },
+        "price": {
+          "$ref": "#/$defs/money"
+        },
+        "compareAtPrice": {
+          "$ref": "#/$defs/money"
+        },
+        "attributes": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-z_]+$": {
+              "type": "string"
+            }
+          }
+        },
+        "inventory": {
+          "type": "object",
+          "properties": {
+            "quantity": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "reserved": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "available": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/productImage"
+          },
+          "maxItems": 10
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "productBase": {
+      "type": "object",
+      "required": ["id", "name", "status"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "name": {
+          "$ref": "#/$defs/localizedString"
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "description": {
+          "$ref": "#/$defs/localizedString"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["draft", "active", "discontinued", "archived"]
+        },
+        "visibility": {
+          "type": "string",
+          "enum": ["public", "private", "hidden"],
+          "default": "public"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "uniqueItems": true,
+          "maxItems": 20
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "physicalProduct": {
+      "$ref": "#/$defs/productBase",
+      "unevaluatedProperties": false,
+      "properties": {
+        "type": {
+          "const": "physical"
+        },
+        "weight": {
+          "$ref": "#/$defs/weight"
+        },
+        "dimensions": {
+          "type": "object",
+          "properties": {
+            "length": {
+              "$ref": "#/$defs/dimension"
+            },
+            "width": {
+              "$ref": "#/$defs/dimension"
+            },
+            "height": {
+              "$ref": "#/$defs/dimension"
+            }
+          }
+        },
+        "shippingClass": {
+          "type": "string",
+          "enum": ["standard", "oversized", "fragile", "hazardous"]
+        },
+        "variants": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/productVariant"
+          },
+          "minItems": 1
+        }
+      },
+      "required": ["type", "variants"]
+    },
+    "digitalProduct": {
+      "$ref": "#/$defs/productBase",
+      "unevaluatedProperties": false,
+      "properties": {
+        "type": {
+          "const": "digital"
+        },
+        "downloadUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "fileSize": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "File size in bytes"
+        },
+        "fileFormat": {
+          "type": "string"
+        },
+        "downloadLimit": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        },
+        "expirationDays": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        },
+        "price": {
+          "$ref": "#/$defs/money"
+        },
+        "licenseType": {
+          "type": "string",
+          "enum": ["personal", "commercial", "extended"]
+        }
+      },
+      "required": ["type", "price"],
+      "dependentSchemas": {
+        "downloadUrl": {
+          "required": ["fileSize", "fileFormat"]
+        }
+      }
+    },
+    "subscriptionProduct": {
+      "$ref": "#/$defs/productBase",
+      "unevaluatedProperties": false,
+      "properties": {
+        "type": {
+          "const": "subscription"
+        },
+        "billingInterval": {
+          "type": "string",
+          "enum": ["daily", "weekly", "monthly", "quarterly", "yearly"]
+        },
+        "billingIntervalCount": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 1
+        },
+        "trialPeriodDays": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "price": {
+          "$ref": "#/$defs/money"
+        },
+        "setupFee": {
+          "$ref": "#/$defs/money"
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name"],
+            "properties": {
+              "name": {
+                "$ref": "#/$defs/localizedString"
+              },
+              "included": {
+                "type": "boolean"
+              },
+              "limit": {
+                "type": ["integer", "null"]
+              }
+            }
+          }
+        }
+      },
+      "required": ["type", "price", "billingInterval"]
+    },
+    "bundleProduct": {
+      "$ref": "#/$defs/productBase",
+      "unevaluatedProperties": false,
+      "properties": {
+        "type": {
+          "const": "bundle"
+        },
+        "bundleItems": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["productId", "quantity"],
+            "properties": {
+              "productId": {
+                "$ref": "#/$defs/uuid"
+              },
+              "quantity": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "priceAdjustment": {
+                "$ref": "#/$defs/money"
+              }
+            }
+          },
+          "minItems": 2
+        },
+        "bundlePrice": {
+          "$ref": "#/$defs/money"
+        },
+        "discountType": {
+          "type": "string",
+          "enum": ["fixed", "percentage"]
+        },
+        "discountValue": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": ["type", "bundleItems", "bundlePrice"]
+    },
+    "product": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/physicalProduct"
+        },
+        {
+          "$ref": "#/$defs/digitalProduct"
+        },
+        {
+          "$ref": "#/$defs/subscriptionProduct"
+        },
+        {
+          "$ref": "#/$defs/bundleProduct"
+        }
+      ]
+    },
+    "category": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "name": {
+          "$ref": "#/$defs/localizedString"
+        },
+        "slug": {
+          "type": "string",
+          "pattern": "^[a-z0-9-]+$"
+        },
+        "description": {
+          "$ref": "#/$defs/localizedString"
+        },
+        "parentId": {
+          "oneOf": [
+            {"$ref": "#/$defs/uuid"},
+            {"type": "null"}
+          ]
+        },
+        "image": {
+          "$ref": "#/$defs/productImage"
+        },
+        "sortOrder": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "isActive": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "unevaluatedProperties": false
+    },
+    "promotion": {
+      "type": "object",
+      "required": ["id", "name", "type", "value", "validity"],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "name": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string",
+          "pattern": "^[A-Z0-9]{4,20}$"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["percentage", "fixed_amount", "buy_x_get_y", "free_shipping"]
+        },
+        "value": {
+          "type": "number",
+          "minimum": 0
+        },
+        "validity": {
+          "$ref": "#/$defs/dateRange"
+        },
+        "usageLimit": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        },
+        "usageCount": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "minimumPurchase": {
+          "$ref": "#/$defs/money"
+        },
+        "applicableProducts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/uuid"
+          }
+        },
+        "applicableCategories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/uuid"
+          }
+        },
+        "isActive": {
+          "type": "boolean",
+          "default": true
+        }
+      },
+      "unevaluatedProperties": false,
+      "if": {
+        "properties": {
+          "type": {"const": "percentage"}
+        }
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "maximum": 100
+          }
+        }
+      }
+    }
+  },
+  "properties": {
+    "catalog": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uuid"
+        },
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "lastUpdated": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "products": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/product"
+      },
+      "minItems": 0
+    },
+    "categories": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/category"
+      }
+    },
+    "promotions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/promotion"
+      }
+    }
+  },
+  "unevaluatedProperties": false
+}

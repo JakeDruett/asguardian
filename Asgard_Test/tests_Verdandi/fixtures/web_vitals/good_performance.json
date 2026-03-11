@@ -1,0 +1,121 @@
+{
+  "description": "Core Web Vitals data representing excellent performance - all metrics in 'good' range",
+  "collected_at": "2024-06-20T14:30:00Z",
+  "page_url": "https://example.com/fast-page",
+  "device_type": "desktop",
+  "connection_type": "4g",
+  "metrics": {
+    "lcp_ms": 1200,
+    "fid_ms": 45,
+    "cls": 0.02,
+    "inp_ms": 120,
+    "ttfb_ms": 180,
+    "fcp_ms": 850
+  },
+  "thresholds": {
+    "lcp": {
+      "good": 2500,
+      "poor": 4000
+    },
+    "fid": {
+      "good": 100,
+      "poor": 300
+    },
+    "cls": {
+      "good": 0.1,
+      "poor": 0.25
+    },
+    "inp": {
+      "good": 200,
+      "poor": 500
+    },
+    "ttfb": {
+      "good": 800,
+      "poor": 1800
+    },
+    "fcp": {
+      "good": 1800,
+      "poor": 3000
+    }
+  },
+  "expected_ratings": {
+    "lcp_rating": "good",
+    "fid_rating": "good",
+    "cls_rating": "good",
+    "inp_rating": "good",
+    "ttfb_rating": "good",
+    "fcp_rating": "good",
+    "overall_rating": "good"
+  },
+  "expected_score": 95,
+  "samples": [
+    {
+      "timestamp": "2024-06-20T14:00:00Z",
+      "lcp_ms": 1150,
+      "fid_ms": 42,
+      "cls": 0.018,
+      "inp_ms": 115,
+      "ttfb_ms": 175,
+      "fcp_ms": 820
+    },
+    {
+      "timestamp": "2024-06-20T14:05:00Z",
+      "lcp_ms": 1280,
+      "fid_ms": 48,
+      "cls": 0.022,
+      "inp_ms": 128,
+      "ttfb_ms": 185,
+      "fcp_ms": 880
+    },
+    {
+      "timestamp": "2024-06-20T14:10:00Z",
+      "lcp_ms": 1180,
+      "fid_ms": 44,
+      "cls": 0.019,
+      "inp_ms": 118,
+      "ttfb_ms": 178,
+      "fcp_ms": 845
+    },
+    {
+      "timestamp": "2024-06-20T14:15:00Z",
+      "lcp_ms": 1220,
+      "fid_ms": 46,
+      "cls": 0.021,
+      "inp_ms": 122,
+      "ttfb_ms": 182,
+      "fcp_ms": 855
+    },
+    {
+      "timestamp": "2024-06-20T14:20:00Z",
+      "lcp_ms": 1195,
+      "fid_ms": 43,
+      "cls": 0.020,
+      "inp_ms": 119,
+      "ttfb_ms": 180,
+      "fcp_ms": 850
+    }
+  ],
+  "percentiles": {
+    "lcp": {
+      "p50": 1195,
+      "p75": 1220,
+      "p90": 1260,
+      "p95": 1275,
+      "p99": 1280
+    },
+    "fid": {
+      "p50": 44,
+      "p75": 46,
+      "p90": 47,
+      "p95": 48,
+      "p99": 48
+    },
+    "cls": {
+      "p50": 0.020,
+      "p75": 0.021,
+      "p90": 0.022,
+      "p95": 0.022,
+      "p99": 0.022
+    }
+  }
+}

@@ -1,0 +1,137 @@
+{
+  "description": "Connection pool metrics for database health monitoring",
+  "collection_period": {
+    "start": "2024-06-20T14:00:00Z",
+    "end": "2024-06-20T15:00:00Z",
+    "interval_seconds": 60
+  },
+  "pool_config": {
+    "min_connections": 10,
+    "max_connections": 100,
+    "connection_timeout_ms": 5000,
+    "idle_timeout_ms": 300000,
+    "max_lifetime_ms": 1800000
+  },
+  "current_state": {
+    "pool_size": 100,
+    "active_connections": 75,
+    "idle_connections": 25,
+    "waiting_requests": 12,
+    "utilization_percent": 75.0
+  },
+  "time_series": [
+    {
+      "timestamp": "2024-06-20T14:00:00Z",
+      "active": 45,
+      "idle": 15,
+      "waiting": 0,
+      "utilization": 75.0
+    },
+    {
+      "timestamp": "2024-06-20T14:05:00Z",
+      "active": 52,
+      "idle": 8,
+      "waiting": 0,
+      "utilization": 86.7
+    },
+    {
+      "timestamp": "2024-06-20T14:10:00Z",
+      "active": 58,
+      "idle": 2,
+      "waiting": 3,
+      "utilization": 96.7
+    },
+    {
+      "timestamp": "2024-06-20T14:15:00Z",
+      "active": 60,
+      "idle": 0,
+      "waiting": 8,
+      "utilization": 100.0
+    },
+    {
+      "timestamp": "2024-06-20T14:20:00Z",
+      "active": 60,
+      "idle": 0,
+      "waiting": 15,
+      "utilization": 100.0
+    },
+    {
+      "timestamp": "2024-06-20T14:25:00Z",
+      "active": 55,
+      "idle": 5,
+      "waiting": 2,
+      "utilization": 91.7
+    },
+    {
+      "timestamp": "2024-06-20T14:30:00Z",
+      "active": 48,
+      "idle": 12,
+      "waiting": 0,
+      "utilization": 80.0
+    },
+    {
+      "timestamp": "2024-06-20T14:35:00Z",
+      "active": 42,
+      "idle": 18,
+      "waiting": 0,
+      "utilization": 70.0
+    },
+    {
+      "timestamp": "2024-06-20T14:40:00Z",
+      "active": 65,
+      "idle": 0,
+      "waiting": 5,
+      "utilization": 100.0
+    },
+    {
+      "timestamp": "2024-06-20T14:45:00Z",
+      "active": 72,
+      "idle": 0,
+      "waiting": 18,
+      "utilization": 100.0
+    },
+    {
+      "timestamp": "2024-06-20T14:50:00Z",
+      "active": 68,
+      "idle": 4,
+      "waiting": 8,
+      "utilization": 94.4
+    },
+    {
+      "timestamp": "2024-06-20T14:55:00Z",
+      "active": 55,
+      "idle": 17,
+      "waiting": 0,
+      "utilization": 76.4
+    }
+  ],
+  "wait_time_metrics": {
+    "average_wait_time_ms": 125.5,
+    "max_wait_time_ms": 4850.2,
+    "p50_wait_time_ms": 45.2,
+    "p95_wait_time_ms": 850.8,
+    "p99_wait_time_ms": 2500.5
+  },
+  "connection_events": {
+    "connections_created": 45,
+    "connections_closed": 38,
+    "connections_timed_out": 5,
+    "connections_errors": 2,
+    "max_lifetime_exceeded": 12
+  },
+  "health_indicators": {
+    "saturation_events": 4,
+    "saturation_duration_seconds": 720,
+    "connection_errors_rate": 0.02,
+    "timeout_rate": 0.05,
+    "avg_connection_age_seconds": 542.5
+  },
+  "expected_status": "warning",
+  "expected_health_score": 65.0,
+  "expected_recommendations": [
+    "Pool saturation detected - consider increasing max_connections from 100 to 150",
+    "Connection wait times exceeding 1 second - add more connections or optimize queries",
+    "5 connection timeouts in the last hour - investigate network issues",
+    "Peak utilization at 100% for 15 minutes - pool size insufficient for load"
+  ]
+}

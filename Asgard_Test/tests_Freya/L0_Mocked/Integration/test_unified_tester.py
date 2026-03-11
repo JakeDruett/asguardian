@@ -1,0 +1,776 @@
+"""
+Freya Unified Tester Tests
+
+Comprehensive L0 unit tests for UnifiedTester service.
+"""
+
+import pytest
+from pathlib import Path
+from unittest.mock import AsyncMock, MagicMock, Mock, patch
+
+from Asgard.Freya.Integration.models.integration_models import (
+    TestCategory,
+    TestSeverity,
+    UnifiedTestConfig,
+    UnifiedTestResult,
+    UnifiedTestReport,
+)
+from Asgard.Freya.Integration.services.unified_tester import UnifiedTester
+
+
+@pytest.fixture
+def mock_unified_config():
+    """Create a mock UnifiedTestConfig."""
+    return UnifiedTestConfig(
+        url="https://example.com",
+        categories=[TestCategory.ALL],
+        min_severity=TestSeverity.MINOR,
+        capture_screenshots=True,
+        output_directory="/tmp/test_output"
+    )
+
+
+@pytest.fixture
+def mock_wcag_report():
+    """Create a mock WCAG validation report."""
+    violation = Mock()
+    violation.severity = "serious"
+    violation.description = "Missing alt text"
+    violation.element_selector = "img.logo"
+    violation.suggested_fix = "Add alt attribute"
+    violation.wcag_criterion = "1.1.1"
+    violation.rule_id = "image-alt"
+
+    report = Mock()
+    report.violations = [violation]
+    return report
+
+
+@pytest.fixture
+def mock_contrast_report():
+    """Create a mock color contrast report."""
+    issue = Mock()
+    issue.severity = "moderate"
+    issue.description = "Insufficient contrast"
+    issue.element_selector = ".text"
+    issue.suggested_fix = "Increase contrast ratio"
+    issue.wcag_criterion = "1.4.3"
+    issue.foreground_color = "#777777"
+    issue.background_color = "#FFFFFF"
+    issue.contrast_ratio = 3.5
+
+    report = Mock()
+    report.issues = [issue]
+    return report
+
+
+@pytest.fixture
+def mock_keyboard_report():
+    """Create a mock keyboard navigation report."""
+    issue = Mock()
+    issue.severity = "critical"
+    issue.description = "No keyboard focus visible"
+    issue.element_selector = ".button"
+    issue.suggested_fix = "Add focus indicator"
+    issue.wcag_reference = "2.4.7"
+
+    report = Mock()
+    report.issues = [issue]
+    return report
+
+
+@pytest.fixture
+def mock_aria_report():
+    """Create a mock ARIA validation report."""
+    violation = Mock()
+    violation.severity = "serious"
+    violation.description = "Invalid ARIA attribute"
+    violation.element_selector = "div[role='button']"
+    violation.suggested_fix = "Use valid ARIA role"
+
+    report = Mock()
+    report.violations = [violation]
+    return report
+
+
+@pytest.fixture
+def mock_layout_report():
+    """Create a mock layout validation report."""
+    issue = Mock()
+    issue.severity = "moderate"
+    issue.description = "Layout overflow"
+    issue.element_selector = ".container"
+    issue.suggested_fix = "Add overflow handling"
+
+    report = Mock()
+    report.issues = [issue]
+    return report
+
+
+@pytest.fixture
+def mock_style_report():
+    """Create a mock style validation report."""
+    issue = Mock()
+    issue.severity = "minor"
+    issue.description = "Inconsistent font size"
+    issue.element_selector = "p"
+    issue.suggested_fix = "Use consistent typography"
+
+    report = Mock()
+    report.issues = [issue]
+    return report
+
+
+@pytest.fixture
+def mock_breakpoint_report():
+    """Create a mock breakpoint testing report."""
+    issue = Mock()
+    issue.severity = "serious"
+    issue.description = "Layout breaks at 768px"
+    issue.element_selector = ".grid"
+    issue.suggested_fix = "Add responsive grid"
+
+    breakpoint = Mock()
+    breakpoint.name = "tablet"
+
+    result = Mock()
+    result.breakpoint = breakpoint
+    result.issues = [issue]
+
+    report = Mock()
+    report.results = [result]
+    report.screenshots = {"tablet": "/tmp/tablet.png"}
+    report.total_issues = 1
+    return report
+
+
+@pytest.fixture
+def mock_touch_target_report():
+    """Create a mock touch target validation report."""
+    issue = Mock()
+    issue.severity = "moderate"
+    issue.description = "Touch target too small"
+    issue.element_selector = ".small-button"
+    issue.suggested_fix = "Increase button size"
+    issue.width = 30
+    issue.height = 30
+
+    report = Mock()
+    report.issues = [issue]
+    return report
+
+
+@pytest.fixture
+def mock_viewport_report():
+    """Create a mock viewport testing report."""
+    issue = Mock()
+    issue.severity = "serious"
+    issue.description = "Missing viewport meta tag"
+    issue.suggested_fix = "Add viewport meta tag"
+    issue.wcag_reference = "1.4.10"
+
+    report = Mock()
+    report.issues = [issue]
+    return report
+
+
+@pytest.fixture
+def mock_mobile_compat_report():
+    """Create a mock mobile compatibility report."""
+    issue = Mock()
+    issue.severity = "moderate"
+    issue.description = "Horizontal scroll on mobile"
+    issue.element_selector = ".wide-content"
+    issue.suggested_fix = "Use responsive width"
+    issue.affected_devices = ["iphone-14", "pixel-7"]
+
+    report = Mock()
+    report.issues = [issue]
+    return report
+
+
+class TestUnifiedTesterInit:
+    """Tests for UnifiedTester initialization."""
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    def test_init_without_config(self, mock_path_class):
+        """Test UnifiedTester initialization without config."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        tester = UnifiedTester()
+
+        assert isinstance(tester.config, UnifiedTestConfig)
+        mock_path_instance.mkdir.assert_called_once_with(parents=True, exist_ok=True)
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    def test_init_with_config(self, mock_path_class, mock_unified_config):
+        """Test UnifiedTester initialization with config."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        tester = UnifiedTester(config=mock_unified_config)
+
+        assert tester.config == mock_unified_config
+        assert str(tester.output_dir) == "/tmp/test_output"
+
+
+class TestUnifiedTesterTest:
+    """Tests for test method."""
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    @patch('Asgard.Freya.Integration.services.unified_tester.WCAGValidator')
+    @patch('Asgard.Freya.Integration.services.unified_tester.ColorContrastChecker')
+    @patch('Asgard.Freya.Integration.services.unified_tester.KeyboardNavigationTester')
+    @patch('Asgard.Freya.Integration.services.unified_tester.ARIAValidator')
+    @patch('Asgard.Freya.Integration.services.unified_tester.LayoutValidator')
+    @patch('Asgard.Freya.Integration.services.unified_tester.StyleValidator')
+    @patch('Asgard.Freya.Integration.services.unified_tester.BreakpointTester')
+    @patch('Asgard.Freya.Integration.services.unified_tester.TouchTargetValidator')
+    @patch('Asgard.Freya.Integration.services.unified_tester.ViewportTester')
+    @patch('Asgard.Freya.Integration.services.unified_tester.MobileCompatibilityTester')
+    def test_test_all_categories(
+        self, mock_mobile_class, mock_viewport_class, mock_touch_class,
+        mock_breakpoint_class, mock_style_class, mock_layout_class,
+        mock_aria_class, mock_keyboard_class, mock_contrast_class, mock_wcag_class,
+        mock_path_class
+    ):
+        """Test running tests with all categories."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        # Mock all validators to return empty reports
+        for mock_class in [mock_wcag_class, mock_aria_class]:
+            mock_instance = AsyncMock()
+            mock_instance.validate = AsyncMock(return_value=Mock(violations=[]))
+            mock_class.return_value = mock_instance
+
+        for mock_class in [mock_contrast_class, mock_keyboard_class, mock_layout_class,
+                           mock_style_class, mock_touch_class, mock_viewport_class,
+                           mock_mobile_class]:
+            mock_instance = AsyncMock()
+            mock_instance.validate = AsyncMock(return_value=Mock(issues=[]))
+            mock_instance.check = AsyncMock(return_value=Mock(issues=[]))
+            mock_instance.test = AsyncMock(return_value=Mock(issues=[]))
+            mock_class.return_value = mock_instance
+
+        mock_bp_instance = AsyncMock()
+        mock_bp_instance.test = AsyncMock(return_value=Mock(
+            results=[],
+            screenshots={},
+            total_issues=0
+        ))
+        mock_breakpoint_class.return_value = mock_bp_instance
+
+        tester = UnifiedTester()
+
+        import asyncio
+        report = asyncio.run(tester.test("https://example.com"))
+
+        assert isinstance(report, UnifiedTestReport)
+        assert report.url == "https://example.com"
+        assert report.total_tests >= 0
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    def test_test_specific_category(self, mock_path_class):
+        """Test running tests for specific category."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        tester = UnifiedTester()
+        tester._run_accessibility_tests = AsyncMock(return_value=[])
+        tester._run_visual_tests = AsyncMock(return_value=([], {}))
+        tester._run_responsive_tests = AsyncMock(return_value=([], {}))
+
+        import asyncio
+        report = asyncio.run(tester.test(
+            "https://example.com",
+            categories=[TestCategory.ACCESSIBILITY]
+        ))
+
+        tester._run_accessibility_tests.assert_called_once()
+        tester._run_visual_tests.assert_not_called()
+        tester._run_responsive_tests.assert_not_called()
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    def test_test_calculates_scores(self, mock_path_class):
+        """Test that scores are calculated correctly."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        passing_result = UnifiedTestResult(
+            category=TestCategory.ACCESSIBILITY,
+            test_name="Test",
+            passed=True,
+            message="Passed"
+        )
+
+        tester = UnifiedTester()
+        tester._run_accessibility_tests = AsyncMock(return_value=[passing_result])
+        tester._run_visual_tests = AsyncMock(return_value=([], {}))
+        tester._run_responsive_tests = AsyncMock(return_value=([], {}))
+
+        import asyncio
+        report = asyncio.run(tester.test("https://example.com"))
+
+        assert report.accessibility_score > 0
+        assert report.overall_score > 0
+
+
+class TestUnifiedTesterRunAccessibilityTests:
+    """Tests for _run_accessibility_tests method."""
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    @patch('Asgard.Freya.Integration.services.unified_tester.WCAGValidator')
+    def test_run_accessibility_wcag_success(
+        self, mock_wcag_class, mock_path_class
+    ):
+        """Test running WCAG validation with no violations."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        mock_wcag_instance = AsyncMock()
+        mock_wcag_instance.validate = AsyncMock(return_value=Mock(violations=[]))
+        mock_wcag_class.return_value = mock_wcag_instance
+
+        tester = UnifiedTester()
+
+        # Mock other services
+        tester._run_contrast_test = AsyncMock(return_value=[])
+        tester._run_keyboard_test = AsyncMock(return_value=[])
+        tester._run_aria_test = AsyncMock(return_value=[])
+
+        import asyncio
+        results = asyncio.run(tester._run_accessibility_tests("https://example.com"))
+
+        assert any(r.test_name == "WCAG Validation" and r.passed for r in results)
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    @patch('Asgard.Freya.Integration.services.unified_tester.WCAGValidator')
+    def test_run_accessibility_wcag_failures(
+        self, mock_wcag_class, mock_path_class, mock_wcag_report
+    ):
+        """Test running WCAG validation with violations."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        mock_wcag_instance = AsyncMock()
+        mock_wcag_instance.validate = AsyncMock(return_value=mock_wcag_report)
+        mock_wcag_class.return_value = mock_wcag_instance
+
+        # Create UnifiedTester and mock other test methods
+        tester = UnifiedTester()
+        tester._run_contrast_test = AsyncMock(return_value=[])
+        tester._run_keyboard_test = AsyncMock(return_value=[])
+        tester._run_aria_test = AsyncMock(return_value=[])
+
+        import asyncio
+        results = asyncio.run(tester._run_accessibility_tests("https://example.com"))
+
+        wcag_failures = [r for r in results if r.test_name == "WCAG Validation" and not r.passed]
+        assert len(wcag_failures) > 0
+        assert any("Missing alt text" in r.message for r in wcag_failures)
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    @patch('Asgard.Freya.Integration.services.unified_tester.ColorContrastChecker')
+    def test_run_accessibility_contrast_failures(
+        self, mock_contrast_class, mock_path_class, mock_contrast_report
+    ):
+        """Test running contrast checks with issues."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        mock_contrast_instance = AsyncMock()
+        mock_contrast_instance.check = AsyncMock(return_value=mock_contrast_report)
+        mock_contrast_class.return_value = mock_contrast_instance
+
+        tester = UnifiedTester()
+        tester._run_wcag_test = AsyncMock(return_value=[])
+        tester._run_keyboard_test = AsyncMock(return_value=[])
+        tester._run_aria_test = AsyncMock(return_value=[])
+
+        import asyncio
+        results = asyncio.run(tester._run_accessibility_tests("https://example.com"))
+
+        contrast_failures = [r for r in results if r.test_name == "Color Contrast" and not r.passed]
+        assert len(contrast_failures) > 0
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    @patch('Asgard.Freya.Integration.services.unified_tester.WCAGValidator')
+    def test_run_accessibility_exception_handling(
+        self, mock_wcag_class, mock_path_class
+    ):
+        """Test exception handling in accessibility tests."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        mock_wcag_instance = AsyncMock()
+        mock_wcag_instance.validate = AsyncMock(side_effect=Exception("Test error"))
+        mock_wcag_class.return_value = mock_wcag_instance
+
+        tester = UnifiedTester()
+        tester._run_contrast_test = AsyncMock(return_value=[])
+        tester._run_keyboard_test = AsyncMock(return_value=[])
+        tester._run_aria_test = AsyncMock(return_value=[])
+
+        import asyncio
+        results = asyncio.run(tester._run_accessibility_tests("https://example.com"))
+
+        error_results = [r for r in results if not r.passed and "failed" in r.message]
+        assert len(error_results) > 0
+
+
+class TestUnifiedTesterRunVisualTests:
+    """Tests for _run_visual_tests method."""
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    @patch('Asgard.Freya.Integration.services.unified_tester.LayoutValidator')
+    @patch('Asgard.Freya.Integration.services.unified_tester.StyleValidator')
+    def test_run_visual_tests_success(
+        self, mock_style_class, mock_layout_class, mock_path_class
+    ):
+        """Test running visual tests with no issues."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        mock_layout_instance = AsyncMock()
+        mock_layout_instance.validate = AsyncMock(return_value=Mock(issues=[]))
+        mock_layout_class.return_value = mock_layout_instance
+
+        mock_style_instance = AsyncMock()
+        mock_style_instance.validate = AsyncMock(return_value=Mock(issues=[]))
+        mock_style_class.return_value = mock_style_instance
+
+        tester = UnifiedTester()
+
+        import asyncio
+        results, screenshots = asyncio.run(tester._run_visual_tests("https://example.com"))
+
+        passing_results = [r for r in results if r.passed]
+        assert len(passing_results) > 0
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    @patch('Asgard.Freya.Integration.services.unified_tester.LayoutValidator')
+    def test_run_visual_tests_failures(
+        self, mock_layout_class, mock_path_class, mock_layout_report
+    ):
+        """Test running visual tests with failures."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        mock_layout_instance = AsyncMock()
+        mock_layout_instance.validate = AsyncMock(return_value=mock_layout_report)
+        mock_layout_class.return_value = mock_layout_instance
+
+        tester = UnifiedTester()
+
+        import asyncio
+        results, screenshots = asyncio.run(tester._run_visual_tests("https://example.com"))
+
+        layout_failures = [r for r in results if r.test_name == "Layout Validation" and not r.passed]
+        assert len(layout_failures) > 0
+
+
+class TestUnifiedTesterRunResponsiveTests:
+    """Tests for _run_responsive_tests method."""
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    @patch('Asgard.Freya.Integration.services.unified_tester.BreakpointTester')
+    @patch('Asgard.Freya.Integration.services.unified_tester.TouchTargetValidator')
+    @patch('Asgard.Freya.Integration.services.unified_tester.ViewportTester')
+    @patch('Asgard.Freya.Integration.services.unified_tester.MobileCompatibilityTester')
+    def test_run_responsive_tests_success(
+        self, mock_mobile_class, mock_viewport_class, mock_touch_class,
+        mock_breakpoint_class, mock_path_class
+    ):
+        """Test running responsive tests with no issues."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        mock_bp_instance = AsyncMock()
+        mock_bp_instance.test = AsyncMock(return_value=Mock(
+            results=[],
+            screenshots={},
+            total_issues=0
+        ))
+        mock_breakpoint_class.return_value = mock_bp_instance
+
+        for mock_class in [mock_touch_class, mock_viewport_class, mock_mobile_class]:
+            mock_instance = AsyncMock()
+            mock_instance.validate = AsyncMock(return_value=Mock(issues=[]))
+            mock_instance.test = AsyncMock(return_value=Mock(issues=[]))
+            mock_class.return_value = mock_instance
+
+        tester = UnifiedTester()
+
+        import asyncio
+        results, screenshots = asyncio.run(tester._run_responsive_tests("https://example.com"))
+
+        passing_results = [r for r in results if r.passed]
+        assert len(passing_results) > 0
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    @patch('Asgard.Freya.Integration.services.unified_tester.BreakpointTester')
+    def test_run_responsive_tests_breakpoint_failures(
+        self, mock_breakpoint_class, mock_path_class, mock_breakpoint_report
+    ):
+        """Test running breakpoint tests with failures."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        mock_bp_instance = AsyncMock()
+        mock_bp_instance.test = AsyncMock(return_value=mock_breakpoint_report)
+        mock_breakpoint_class.return_value = mock_bp_instance
+
+        tester = UnifiedTester()
+
+        import asyncio
+        results, screenshots = asyncio.run(tester._run_responsive_tests("https://example.com"))
+
+        bp_failures = [r for r in results if "Breakpoint" in r.test_name and not r.passed]
+        assert len(bp_failures) > 0
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    @patch('Asgard.Freya.Integration.services.unified_tester.TouchTargetValidator')
+    def test_run_responsive_tests_touch_target_failures(
+        self, mock_touch_class, mock_path_class, mock_touch_target_report
+    ):
+        """Test running touch target validation with failures."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        mock_touch_instance = AsyncMock()
+        mock_touch_instance.validate = AsyncMock(return_value=mock_touch_target_report)
+        mock_touch_class.return_value = mock_touch_instance
+
+        tester = UnifiedTester()
+
+        import asyncio
+        results, screenshots = asyncio.run(tester._run_responsive_tests("https://example.com"))
+
+        touch_failures = [r for r in results if r.test_name == "Touch Targets" and not r.passed]
+        assert len(touch_failures) > 0
+        assert any(r.details.get("width") == 30 for r in touch_failures)
+
+
+class TestUnifiedTesterMapSeverity:
+    """Tests for _map_severity method."""
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    def test_map_severity_critical(self, mock_path_class):
+        """Test mapping critical severity."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        tester = UnifiedTester()
+        result = tester._map_severity("critical")
+
+        assert result == TestSeverity.CRITICAL
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    def test_map_severity_case_insensitive(self, mock_path_class):
+        """Test severity mapping is case insensitive."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        tester = UnifiedTester()
+        result = tester._map_severity("SERIOUS")
+
+        assert result == TestSeverity.SERIOUS
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    def test_map_severity_unknown(self, mock_path_class):
+        """Test mapping unknown severity defaults to moderate."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        tester = UnifiedTester()
+        result = tester._map_severity("unknown")
+
+        assert result == TestSeverity.MODERATE
+
+
+class TestUnifiedTesterFilterBySeverity:
+    """Tests for _filter_by_severity method."""
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    def test_filter_by_severity_critical_only(self, mock_path_class):
+        """Test filtering to show only critical issues."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        results = [
+            UnifiedTestResult(
+                category=TestCategory.ACCESSIBILITY,
+                test_name="Test 1",
+                passed=False,
+                severity=TestSeverity.CRITICAL,
+                message="Critical issue"
+            ),
+            UnifiedTestResult(
+                category=TestCategory.ACCESSIBILITY,
+                test_name="Test 2",
+                passed=False,
+                severity=TestSeverity.MODERATE,
+                message="Moderate issue"
+            )
+        ]
+
+        tester = UnifiedTester()
+        filtered = tester._filter_by_severity(results, TestSeverity.CRITICAL)
+
+        assert len(filtered) == 1
+        assert filtered[0].severity == TestSeverity.CRITICAL
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    def test_filter_by_severity_includes_passed(self, mock_path_class):
+        """Test filtering includes passed tests."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        results = [
+            UnifiedTestResult(
+                category=TestCategory.ACCESSIBILITY,
+                test_name="Test 1",
+                passed=True,
+                message="Passed"
+            ),
+            UnifiedTestResult(
+                category=TestCategory.ACCESSIBILITY,
+                test_name="Test 2",
+                passed=False,
+                severity=TestSeverity.MINOR,
+                message="Minor issue"
+            )
+        ]
+
+        tester = UnifiedTester()
+        filtered = tester._filter_by_severity(results, TestSeverity.CRITICAL)
+
+        passed_tests = [r for r in filtered if r.passed]
+        assert len(passed_tests) == 1
+
+
+class TestUnifiedTesterCalculateCategoryScore:
+    """Tests for _calculate_category_score method."""
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    def test_calculate_category_score_all_passed(self, mock_path_class):
+        """Test score calculation with all tests passed."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        results = [
+            UnifiedTestResult(
+                category=TestCategory.ACCESSIBILITY,
+                test_name="Test 1",
+                passed=True,
+                message="Passed"
+            ),
+            UnifiedTestResult(
+                category=TestCategory.ACCESSIBILITY,
+                test_name="Test 2",
+                passed=True,
+                message="Passed"
+            )
+        ]
+
+        tester = UnifiedTester()
+        score = tester._calculate_category_score(results)
+
+        assert score == 100.0
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    def test_calculate_category_score_with_failures(self, mock_path_class):
+        """Test score calculation with failures."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        results = [
+            UnifiedTestResult(
+                category=TestCategory.ACCESSIBILITY,
+                test_name="Test 1",
+                passed=False,
+                severity=TestSeverity.CRITICAL,
+                message="Critical issue"
+            ),
+            UnifiedTestResult(
+                category=TestCategory.ACCESSIBILITY,
+                test_name="Test 2",
+                passed=True,
+                message="Passed"
+            )
+        ]
+
+        tester = UnifiedTester()
+        score = tester._calculate_category_score(results)
+
+        assert score < 100.0
+        assert score >= 0.0
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    def test_calculate_category_score_empty_results(self, mock_path_class):
+        """Test score calculation with no results."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        tester = UnifiedTester()
+        score = tester._calculate_category_score([])
+
+        assert score == 100.0
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    def test_calculate_category_score_severity_penalties(self, mock_path_class):
+        """Test that different severities have different penalties."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        critical_result = [
+            UnifiedTestResult(
+                category=TestCategory.ACCESSIBILITY,
+                test_name="Test",
+                passed=False,
+                severity=TestSeverity.CRITICAL,
+                message="Critical"
+            )
+        ]
+
+        minor_result = [
+            UnifiedTestResult(
+                category=TestCategory.ACCESSIBILITY,
+                test_name="Test",
+                passed=False,
+                severity=TestSeverity.MINOR,
+                message="Minor"
+            )
+        ]
+
+        tester = UnifiedTester()
+        critical_score = tester._calculate_category_score(critical_result)
+        minor_score = tester._calculate_category_score(minor_result)
+
+        assert critical_score < minor_score
+
+    @patch('Asgard.Freya.Integration.services.unified_tester.Path')
+    def test_calculate_category_score_bounds(self, mock_path_class):
+        """Test score is bounded between 0 and 100."""
+        mock_path_instance = MagicMock()
+        mock_path_class.return_value = mock_path_instance
+
+        # Create many critical failures
+        results = [
+            UnifiedTestResult(
+                category=TestCategory.ACCESSIBILITY,
+                test_name=f"Test {i}",
+                passed=False,
+                severity=TestSeverity.CRITICAL,
+                message="Critical"
+            )
+            for i in range(20)
+        ]
+
+        tester = UnifiedTester()
+        score = tester._calculate_category_score(results)
+
+        assert score >= 0.0
+        assert score <= 100.0

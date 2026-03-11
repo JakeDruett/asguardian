@@ -1,0 +1,441 @@
+"""
+A comprehensive GraphQL schema for an e-commerce application.
+This schema demonstrates types, queries, mutations, subscriptions, and directives.
+"""
+
+# Custom scalars
+scalar DateTime
+scalar UUID
+scalar Email
+scalar URL
+scalar Money
+
+# Enumerations
+enum UserRole {
+  CUSTOMER
+  ADMIN
+  MODERATOR
+  SUPPORT
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  CAPTURED
+  FAILED
+  REFUNDED
+}
+
+enum ProductStatus {
+  DRAFT
+  ACTIVE
+  DISCONTINUED
+  OUT_OF_STOCK
+}
+
+enum SortOrder {
+  ASC
+  DESC
+}
+
+# Input types
+input PaginationInput {
+  page: Int = 1
+  limit: Int = 20
+}
+
+input ProductFilterInput {
+  categoryId: UUID
+  minPrice: Money
+  maxPrice: Money
+  status: ProductStatus
+  inStock: Boolean
+  search: String
+}
+
+input ProductSortInput {
+  field: ProductSortField!
+  order: SortOrder = ASC
+}
+
+enum ProductSortField {
+  NAME
+  PRICE
+  CREATED_AT
+  POPULARITY
+}
+
+input CreateUserInput {
+  email: Email!
+  name: String!
+  password: String!
+  role: UserRole = CUSTOMER
+}
+
+input UpdateUserInput {
+  name: String
+  email: Email
+  avatarUrl: URL
+}
+
+input CreateProductInput {
+  sku: String!
+  name: String!
+  description: String
+  price: Money!
+  categoryId: UUID!
+  images: [String!]
+  tags: [String!]
+}
+
+input UpdateProductInput {
+  name: String
+  description: String
+  price: Money
+  status: ProductStatus
+  images: [String!]
+  tags: [String!]
+}
+
+input CreateOrderInput {
+  items: [OrderItemInput!]!
+  shippingAddressId: UUID!
+  billingAddressId: UUID
+  couponCode: String
+  notes: String
+}
+
+input OrderItemInput {
+  productId: UUID!
+  quantity: Int!
+}
+
+input AddressInput {
+  name: String!
+  street: String!
+  street2: String
+  city: String!
+  state: String
+  postalCode: String!
+  country: String!
+  phone: String
+  isDefault: Boolean = false
+}
+
+# Object types
+type User {
+  id: UUID!
+  email: Email!
+  name: String!
+  role: UserRole!
+  avatarUrl: URL
+  addresses: [Address!]!
+  orders(pagination: PaginationInput): OrderConnection!
+  wishlist: [Product!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Address {
+  id: UUID!
+  name: String!
+  street: String!
+  street2: String
+  city: String!
+  state: String
+  postalCode: String!
+  country: String!
+  phone: String
+  isDefault: Boolean!
+}
+
+type Product {
+  id: UUID!
+  sku: String!
+  name: String!
+  description: String
+  price: Money!
+  compareAtPrice: Money
+  category: Category!
+  images: [ProductImage!]!
+  tags: [String!]!
+  status: ProductStatus!
+  inventory: Inventory!
+  reviews(pagination: PaginationInput): ReviewConnection!
+  averageRating: Float
+  reviewCount: Int!
+  relatedProducts(limit: Int = 4): [Product!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ProductImage {
+  id: UUID!
+  url: URL!
+  altText: String
+  isPrimary: Boolean!
+  sortOrder: Int!
+}
+
+type Category {
+  id: UUID!
+  name: String!
+  slug: String!
+  description: String
+  parent: Category
+  children: [Category!]!
+  products(pagination: PaginationInput, filter: ProductFilterInput): ProductConnection!
+  productCount: Int!
+  imageUrl: URL
+}
+
+type Inventory {
+  productId: UUID!
+  quantity: Int!
+  reserved: Int!
+  available: Int!
+  lowStockThreshold: Int!
+  isLowStock: Boolean!
+  lastRestocked: DateTime
+}
+
+type Order {
+  id: UUID!
+  orderNumber: String!
+  user: User!
+  items: [OrderItem!]!
+  subtotal: Money!
+  tax: Money!
+  shippingCost: Money!
+  discount: Money!
+  total: Money!
+  status: OrderStatus!
+  shippingAddress: Address!
+  billingAddress: Address!
+  payment: Payment
+  shipment: Shipment
+  notes: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type OrderItem {
+  id: UUID!
+  product: Product!
+  productName: String!
+  productSku: String!
+  quantity: Int!
+  unitPrice: Money!
+  totalPrice: Money!
+}
+
+type Payment {
+  id: UUID!
+  orderId: UUID!
+  amount: Money!
+  currency: String!
+  method: String!
+  status: PaymentStatus!
+  transactionId: String
+  processedAt: DateTime
+}
+
+type Shipment {
+  id: UUID!
+  orderId: UUID!
+  carrier: String!
+  trackingNumber: String
+  trackingUrl: URL
+  status: String!
+  estimatedDelivery: DateTime
+  shippedAt: DateTime
+  deliveredAt: DateTime
+}
+
+type Review {
+  id: UUID!
+  product: Product!
+  user: User!
+  rating: Int!
+  title: String
+  body: String
+  isVerifiedPurchase: Boolean!
+  helpfulCount: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Cart {
+  id: UUID!
+  items: [CartItem!]!
+  subtotal: Money!
+  itemCount: Int!
+  estimatedTax: Money
+  estimatedTotal: Money
+}
+
+type CartItem {
+  id: UUID!
+  product: Product!
+  quantity: Int!
+  unitPrice: Money!
+  totalPrice: Money!
+}
+
+# Connection types for pagination
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+  totalCount: Int!
+  totalPages: Int!
+}
+
+type ProductConnection {
+  edges: [ProductEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProductEdge {
+  node: Product!
+  cursor: String!
+}
+
+type OrderConnection {
+  edges: [OrderEdge!]!
+  pageInfo: PageInfo!
+}
+
+type OrderEdge {
+  node: Order!
+  cursor: String!
+}
+
+type ReviewConnection {
+  edges: [ReviewEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ReviewEdge {
+  node: Review!
+  cursor: String!
+}
+
+type UserConnection {
+  edges: [UserEdge!]!
+  pageInfo: PageInfo!
+}
+
+type UserEdge {
+  node: User!
+  cursor: String!
+}
+
+# Query root
+type Query {
+  # User queries
+  me: User
+  user(id: UUID!): User
+  users(pagination: PaginationInput, role: UserRole): UserConnection!
+
+  # Product queries
+  product(id: UUID!): Product
+  productBySku(sku: String!): Product
+  products(
+    pagination: PaginationInput
+    filter: ProductFilterInput
+    sort: ProductSortInput
+  ): ProductConnection!
+  searchProducts(query: String!, limit: Int = 20): [Product!]!
+
+  # Category queries
+  category(id: UUID!): Category
+  categoryBySlug(slug: String!): Category
+  categories(parentId: UUID): [Category!]!
+  rootCategories: [Category!]!
+
+  # Order queries
+  order(id: UUID!): Order
+  orderByNumber(orderNumber: String!): Order
+  orders(
+    pagination: PaginationInput
+    status: OrderStatus
+    userId: UUID
+  ): OrderConnection!
+
+  # Cart queries
+  cart: Cart
+
+  # Review queries
+  review(id: UUID!): Review
+  productReviews(productId: UUID!, pagination: PaginationInput): ReviewConnection!
+}
+
+# Mutation root
+type Mutation {
+  # User mutations
+  createUser(input: CreateUserInput!): User!
+  updateUser(id: UUID!, input: UpdateUserInput!): User!
+  deleteUser(id: UUID!): Boolean!
+  addAddress(userId: UUID!, input: AddressInput!): Address!
+  updateAddress(id: UUID!, input: AddressInput!): Address!
+  deleteAddress(id: UUID!): Boolean!
+
+  # Product mutations
+  createProduct(input: CreateProductInput!): Product!
+  updateProduct(id: UUID!, input: UpdateProductInput!): Product!
+  deleteProduct(id: UUID!): Boolean!
+  updateInventory(productId: UUID!, quantity: Int!): Inventory!
+
+  # Order mutations
+  createOrder(input: CreateOrderInput!): Order!
+  updateOrderStatus(id: UUID!, status: OrderStatus!): Order!
+  cancelOrder(id: UUID!, reason: String): Order!
+
+  # Cart mutations
+  addToCart(productId: UUID!, quantity: Int = 1): Cart!
+  updateCartItem(itemId: UUID!, quantity: Int!): Cart!
+  removeFromCart(itemId: UUID!): Cart!
+  clearCart: Cart!
+
+  # Review mutations
+  createReview(
+    productId: UUID!
+    rating: Int!
+    title: String
+    body: String
+  ): Review!
+  updateReview(id: UUID!, rating: Int, title: String, body: String): Review!
+  deleteReview(id: UUID!): Boolean!
+  markReviewHelpful(id: UUID!): Review!
+
+  # Wishlist mutations
+  addToWishlist(productId: UUID!): User!
+  removeFromWishlist(productId: UUID!): User!
+}
+
+# Subscription root
+type Subscription {
+  orderStatusChanged(orderId: UUID!): Order!
+  inventoryUpdated(productId: UUID!): Inventory!
+  newOrder(userId: UUID): Order!
+  productPriceChanged(productId: UUID!): Product!
+}
+
+# Schema definition
+schema {
+  query: Query
+  mutation: Mutation
+  subscription: Subscription
+}

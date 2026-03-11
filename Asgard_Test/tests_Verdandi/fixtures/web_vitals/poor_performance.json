@@ -1,0 +1,155 @@
+{
+  "description": "Core Web Vitals data representing poor performance - all metrics in 'poor' range",
+  "collected_at": "2024-06-20T14:30:00Z",
+  "page_url": "https://example.com/slow-page",
+  "device_type": "mobile",
+  "connection_type": "3g",
+  "metrics": {
+    "lcp_ms": 6500,
+    "fid_ms": 450,
+    "cls": 0.42,
+    "inp_ms": 750,
+    "ttfb_ms": 2800,
+    "fcp_ms": 4200
+  },
+  "thresholds": {
+    "lcp": {
+      "good": 2500,
+      "poor": 4000
+    },
+    "fid": {
+      "good": 100,
+      "poor": 300
+    },
+    "cls": {
+      "good": 0.1,
+      "poor": 0.25
+    },
+    "inp": {
+      "good": 200,
+      "poor": 500
+    },
+    "ttfb": {
+      "good": 800,
+      "poor": 1800
+    },
+    "fcp": {
+      "good": 1800,
+      "poor": 3000
+    }
+  },
+  "expected_ratings": {
+    "lcp_rating": "poor",
+    "fid_rating": "poor",
+    "cls_rating": "poor",
+    "inp_rating": "poor",
+    "ttfb_rating": "poor",
+    "fcp_rating": "poor",
+    "overall_rating": "poor"
+  },
+  "expected_score": 15,
+  "expected_recommendations": [
+    "Optimize Largest Contentful Paint: Consider lazy loading below-the-fold images",
+    "Reduce First Input Delay: Break up long JavaScript tasks",
+    "Minimize Cumulative Layout Shift: Add explicit dimensions to images and embeds",
+    "Improve Interaction to Next Paint: Optimize event handlers and reduce main thread blocking",
+    "Reduce Time to First Byte: Consider server-side caching or CDN",
+    "Optimize First Contentful Paint: Reduce render-blocking resources"
+  ],
+  "samples": [
+    {
+      "timestamp": "2024-06-20T14:00:00Z",
+      "lcp_ms": 6200,
+      "fid_ms": 420,
+      "cls": 0.38,
+      "inp_ms": 720,
+      "ttfb_ms": 2650,
+      "fcp_ms": 4000
+    },
+    {
+      "timestamp": "2024-06-20T14:05:00Z",
+      "lcp_ms": 7100,
+      "fid_ms": 480,
+      "cls": 0.45,
+      "inp_ms": 800,
+      "ttfb_ms": 3000,
+      "fcp_ms": 4500
+    },
+    {
+      "timestamp": "2024-06-20T14:10:00Z",
+      "lcp_ms": 6400,
+      "fid_ms": 440,
+      "cls": 0.41,
+      "inp_ms": 740,
+      "ttfb_ms": 2750,
+      "fcp_ms": 4150
+    },
+    {
+      "timestamp": "2024-06-20T14:15:00Z",
+      "lcp_ms": 6800,
+      "fid_ms": 470,
+      "cls": 0.44,
+      "inp_ms": 780,
+      "ttfb_ms": 2900,
+      "fcp_ms": 4350
+    },
+    {
+      "timestamp": "2024-06-20T14:20:00Z",
+      "lcp_ms": 6550,
+      "fid_ms": 455,
+      "cls": 0.42,
+      "inp_ms": 755,
+      "ttfb_ms": 2800,
+      "fcp_ms": 4200
+    }
+  ],
+  "issue_breakdown": {
+    "lcp": {
+      "main_element": "hero-image.jpg",
+      "element_type": "img",
+      "size_kb": 2500,
+      "render_delay_ms": 3200,
+      "causes": [
+        "Large unoptimized image",
+        "No lazy loading",
+        "Slow server response"
+      ]
+    },
+    "fid": {
+      "blocking_time_ms": 850,
+      "long_tasks": [
+        {
+          "name": "analytics.js",
+          "duration_ms": 320
+        },
+        {
+          "name": "bundle.js",
+          "duration_ms": 280
+        },
+        {
+          "name": "third-party-widget.js",
+          "duration_ms": 250
+        }
+      ]
+    },
+    "cls": {
+      "layout_shifts": [
+        {
+          "element": "ad-container",
+          "shift_value": 0.18,
+          "cause": "Late-loading advertisement"
+        },
+        {
+          "element": "hero-image",
+          "shift_value": 0.15,
+          "cause": "Missing width/height attributes"
+        },
+        {
+          "element": "cookie-banner",
+          "shift_value": 0.09,
+          "cause": "Dynamic content injection"
+        }
+      ]
+    }
+  }
+}

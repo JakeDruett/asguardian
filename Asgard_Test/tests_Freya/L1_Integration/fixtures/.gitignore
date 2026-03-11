@@ -1,0 +1,10 @@
+# Ignore test output files
+output/
+
+# Keep baseline directory structure but ignore actual baseline images during development
+baselines/*.png
+baselines/*.jpg
+baselines/*.jpeg
+
+# HTML fixtures are committed
+!html/
