@@ -5,6 +5,7 @@ Unit tests for ApdexCalculator.
 import pytest
 
 from Asgard.Verdandi.Analysis import ApdexCalculator, ApdexConfig
+from Asgard.Verdandi.Analysis.models.analysis_models import ApdexResult
 
 
 class TestApdexCalculator:
@@ -62,17 +63,11 @@ class TestApdexCalculator:
 
     def test_rating_thresholds(self):
         """Test Apdex rating thresholds."""
-        assert ApdexCalculator._get_rating_for_score(0.95) == "Excellent"
-        assert ApdexCalculator._get_rating_for_score(0.90) == "Good"
-        assert ApdexCalculator._get_rating_for_score(0.75) == "Fair"
-        assert ApdexCalculator._get_rating_for_score(0.55) == "Poor"
-        assert ApdexCalculator._get_rating_for_score(0.40) == "Unacceptable"
-
-    @staticmethod
-    def _get_rating_for_score(score: float) -> str:
-        """Helper to get rating for score."""
-        from Asgard.Verdandi.Analysis.models.analysis_models import ApdexResult
-        return ApdexResult.get_rating(score)
+        assert ApdexResult.get_rating(0.95) == "Excellent"
+        assert ApdexResult.get_rating(0.90) == "Good"
+        assert ApdexResult.get_rating(0.75) == "Fair"
+        assert ApdexResult.get_rating(0.55) == "Poor"
+        assert ApdexResult.get_rating(0.40) == "Unacceptable"
 
     def test_frustration_threshold(self):
         """Test frustration threshold calculation."""

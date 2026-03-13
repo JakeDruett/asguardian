@@ -229,6 +229,11 @@ class SecretsReport(BaseModel):
         self.findings.append(finding)
 
     @property
+    def secrets(self) -> List[SecretFinding]:
+        """Alias for findings for compatibility."""
+        return self.findings
+
+    @property
     def has_findings(self) -> bool:
         """Check if any secrets were found."""
         return self.secrets_found > 0
@@ -263,6 +268,11 @@ class VulnerabilityReport(BaseModel):
         """Add a vulnerability finding to the report."""
         self.vulnerabilities_found += 1
         self.findings.append(finding)
+
+    @property
+    def vulnerabilities(self) -> List[VulnerabilityFinding]:
+        """Alias for findings for compatibility."""
+        return self.findings
 
     @property
     def has_findings(self) -> bool:

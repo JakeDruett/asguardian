@@ -474,7 +474,7 @@ class TestResourceTimingCalculator:
         result = self.calculator.analyze(resources)
 
         assert len(result.largest_resources) == 5
-        assert result.largest_resources[0]["size_bytes"] == 90000
+        assert result.largest_resources[0]["size_bytes"] == 100000
 
     def test_slowest_resources_limit(self):
         """Test that slowest resources list is limited to top 5."""

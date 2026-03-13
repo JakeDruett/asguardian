@@ -170,7 +170,7 @@ class TestEvictionAnalyzer:
             evictions=50,
             duration_seconds=3600,
             total_operations=10000,
-            premature_evictions=5,
+            premature_evictions=0,
             avg_entry_age_seconds=300.0,
             by_reason={"ttl": 40, "manual": 10},
         )

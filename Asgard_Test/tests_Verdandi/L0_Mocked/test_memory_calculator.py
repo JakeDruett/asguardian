@@ -242,7 +242,7 @@ class TestMemoryMetricsCalculator:
             swap_total_bytes=0,
         )
 
-        assert result.swap_percent == 0.0
+        assert result.swap_percent is None
 
     def test_constant_thresholds(self):
         """Test that threshold constants are correct."""

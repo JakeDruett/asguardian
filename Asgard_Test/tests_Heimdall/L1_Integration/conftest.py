@@ -311,11 +311,10 @@ def security_vulnerable_project(tmp_path):
 
     # Code with secrets
     (project_dir / "config.py").write_text('''
-"""Configuration with secrets."""
+"""Configuration module."""
 
-API_KEY = "sk_fake_test_key_not_real_0000000"
+DATABASE_URL = "postgresql://admin:Kx9mP2vNqR4w@dbhost.internal/production"
 DATABASE_PASSWORD = "SuperSecret123!"
-AWS_SECRET_KEY = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
 
 def get_database_url():
     """Get database URL."""

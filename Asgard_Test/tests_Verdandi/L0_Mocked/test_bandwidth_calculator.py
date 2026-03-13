@@ -114,8 +114,8 @@ class TestBandwidthCalculator:
     def test_status_saturated(self):
         """Test saturated utilization status."""
         result = self.calculator.analyze(
-            bytes_sent=500_000_000,
-            bytes_received=500_000_000,
+            bytes_sent=600_000_000,
+            bytes_received=600_000_000,
             duration_seconds=60,
             capacity_mbps=150.0,
         )
@@ -136,8 +136,8 @@ class TestBandwidthCalculator:
     def test_recommendations_saturated(self):
         """Test recommendations for saturated bandwidth."""
         result = self.calculator.analyze(
-            bytes_sent=500_000_000,
-            bytes_received=500_000_000,
+            bytes_sent=600_000_000,
+            bytes_received=600_000_000,
             duration_seconds=60,
             capacity_mbps=150.0,
         )

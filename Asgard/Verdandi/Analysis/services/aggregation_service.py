@@ -46,6 +46,7 @@ class AggregationService:
         values: Sequence[Union[int, float]],
         window_start: Optional[datetime] = None,
         window_end: Optional[datetime] = None,
+        config: Optional[AggregationConfig] = None,
     ) -> AggregationResult:
         """
         Aggregate values over a time window.
@@ -54,6 +55,7 @@ class AggregationService:
             values: Sequence of metric values
             window_start: Start of aggregation window
             window_end: End of aggregation window
+            config: Optional config override for this call
 
         Returns:
             AggregationResult with aggregated statistics
@@ -61,22 +63,24 @@ class AggregationService:
         if not values:
             raise ValueError("Cannot aggregate empty dataset")
 
+        cfg = config or self.config
+
         now = datetime.now()
-        start = window_start or (now - timedelta(seconds=self.config.window_size_seconds))
+        start = window_start or (now - timedelta(seconds=cfg.window_size_seconds))
         end = window_end or now
 
         window_seconds = (end - start).total_seconds()
         throughput = len(values) / window_seconds if window_seconds > 0 else 0
 
         percentiles = None
-        if self.config.include_percentiles:
+        if cfg.include_percentiles:
             percentiles = self._percentile_calc.calculate(values)
 
         histogram = None
-        if self.config.include_histograms:
+        if cfg.include_histograms:
             histogram = self._percentile_calc.calculate_histogram(
                 values,
-                self.config.histogram_buckets,
+                cfg.histogram_buckets,
             )
 
         return AggregationResult(

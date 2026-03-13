@@ -5,7 +5,7 @@ Pydantic models for web performance metrics.
 """
 
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -132,11 +132,11 @@ class ResourceTimingResult(BaseModel):
         default_factory=dict,
         description="Breakdown by resource type",
     )
-    largest_resources: List[Dict[str, float]] = Field(
+    largest_resources: List[Dict[str, Any]] = Field(
         default_factory=list,
         description="Top 5 largest resources",
     )
-    slowest_resources: List[Dict[str, float]] = Field(
+    slowest_resources: List[Dict[str, Any]] = Field(
         default_factory=list,
         description="Top 5 slowest resources",
     )
