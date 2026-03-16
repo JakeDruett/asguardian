@@ -51,6 +51,9 @@ def pytest_configure(config):
     config.addinivalue_line(
         "markers", "forseti: marks tests for Forseti package"
     )
+    config.addinivalue_line(
+        "markers", "backend_init: marks tests for BackendInit package"
+    )
 
 
 def pytest_collection_modifyitems(config, items):
@@ -67,6 +70,8 @@ def pytest_collection_modifyitems(config, items):
             item.add_marker(pytest.mark.verdandi)
         elif "tests_Forseti" in str(item.fspath):
             item.add_marker(pytest.mark.forseti)
+        elif "backend_init" in str(item.fspath):
+            item.add_marker(pytest.mark.backend_init)
 
 
 @pytest.fixture(scope="session")

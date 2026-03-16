@@ -4,6 +4,7 @@ Asgard CLI - Unified command-line interface for development tools.
 Usage:
     asgard <module> [command] [options]
     asgard init [--format yaml|toml|json]
+    asgard init-backend <folder_name>
     asgard heimdall analyze <path>
     asgard freya crawl <url>
     asgard forseti validate <spec>
@@ -17,6 +18,7 @@ import sys
 from pathlib import Path
 from typing import Optional
 
+from Asgard.BackendInit.service import init_backend
 from Asgard.config.loader import AsgardConfigLoader
 
 
@@ -67,6 +69,7 @@ API validation, performance metrics, and infrastructure generation.
 --------------------------------------------------------------------------------
 
   asgard init                    # Generate configuration file (asgard.yaml)
+  asgard init-backend <folder>   # Scaffold a standard backend project structure
   asgard install-browsers        # Install Chromium for Freya (run once after install)
   asgard heimdall quality <path> # Run code quality analysis
   asgard heimdall security <path> # Run security scanning
@@ -87,6 +90,14 @@ API validation, performance metrics, and infrastructure generation.
 
   Generate a default Asgard configuration file in your project root.
   Configuration controls thresholds, excluded paths, and scanner behavior.
+
+  asgard init-backend <folder_name>
+
+  Scaffold a standard backend project structure inside the named folder.
+  Creates: apis/, models/, services/, prompts/, tests/, utilities/,
+  coding_standards.md, readme.md, .env, .env.example, and .gitignore.
+  Existing files are never overwritten (except .gitignore which is updated
+  to ensure .claude, "Claude Team", and .env are excluded).
 
 --------------------------------------------------------------------------------
   HEIMDALL - Code Quality & Security Analysis
@@ -307,6 +318,11 @@ Run 'asgard init' to generate a default configuration file.
 """
 
 
+def handle_init_backend(args: argparse.Namespace) -> int:
+    """Handle the 'init-backend' command to scaffold a backend project."""
+    return init_backend(args.folder_name)
+
+
 def handle_init(args: argparse.Namespace) -> int:
     """Handle the 'init' command to generate configuration file."""
     output_format = getattr(args, "format", "yaml")
@@ -348,6 +364,7 @@ def main(args: Optional[list] = None) -> int:
         epilog="""
 Subcommands:
   init              Initialize Asgard configuration file
+  init-backend      Scaffold a standard backend project structure
   install-browsers  Install Playwright browsers for Freya
   heimdall          Code quality control and static analysis
   freya             Visual and UI testing
@@ -357,6 +374,7 @@ Subcommands:
 
 Examples:
   asgard init --format yaml
+  asgard init-backend my_service
   asgard install-browsers              # Required once for Freya
   asgard heimdall analyze ./src
   asgard freya crawl http://localhost:3000
@@ -400,6 +418,20 @@ Examples:
         "--force",
         action="store_true",
         help="Overwrite existing configuration file",
+    )
+
+    # Init-backend subcommand
+    init_backend_parser = subparsers.add_parser(
+        "init-backend",
+        help="Scaffold a standard backend project structure",
+        description=(
+            "Create a new backend project directory with a standard layout: "
+            "apis, models, services, prompts, tests, utilities, and supporting files."
+        ),
+    )
+    init_backend_parser.add_argument(
+        "folder_name",
+        help="Name of the folder to create (or populate if it already exists)",
     )
 
     # Install-browsers subcommand
@@ -489,6 +521,10 @@ Examples:
     # Handle init command directly
     if parsed_args.module == "init":
         return handle_init(parsed_args)
+
+    # Handle init-backend command
+    if parsed_args.module == "init-backend":
+        return handle_init_backend(parsed_args)
 
     # Handle install-browsers command
     if parsed_args.module == "install-browsers":

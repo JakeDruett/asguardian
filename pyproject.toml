@@ -84,6 +84,7 @@ markers = [
     "freya: Freya package tests",
     "verdandi: Verdandi package tests",
     "forseti: Forseti package tests",
+    "backend_init: BackendInit package tests",
 ]
 
 [tool.ruff]
