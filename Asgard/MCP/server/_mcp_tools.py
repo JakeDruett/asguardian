@@ -7,7 +7,7 @@ Each function takes a params dict and an MCPServerConfig and returns a result di
 
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, cast
+from typing import Any, Callable, Dict, Optional, cast
 
 from Asgard.Heimdall.Dependencies.models.sbom_models import SBOMConfig, SBOMFormat
 from Asgard.Heimdall.Dependencies.services.sbom_generator import SBOMGenerator
@@ -229,8 +229,65 @@ def tool_list_issues(params: Dict[str, Any], config: MCPServerConfig) -> Dict[st
     }
 
 
+def _extract_owasp_compliance(security_report: Any) -> Optional[Dict[str, Any]]:
+    """
+    Extract OWASP Top 10 compliance data from a security report.
+
+    Returns a dict with 'categories' and 'overall_grade' keys, or None if the
+    report does not contain OWASP compliance data.
+    """
+    if not hasattr(security_report, "owasp_compliance"):
+        return None
+    owasp = security_report.owasp_compliance
+    categories: Dict[str, Any] = {}
+    if hasattr(owasp, "categories"):
+        for cat in owasp.categories:
+            categories[str(getattr(cat, "category_id", ""))] = {
+                "name": getattr(cat, "name", ""),
+                "grade": str(getattr(cat, "grade", "")),
+                "finding_count": getattr(cat, "finding_count", 0),
+            }
+    return {
+        "owasp_top10": categories,
+        "overall_grade": str(getattr(owasp, "overall_grade", "")),
+    }
+
+
+def _extract_cwe_compliance(security_report: Any) -> Optional[Dict[str, Any]]:
+    """
+    Extract CWE Top 25 compliance data from a security report.
+
+    Returns a dict with 'categories' and 'overall_grade' keys, or None if the
+    report does not contain CWE compliance data.
+    """
+    if not hasattr(security_report, "cwe_compliance"):
+        return None
+    cwe = security_report.cwe_compliance
+    categories: Dict[str, Any] = {}
+    if hasattr(cwe, "categories"):
+        for cat in cwe.categories:
+            categories[str(getattr(cat, "cwe_id", ""))] = {
+                "name": getattr(cat, "name", ""),
+                "grade": str(getattr(cat, "grade", "")),
+                "finding_count": getattr(cat, "finding_count", 0),
+            }
+    return {
+        "cwe_top25": categories,
+        "overall_grade": str(getattr(cwe, "overall_grade", "")),
+    }
+
+
+# Registry mapping compliance standard names to their extractor functions.
+# To support a new standard (e.g. PCI-DSS), register a new extractor here
+# without modifying tool_compliance_report (OCP).
+_COMPLIANCE_EXTRACTORS: Dict[str, Callable[[Any], Optional[Dict[str, Any]]]] = {
+    "owasp": _extract_owasp_compliance,
+    "cwe": _extract_cwe_compliance,
+}
+
+
 def tool_compliance_report(params: Dict[str, Any], config: MCPServerConfig) -> Dict[str, Any]:
-    """Generate an OWASP or CWE compliance report."""
+    """Generate a compliance report for a registered standard (e.g. owasp, cwe)."""
     path = params.get("path", config.project_path)
     standard = params.get("standard", "owasp")
     scan_path = Path(path).resolve()
@@ -245,35 +302,16 @@ def tool_compliance_report(params: Dict[str, Any], config: MCPServerConfig) -> D
         "generated_at": datetime.now().isoformat(),
     }
 
-    if standard == "owasp" and hasattr(security_report, "owasp_compliance"):
-        owasp = security_report.owasp_compliance
-        categories = {}
-        if hasattr(owasp, "categories"):
-            for cat in owasp.categories:
-                categories[str(getattr(cat, "category_id", ""))] = {
-                    "name": getattr(cat, "name", ""),
-                    "grade": str(getattr(cat, "grade", "")),
-                    "finding_count": getattr(cat, "finding_count", 0),
-                }
-        compliance_data["owasp_top10"] = categories
-        compliance_data["overall_grade"] = str(getattr(owasp, "overall_grade", ""))
-    elif standard == "cwe" and hasattr(security_report, "cwe_compliance"):
-        cwe = security_report.cwe_compliance
-        categories = {}
-        if hasattr(cwe, "categories"):
-            for cat in cwe.categories:
-                categories[str(getattr(cat, "cwe_id", ""))] = {
-                    "name": getattr(cat, "name", ""),
-                    "grade": str(getattr(cat, "grade", "")),
-                    "finding_count": getattr(cat, "finding_count", 0),
-                }
-        compliance_data["cwe_top25"] = categories
-        compliance_data["overall_grade"] = str(getattr(cwe, "overall_grade", ""))
-    else:
-        compliance_data["note"] = (
-            f"Compliance data for standard '{standard}' is not available in this scan result. "
-            "Run 'heimdall security compliance' for a full report."
-        )
-        compliance_data["total_findings"] = getattr(security_report, "total_findings", 0)
+    extractor = _COMPLIANCE_EXTRACTORS.get(standard)
+    if extractor is not None:
+        extracted = extractor(security_report)
+        if extracted is not None:
+            compliance_data.update(extracted)
+            return compliance_data
 
+    compliance_data["note"] = (
+        f"Compliance data for standard '{standard}' is not available in this scan result. "
+        "Run 'heimdall security compliance' for a full report."
+    )
+    compliance_data["total_findings"] = getattr(security_report, "total_findings", 0)
     return compliance_data

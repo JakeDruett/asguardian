@@ -11,7 +11,7 @@ have write access to pull request reviews and issue comments.
 """
 
 import json
-from typing import List, Optional
+from typing import Any, Dict, List, Optional, Protocol, Tuple, runtime_checkable
 from urllib import request as urllib_request
 from urllib.error import HTTPError, URLError
 
@@ -21,7 +21,94 @@ from Asgard.Reporting.PRDecoration.models.decoration_models import (
     PRDecorationResult,
 )
 
-_GITHUB_API_BASE = "https://api.github.com"
+_DEFAULT_GITHUB_API_BASE = "https://api.github.com"
+
+
+@runtime_checkable
+class IHttpClient(Protocol):
+    """
+    Abstract HTTP client interface.
+
+    Decouples GitHubDecorator from the concrete urllib transport layer (DIP),
+    enabling injection of alternative HTTP clients (requests, httpx, test stubs)
+    without modifying the decorator logic (OCP).
+    """
+
+    def post_json(
+        self,
+        url: str,
+        payload: Dict[str, Any],
+        headers: Dict[str, str],
+    ) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+        """
+        POST JSON data to a URL and return the parsed response.
+
+        Returns:
+            Tuple of (response_dict_or_None, error_string_or_None).
+        """
+        ...
+
+    def get_json(
+        self,
+        url: str,
+        headers: Dict[str, str],
+    ) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+        """
+        GET a URL and return the parsed JSON response.
+
+        Returns:
+            Tuple of (response_dict_or_None, error_string_or_None).
+        """
+        ...
+
+
+class UrllibHttpClient:
+    """
+    IHttpClient implementation backed by Python's stdlib urllib.
+
+    All raw socket transport logic is contained here, keeping GitHubDecorator
+    free from direct HTTP driver coupling.
+    """
+
+    def post_json(
+        self,
+        url: str,
+        payload: Dict[str, Any],
+        headers: Dict[str, str],
+    ) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+        """POST JSON data to a URL and return the parsed response."""
+        try:
+            body = json.dumps(payload).encode("utf-8")
+            req = urllib_request.Request(url, data=body, headers=headers, method="POST")
+            with urllib_request.urlopen(req, timeout=30) as resp:
+                response_text = resp.read().decode("utf-8")
+                if response_text:
+                    return json.loads(response_text), None
+                return None, None
+        except HTTPError as exc:
+            return None, f"HTTP {exc.code}: {exc.reason}"
+        except URLError as exc:
+            return None, f"URL error: {exc.reason}"
+        except (ValueError, OSError) as exc:
+            return None, str(exc)
+
+    def get_json(
+        self,
+        url: str,
+        headers: Dict[str, str],
+    ) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+        """GET a URL and return the parsed JSON response."""
+        try:
+            req = urllib_request.Request(url, headers=headers, method="GET")
+            with urllib_request.urlopen(req, timeout=30) as resp:
+                response_text = resp.read().decode("utf-8")
+                return json.loads(response_text), None
+        except HTTPError as exc:
+            return None, f"HTTP {exc.code}: {exc.reason}"
+        except URLError as exc:
+            return None, f"URL error: {exc.reason}"
+        except (ValueError, OSError) as exc:
+            return None, str(exc)
 
 
 class GitHubDecorator:
@@ -33,6 +120,9 @@ class GitHubDecorator:
           write access to pull request comments.
         - The repository identifier in 'owner/repo' format.
         - The PR number.
+
+    The api_base parameter allows GitHub Enterprise consumers to point at their
+    own API endpoint without modifying this class (OCP).
 
     Usage:
         config = PRDecorationConfig(
@@ -46,6 +136,20 @@ class GitHubDecorator:
         print(f"Summary posted: {result.summary_posted}")
         print(f"Inline comments: {result.inline_comments_posted}")
     """
+
+    def __init__(
+        self,
+        api_base: str = _DEFAULT_GITHUB_API_BASE,
+        http_client: Optional[IHttpClient] = None,
+    ) -> None:
+        """
+        Args:
+            api_base: GitHub API base URL. Override for GitHub Enterprise (OCP).
+            http_client: HTTP client implementation. Defaults to UrllibHttpClient.
+                Inject an alternative to swap transport or use a test double (DIP).
+        """
+        self._api_base = api_base
+        self._http_client: IHttpClient = http_client if http_client is not None else UrllibHttpClient()
 
     def decorate(
         self,
@@ -76,6 +180,9 @@ class GitHubDecorator:
         inline_count = 0
         decoration_url: Optional[str] = None
 
+        # Allow per-request API base override from config (e.g. GitHub Enterprise).
+        api_base = config.github_api_url if config.github_api_url else self._api_base
+
         headers = {
             "Authorization": f"token {config.api_token}",
             "Accept": "application/vnd.github.v3+json",
@@ -84,14 +191,14 @@ class GitHubDecorator:
 
         head_sha: Optional[str] = None
         if config.post_inline_comments and issues:
-            head_sha, err = self._get_pr_head_sha(config, headers)
+            head_sha, err = self._get_pr_head_sha(config, headers, api_base)
             if err:
                 errors.append(err)
 
         if config.post_summary:
             summary_body = self._build_summary(issues, gate_result, ratings)
-            url = f"{_GITHUB_API_BASE}/repos/{config.repository}/issues/{config.pr_number}/comments"
-            response_data, err = self._post_json(url, {"body": summary_body}, headers)
+            url = f"{api_base}/repos/{config.repository}/issues/{config.pr_number}/comments"
+            response_data, err = self._http_client.post_json(url, {"body": summary_body}, headers)
             if err:
                 errors.append(f"Failed to post summary comment: {err}")
             else:
@@ -103,7 +210,7 @@ class GitHubDecorator:
             limited_issues = issues[: config.max_inline_comments]
             for issue in limited_issues:
                 comment_url = (
-                    f"{_GITHUB_API_BASE}/repos/{config.repository}"
+                    f"{api_base}/repos/{config.repository}"
                     f"/pulls/{config.pr_number}/comments"
                 )
                 body = self._format_inline_body(issue)
@@ -114,7 +221,7 @@ class GitHubDecorator:
                     "line": issue.line_number,
                     "side": "RIGHT",
                 }
-                _, err = self._post_json(comment_url, payload, headers)
+                _, err = self._http_client.post_json(comment_url, payload, headers)
                 if err:
                     errors.append(f"Failed to post inline comment for {issue.file_path}:{issue.line_number}: {err}")
                 else:
@@ -129,15 +236,15 @@ class GitHubDecorator:
             decoration_url=decoration_url,
         )
 
-    def _get_pr_head_sha(self, config: PRDecorationConfig, headers: dict):
+    def _get_pr_head_sha(self, config: PRDecorationConfig, headers: dict, api_base: str):
         """
         Fetch the head commit SHA of the pull request.
 
         Returns:
             Tuple of (sha_string, error_string). One of the two will be None.
         """
-        url = f"{_GITHUB_API_BASE}/repos/{config.repository}/pulls/{config.pr_number}"
-        data, err = self._get_json(url, headers)
+        url = f"{api_base}/repos/{config.repository}/pulls/{config.pr_number}"
+        data, err = self._http_client.get_json(url, headers)
         if err:
             return None, err
         if data and "head" in data:
@@ -186,44 +293,3 @@ class GitHubDecorator:
         """Format an inline review comment body for a single issue."""
         severity_label = f"**[{issue.severity.upper()}]**"
         return f"{severity_label} `{issue.rule_id}`: {issue.message}"
-
-    def _post_json(self, url: str, payload: dict, headers: dict):
-        """
-        POST JSON data to a URL and return the parsed response.
-
-        Returns:
-            Tuple of (response_dict_or_None, error_string_or_None).
-        """
-        try:
-            body = json.dumps(payload).encode("utf-8")
-            req = urllib_request.Request(url, data=body, headers=headers, method="POST")
-            with urllib_request.urlopen(req, timeout=30) as resp:
-                response_text = resp.read().decode("utf-8")
-                if response_text:
-                    return json.loads(response_text), None
-                return None, None
-        except HTTPError as exc:
-            return None, f"HTTP {exc.code}: {exc.reason}"
-        except URLError as exc:
-            return None, f"URL error: {exc.reason}"
-        except (ValueError, OSError) as exc:
-            return None, str(exc)
-
-    def _get_json(self, url: str, headers: dict):
-        """
-        GET a URL and return the parsed JSON response.
-
-        Returns:
-            Tuple of (response_dict_or_None, error_string_or_None).
-        """
-        try:
-            req = urllib_request.Request(url, headers=headers, method="GET")
-            with urllib_request.urlopen(req, timeout=30) as resp:
-                response_text = resp.read().decode("utf-8")
-                return json.loads(response_text), None
-        except HTTPError as exc:
-            return None, f"HTTP {exc.code}: {exc.reason}"
-        except URLError as exc:
-            return None, f"URL error: {exc.reason}"
-        except (ValueError, OSError) as exc:
-            return None, str(exc)

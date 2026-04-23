@@ -21,8 +21,8 @@ Usage:
     DashboardServer(config).run()
 """
 
+from Asgard.Dashboard.adapters.web.dashboard_handler import DashboardServer
 from Asgard.Dashboard.models.dashboard_models import DashboardConfig
-from Asgard.Dashboard.services.dashboard_server import DashboardServer
 
 __all__ = [
     "DashboardConfig",

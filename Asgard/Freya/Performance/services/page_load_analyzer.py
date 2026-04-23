@@ -6,7 +6,7 @@ Performance Observer for Core Web Vitals.
 """
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional, cast
+from typing import Any, Dict, List, Optional, Protocol, cast, runtime_checkable
 
 from playwright.async_api import Page, async_playwright
 
@@ -29,22 +29,98 @@ from Asgard.Freya.Performance.services._page_load_helpers import (
 )
 
 
+@runtime_checkable
+class IBrowserProvider(Protocol):
+    """
+    Abstract interface for browser session management.
+
+    Decouples PageLoadAnalyzer from the concrete Playwright driver (DIP),
+    allowing injection of alternative drivers (Selenium, DevTools, test doubles)
+    without modifying the analyzer logic.
+    """
+
+    async def fetch_page(self, url: str, config: PerformanceConfig) -> Page:
+        """
+        Navigate to url and return an open Playwright-compatible Page.
+
+        The caller is responsible for managing the lifecycle of any
+        browser/context resources created here.
+        """
+        ...
+
+    async def close(self) -> None:
+        """Release any resources held by this provider."""
+        ...
+
+
+class PlaywrightBrowserProvider:
+    """
+    IBrowserProvider implementation backed by Playwright chromium.
+
+    All Playwright bootstrap logic (async_playwright, browser.launch,
+    new_context) is contained here, keeping PageLoadAnalyzer free from
+    direct Playwright coupling.
+    """
+
+    def __init__(self) -> None:
+        self._playwright_ctx = None
+        self._browser = None
+        self._context = None
+
+    async def fetch_page(self, url: str, config: PerformanceConfig) -> Page:
+        """Launch a headless Chromium browser and navigate to the given URL."""
+        self._playwright_ctx = await async_playwright().start()
+        self._browser = await self._playwright_ctx.chromium.launch(headless=True)
+        self._context = await self._browser.new_context()
+        page = await self._context.new_page()
+
+        if config.wait_for_network_idle:
+            await page.goto(
+                url,
+                wait_until="networkidle",
+                timeout=config.network_idle_timeout + 30000,
+            )
+        else:
+            await page.goto(url, wait_until="load", timeout=30000)
+
+        return page
+
+    async def close(self) -> None:
+        """Close the browser and Playwright instance."""
+        if self._browser is not None:
+            await self._browser.close()
+            self._browser = None
+        if self._playwright_ctx is not None:
+            await self._playwright_ctx.stop()
+            self._playwright_ctx = None
+
+
 class PageLoadAnalyzer:
     """
     Analyzes page load timing and Core Web Vitals.
 
-    Uses Playwright to load pages and extract performance metrics
+    Uses a IBrowserProvider to load pages and extract performance metrics
     from the Navigation Timing API and Performance Observer.
     """
 
-    def __init__(self, config: Optional[PerformanceConfig] = None):
+    def __init__(
+        self,
+        config: Optional[PerformanceConfig] = None,
+        browser_provider: Optional[IBrowserProvider] = None,
+    ):
         """
         Initialize the page load analyzer.
 
         Args:
-            config: Performance configuration
+            config: Performance configuration.
+            browser_provider: Browser session provider. Defaults to
+                PlaywrightBrowserProvider. Inject an alternative to swap
+                the underlying driver or use a test double (DIP).
         """
         self.config = config or PerformanceConfig()
+        self._browser_provider: IBrowserProvider = (
+            browser_provider if browser_provider is not None else PlaywrightBrowserProvider()
+        )
 
     async def analyze(self, url: str) -> PageLoadMetrics:
         """
@@ -56,29 +132,15 @@ class PageLoadAnalyzer:
         Returns:
             PageLoadMetrics with timing information
         """
-        async with async_playwright() as p:
-            browser = await p.chromium.launch(headless=True)
-            context = await browser.new_context()
-            page = await context.new_page()
-
-            try:
-                if self.config.wait_for_network_idle:
-                    await page.goto(
-                        url,
-                        wait_until="networkidle",
-                        timeout=self.config.network_idle_timeout + 30000,
-                    )
-                else:
-                    await page.goto(url, wait_until="load", timeout=30000)
-
-                nav_timing = await self._extract_navigation_timing(page)
-                web_vitals = await self._extract_web_vitals(page)
-                metrics = build_metrics(url, nav_timing, web_vitals)
-
-                return metrics
-
-            finally:
-                await browser.close()
+        provider = self._browser_provider
+        try:
+            page = await provider.fetch_page(url, self.config)
+            nav_timing = await self._extract_navigation_timing(page)
+            web_vitals = await self._extract_web_vitals(page)
+            metrics = build_metrics(url, nav_timing, web_vitals)
+            return metrics
+        finally:
+            await provider.close()
 
     async def analyze_page(self, page: Page, url: str) -> PageLoadMetrics:
         """

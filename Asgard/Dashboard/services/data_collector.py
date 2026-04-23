@@ -1,58 +1,55 @@
 """
 Asgard Dashboard Data Collector
 
-Collects and aggregates data from IssueTracker and HistoryStore to populate
-a DashboardState for rendering by the web dashboard.
+Collects and aggregates data from issue and history repository interfaces to
+populate a DashboardState for rendering by the web dashboard.
+
+This service depends on IIssueRepository and IHistoryRepository abstractions
+(Ports) injected at construction time. It has no knowledge of the underlying
+storage mechanism (SQLite, in-memory, remote API, etc.), satisfying DIP.
 """
 
-from pathlib import Path
 from typing import Optional
 
 from Asgard.Dashboard.models.dashboard_models import (
-    DashboardConfig,
     DashboardState,
     IssueSummaryData,
     RatingData,
 )
-from Asgard.Heimdall.Issues.models.issue_models import IssueFilter, IssueSeverity
-from Asgard.Heimdall.Issues.services.issue_tracker import IssueTracker
-from Asgard.Reporting.History.services.history_store import HistoryStore
-
-
-def _db_path_for(config: DashboardConfig, filename: str) -> Optional[Path]:
-    """Resolve the SQLite database path based on the dashboard config."""
-    if config.db_path is not None:
-        return Path(config.db_path) / filename
-    return None
+from Asgard.Heimdall.Issues.models.issue_models import IssueSeverity
+from Asgard.Heimdall.Issues.services._issue_repository import IIssueRepository
+from Asgard.Reporting.History.services._history_repository import IHistoryRepository
 
 
 class DataCollector:
     """
-    Collects data from IssueTracker and HistoryStore and returns a DashboardState.
+    Collects data from issue and history repositories and returns a DashboardState.
 
     A new instance is constructed per HTTP request so no caching is performed.
+    Both repository dependencies are injected via the constructor, decoupling
+    this service from any specific storage implementation.
     """
 
-    def __init__(self, config: DashboardConfig) -> None:
-        self._config = config
+    def __init__(
+        self,
+        issue_repository: IIssueRepository,
+        history_repository: IHistoryRepository,
+    ) -> None:
+        self._issue_repository = issue_repository
+        self._history_repository = history_repository
 
-    def collect(self) -> DashboardState:
+    def collect(self, project_path: str) -> DashboardState:
         """
-        Read from IssueTracker and HistoryStore and return an aggregated DashboardState.
+        Read from the issue and history repositories and return an aggregated DashboardState.
+
+        Args:
+            project_path: Absolute path to the project being inspected.
 
         Returns:
             DashboardState populated with issue summaries, recent issues, snapshots,
             ratings, and quality gate status.
         """
-        project_path = self._config.project_path
-
-        issues_db = _db_path_for(self._config, "issues.db")
-        history_db = _db_path_for(self._config, "history.db")
-
-        issue_tracker = IssueTracker(db_path=issues_db)
-        history_store = HistoryStore(db_path=history_db)
-
-        summary = issue_tracker.get_summary(project_path)
+        summary = self._issue_repository.get_summary(project_path)
 
         open_by_severity = summary.open_by_severity
         critical_count = open_by_severity.get(IssueSeverity.CRITICAL.value, 0)
@@ -78,7 +75,7 @@ class DataCollector:
             low=low_count,
         )
 
-        all_issues = issue_tracker.get_issues(project_path, issue_filter=None)
+        all_issues = self._issue_repository.get_issues(project_path, issue_filter=None)
         recent_issues_raw = all_issues[:100]
         recent_issues = []
         for issue in recent_issues_raw:
@@ -97,7 +94,7 @@ class DataCollector:
                 "assigned_to": issue.assigned_to,
             })
 
-        snapshots_raw = history_store.get_snapshots(project_path, limit=20)
+        snapshots_raw = self._history_repository.get_snapshots(project_path, limit=20)
         snapshots = []
         for snap in snapshots_raw:
             snapshots.append({

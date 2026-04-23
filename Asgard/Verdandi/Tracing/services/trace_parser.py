@@ -5,7 +5,7 @@ Parses trace data from various formats (OpenTelemetry, Jaeger, etc.).
 """
 
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Callable, Dict, List, Optional, Sequence
 
 from Asgard.Verdandi.Tracing.models.tracing_models import (
     DistributedTrace,
@@ -41,9 +41,35 @@ class TraceParser:
         trace = parser.build_trace(span_list)
     """
 
-    def __init__(self):
-        """Initialize the trace parser."""
-        pass
+    # Registry mapping format hint strings to single-span parser functions.
+    # Callers can extend this dict to support new trace protocols without
+    # modifying parse_span_dict (OCP).
+    _SPAN_PARSERS: Dict[str, Callable[[Dict[str, Any]], TraceSpan]] = {
+        "otlp": lambda span_dict: parse_otlp_span(span_dict, "unknown", {}, None),
+        "jaeger": lambda span_dict: parse_jaeger_span(span_dict, "unknown", {}),
+        "zipkin": parse_zipkin_span,
+    }
+
+    def __init__(
+        self,
+        extra_parsers: Optional[Dict[str, Callable[[Dict[str, Any]], TraceSpan]]] = None,
+    ):
+        """
+        Initialize the trace parser.
+
+        Args:
+            extra_parsers: Optional mapping of format-hint strings to parser
+                callables. Entries are merged into the class-level registry so
+                new trace protocols can be registered at construction time without
+                modifying this class (OCP).
+        """
+        if extra_parsers:
+            self._span_parsers: Dict[str, Callable[[Dict[str, Any]], TraceSpan]] = {
+                **self._SPAN_PARSERS,
+                **extra_parsers,
+            }
+        else:
+            self._span_parsers = dict(self._SPAN_PARSERS)
 
     def parse_otlp(
         self,
@@ -227,11 +253,7 @@ class TraceParser:
         if format_hint == "auto":
             format_hint = detect_format(span_dict)
 
-        if format_hint == "otlp":
-            return parse_otlp_span(span_dict, "unknown", {}, None)
-        elif format_hint == "jaeger":
-            return parse_jaeger_span(span_dict, "unknown", {})
-        elif format_hint == "zipkin":
-            return parse_zipkin_span(span_dict)
-        else:
-            return parse_generic_span(span_dict)
+        parser = self._span_parsers.get(format_hint)
+        if parser is not None:
+            return parser(span_dict)
+        return parse_generic_span(span_dict)

@@ -72,10 +72,25 @@ class LayerAnalyzer:
         ),
     ]
 
-    def __init__(self, config: Optional[ArchitectureConfig] = None):
-        """Initialize the layer analyzer."""
+    def __init__(
+        self,
+        config: Optional[ArchitectureConfig] = None,
+        default_layers: Optional[List[LayerDefinition]] = None,
+    ):
+        """
+        Initialize the layer analyzer.
+
+        Args:
+            config: Optional architecture configuration.
+            default_layers: Custom default layer definitions. When provided, these
+                replace the class-level DEFAULT_LAYERS, allowing callers to extend
+                or replace the layer set without modifying this class (OCP).
+        """
         self.config = config or ArchitectureConfig()
         self.layers: List[LayerDefinition] = []
+        self._default_layers: List[LayerDefinition] = (
+            default_layers if default_layers is not None else self.DEFAULT_LAYERS
+        )
 
     def set_layers(self, layers: List[LayerDefinition]) -> None:
         """
@@ -105,7 +120,7 @@ class LayerAnalyzer:
         start_time = time.time()
 
         # Use custom layers or defaults
-        layers = self.layers if self.layers else self.DEFAULT_LAYERS
+        layers = self.layers if self.layers else self._default_layers
         report = LayerReport(scan_path=str(path), layers=layers)
 
         # Build module map
@@ -217,7 +232,7 @@ class LayerAnalyzer:
             Dict with layer information
         """
         path = scan_path or self.config.scan_path
-        layers = self.layers if self.layers else self.DEFAULT_LAYERS
+        layers = self.layers if self.layers else self._default_layers
 
         module_layers = self._assign_layers(path, layers)
 
@@ -250,7 +265,7 @@ class LayerAnalyzer:
         Returns:
             Suggested layer name or None
         """
-        layers = self.layers if self.layers else self.DEFAULT_LAYERS
+        layers = self.layers if self.layers else self._default_layers
         parts = module_name.lower().split(".")
 
         for layer in layers:

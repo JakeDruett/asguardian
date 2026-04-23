@@ -6,9 +6,12 @@ across successive runs. Supports CI/CD integration by recording quality metrics
 over time and surfacing whether the codebase is improving, stable, or degrading.
 
 Usage:
-    from Asgard.Reporting.History import HistoryStore, AnalysisSnapshot, MetricSnapshot
+    from Asgard.Reporting.History import (
+        HistoryStore, ReportingAnalyzerService, AnalysisSnapshot, MetricSnapshot
+    )
 
     store = HistoryStore()
+    analyzer = ReportingAnalyzerService(repository=store)
 
     snapshot = AnalysisSnapshot(
         snapshot_id="<uuid>",
@@ -23,7 +26,7 @@ Usage:
     )
     store.save_snapshot(snapshot)
 
-    trends = store.get_trend_report("./src")
+    trends = analyzer.get_trend_report("./src")
     for trend in trends.metric_trends:
         print(f"{trend.metric_name}: {trend.direction} ({trend.change_percentage:+.1f}%)")
 """
@@ -39,12 +42,14 @@ from Asgard.Reporting.History.models.history_models import (
     TrendReport,
 )
 from Asgard.Reporting.History.services.history_store import HistoryStore
+from Asgard.Reporting.History.services.reporting_analyzer import ReportingAnalyzerService
 
 __all__ = [
     "AnalysisSnapshot",
     "HistoryStore",
     "MetricSnapshot",
     "MetricTrend",
+    "ReportingAnalyzerService",
     "TrendDirection",
     "TrendReport",
 ]

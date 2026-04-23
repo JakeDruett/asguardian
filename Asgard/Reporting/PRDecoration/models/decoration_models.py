@@ -65,6 +65,13 @@ class PRDecorationConfig(BaseModel):
         None,
         description="GitLab API base URL (required for GitLab; e.g. 'https://gitlab.com/api/v4')",
     )
+    github_api_url: Optional[str] = Field(
+        None,
+        description=(
+            "GitHub API base URL. Defaults to 'https://api.github.com'. "
+            "Override to target GitHub Enterprise Server instances."
+        ),
+    )
 
     class Config:
         use_enum_values = True

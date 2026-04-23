@@ -3,6 +3,7 @@ import json
 from pathlib import Path
 
 from Asgard.Reporting.History.services.history_store import HistoryStore
+from Asgard.Reporting.History.services.reporting_analyzer import ReportingAnalyzerService
 
 
 def run_history_command(args: argparse.Namespace, verbose: bool = False) -> int:
@@ -74,7 +75,8 @@ def _run_history_trends(args: argparse.Namespace, verbose: bool) -> int:
     output_format = getattr(args, "format", "text")
 
     store = HistoryStore()
-    trend_report = store.get_trend_report(str(scan_path))
+    analyzer = ReportingAnalyzerService(repository=store)
+    trend_report = analyzer.get_trend_report(str(scan_path))
 
     if output_format == "json":
         data = {
