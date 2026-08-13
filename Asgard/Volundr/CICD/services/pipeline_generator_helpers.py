@@ -266,7 +266,12 @@ def _dump(data: Dict[str, Any]) -> str:
 
 
 def generate_github_actions(config: PipelineConfig) -> str:
-    """Render the primary (build/CI) GitHub Actions workflow."""
+    """Render the primary (build/CI) GitHub Actions workflow ONLY.
+
+    With ``split_trust`` and a deploy stage present, deploy-trusted stages
+    live in a second workflow file that this convenience wrapper does NOT
+    return — use :func:`generate_github_actions_files` to get every file.
+    """
     content, _files = generate_github_actions_files(config)
     return content
 
@@ -308,10 +313,18 @@ def generate_github_actions_files(
 
     if config.provenance:
         build_ids = [_job_id(s.name) for s in main_stages if not _is_deploy_stage(s)]
-        jobs["provenance"] = _provenance_job(config, build_ids or list(jobs.keys()))
+        # Never clobber a user stage that happens to share the built-in
+        # job id — prefix deterministically until the id is free.
+        prov_id = "provenance"
+        while prov_id in jobs:
+            prov_id = f"volundr-{prov_id}"
+        jobs[prov_id] = _provenance_job(config, build_ids or list(jobs.keys()))
 
     if config.self_audit:
-        jobs["lint-workflows"] = _self_audit_job(config)
+        audit_id = "lint-workflows"
+        while audit_id in jobs:
+            audit_id = f"volundr-{audit_id}"
+        jobs[audit_id] = _self_audit_job(config)
 
     workflow["jobs"] = jobs
     primary = _dump(workflow)
@@ -633,6 +646,26 @@ def validate_pipeline(content: str, config: PipelineConfig) -> List[str]:
 
     if not config.triggers:
         issues.append("Pipeline has no triggers defined")
+
+    # Split-trust relocation is never silent (fix for the Wave-4 bug where
+    # a stage literally named "deploy" appeared to vanish): every stage
+    # routed into the secondary workflow_run-triggered deploy workflow is
+    # reported explicitly, because it is intentionally absent from the
+    # primary build workflow (``pipeline_content``).
+    if config.platform == CICDPlatform.GITHUB_ACTIONS and config.split_trust:
+        deploy_stages = [s for s in config.stages if _is_deploy_stage(s)]
+        build_stages = [s for s in config.stages if not _is_deploy_stage(s)]
+        if deploy_stages and build_stages:
+            workflow_name = config.name.lower().replace(" ", "-")
+            deploy_path = f".github/workflows/{workflow_name}-deploy.yml"
+            for stage in deploy_stages:
+                issues.append(
+                    f"VOL-CICD-SPLIT-INFO: stage '{stage.name}' is "
+                    "deploy-trusted and is emitted in the separate "
+                    f"workflow_run-triggered deploy workflow '{deploy_path}' "
+                    "(split_trust=True) — it is intentionally absent from "
+                    "the primary build workflow, not dropped"
+                )
 
     has_checkout = False
     for stage in config.stages:

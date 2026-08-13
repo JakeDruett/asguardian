@@ -109,12 +109,23 @@ def run_cicd_generate(args: argparse.Namespace) -> int:
     generator = PipelineGenerator(output_dir=args.output_dir)
     pipeline = generator.generate(config)
 
+    all_files = pipeline.files or {pipeline.file_path: pipeline.pipeline_content}
     if not args.dry_run:
         file_path = generator.save_to_file(pipeline, args.output_dir)
         print(f"\nPipeline generated successfully!")
         print(f"File: {file_path}")
+        # Split-trust can emit more than one workflow file (e.g. a separate
+        # workflow_run-triggered deploy workflow) — list every file written
+        # so no stage's destination is ever silent.
+        if len(all_files) > 1:
+            print("Files written:")
+            for rel_path in all_files:
+                print(f"  - {rel_path}")
     else:
         print("\n[DRY RUN] Would generate pipeline")
+        print("Files:")
+        for rel_path in all_files:
+            print(f"  - {rel_path}")
 
     print(f"Platform: {pipeline.platform.value}")
     print(f"Best Practice Score: {pipeline.best_practice_score:.1f}/100")
