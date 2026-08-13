@@ -28,6 +28,8 @@ class MetricType(str, Enum):
     COMMENT_DENSITY = "comment_density"
     API_DOCUMENTATION_COVERAGE = "api_documentation_coverage"
     CRITICAL_VULNERABILITIES = "critical_vulnerabilities"
+    # Multiplicative-decay security score, 1-100 (Plan Heimdall-06 §A)
+    SECURITY_SCORE = "security_score"
     HIGH_VULNERABILITIES = "high_vulnerabilities"
     TECHNICAL_DEBT_HOURS = "technical_debt_hours"
     NAMING_VIOLATIONS = "naming_violations"
@@ -64,6 +66,9 @@ METRIC_DETERMINISM: Dict[MetricType, MetricDeterminism] = {
     MetricType.COMMENT_DENSITY: MetricDeterminism.FACT,
     MetricType.API_DOCUMENTATION_COVERAGE: MetricDeterminism.FACT,
     MetricType.CRITICAL_VULNERABILITIES: MetricDeterminism.FACT,
+    # The score formula itself is deterministic, but its inputs are
+    # heuristic scanner findings — so the metric is HEURISTIC (warn-only).
+    MetricType.SECURITY_SCORE: MetricDeterminism.HEURISTIC,
     MetricType.HIGH_VULNERABILITIES: MetricDeterminism.FACT,
     MetricType.TECHNICAL_DEBT_HOURS: MetricDeterminism.HEURISTIC,
     MetricType.NAMING_VIOLATIONS: MetricDeterminism.FACT,

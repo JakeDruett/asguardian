@@ -178,6 +178,9 @@ class HexagonalAnalyzer:
         if self.layer_config.has_level_inference:
             for v in self._analyze_inferred_layers(path):
                 report.add_violation(v)
+            # Reflexion-model summary (Plan 03 item 6): declared allowed
+            # layer edges vs observed import-graph edges.
+            report.reflexion = self._arch_graph_service(path).reflexion_summary(path)
 
         report.scan_duration_seconds = time.time() - start_time
         return report

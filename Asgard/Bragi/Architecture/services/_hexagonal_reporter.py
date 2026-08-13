@@ -60,6 +60,20 @@ def generate_text_report(result: HexagonalReport) -> str:
                 lines.append(f"    Frameworks: {', '.join(adapter.framework_imports)}")
             lines.append("")
 
+    if result.reflexion is not None:
+        lines.append("-" * 70)
+        lines.append("  REFLEXION MODEL (declared vs observed layer edges)")
+        lines.append("-" * 70)
+        lines.append("")
+        lines.append(f"  Convergences: {result.reflexion.convergence_count}")
+        lines.append(f"  Divergences:  {result.reflexion.divergence_count}")
+        lines.append(f"  Absences:     {result.reflexion.absence_count}")
+        for src, dst in result.reflexion.divergences:
+            lines.append(f"    DIVERGENCE: {src} -> {dst} (observed, never declared allowed)")
+        for src, dst in result.reflexion.absences:
+            lines.append(f"    ABSENCE:    {src} -> {dst} (declared allowed, never observed)")
+        lines.append("")
+
     if result.violations:
         lines.append("-" * 70)
         lines.append("  VIOLATIONS")
@@ -102,6 +116,7 @@ def generate_json_report(result: HexagonalReport) -> str:
             for a in result.adapters
         ],
         "zone_assignments": result.zone_assignments,
+        "reflexion": result.reflexion.to_dict() if result.reflexion is not None else None,
         "violations": [
             {
                 "file_path": v.file_path,
@@ -156,6 +171,18 @@ def generate_markdown_report(result: HexagonalReport) -> str:
                 f"{a.zone.value} | "
                 f"{', '.join(a.framework_imports) or '(none)'} |"
             )
+        lines.append("")
+
+    if result.reflexion is not None:
+        lines.append("## Reflexion Model")
+        lines.append("")
+        lines.append(f"- **Convergences:** {result.reflexion.convergence_count}")
+        lines.append(f"- **Divergences:** {result.reflexion.divergence_count}")
+        lines.append(f"- **Absences:** {result.reflexion.absence_count}")
+        for src, dst in result.reflexion.divergences:
+            lines.append(f"  - Divergence: `{src} -> {dst}` (observed, never declared allowed)")
+        for src, dst in result.reflexion.absences:
+            lines.append(f"  - Absence: `{src} -> {dst}` (declared allowed, never observed)")
         lines.append("")
 
     if result.violations:
