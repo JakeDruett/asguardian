@@ -105,7 +105,8 @@ def _handle_mock(args: argparse.Namespace) -> int:
         return 0
 
     elif args.command == "data":
-        config = MockDataConfig()
+        synthetic = bool(getattr(args, "synthetic", False))
+        config = MockDataConfig(use_examples=not synthetic, use_defaults=not synthetic)
         service = MockDataGeneratorService(config)
 
         if hasattr(args, 'seed') and args.seed:

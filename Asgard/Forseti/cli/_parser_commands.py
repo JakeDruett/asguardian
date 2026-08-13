@@ -267,6 +267,8 @@ def _add_mock_parser(subparsers: argparse._SubParsersAction) -> None:
     data.add_argument("--count", type=int, default=1, help="Number of items to generate (default: 1)")
     data.add_argument("--output", "-o", help="Output file path")
     data.add_argument("--seed", type=int, help="Random seed for reproducible generation")
+    data.add_argument("--synthetic", action="store_true",
+                      help="Force synthetic generation, ignoring schema example/examples/default values")
 
     proxy = mock_sub.add_parser(
         "proxy",
