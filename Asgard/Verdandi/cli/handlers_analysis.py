@@ -10,6 +10,7 @@ from Asgard.Verdandi.Analysis import (
     SLAChecker,
     SLAConfig,
 )
+from Asgard.Verdandi.Analysis.models.analysis_models import SLAStatus
 from Asgard.Verdandi.Web import CoreWebVitalsCalculator
 from Asgard.Verdandi.Cache import CacheMetricsCalculator
 
@@ -114,8 +115,20 @@ def run_percentiles(args: argparse.Namespace, output_format: str) -> int:
 def run_apdex(args: argparse.Namespace, output_format: str) -> int:
     """Run Apdex calculation."""
     data = parse_data_list(args.data)
+    endpoint = getattr(args, "endpoint", None)
+    errors_str = getattr(args, "errors", None)
     calc = ApdexCalculator(threshold_ms=args.threshold)
-    result = calc.calculate(data)
+    config = ApdexConfig(threshold_ms=args.threshold, endpoint=endpoint)
+    if errors_str is not None:
+        error_flags = [bool(int(x.strip())) for x in errors_str.split(",")]
+        if len(error_flags) != len(data):
+            print("Error: --errors must have the same length as --data")
+            return 2
+        result = calc.calculate_with_errors(data, error_flags, config=config)
+    elif endpoint is not None:
+        result = calc.calculate(data, config=config)
+    else:
+        result = calc.calculate(data)
 
     if output_format == "json":
         print(result.model_dump_json(indent=2))
@@ -149,6 +162,42 @@ def run_sla_check(args: argparse.Namespace, output_format: str) -> int:
         threshold_ms=args.threshold,
     )
     checker = SLAChecker(config)
+
+    target_fraction = getattr(args, "target_fraction", None)
+    if target_fraction is not None:
+        fraction_result = checker.check_fraction(
+            data,
+            threshold_ms=args.threshold,
+            target_fraction=target_fraction,
+        )
+        if output_format == "json":
+            print(fraction_result.model_dump_json(indent=2))
+        else:
+            print("")
+            print("=" * 60)
+            print("  VERDANDI - SLA THRESHOLD-FRACTION CHECK")
+            print("=" * 60)
+            print("")
+            print(
+                f"  Target:     {fraction_result.target_fraction:.4f} of events "
+                f"<= {fraction_result.threshold_ms}ms"
+            )
+            print(
+                f"  Actual:     {fraction_result.good_fraction:.4f} "
+                f"({fraction_result.good_events}/{fraction_result.total_events})"
+            )
+            print(f"  Status:     {fraction_result.status.value.upper()}")
+            if fraction_result.insufficient_traffic:
+                print(
+                    f"  Validity:   INSUFFICIENT TRAFFIC "
+                    f"(need >= {fraction_result.minimum_events_required} events)"
+                )
+            for violation in fraction_result.violations:
+                print(f"  - {violation}")
+            print("")
+            print("=" * 60)
+        return 0 if fraction_result.status != SLAStatus.BREACHED else 1
+
     result = checker.check(data)
 
     if output_format == "json":

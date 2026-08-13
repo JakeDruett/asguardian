@@ -141,6 +141,22 @@ def _add_analyze_parser(subparsers) -> None:
         default=500,
         help="Apdex threshold T in milliseconds (default: 500)"
     )
+    apdex_parser.add_argument(
+        "--errors",
+        "-e",
+        type=str,
+        default=None,
+        help=(
+            "Comma-separated 0/1 error flags parallel to --data; errored "
+            "requests count as Frustrated regardless of speed"
+        ),
+    )
+    apdex_parser.add_argument(
+        "--endpoint",
+        type=str,
+        default=None,
+        help="Endpoint/route label stamped onto the result",
+    )
 
     sla_parser = analyze_subparsers.add_parser(
         "sla",
@@ -166,6 +182,16 @@ def _add_analyze_parser(subparsers) -> None:
         type=float,
         default=95,
         help="Target percentile (default: 95)"
+    )
+    sla_parser.add_argument(
+        "--target-fraction",
+        type=float,
+        default=None,
+        help=(
+            "Threshold-fraction mode (SLO-sanctioned): require this fraction "
+            "of events at or under --threshold (e.g. 0.99); overrides "
+            "percentile point-target mode"
+        ),
     )
 
     self_slo_parser = analyze_subparsers.add_parser(

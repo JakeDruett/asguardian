@@ -230,6 +230,43 @@ class SLAResult(BaseModel):
     )
 
 
+class SLAFractionResult(BaseModel):
+    """Result of a threshold-fraction SLI check (good events / total events).
+
+    Threshold-fractions aggregate across time and hosts and weight by
+    traffic, unlike percentile point targets (DEEPTHINK_04) — this is the
+    sanctioned shape for SLO use.
+    """
+
+    status: SLAStatus = Field(..., description="Overall compliance status")
+    good_events: int = Field(..., description="Events at or under the threshold")
+    total_events: int = Field(..., description="Total events considered")
+    good_fraction: float = Field(
+        ..., description="good_events / total_events (0-1)"
+    )
+    target_fraction: float = Field(
+        ..., description="Required fraction of good events (0-1)"
+    )
+    threshold_ms: float = Field(
+        ..., description="Latency threshold defining a good event"
+    )
+    minimum_events_required: int = Field(
+        ...,
+        description=(
+            "Statistical validity floor: 10 / (1 - target_fraction). Below "
+            "this the window cannot support the target and the result is "
+            "flagged insufficient_traffic rather than confidently clean"
+        ),
+    )
+    insufficient_traffic: bool = Field(
+        default=False,
+        description="True when total_events < minimum_events_required",
+    )
+    violations: List[str] = Field(
+        default_factory=list, description="Human-readable violations/caveats"
+    )
+
+
 class AggregationConfig(BaseModel):
     """Configuration for metric aggregation."""
 
