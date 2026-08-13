@@ -1,0 +1,45 @@
+# =========================================================================
+# DRAFT — NOT YET ENABLED.
+#
+# L8 performance-budget regression gate. Every job carries `if: false` so
+# this workflow never runs; enabling it (removing the guards and deciding
+# whether it is required for merge) is Jake's call. Policy and rationale:
+# _Docs/Testing/L8_Perf_Budget_Policy.md.
+# =========================================================================
+name: L8 Perf Budgets (draft, disabled)
+
+on:
+  pull_request:
+    paths:
+      - "Asgard/**"
+      - "Asgard_Test/L8_budgets.yaml"
+      - "Asgard_Test/L8_PerfBudgets/**"
+      - "Asgard_Test/**/L8_Performance/**"
+  workflow_dispatch: {}
+
+jobs:
+  l8-budgets:
+    # DISABLED: flip to a real condition (or remove) to enable.
+    if: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e . pytest pytest-benchmark pyyaml
+      - name: Budgeted smoke + corpus + self-scan + CIR 50k
+        run: python -m pytest Asgard_Test/L8_PerfBudgets -q
+      - name: Gated pytest-benchmark suites
+        run: |
+          python -m pytest \
+            Asgard_Test/tests_Heimdall/L8_Performance \
+            Asgard_Test/tests_Forseti/L8_Performance \
+            Asgard_Test/tests_Freya/L8_Performance \
+            Asgard_Test/tests_Verdandi/L8_Performance \
+            Asgard_Test/tests_Volundr/L8_Performance \
+            -q --benchmark-min-rounds=1 --benchmark-max-time=0.5
