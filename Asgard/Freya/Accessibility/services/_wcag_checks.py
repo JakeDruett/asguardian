@@ -208,7 +208,7 @@ async def check_forms(
 
     buttons = await page.query_selector_all("button, input[type='submit'], input[type='button']")
 
-    for button in buttons:
+    for button_index, button in enumerate(buttons):
         text = await button.inner_text() if await button.evaluate("el => el.tagName.toLowerCase()") == "button" else None
         value = await button.get_attribute("value")
         aria_label = await button.get_attribute("aria-label")
@@ -218,7 +218,7 @@ async def check_forms(
         if not has_accessible_name:
             element_html = await get_element_html(button, include_element_html)
             violations.append(AccessibilityViolation(
-                id=generate_id("button-name", str(hash(str(button)))),
+                id=generate_id("button-name", f"button:{button_index}"),
                 wcag_reference="4.1.2",
                 category=AccessibilityCategory.FORMS,
                 severity=ViolationSeverity.CRITICAL,
