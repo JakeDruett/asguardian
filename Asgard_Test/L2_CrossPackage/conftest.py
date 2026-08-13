@@ -43,6 +43,32 @@ def pytest_configure(config):
     config.addinivalue_line(
         "markers", "heimdall_forseti: Heimdall to Forseti integration"
     )
+    config.addinivalue_line(
+        "markers", "heimdall_freya: Heimdall to Freya integration"
+    )
+    config.addinivalue_line(
+        "markers", "forseti_freya: Forseti to Freya integration"
+    )
+    config.addinivalue_line(
+        "markers", "freya_verdandi: Freya to Verdandi integration"
+    )
+    config.addinivalue_line(
+        "markers", "scenario: real-world multi-package scenario tests"
+    )
+
+
+@pytest.fixture
+def neutral_scan_dir() -> Generator[Path, None, None]:
+    """
+    Neutral temp dir for known-bad fixtures (tmp_path embeds the test name,
+    which triggers the scanners' test-context suppression and would mute
+    findings).
+    """
+    scan_dir = Path(tempfile.mkdtemp(prefix="l2fixture_"))
+    try:
+        yield scan_dir
+    finally:
+        shutil.rmtree(scan_dir, ignore_errors=True)
 
 
 @pytest.fixture(scope="session")
