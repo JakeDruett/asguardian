@@ -51,7 +51,7 @@ class UnifiedTester:
         self,
         url: str,
         categories: Optional[List[TestCategory]] = None,
-        min_severity: TestSeverity = TestSeverity.MINOR
+        min_severity: Optional[TestSeverity] = None
     ) -> UnifiedTestReport:
         """
         Run unified tests on a URL.
@@ -67,7 +67,10 @@ class UnifiedTester:
         start_time = time.time()
 
         if categories is None:
-            categories = [TestCategory.ALL]
+            categories = self.config.categories or [TestCategory.ALL]
+
+        if min_severity is None:
+            min_severity = self.config.min_severity
 
         self.config.url = url
         self.config.categories = categories

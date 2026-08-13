@@ -195,7 +195,7 @@ class TestResponsiveIntegrationTouchTargetValidator:
 
         assert report is not None
         assert report.url == url
-        assert report.total_targets_checked > 0
+        assert report.total_interactive_elements > 0
 
     @pytest.mark.asyncio
     @pytest.mark.integration
@@ -207,7 +207,7 @@ class TestResponsiveIntegrationTouchTargetValidator:
         report = await validator.validate(url)
 
         assert report is not None
-        assert report.total_targets_checked > 0
+        assert report.total_interactive_elements > 0
 
         if len(report.issues) > 0:
             for issue in report.issues:
@@ -264,9 +264,9 @@ class TestResponsiveIntegrationTouchTargetValidator:
 
         assert report.url is not None
         assert report.tested_at is not None
-        assert report.total_targets_checked >= 0
+        assert report.total_interactive_elements >= 0
         assert isinstance(report.issues, list)
-        assert 0.0 <= report.pass_rate <= 100.0
+        assert report.passing_count + report.failing_count <= report.total_interactive_elements
 
 
 class TestResponsiveIntegrationViewportTester:
@@ -352,7 +352,7 @@ class TestResponsiveIntegrationMobileCompatibility:
 
         assert report is not None
         assert report.url == url
-        assert report.devices_tested > 0
+        assert len(report.devices_tested) > 0
 
     @pytest.mark.asyncio
     @pytest.mark.integration
@@ -364,14 +364,14 @@ class TestResponsiveIntegrationMobileCompatibility:
         report = await tester.test(url)
 
         assert report is not None
-        assert report.devices_tested > 0
+        assert len(report.devices_tested) > 0
 
     @pytest.mark.asyncio
     @pytest.mark.integration
     async def test_mobile_compatibility_custom_devices(self, sample_responsive_page):
         """Test mobile compatibility with custom device list."""
         custom_devices = [
-            device for device in MOBILE_DEVICES
+            key for key, device in MOBILE_DEVICES.items()
             if "iPhone" in device.name or "Pixel" in device.name
         ][:2]
 
@@ -381,7 +381,7 @@ class TestResponsiveIntegrationMobileCompatibility:
         report = await tester.test(url, devices=custom_devices)
 
         assert report is not None
-        assert report.devices_tested == len(custom_devices)
+        assert len(report.devices_tested) == len(custom_devices)
 
     @pytest.mark.asyncio
     @pytest.mark.integration
@@ -394,9 +394,9 @@ class TestResponsiveIntegrationMobileCompatibility:
 
         assert report.url is not None
         assert report.tested_at is not None
-        assert report.devices_tested >= 0
+        assert len(report.devices_tested) >= 0
         assert isinstance(report.issues, list)
-        assert 0.0 <= report.compatibility_score <= 100.0
+        assert 0.0 <= report.mobile_friendly_score <= 100.0
 
 
 class TestResponsiveIntegrationMultipleViewports:
@@ -450,7 +450,7 @@ class TestResponsiveIntegrationMultipleViewports:
     @pytest.mark.integration
     async def test_touch_targets_meet_minimum_size(self, sample_responsive_page):
         """Test that all touch targets meet minimum size requirements."""
-        validator = TouchTargetValidator(min_width=44, min_height=44)
+        validator = TouchTargetValidator(min_touch_size=44)
 
         url = file_url(sample_responsive_page)
         report = await validator.validate(url)

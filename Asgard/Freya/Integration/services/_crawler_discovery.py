@@ -114,7 +114,8 @@ async def crawl_site(
         if not page_info or page_info.status != PageStatus.PENDING:
             continue
 
-        if page_info.depth >= config.max_depth:
+        # max_depth is inclusive: max_depth=0 crawls only the start page.
+        if page_info.depth > config.max_depth:
             page_info.status = PageStatus.SKIPPED
             continue
 

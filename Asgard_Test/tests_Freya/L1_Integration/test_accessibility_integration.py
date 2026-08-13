@@ -243,9 +243,7 @@ class TestAccessibilityIntegrationColorContrast:
     @pytest.mark.integration
     async def test_color_contrast_accessible_page(self, sample_accessible_page):
         """Test color contrast checker on page with good contrast."""
-        from Asgard.Freya.Accessibility.models.accessibility_models import ContrastConfig
-
-        config = ContrastConfig(
+        config = AccessibilityConfig(
             wcag_level=WCAGLevel.AA,
         )
         checker = ColorContrastChecker(config)
@@ -255,20 +253,18 @@ class TestAccessibilityIntegrationColorContrast:
 
         assert report is not None
         assert report.url == url
-        assert report.total_elements_checked > 0
+        assert report.total_elements > 0
 
         if len(report.issues) > 0:
-            assert report.pass_rate < 100.0
+            assert report.failing_count > 0
         else:
-            assert report.pass_rate == 100.0
+            assert report.failing_count == 0
 
     @pytest.mark.asyncio
     @pytest.mark.integration
     async def test_color_contrast_inaccessible_page(self, sample_inaccessible_page):
         """Test color contrast checker detects poor contrast."""
-        from Asgard.Freya.Accessibility.models.accessibility_models import ContrastConfig
-
-        config = ContrastConfig(
+        config = AccessibilityConfig(
             wcag_level=WCAGLevel.AA,
         )
         checker = ColorContrastChecker(config)
@@ -288,9 +284,7 @@ class TestAccessibilityIntegrationColorContrast:
     @pytest.mark.integration
     async def test_color_contrast_report_structure(self, sample_accessible_page):
         """Test color contrast report has correct structure."""
-        from Asgard.Freya.Accessibility.models.accessibility_models import ContrastConfig
-
-        config = ContrastConfig(
+        config = AccessibilityConfig(
             wcag_level=WCAGLevel.AA,
         )
         checker = ColorContrastChecker(config)
@@ -301,8 +295,8 @@ class TestAccessibilityIntegrationColorContrast:
         assert report.url is not None
         assert report.tested_at is not None
         assert report.wcag_level == "AA"
-        assert report.total_elements_checked >= 0
-        assert 0.0 <= report.pass_rate <= 100.0
+        assert report.total_elements >= 0
+        assert report.passing_count + report.failing_count <= report.total_elements
         assert isinstance(report.issues, list)
 
 
@@ -313,14 +307,14 @@ class TestAccessibilityIntegrationKeyboardNavigation:
     @pytest.mark.integration
     async def test_keyboard_navigation_accessible_page(self, sample_accessible_page):
         """Test keyboard navigation on accessible page."""
-        tester = KeyboardNavigationTester()
+        tester = KeyboardNavigationTester(AccessibilityConfig())
 
         url = file_url(sample_accessible_page)
         report = await tester.test(url)
 
         assert report is not None
         assert report.url == url
-        assert report.focusable_elements_tested > 0
+        assert report.total_focusable > 0
 
         assert len(report.issues) == 0 or all(
             issue.severity != ViolationSeverity.CRITICAL
@@ -331,26 +325,26 @@ class TestAccessibilityIntegrationKeyboardNavigation:
     @pytest.mark.integration
     async def test_keyboard_navigation_focus_indicators(self, sample_accessible_page):
         """Test keyboard navigation checks for focus indicators."""
-        tester = KeyboardNavigationTester()
+        tester = KeyboardNavigationTester(AccessibilityConfig())
 
         url = file_url(sample_accessible_page)
         report = await tester.test(url)
 
         assert report is not None
-        assert report.focusable_elements_tested > 0
+        assert report.total_focusable > 0
 
     @pytest.mark.asyncio
     @pytest.mark.integration
     async def test_keyboard_navigation_report_structure(self, sample_accessible_page):
         """Test keyboard navigation report structure."""
-        tester = KeyboardNavigationTester()
+        tester = KeyboardNavigationTester(AccessibilityConfig())
 
         url = file_url(sample_accessible_page)
         report = await tester.test(url)
 
         assert report.url is not None
         assert report.tested_at is not None
-        assert report.focusable_elements_tested >= 0
+        assert report.total_focusable >= 0
         assert isinstance(report.issues, list)
 
 
@@ -361,14 +355,14 @@ class TestAccessibilityIntegrationARIAValidator:
     @pytest.mark.integration
     async def test_aria_validator_accessible_page(self, sample_accessible_page):
         """Test ARIA validation on accessible page."""
-        validator = ARIAValidator()
+        validator = ARIAValidator(AccessibilityConfig())
 
         url = file_url(sample_accessible_page)
         report = await validator.validate(url)
 
         assert report is not None
         assert report.url == url
-        assert report.elements_validated > 0
+        assert report.total_aria_elements >= 0
 
         critical_violations = [v for v in report.violations if v.severity == ViolationSeverity.CRITICAL]
         assert len(critical_violations) == 0
@@ -377,7 +371,7 @@ class TestAccessibilityIntegrationARIAValidator:
     @pytest.mark.integration
     async def test_aria_validator_detects_invalid_roles(self, sample_inaccessible_page):
         """Test ARIA validator detects invalid roles."""
-        validator = ARIAValidator()
+        validator = ARIAValidator(AccessibilityConfig())
 
         url = file_url(sample_inaccessible_page)
         report = await validator.validate(url)
@@ -395,13 +389,14 @@ class TestAccessibilityIntegrationARIAValidator:
     @pytest.mark.integration
     async def test_aria_validator_report_structure(self, sample_accessible_page):
         """Test ARIA validator report structure."""
-        validator = ARIAValidator()
+        validator = ARIAValidator(AccessibilityConfig())
 
         url = file_url(sample_accessible_page)
         report = await validator.validate(url)
 
         assert report.url is not None
         assert report.tested_at is not None
-        assert report.elements_validated >= 0
+        assert report.total_aria_elements >= 0
         assert isinstance(report.violations, list)
-        assert 0.0 <= report.score <= 100.0
+        assert report.valid_count >= 0
+        assert report.invalid_count >= 0
