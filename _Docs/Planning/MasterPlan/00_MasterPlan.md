@@ -3,7 +3,7 @@
 **Last updated:** 2026-08-13 (post Wave 5 — all unblocked Phase 1-4 items DONE).
 All original uplift plans are DELIVERED and archived under `_Docs/Delivered/Planning/`
 (see its `README.md` for the ledger; per-wave evidence in `UPLIFT_STATUS.md` at repo root).
-Full suite is green: **9,758 passed / 0 failed / 11 skipped**.
+Full suite is green: **10,621 passed / 0 failed / 11 skipped** (post Wave 5).
 
 This document is now the single live plan. Phases are ordered by dependency; within a
 phase, items are independent and parallelizable. Invariants apply throughout: never mute
