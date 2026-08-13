@@ -21,3 +21,15 @@ acceptance item remains (tracked as PARTIAL): Heimdall 03 (hexagonal
 anemic-model / infra-leak detectors), Volundr 06 & 07 (module-doc
 reconciliation), among others. Each module's `00_Overview.md` still indexes
 its remaining plans.
+
+---
+
+## Wave 4 closure (2026-08-13)
+
+Every remaining plan directory (Bragi, Forseti, Freya, Heimdall, Verdandi, Volundr,
+StaticDepth, TaintGaps, TestCoverage) was audited by 11 parallel agents against the
+codebase and the residual gaps implemented and merged; full suite green
+(9,758 passed / 0 / 11 skipped). All plan files were then archived here as the
+historical record. The single live plan is now
+`_Docs/Planning/MasterPlan/00_MasterPlan.md`; per-wave evidence remains in
+`UPLIFT_STATUS.md` at the repo root.
