@@ -81,6 +81,19 @@ def build_asgard_way_gate() -> QualityGate:
                 error_on_fail=True,
                 description="No critical security vulnerabilities are permitted",
             ),
+            GateCondition(
+                metric=MetricType.SECURITY_SCORE,
+                operator=GateOperator.GREATER_THAN_OR_EQUAL,
+                threshold=40.0,
+                error_on_fail=False,
+                on_missing=OnMissing.SKIP,
+                description=(
+                    "Multiplicative-decay security score should be 40 or "
+                    "better (a single CRITICAL scores exactly 40; below "
+                    "that means multiple criticals or heavy high-severity "
+                    "load). Warn-only: the score is HEURISTIC-class."
+                ),
+            ),
             # Tier-2 (asgard-main) conditions — evaluated when the async
             # project-wide tier supplies them; skipped by explicit policy
             # otherwise (Plan Bragi-06 §3.3).
@@ -330,6 +343,13 @@ def extract_metrics_from_reports(
 
         metrics[MetricType.CRITICAL_VULNERABILITIES] = float(critical_count)
         metrics[MetricType.HIGH_VULNERABILITIES] = float(high_count)
+
+        # Multiplicative-decay security score (Plan Heimdall-06 §A). Only
+        # supplied when the report actually carries it — a missing score
+        # is honestly NOT_EVALUATED/SKIP, never assumed clean.
+        security_score = getattr(security_report, "security_score", None)
+        if security_score is not None:
+            metrics[MetricType.SECURITY_SCORE] = float(security_score)
 
     if debt_report is not None:
         debt_hours = getattr(debt_report, "total_debt_hours", None)
