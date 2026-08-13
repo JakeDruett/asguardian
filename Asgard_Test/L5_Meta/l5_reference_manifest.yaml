@@ -1,0 +1,58 @@
+# Regulatory reference manifest for L5 compliance tests.
+#
+# Every test class in any */L5_Compliance/test_*.py file MUST have an entry
+# here mapping it to a CWE / WCAG / CIS reference (with two documented
+# extensions: OWASP-Axx categories and SRE-* for Google-SRE-book ground
+# truths that have no CWE). Enforced by
+# Asgard_Test/L5_Meta/test_regulatory_mapping.py.
+#
+# Key format: <path relative to Asgard_Test>::<TestClassName>
+
+# --- Heimdall (pre-existing suites) ----------------------------------------
+tests_Heimdall/L5_Compliance/test_legacy_scanner_compliance.py::TestInjectionDetectionCompliance: CWE-89
+tests_Heimdall/L5_Compliance/test_legacy_scanner_compliance.py::TestSecretsDetectionCompliance: CWE-798
+tests_Heimdall/L5_Compliance/test_legacy_scanner_compliance.py::TestCryptographicValidationCompliance: CWE-327
+tests_Heimdall/L5_Compliance/test_legacy_scanner_compliance.py::TestTaintAnalyzerCompliance: CWE-89
+
+tests_Heimdall/L5_Compliance/test_architecture_compliance.py::TestSOLIDSRPCompliance: CWE-710
+tests_Heimdall/L5_Compliance/test_architecture_compliance.py::TestSOLIDISPCompliance: CWE-710
+tests_Heimdall/L5_Compliance/test_architecture_compliance.py::TestSOLIDDIPCompliance: CWE-710
+tests_Heimdall/L5_Compliance/test_architecture_compliance.py::TestHexagonalDomainIsolationCompliance: CWE-710
+
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestReDoSScannerCompliance: CWE-1333
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestAPISecurityScannerCompliance: CWE-639
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestBackdoorDetectorCompliance: CWE-506
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestDataExfiltrationDetectorCompliance: CWE-200
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestDeserializationScannerCompliance: CWE-502
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestFrontendSecurityScannerCompliance: CWE-79
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestMalwareScannerCompliance: CWE-506
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestSecurityMisconfigScannerCompliance: CWE-1188
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestPathTraversalScannerCompliance: CWE-22
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestRaceConditionDetectorCompliance: CWE-362
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestSensitiveDataScannerCompliance: CWE-312
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestSSRFXXEScannerCompliance: CWE-918
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestInputValidationScannerCompliance: CWE-20
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestInfoDisclosureScannerCompliance: CWE-200
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestGitSecurityScannerCompliance: CWE-798
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestFileIntegrityCheckerCompliance: CWE-494
+tests_Heimdall/L5_Compliance/test_security_scanner_compliance.py::TestLogAnalyzerCompliance: CWE-532
+
+# --- Forseti ----------------------------------------------------------------
+tests_Forseti/L5_Compliance/test_spec_violation_compliance.py::TestOpenAPIBreakingChangeCompliance: CWE-439
+tests_Forseti/L5_Compliance/test_spec_violation_compliance.py::TestDatabaseMigrationCompliance: CWE-439
+
+# --- Freya ------------------------------------------------------------------
+tests_Freya/L5_Compliance/test_accessibility_security_compliance.py::TestContrastRatioCompliance: WCAG-1.4.3
+tests_Freya/L5_Compliance/test_accessibility_security_compliance.py::TestFocusOrderCompliance: WCAG-1.3.2
+tests_Freya/L5_Compliance/test_accessibility_security_compliance.py::TestMixedContentCompliance: CWE-319
+tests_Freya/L5_Compliance/test_accessibility_security_compliance.py::TestSecurityHeaderCompliance: CWE-693
+
+# --- Verdandi ---------------------------------------------------------------
+tests_Verdandi/L5_Compliance/test_slo_statistics_compliance.py::TestSLOBreachCompliance: SRE-ErrorBudget
+tests_Verdandi/L5_Compliance/test_slo_statistics_compliance.py::TestAnomalyDetectionCompliance: SRE-AnomalyDetection
+
+# --- Volundr ----------------------------------------------------------------
+tests_Volundr/L5_Compliance/test_iac_misconfig_compliance.py::TestDockerfileCISCompliance: CIS-Docker-4.1
+tests_Volundr/L5_Compliance/test_iac_misconfig_compliance.py::TestKubernetesCISCompliance: CIS-K8s-5.2.1
+tests_Volundr/L5_Compliance/test_iac_misconfig_compliance.py::TestTerraformCISCompliance: CIS-AWS-5.2
+tests_Volundr/L5_Compliance/test_iac_misconfig_compliance.py::TestCICDWorkflowCompliance: CWE-94
