@@ -1,0 +1,28 @@
+# L8 performance budgets (milliseconds).
+#
+# Source of truth for scanner latency budgets, read by the `l8_budget`
+# fixture in Asgard_Test/L8_PerfBudgets/conftest.py.
+#
+# Budgets are deliberately generous (5-10x typical local latency) so they
+# catch order-of-magnitude regressions (accidental O(n^2), pathological
+# regex, unbounded rescans) without flaking on slow CI runners.
+
+heimdall:
+  secrets_detection:
+    single_file_ms: 1500
+  injection_detection:
+    single_file_ms: 2500
+  cryptographic_validation:
+    single_file_ms: 1500
+  taint_analyzer:
+    single_file_ms: 4000
+
+forseti:
+  openapi_validation_ms: 3000
+
+verdandi:
+  error_budget_calc_1k_metrics_ms: 1000
+
+volundr:
+  dockerfile_lint_ms: 1000
+  pipeline_generation_ms: 2000
