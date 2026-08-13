@@ -484,3 +484,161 @@ def run_db_queries_per_class(args, output_format: str = "text") -> int:
         print("\n".join(lines))
 
     return 1 if any(c.shift_detected for c in classes) else 0
+
+
+def run_sketch_merge(args, output_format: str = "text") -> int:
+    """`verdandi analyze sketch-merge <sketch.json> [<sketch.json> ...]`.
+
+    Merges serialized quantile sketches (all t-digest or all DDSketch) and
+    queries percentiles on the merged sketch — the sanctioned cross-source
+    aggregation path (RESEARCH_15: never average per-host percentiles).
+    """
+    from Asgard.Verdandi.Analysis.services.quantile_sketch import (
+        DDSketch,
+        TDigest,
+    )
+
+    loaders = {"tdigest": TDigest.from_dict, "ddsketch": DDSketch.from_dict}
+    sketches = []
+    sketch_type = None
+    for path in args.sketch_files:
+        data = _load_json(path)
+        if data is None:
+            return 1
+        if not isinstance(data, dict) or data.get("type") not in loaders:
+            print(
+                f"Error: {path} is not a serialized sketch "
+                "(expected a JSON object with type 'tdigest' or 'ddsketch')."
+            )
+            return 1
+        if sketch_type is None:
+            sketch_type = data["type"]
+        elif data["type"] != sketch_type:
+            print(
+                f"Error: Cannot merge mixed sketch types "
+                f"({sketch_type} vs {data['type']} in {path})."
+            )
+            return 1
+        try:
+            sketches.append(loaders[data["type"]](data))
+        except (KeyError, TypeError, ValueError) as e:
+            print(f"Error: Could not deserialize sketch from {path}: {e}")
+            return 1
+
+    try:
+        percentiles = [float(q) for q in args.quantiles.split(",") if q.strip()]
+    except ValueError:
+        print(f"Error: Invalid --quantiles value: {args.quantiles}")
+        return 1
+    if not percentiles or any(not (0 < q < 100) for q in percentiles):
+        print("Error: --quantiles values must be between 0 and 100 (exclusive).")
+        return 1
+
+    merged = sketches[0]
+    for sketch in sketches[1:]:
+        merged.merge(sketch)
+
+    estimates = {f"p{q:g}": merged.percentile(q) for q in percentiles}
+
+    if args.output:
+        try:
+            Path(args.output).write_text(
+                json.dumps(merged.to_dict(), indent=2), encoding="utf-8"
+            )
+        except OSError as e:
+            print(f"Error: Could not write merged sketch to {args.output}: {e}")
+            return 1
+
+    if output_format == "json":
+        print(json.dumps({
+            "sketch_type": sketch_type,
+            "sources": len(sketches),
+            "count": merged.count,
+            "percentiles": estimates,
+            "output": args.output,
+        }, indent=2))
+    else:
+        lines = ["", "MERGED QUANTILE SKETCH (cross-source union)", "=" * 60,
+                 f"  Sketch type: {sketch_type}",
+                 f"  Sources:     {len(sketches)}",
+                 f"  Count:       {merged.count:g}"]
+        for label, value in estimates.items():
+            lines.append(f"  {label:6}: {value:.4f}")
+        if args.output:
+            lines.append(f"  Merged sketch written to: {args.output}")
+        print("\n".join(lines))
+
+    return 0
+
+
+def run_co_check(args, output_format: str = "text") -> int:
+    """`verdandi analyze co-check <metrics.json>`.
+
+    Coordinated-omission quality analysis: Tene heuristic, Little's-law
+    sanity check, and (with --correct) HDR-style expected-interval backfill.
+    Exit code 1 when the dataset is suspect.
+    """
+    from Asgard.Verdandi.Analysis.services import coordinated_omission
+
+    data = _load_json(args.metrics_file)
+    if data is None:
+        return 1
+    if not isinstance(data, dict):
+        print("Error: Expected a JSON object with samples_ms and duration_ms.")
+        return 1
+    samples = data.get("samples_ms")
+    duration = data.get("duration_ms")
+    if not isinstance(samples, list) or not samples:
+        print("Error: samples_ms must be a non-empty array of latencies (ms).")
+        return 1
+    if not isinstance(duration, (int, float)) or duration <= 0:
+        print("Error: duration_ms must be a positive number.")
+        return 1
+
+    expected_interval = data.get("expected_interval_ms")
+    if args.correct and not expected_interval:
+        print(
+            "Error: --correct requires expected_interval_ms in the "
+            "metrics file (1000 / target_throughput_rps)."
+        )
+        return 1
+
+    report = coordinated_omission.analyze(
+        samples,
+        duration,
+        expected_interval_ms=expected_interval,
+        throughput_rps=data.get("throughput_rps"),
+        max_concurrency=data.get("max_concurrency"),
+        apply_correction=args.correct,
+    )
+
+    corrected = report.corrected_samples_ms
+    if output_format == "json":
+        print(json.dumps({
+            "suspect": report.suspect,
+            "quality_flags": report.quality_flags,
+            "implied_concurrency": report.implied_concurrency,
+            "original_sample_count": len(samples),
+            "corrected_sample_count": (
+                len(corrected) if corrected is not None else None
+            ),
+            "corrected_samples_ms": corrected,
+        }, indent=2))
+    else:
+        lines = ["", "COORDINATED-OMISSION CHECK", "=" * 60,
+                 f"  Samples:       {len(samples)}",
+                 f"  Duration (ms): {duration:g}",
+                 f"  Suspect:       {report.suspect}",
+                 f"  Quality flags: {', '.join(report.quality_flags) or 'none'}"]
+        if report.implied_concurrency is not None:
+            lines.append(
+                f"  Implied concurrency: {report.implied_concurrency:.2f}"
+            )
+        if corrected is not None:
+            lines.append(
+                f"  Backfill-corrected samples: {len(corrected)} "
+                f"(+{len(corrected) - len(samples)} synthesized)"
+            )
+        print("\n".join(lines))
+
+    return 1 if report.suspect else 0

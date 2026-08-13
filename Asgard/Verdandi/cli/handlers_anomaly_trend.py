@@ -1,7 +1,9 @@
 import argparse
 import json
+import math
 
 from Asgard.Verdandi.Anomaly import StatisticalDetector, BaselineComparator, RegressionDetector
+from Asgard.Verdandi.Anomaly.models.anomaly_models import MetricClass, SensitivityProfile
 from Asgard.Verdandi.Trend import TrendAnalyzer, ForecastCalculator
 from Asgard.Verdandi.Trend.models.trend_models import TrendData
 from Asgard.Verdandi.cli.handlers_analysis import load_json_or_parse
@@ -52,11 +54,35 @@ def run_regression_check(args: argparse.Namespace, output_format: str) -> int:
     # --threshold (a percent) maps onto the three-gate verdict's relative
     # Hodges-Lehmann shift gate; it is also passed to the legacy gate so the
     # operator's intent holds in either verdict mode.
-    detector = RegressionDetector(
-        regression_threshold_percent=args.threshold,
-        hl_relative_threshold=args.threshold / 100.0,
-    )
+    detector_kwargs = {
+        "regression_threshold_percent": args.threshold,
+        "hl_relative_threshold": args.threshold / 100.0,
+    }
+
+    # --profile: metric-class sensitivity preset (DEEPTHINK_08). The
+    # profile's z-threshold is mapped to the Welch-test alpha via the
+    # two-sided normal tail (alpha = erfc(z / sqrt(2))) instead of exposing
+    # raw statistical knobs on the CLI.
+    profile = None
+    profile_name = getattr(args, "profile", None)
+    if profile_name:
+        profile = SensitivityProfile.for_metric_class(MetricClass(profile_name))
+        detector_kwargs["significance_level"] = math.erfc(
+            profile.z_threshold / math.sqrt(2.0)
+        )
+
+    detector = RegressionDetector(**detector_kwargs)
     result = detector.detect(before, after, metric_name="cli_metric")
+
+    profile_warnings = []
+    if profile is not None:
+        if min(len(before), len(after)) < profile.min_sample_size:
+            profile_warnings.append(
+                f"Sample size below profile minimum "
+                f"({min(len(before), len(after))} < {profile.min_sample_size}); "
+                "verdict confidence is reduced."
+            )
+        profile_warnings.extend(profile.notes)
 
     if output_format == "json":
         print(result.model_dump_json(indent=2))
@@ -78,6 +104,13 @@ def run_regression_check(args: argparse.Namespace, output_format: str) -> int:
         print(f"  Severity:        {result.regression_severity.value.upper()}")
         print(f"  Confidence:      {result.confidence * 100:.0f}%")
         print("")
+
+        if profile is not None:
+            print(f"  Profile:         {profile.metric_class.value} "
+                  f"(bias: {profile.bias}, z={profile.z_threshold})")
+            for warning in profile_warnings:
+                print(f"  - {warning}")
+            print("")
 
         if result.recommendations:
             print("-" * 60)
