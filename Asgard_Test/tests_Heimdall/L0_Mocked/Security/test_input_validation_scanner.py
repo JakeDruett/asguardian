@@ -14,27 +14,27 @@ class TestInputValidationScannerInstantiation:
 
 
 class TestInputValidationScannerCleanCode:
-    def test_parameterized_query_returns_no_findings(self, tmp_path):
-        (tmp_path / "safe.py").write_text(
+    def test_parameterized_query_returns_no_findings(self, neutral_tmp):
+        (neutral_tmp / "safe.py").write_text(
             "def get_user(conn, user_id):\n"
             "    cursor = conn.cursor()\n"
             "    cursor.execute('SELECT * FROM users WHERE id = ?', (user_id,))\n"
             "    return cursor.fetchone()\n"
         )
-        config = InputValidationScanConfig(scan_path=tmp_path)
+        config = InputValidationScanConfig(scan_path=neutral_tmp)
         report: InputValidationScanReport = InputValidationScanner().scan(config)
         assert report.total_findings == 0
         assert len(report.findings) == 0
 
 
 class TestInputValidationScannerBadCode:
-    def test_sql_with_request_param_detected(self, tmp_path):
+    def test_sql_with_request_param_detected(self, neutral_tmp):
         # Pattern: execute("..." + req.params) triggers sql_string_concat
-        (tmp_path / "vuln.js").write_text(
+        (neutral_tmp / "vuln.js").write_text(
             "app.get('/user', (req, res) => {\n"
             "    db.query(\"SELECT * FROM users WHERE id = '\" + req.params.id + \"'\");\n"
             "});\n"
         )
-        config = InputValidationScanConfig(scan_path=tmp_path)
+        config = InputValidationScanConfig(scan_path=neutral_tmp)
         report: InputValidationScanReport = InputValidationScanner().scan(config)
         assert report.total_findings > 0

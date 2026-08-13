@@ -5,7 +5,10 @@ Shared pytest configuration and fixtures for all Asgard tests.
 """
 
 import os
+import re
+import shutil
 import sys
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -84,6 +87,56 @@ def project_root():
 def asgard_root():
     """Return the Asgard package root directory."""
     return Path(__file__).parent.parent
+
+
+# ---------------------------------------------------------------------------
+# neutral_tmp: a temp dir whose path carries NO test-like tokens.
+#
+# pytest's ``tmp_path`` embeds the test name in the directory path
+# (``/tmp/pytest-of-<user>/pytest-N/test_<name>0/``). Asgard's scanners apply
+# test-context suppression/downgrading based on the scanned file's path
+# (``Asgard.Heimdall.Security.context.test_context``), so a known-bad security
+# fixture written under a test-shaped path can be silently muted — the test
+# then passes for the wrong reason. Any test that writes known-bad code to
+# disk and scans it should use ``neutral_tmp`` instead of ``tmp_path``.
+# ---------------------------------------------------------------------------
+
+# Tokens that any test-context heuristic in the codebase keys on. The fixture
+# guarantees none of these appear anywhere in the yielded path (substring
+# match, case-insensitive — deliberately stricter than the scanners' own
+# word-boundary matching, so the path stays neutral even for naive
+# ``"test" in path`` checks).
+_NEUTRAL_TMP_FORBIDDEN_RE = re.compile(r"test|spec|mock|conftest|fixture", re.IGNORECASE)
+
+
+@pytest.fixture
+def neutral_tmp():
+    """
+    Function-scoped temporary directory whose absolute path contains no
+    test-like tokens, so path-based test-context classification always
+    resolves to PRODUCTION for files created beneath it.
+
+    Deliberately NOT rooted under pytest's basetemp: basetemp paths contain
+    ``pytest`` (and, if overridden via ``--basetemp``, arbitrary user-chosen
+    segments such as ``tests/``), either of which can trip test-context
+    heuristics.
+    """
+    for _ in range(20):
+        path = tempfile.mkdtemp(prefix="asgard_scan_")
+        if not _NEUTRAL_TMP_FORBIDDEN_RE.search(path):
+            break
+        # Random suffix (or an unusual system tempdir) spelled a forbidden
+        # token: discard and retry.
+        shutil.rmtree(path, ignore_errors=True)
+    else:
+        pytest.skip(
+            "could not allocate a neutral temp dir: system temp path "
+            f"{tempfile.gettempdir()!r} contains test-like tokens"
+        )
+    try:
+        yield Path(path)
+    finally:
+        shutil.rmtree(path, ignore_errors=True)
 
 
 @pytest.fixture
