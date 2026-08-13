@@ -35,21 +35,21 @@ def tool_quality_analyze(params: Dict[str, Any], config: MCPServerConfig) -> Dic
     result = analyzer.analyze()
 
     top_violations = []
-    if hasattr(result, "violations"):
-        for v in list(result.violations)[:10]:
-            top_violations.append({
-                "file": str(getattr(v, "file_path", "")),
-                "line": getattr(v, "line_number", 0),
-                "message": getattr(v, "message", ""),
-                "severity": str(getattr(v, "severity", "")),
-            })
+    for v in list(result.violations)[:10]:
+        top_violations.append({
+            "file": v.relative_path,
+            "line_count": v.line_count,
+            "lines_over": v.lines_over,
+            "message": f"{v.line_count} lines (+{v.lines_over} over threshold {v.threshold})",
+            "severity": str(v.severity),
+        })
 
     return {
         "scan_path": str(scan_path),
         "analyzed_at": datetime.now().isoformat(),
-        "total_files": getattr(result, "total_files", 0),
-        "total_violations": getattr(result, "total_violations", 0),
-        "violations_by_severity": getattr(result, "violations_by_severity", {}),
+        "total_files": result.total_files_scanned,
+        "total_violations": len(result.violations),
+        "violations_by_severity": result.get_violations_by_severity(),
         "top_violations": top_violations,
     }
 
@@ -64,22 +64,37 @@ def tool_security_scan(params: Dict[str, Any], config: MCPServerConfig) -> Dict[
     report = service.scan(str(scan_path))
 
     top_findings = []
-    if hasattr(report, "findings"):
-        for f in list(report.findings)[:10]:
+    if report.vulnerability_report is not None:
+        for f in report.vulnerability_report.findings:
             top_findings.append({
-                "file": str(getattr(f, "file_path", "")),
-                "line": getattr(f, "line_number", 0),
-                "title": getattr(f, "title", ""),
-                "severity": str(getattr(f, "severity", "")),
-                "type": str(getattr(f, "vulnerability_type", "")),
+                "file": f.file_path,
+                "line": f.line_number,
+                "title": f.title,
+                "severity": str(f.severity),
+                "type": str(f.vulnerability_type),
             })
+    if report.secrets_report is not None:
+        for s in report.secrets_report.findings:
+            top_findings.append({
+                "file": s.file_path,
+                "line": s.line_number,
+                "title": f"Secret detected: {s.pattern_name}",
+                "severity": str(s.severity),
+                "type": str(s.secret_type),
+            })
+    top_findings = top_findings[:10]
 
     return {
         "scan_path": str(scan_path),
         "scanned_at": datetime.now().isoformat(),
-        "security_score": getattr(report, "security_score", 0),
-        "total_findings": getattr(report, "total_findings", 0),
-        "findings_by_severity": getattr(report, "findings_by_severity", {}),
+        "security_score": report.security_score,
+        "total_findings": report.total_issues,
+        "findings_by_severity": {
+            "critical": report.critical_issues,
+            "high": report.high_issues,
+            "medium": report.medium_issues,
+            "low": report.low_issues,
+        },
         "top_findings": top_findings,
     }
 
@@ -114,20 +129,26 @@ def tool_quality_gate(params: Dict[str, Any], config: MCPServerConfig) -> Dict[s
     )
 
     conditions = []
-    if hasattr(gate_result, "condition_results"):
-        for cr in gate_result.condition_results:
-            conditions.append({
-                "metric": str(getattr(cr, "metric", "")),
-                "status": str(getattr(cr, "status", "")),
-                "actual_value": getattr(cr, "actual_value", None),
-                "threshold": getattr(cr, "threshold", None),
-            })
+    for cr in gate_result.condition_results:
+        if cr.passed is True:
+            condition_status = "passed"
+        elif cr.passed is False:
+            condition_status = "failed"
+        else:
+            condition_status = "not_evaluated"
+        conditions.append({
+            "metric": str(cr.condition.metric),
+            "status": condition_status,
+            "actual_value": cr.actual_value,
+            "threshold": cr.condition.threshold,
+        })
 
+    status = str(gate_result.status)
     return {
         "scan_path": str(scan_path),
-        "gate_name": getattr(gate, "name", "Asgard Way"),
-        "status": str(getattr(gate_result, "status", "")),
-        "passed": getattr(gate_result, "passed", False),
+        "gate_name": gate_result.gate_name,
+        "status": status,
+        "passed": status == "passed",
         "conditions": conditions,
         "evaluated_at": datetime.now().isoformat(),
     }
@@ -205,11 +226,11 @@ def tool_list_issues(params: Dict[str, Any], config: MCPServerConfig) -> Dict[st
         status = IssueStatus.OPEN
 
     tracker = IssueTracker()
-    issue_filter = IssueFilter(project_path=scan_path, statuses=[status], limit=limit)
-    issues = tracker.list_issues(issue_filter)
+    issue_filter = IssueFilter(status=[status])
+    issues = tracker.get_issues(scan_path, issue_filter)
 
     issue_list = []
-    for issue in issues:
+    for issue in issues[:limit]:
         issue_list.append({
             "issue_id": str(getattr(issue, "issue_id", "")),
             "rule_id": getattr(issue, "rule_id", ""),
