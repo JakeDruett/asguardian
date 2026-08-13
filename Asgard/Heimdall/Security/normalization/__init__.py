@@ -29,6 +29,13 @@ from Asgard.Heimdall.Security.normalization.equivalency import (
     finding_classes_for,
     severity_of_class,
 )
+from Asgard.Heimdall.Security.normalization.calibration import (
+    CALIBRATION_MAP_ENV,
+    ConfidenceCalibration,
+    calibrate_confidence,
+    default_calibration,
+    load_calibration_map,
+)
 from Asgard.Heimdall.Security.normalization.scoring import (
     legacy_security_score,
     multiplicative_security_score,
@@ -47,6 +54,11 @@ __all__ = [
     "EQUIVALENCY_MATRIX",
     "finding_classes_for",
     "severity_of_class",
+    "CALIBRATION_MAP_ENV",
+    "ConfidenceCalibration",
+    "calibrate_confidence",
+    "default_calibration",
+    "load_calibration_map",
     "legacy_security_score",
     "multiplicative_security_score",
     "score_weight",

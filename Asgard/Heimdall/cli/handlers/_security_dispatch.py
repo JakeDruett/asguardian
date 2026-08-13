@@ -182,6 +182,15 @@ def run_dispatch_scan(
 
 def _entry(rule_id, severity, confidence, file_path, line, message, cwe,
            context_tag, modifier, bucket_override=None) -> Dict[str, Any]:
+    # Plan 10 s4: apply the persisted calibration map (if configured via
+    # HEIMDALL_CALIBRATION_MAP) to convert raw heuristic confidence into an
+    # empirical probability BEFORE bucketing/priority. Identity by default.
+    # Epistemic bucket overrides ("needs review" for dynamic constructs)
+    # are preserved untouched -- calibration never mutes them.
+    from Asgard.Heimdall.Security.normalization.calibration import (
+        calibrate_confidence,
+    )
+    confidence = calibrate_confidence(confidence)
     bucket = bucket_override if bucket_override in BUCKET_LABELS else confidence_bucket(confidence)
     return {
         "rule_id": rule_id,

@@ -36,6 +36,7 @@ from Asgard.Heimdall.evaluation.calibration import (
     isotonic_regression,
     IsotonicCalibrator,
     brier_score,
+    load_calibrator,
 )
 from Asgard.Heimdall.evaluation.runner import CorpusMetrics, run_corpus
 from Asgard.Heimdall.evaluation.gate import GateResult, evaluate_gate, ACCEPTANCE_PROFILES
@@ -56,6 +57,7 @@ __all__ = [
     "isotonic_regression",
     "IsotonicCalibrator",
     "brier_score",
+    "load_calibrator",
     "CorpusMetrics",
     "run_corpus",
     "GateResult",

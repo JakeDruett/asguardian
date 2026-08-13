@@ -174,6 +174,18 @@ def run_eval_corpus(args: argparse.Namespace, verbose: bool = False) -> int:
     )
     reliability = reliability_diagram(metrics.calibration_records)
 
+    save_calibration = getattr(args, "save_calibration", None)
+    saved_calibration_path = None
+    if save_calibration:
+        if calibrator.to_map():
+            calibrator.save_map(save_calibration)
+            saved_calibration_path = str(save_calibration)
+        else:
+            print(
+                "Warning: no calibration records produced by this corpus run; "
+                "not writing an empty calibration map."
+            )
+
     output_format = getattr(args, "format", "text")
     if output_format == "json":
         payload = {
@@ -183,6 +195,7 @@ def run_eval_corpus(args: argparse.Namespace, verbose: bool = False) -> int:
             "case_count": scan.case_count,
             "cwe_coverage": scan.cwe_coverage,
             "calibration_map": calibrator.to_map(),
+            "calibration_map_path": saved_calibration_path,
         }
         report_json = render_json_report(metrics, gate=gate_result, corpus_label=CORPUS_LABEL)
         merged = json.loads(report_json)
@@ -201,6 +214,8 @@ def run_eval_corpus(args: argparse.Namespace, verbose: bool = False) -> int:
                 metrics, gate=gate_result, reliability=reliability, corpus_label=CORPUS_LABEL
             )
         )
+        if saved_calibration_path:
+            print(f"Calibration map written to: {saved_calibration_path}")
 
     if gate_result is not None:
         return 0 if gate_result.passed else 1

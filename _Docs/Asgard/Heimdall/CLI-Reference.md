@@ -991,6 +991,13 @@ Documentation-friendly markdown output:
 | `HEIMDALL_CONFIG` | Path to configuration file |
 | `HEIMDALL_OUTPUT_DIR` | Default output directory |
 | `HEIMDALL_VERBOSE` | Enable verbose mode (1/0) |
+| `HEIMDALL_CALIBRATION_MAP` | Path to a fitted confidence-calibration map JSON (written by `heimdall eval corpus --save-calibration PATH`). When set, the normalization engine converts raw confidence to calibrated probabilities before bucketing; unset = identity (default). |
+
+### Confidence calibration workflow
+
+1. `heimdall eval corpus --save-calibration .asgard/calibration_map.json` fits an isotonic map on the vendored benchmark corpus and persists it.
+2. Export `HEIMDALL_CALIBRATION_MAP=.asgard/calibration_map.json`; subsequent security scans bucket findings by calibrated probability.
+3. Contribution rule (plan 10): no new/changed security rule without paired benchmark fixtures (vulnerable + safe) and a non-regressing Brier score on `heimdall eval corpus` (`gate` profiles enforce thresholds).
 
 ---
 
