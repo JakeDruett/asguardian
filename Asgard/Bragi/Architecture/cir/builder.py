@@ -58,12 +58,26 @@ def build_file_cir(file_path: str, source: str, language: str) -> Optional[FileI
     return FileInfo(filepath=file_path, language=language, classes=classes)
 
 
+# Compiled-query cache: {(id(lang_obj), query_str): Query | None}.
+# Language objects are cached per-language by ``_language_loader``, so
+# ``id(lang_obj)`` is stable for the process lifetime. Query compilation is
+# the expensive step (it dominated CIR build time when done per call); each
+# (language, query) pair is compiled exactly once. ``None`` is cached for
+# invalid queries so a bad query string is only rejected once.
+_QUERY_CACHE: Dict[tuple, object] = {}
+
+
 def _query(lang_obj, query_str: str):
+    key = (id(lang_obj), query_str)
+    if key in _QUERY_CACHE:
+        return _QUERY_CACHE[key]
     try:
         from tree_sitter import Query  # noqa: PLC0415
-        return Query(lang_obj, query_str)
+        compiled = Query(lang_obj, query_str)
     except Exception:
-        return None
+        compiled = None
+    _QUERY_CACHE[key] = compiled
+    return compiled
 
 
 def _captures_dict(query, node) -> Dict[str, list]:
