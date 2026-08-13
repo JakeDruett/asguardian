@@ -129,3 +129,12 @@ Remaining after W3: H/10 evaluation/benchmarking machinery, docs reconciliation 
 
 ## Log
 - 2026-07-17: Orientation complete; branch created; planning docs committed. Noted: ASGARD_UPLIFT_GOAL.md/PROMPT.md vanished from disk mid-session (recreated from context); a `Claude Team/.../learnings.md` deletion appeared in git status that this session did not make — another process may be touching the repo.
+
+## Wave 4 — Residual plan audit & closure (2026-08-13)
+11 parallel worktree agents audited every remaining plan in `_Docs/Planning/` against the code and implemented only verifiably missing items; all 10 branches with work merged to main; **full suite green: 9,758 passed / 0 failed / 11 skipped (17m21s)**.
+- Heimdall 01/05: per-rule AST-engine registry + AST-Migration-Skipped tags; assignment-type-tracking coupling resolver (fixed module-qualified-instantiation recall gap). 02/07/10 confirmed delivered; 10 residual closed: fitted-calibration-map load into Security/normalization (`HEIMDALL_CALIBRATION_MAP`, identity default, broken maps raise).
+- Heimdall 03/06: reflexion-model summary (convergences/divergences/absences) in hexagonal reports; warn-only SECURITY_SCORE quality-gate condition. Hexagonal anemic/infra-leak detectors verified ALREADY delivered (DELIVERED.md PARTIAL note stale).
+- Forseti 06/07, Freya 04/05/07, Bragi 02/04/05: audited essentially fully delivered (minor mock-CLI + doc fixes only).
+- Verdandi: SLA fraction checker + CLI (`sla-check`), apdex/CLI flags; deferred CLI parity for cache/system/db new APIs delivered.
+- Volundr: `score` CLI Terraform/tfplan/GitLab-Azure artifact kinds + `--baseline` delta, CICD self-audit job, doc reconciliation.
+- Tests: real baseline was 49F+3E (all Freya L1, plans' 843 was stale). Fixed 3 real Freya product bugs (accessibility runners silently degrading, UnifiedTester ignoring config categories/min_severity, exclusive max_depth) + rewrote stale L1 tests. Added 34 L2/L5/L8 tests incl. L8_budgets.yaml gating and legacy-scanner L5 ground truth. Known discovery: pytest tmp_path can trip scanner test-context suppression (use neutral temp dirs in fixtures).
