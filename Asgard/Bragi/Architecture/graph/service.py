@@ -22,6 +22,11 @@ from Asgard.Bragi.Architecture.graph.drift import ArchitectureDriftViolation, de
 from Asgard.Bragi.Architecture.graph.module_cycles import ModuleCycle, detect_module_cycles
 from Asgard.Bragi.Architecture.graph.nodes import LevelBounds
 from Asgard.Bragi.Architecture.graph.propagation import infer_levels, infer_levels_incremental
+from Asgard.Bragi.Architecture.graph.reflexion import (
+    ReflexionSummary,
+    compute_reflexion,
+    layer_name_for_module,
+)
 from Asgard.Bragi.Architecture.services._architecture_config import (
     ArchitectureConfig,
     default_architecture_config,
@@ -197,6 +202,19 @@ class ArchGraphService:
                     targets=sorted(targets),
                 ))
         return violations
+
+    def reflexion_summary(self, scan_path: Optional[Path] = None) -> ReflexionSummary:
+        """Reflexion-model comparison (Plan 03 item 6 / RESEARCH_05):
+        declared `allowed_imports` layer edges vs the observed import
+        graph — convergences / divergences / absences."""
+        path = Path(scan_path or self.dep_config.scan_path).resolve()
+        graph = self.graph_service.build(path)
+        class_names = self._class_names_by_module(graph)
+        layer_by_module = {
+            m: layer_name_for_module(m, class_names.get(m, set()), self.config)
+            for m in graph.graph
+        }
+        return compute_reflexion(graph.graph, layer_by_module, self.config)
 
     def explain(self, file_path: str, scan_path: Optional[Path] = None) -> str:
         """Human-readable explanation of a file's inferred bounds and which

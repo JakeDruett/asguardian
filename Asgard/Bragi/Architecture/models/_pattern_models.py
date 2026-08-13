@@ -7,9 +7,12 @@ Data models for design pattern detection and suggestions.
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional
+from typing import TYPE_CHECKING, Dict, List, Optional
 
 from Asgard.Bragi.Architecture.models._solid_models import ViolationSeverity
+
+if TYPE_CHECKING:  # pragma: no cover — avoids models->services import cycle
+    from Asgard.Bragi.Architecture.graph.reflexion import ReflexionSummary
 
 
 class HexagonalZone(Enum):
@@ -150,6 +153,9 @@ class HexagonalReport:
     zone_assignments: Dict[str, str] = field(default_factory=dict)
     violations: List[HexagonalViolation] = field(default_factory=list)
     scan_duration_seconds: float = 0.0
+    # Reflexion-model comparison (Plan 03 item 6): declared allowed layer
+    # edges vs observed import graph. None when level inference was not run.
+    reflexion: Optional["ReflexionSummary"] = None
 
     @property
     def total_violations(self) -> int:
