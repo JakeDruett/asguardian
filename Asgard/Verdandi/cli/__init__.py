@@ -28,6 +28,8 @@ from Asgard.Verdandi.cli.handlers_new_apis import (
     run_db_budget,
     run_db_queries_per_class,
     run_pool_signature,
+    run_sketch_merge,
+    run_co_check,
 )
 from Asgard.Verdandi.cli.handlers_tracing import (
     run_tracing_parse,
@@ -97,6 +99,10 @@ def main(args=None) -> int:
             exit_code = run_sla_check(args, output_format)
         elif args.analyze_command == "self-slo":
             exit_code = run_self_slo(args, output_format)
+        elif args.analyze_command == "sketch-merge":
+            exit_code = run_sketch_merge(args, output_format)
+        elif args.analyze_command == "co-check":
+            exit_code = run_co_check(args, output_format)
         else:
             print(f"Unknown analyze command: {args.analyze_command}")
             sys.exit(1)

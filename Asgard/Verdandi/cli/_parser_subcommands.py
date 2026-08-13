@@ -410,6 +410,16 @@ def _add_anomaly_parser(subparsers) -> None:
             "(default: 10.0)"
         )
     )
+    regression_parser.add_argument(
+        "--profile",
+        choices=["latency", "error_rate", "cache_hit_rate"],
+        default=None,
+        help=(
+            "Sensitivity profile (metric-class preset, DEEPTHINK_08): sets "
+            "the detector's statistical strictness from the profile's "
+            "z-threshold instead of exposing raw knobs"
+        ),
+    )
 
     add_performance_flags(anomaly_parser)
 

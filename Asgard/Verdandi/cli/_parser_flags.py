@@ -203,6 +203,61 @@ def _add_analyze_parser(subparsers) -> None:
         help="JSON file: {...RunRecord fields...} (entities_submitted, ...)",
     )
 
+    sketch_merge_parser = analyze_subparsers.add_parser(
+        "sketch-merge",
+        help=(
+            "Merge serialized quantile sketches (t-digest or DDSketch) and "
+            "query percentiles on the union — the sanctioned cross-host "
+            "aggregation path (never average per-host percentiles)"
+        ),
+    )
+    sketch_merge_parser.add_argument(
+        "sketch_files",
+        nargs="+",
+        help=(
+            "One or more JSON files produced by TDigest.to_dict() or "
+            "DDSketch.to_dict(); all must be the same sketch type"
+        ),
+    )
+    sketch_merge_parser.add_argument(
+        "--quantiles",
+        "-q",
+        type=str,
+        default="50,90,95,99",
+        help="Comma-separated percentiles to query (default: 50,90,95,99)",
+    )
+    sketch_merge_parser.add_argument(
+        "--output",
+        "-o",
+        type=str,
+        default=None,
+        help="Optional path to write the merged sketch as JSON",
+    )
+
+    co_check_parser = analyze_subparsers.add_parser(
+        "co-check",
+        help=(
+            "Coordinated-omission quality check on a latency dataset "
+            "(Tene heuristic, Little's-law sanity, optional HDR-style "
+            "expected-interval backfill correction)"
+        ),
+    )
+    co_check_parser.add_argument(
+        "metrics_file",
+        help=(
+            "JSON file: {samples_ms: [...], duration_ms: ..., "
+            "expected_interval_ms?, throughput_rps?, max_concurrency?}"
+        ),
+    )
+    co_check_parser.add_argument(
+        "--correct",
+        action="store_true",
+        help=(
+            "Apply expected-interval backfill correction "
+            "(requires expected_interval_ms in the metrics file)"
+        ),
+    )
+
     add_performance_flags(analyze_parser)
 
 
