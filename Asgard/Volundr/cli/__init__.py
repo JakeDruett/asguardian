@@ -21,6 +21,7 @@ from Asgard.Volundr.cli.handlers_score_gitops import (
     run_gitops_validate,
     run_score,
 )
+from Asgard.Volundr.cli.handlers_posture import run_posture
 from Asgard.Volundr.cli.handlers_compose_validate_scaffold import (
     run_compose_generate,
     run_compose_validate,
@@ -130,6 +131,9 @@ def main(args=None) -> int:
 
     elif parsed_args.command == "score":
         sys.exit(run_score(parsed_args))
+
+    elif parsed_args.command == "posture":
+        sys.exit(run_posture(parsed_args))
 
     elif parsed_args.command == "gitops":
         if not hasattr(parsed_args, "gitops_command") or parsed_args.gitops_command is None:
