@@ -45,7 +45,7 @@ Automated screenshot generation:
 Detect unintended visual changes:
 
 - Pixel-by-pixel comparison
-- Perceptual diff (pixelmatch)
+- Perceptual diff (pure-Python pixelmatch-style AA heuristic)
 - Anti-aliasing tolerance
 - Threshold-based detection
 - Diff image generation
@@ -85,7 +85,7 @@ Validate CSS consistency:
 
 ### Perceptual Diff
 
-- Uses pixelmatch algorithm
+- Uses a pure-Python pixelmatch-style algorithm (no pixelmatch library)
 - Ignores anti-aliasing differences
 - Configurable threshold (default: 0.1)
 
