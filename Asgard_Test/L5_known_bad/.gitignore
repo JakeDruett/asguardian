@@ -1,0 +1,3 @@
+# Fixture library: everything here is intentional ground-truth data.
+# Un-ignore patterns the repo root ignores (e.g. **.html).
+!*.html

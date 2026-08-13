@@ -127,6 +127,7 @@ target-version = "py311"
 line-length = 120
 exclude = [
     "Asgard_Test/fixtures",
+    "Asgard_Test/L5_known_bad",
 ]
 
 [tool.ruff.lint]

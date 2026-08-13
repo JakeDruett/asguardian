@@ -1,0 +1,25 @@
+# CWE-250: Execution with Unnecessary Privileges — privileged container
+# CIS Kubernetes Benchmark: 5.2.1 (minimize privileged containers)
+# Expected scanner: Volundr KubernetesValidator (privileged-container)
+# Expected severity: ERROR
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-deploy
+  labels:
+    app: bad-deploy
+spec:
+  selector:
+    matchLabels:
+      app: bad-deploy
+  template:
+    metadata:
+      labels:
+        app: bad-deploy
+    spec:
+      containers:
+        - name: app
+          image: nginx
+          securityContext:
+            privileged: true
+            allowPrivilegeEscalation: true

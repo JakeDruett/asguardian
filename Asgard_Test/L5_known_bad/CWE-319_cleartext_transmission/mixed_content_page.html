@@ -1,0 +1,13 @@
+<!-- CWE-319: Cleartext Transmission — https page loading http:// subresources -->
+<!-- OWASP: A02 Cryptographic Failures -->
+<!-- Expected scanner: Freya mixed_content_checker.scan_static_dom -->
+<!-- Expected severity: HIGH (active mixed content: script) -->
+<html>
+  <head>
+    <script src="http://cdn.example.com/analytics.js"></script>
+    <link rel="stylesheet" href="http://cdn.example.com/site.css">
+  </head>
+  <body>
+    <img src="http://images.example.com/logo.png">
+  </body>
+</html>

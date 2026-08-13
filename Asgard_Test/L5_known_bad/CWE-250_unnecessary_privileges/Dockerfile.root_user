@@ -1,0 +1,9 @@
+# CWE-250: Execution with Unnecessary Privileges — container runs as root
+# CIS Docker Benchmark: 4.1 (create a user for the container)
+# Expected scanner: Volundr DockerfileValidator (DL3002, DL3007)
+# Expected severity: WARNING/ERROR
+FROM ubuntu:latest
+RUN apt-get update && apt-get install -y curl
+USER root
+COPY . /app
+CMD ["/app/run.sh"]
