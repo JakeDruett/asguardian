@@ -24,17 +24,29 @@ import yaml
 
 def _detect_artifact_kind(path: Path) -> Tuple[str, Optional[str]]:
     """Return (kind, content). kind in {kustomize, helm, kubernetes,
-    compose, pipeline}; content is None for rendered directory kinds."""
+    compose, pipeline, terraform, terraform-dir, terraform-plan};
+    content is None for rendered directory kinds."""
     if path.is_dir():
         if (path / "Chart.yaml").exists():
             return "helm", None
         if any((path / n).exists()
                for n in ("kustomization.yaml", "kustomization.yml")):
             return "kustomize", None
+        if any(path.glob("*.tf")):
+            return "terraform-dir", None
         return "kubernetes-dir", None
 
     content = path.read_text(encoding="utf-8", errors="ignore")
     name = path.name.lower()
+    if name.endswith(".tf"):
+        return "terraform", content
+    if name.endswith(".json"):
+        try:
+            plan = json.loads(content)
+        except json.JSONDecodeError:
+            plan = None
+        if isinstance(plan, dict) and "resource_changes" in plan:
+            return "terraform-plan", content
     try:
         docs = [d for d in yaml.safe_load_all(content) if isinstance(d, dict)]
     except yaml.YAMLError:
@@ -45,6 +57,16 @@ def _detect_artifact_kind(path: Path) -> Tuple[str, Optional[str]]:
         return "compose", content
     if any("jobs" in d and ("on" in d or True in d) for d in docs):
         # PyYAML parses a bare `on:` key as boolean True.
+        return "pipeline", content
+    # GitLab CI / Azure Pipelines have no GHA-style `jobs:`+`on:` shape;
+    # route them through the same canonical pipeline model instead of
+    # misdetecting them as a (finding-free) K8s manifest — a false clean.
+    from Asgard.Volundr.Validation.services.normalizers import (
+        looks_like_azure_pipeline,
+        looks_like_gitlab_ci,
+    )
+    if any(looks_like_gitlab_ci(d) or looks_like_azure_pipeline(d)
+           for d in docs):
         return "pipeline", content
     return "kubernetes", content
 
@@ -61,6 +83,44 @@ def _validate_artifact(path: Path):
     kind, content = _detect_artifact_kind(path)
     if kind in ("kustomize", "helm"):
         return render_and_validate(str(path), kind=kind)
+
+    if kind in ("terraform", "terraform-dir"):
+        from Asgard.Volundr.Validation.services.terraform_validator import (
+            TerraformValidator,
+        )
+        validator = TerraformValidator()
+        if kind == "terraform-dir":
+            return validator.validate_directory(str(path))
+        return validator.validate_content(content or "", file_path=str(path))
+
+    if kind == "terraform-plan":
+        from Asgard.Volundr.Validation.models.validation_models import (
+            ValidationReport,
+            ValidationSeverity,
+        )
+        from Asgard.Volundr.Validation.services.terraform_plan_reader import (
+            check_plan_file,
+        )
+        results = check_plan_file(str(path))
+        errors = sum(1 for r in results
+                     if r.severity == ValidationSeverity.ERROR)
+        return ValidationReport(
+            id="terraform-plan",
+            title=f"Terraform plan validation: {path}",
+            validator="terraform-plan",
+            results=results,
+            total_files=1,
+            total_errors=errors,
+            total_warnings=sum(
+                1 for r in results
+                if r.severity == ValidationSeverity.WARNING
+            ),
+            total_info=sum(
+                1 for r in results
+                if r.severity == ValidationSeverity.INFO
+            ),
+            passed=errors == 0,
+        )
 
     engine = ValidationEngine()
     if kind == "kubernetes-dir":
@@ -101,10 +161,29 @@ def run_score(args: argparse.Namespace) -> int:
         report, environment=getattr(args, "environment", "production")
     )
 
+    # Delta mode (plan 07 §2.2): compare against a saved ScoreReport.
+    delta = None
+    baseline_path = getattr(args, "score_baseline", None)
+    if baseline_path:
+        from Asgard.Volundr.Validation.models.score_models import ScoreReport
+        try:
+            baseline_data = json.loads(
+                Path(baseline_path).read_text(encoding="utf-8")
+            )
+            baseline = (ScoreReport.model_validate(baseline_data)
+                        if hasattr(ScoreReport, "model_validate")
+                        else ScoreReport.parse_obj(baseline_data))
+        except Exception as e:
+            print(f"Error: Could not load baseline report: {e}")
+            return 2
+        delta = score.delta(baseline)
+
     output_format = getattr(args, "format", "text")
     if output_format == "json":
         payload = (score.model_dump(mode="json")
                    if hasattr(score, "model_dump") else score.dict())
+        if delta is not None:
+            payload["delta"] = delta
         print(json.dumps(payload, indent=2, default=str))
     else:
         lines = ["", "VOLUNDR ARTIFACT SCORE", "=" * 60,
@@ -118,6 +197,11 @@ def run_score(args: argparse.Namespace) -> int:
         for dim in score.dimensions:
             dim_name = getattr(dim.dimension, "value", dim.dimension)
             lines.append(f"    {dim_name:16} {dim.score:.1f}")
+        if delta is not None:
+            lines.append("")
+            lines.append("  Delta vs baseline:")
+            for key in sorted(delta):
+                lines.append(f"    {key:16} {delta[key]:+.2f}")
         if score.remediation:
             lines.append("")
             lines.append("  Remediation hints (highest impact first):")

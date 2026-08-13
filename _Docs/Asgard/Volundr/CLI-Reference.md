@@ -251,6 +251,47 @@ python -m Volundr cicd generate --name ci --platform jenkins
 
 ---
 
+## Score Command
+
+`volundr score <path>` renders/validates an artifact through the
+Validation engine and computes the composite `ScoreReport` (see
+[Scoring.md](Scoring.md)): letter grade, per-dimension scores, security
+veto, and remediation hints.
+
+Artifact kinds are auto-detected: Kubernetes manifest or directory,
+`kustomization.yaml` directory, Helm chart directory (`Chart.yaml`),
+Compose file, CI pipeline (GitHub Actions, GitLab CI, Azure Pipelines —
+all normalized onto the same canonical job model), Terraform `.tf` file
+or module directory, and `terraform show -json` plan output
+(`tfplan.json` with `resource_changes`, `after_unknown` treated as
+`<computed>` and never failing a rule).
+
+```bash
+volundr score ./manifests --environment production --format json
+volundr score main.tf --threshold 80
+volundr score tfplan.json
+
+# Delta mode (plan 07 §2.2): compare against a saved report
+volundr score ./manifests --format json > baseline.json
+volundr score ./manifests --baseline baseline.json
+```
+
+| Option | Description |
+|--------|-------------|
+| `--environment <profile>` | Scoring weight profile (`sandbox`/`development`/`staging`/`production`, default production) |
+| `--threshold <n>` | Exit non-zero when composite is below this (default 50) |
+| `--baseline report.json` | Delta mode: report per-dimension change vs a saved ScoreReport JSON |
+| `--format text\|json` | Output format |
+
+## GitOps Validate Command
+
+`volundr gitops validate <manifest-or-dir>` checks ArgoCD Application
+manifests against the VOL-GITOPS rules (HEAD pinning, default
+AppProject, prune blast radius, Helm version ranges). Exit 0 when clean,
+1 when issues are found, 2 when no Application manifests are present.
+
+---
+
 ## Global Options
 
 | Option | Description |

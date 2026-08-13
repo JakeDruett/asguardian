@@ -120,7 +120,8 @@ def _add_score_command(subparsers: argparse._SubParsersAction) -> None:
         "score",
         help=(
             "Render/validate an artifact (K8s manifest, kustomization, Helm "
-            "chart, compose file, CI pipeline) and compute the composite "
+            "chart, compose file, CI pipeline — GitHub Actions/GitLab/Azure "
+            "— Terraform module or tfplan.json) and compute the composite "
             "score with letter grade and remediation hints"
         ),
     )
@@ -136,6 +137,14 @@ def _add_score_command(subparsers: argparse._SubParsersAction) -> None:
     score.add_argument(
         "--format", choices=["text", "json"], default="text",
         help="Output format (default: text)",
+    )
+    score.add_argument(
+        "--baseline", metavar="report.json", dest="score_baseline",
+        help=(
+            "Delta mode: path to a previously saved ScoreReport JSON "
+            "(volundr score --format json); reports the per-dimension "
+            "change vs that baseline"
+        ),
     )
 
 

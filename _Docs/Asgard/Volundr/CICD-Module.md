@@ -126,6 +126,19 @@ config = PipelineConfig(
 )
 ```
 
+### Zero-trust options (plan 04)
+
+| Field | Default | Effect |
+|---|---|---|
+| `permissions` | `{}` | Workflow-level token permissions; empty = `permissions: {}` (deny all) |
+| `oidc` | `None` | `OIDCConfig` federation (aws/gcp/azure/vault) over static secrets |
+| `provenance` | `False` | SLSA provenance attestation job (GitHub native; Jenkins refuses) |
+| `sbom` | `False` | SBOM generation step in build jobs |
+| `split_trust` | `True` | Separate untrusted build / trusted deploy workflows when a deploy stage exists |
+| `harden_runner` | `False` | Prepend step-security/harden-runner egress step to each job |
+| `self_audit` | `False` | Append a `lint-workflows` job (zizmor + actionlint) to generated GitHub workflows; ignored on other platforms |
+| `suppressions` | `[]` | Reified rule suppressions with comment receipts |
+
 ## Service: PipelineGenerator
 
 ```python

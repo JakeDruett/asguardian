@@ -107,7 +107,13 @@ class ScoreReport(BaseModel):
 
 `ScoreReport.delta(baseline)` (plan 07 §2.2) returns the per-dimension and
 composite change versus an earlier `ScoreReport` — useful for CI gates
-that compare a PR's rendered output against the target branch's.
+that compare a PR's rendered output against the target branch's. On the
+CLI this is `volundr score <path> --baseline report.json`, where the
+baseline is a previously saved `volundr score --format json` output; the
+delta appears as a `delta` object in JSON output and a "Delta vs
+baseline" block in text output. `volundr score` covers Kubernetes,
+Kustomize, Helm, Compose, CI pipelines (GitHub Actions/GitLab/Azure) and
+Terraform (`.tf`, module directory, or `terraform show -json` plan).
 
 ## Convention: `_issues_to_findings`
 

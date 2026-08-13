@@ -219,6 +219,45 @@ def _provenance_job(config: PipelineConfig, build_job_ids: List[str]) -> Dict[st
     }
 
 
+def _self_audit_job(config: PipelineConfig) -> Dict[str, Any]:
+    """Workflow-lint self-audit job (plan 04 §8, RESEARCH_06 tooling).
+
+    Runs zizmor (GitHub Actions security auditor) and actionlint over the
+    repository's own workflow files. Tool versions are pinned exactly:
+    zizmor via a pinned PyPI version, actionlint via a version-tagged
+    docker image (``resolve_action_ref`` passes ``docker://`` refs
+    through; there is no SHA pin-map entry to fake).
+    """
+    job: Dict[str, Any] = {
+        "runs-on": "ubuntu-latest",
+        "permissions": {"contents": "read"},
+        "timeout-minutes": 10,
+        "steps": [
+            {
+                "name": "Checkout",
+                "uses": pinned("actions/checkout@v4"),
+                "with": {"persist-credentials": False},
+            },
+            {
+                "name": "actionlint (workflow syntax/shellcheck)",
+                "uses": "docker://rhysd/actionlint:1.7.7",
+                "with": {"args": "-color"},
+            },
+            {
+                "name": "zizmor (workflow security audit)",
+                "run": "pipx run zizmor==1.5.2 .github/workflows/",
+            },
+        ],
+    }
+    if config.harden_runner:
+        job["steps"].insert(0, {
+            "name": "Harden runner (egress policy)",
+            "uses": pinned("step-security/harden-runner@v2"),
+            "with": {"egress-policy": "audit"},
+        })
+    return job
+
+
 def _dump(data: Dict[str, Any]) -> str:
     rendered = cast(str, yaml.dump(
         data, default_flow_style=False, sort_keys=False, allow_unicode=True
@@ -270,6 +309,9 @@ def generate_github_actions_files(
     if config.provenance:
         build_ids = [_job_id(s.name) for s in main_stages if not _is_deploy_stage(s)]
         jobs["provenance"] = _provenance_job(config, build_ids or list(jobs.keys()))
+
+    if config.self_audit:
+        jobs["lint-workflows"] = _self_audit_job(config)
 
     workflow["jobs"] = jobs
     primary = _dump(workflow)

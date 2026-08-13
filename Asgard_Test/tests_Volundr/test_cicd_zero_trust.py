@@ -608,3 +608,64 @@ class TestExternalLint:
             ["actionlint"], cwd=tmp_path, capture_output=True, text=True,
         )
         assert proc.returncode == 0, proc.stdout + proc.stderr
+
+
+class TestSelfAudit:
+    """Plan 04 §8: optional zizmor/actionlint self-audit job."""
+
+    def _config(self, self_audit=True, harden_runner=False):
+        return PipelineConfig(
+            name="CI",
+            platform=CICDPlatform.GITHUB_ACTIONS,
+            triggers=[TriggerConfig(type=TriggerType.PUSH, branches=["main"])],
+            stages=[PipelineStage(
+                name="Build",
+                steps=[StepConfig(name="Test", run="pytest")],
+            )],
+            self_audit=self_audit,
+            harden_runner=harden_runner,
+        )
+
+    def test_self_audit_job_emitted(self, generator):
+        result = generator.generate(self._config())
+        jobs = yaml.safe_load(result.pipeline_content)["jobs"]
+        job = jobs["lint-workflows"]
+        assert job["permissions"] == {"contents": "read"}
+        assert "timeout-minutes" in job
+        steps = job["steps"]
+        assert any("zizmor==" in (s.get("run") or "") for s in steps)
+        assert any("actionlint" in (s.get("uses") or "") for s in steps)
+
+    def test_self_audit_off_by_default(self, generator):
+        result = generator.generate(self._config(self_audit=False))
+        jobs = yaml.safe_load(result.pipeline_content)["jobs"]
+        assert "lint-workflows" not in jobs
+
+    def test_self_audit_no_untrusted_interpolation(self, generator):
+        result = generator.generate(self._config())
+        job = yaml.safe_load(result.pipeline_content)["jobs"]["lint-workflows"]
+        for step in job["steps"]:
+            if "run" in step:
+                assert "${{" not in step["run"]
+
+    def test_self_audit_checkout_sha_pinned_no_credentials(self, generator):
+        result = generator.generate(self._config())
+        job = yaml.safe_load(result.pipeline_content)["jobs"]["lint-workflows"]
+        checkout = next(
+            s for s in job["steps"]
+            if "actions/checkout" in (s.get("uses") or "")
+        )
+        assert is_sha_pinned(checkout["uses"].split(" ")[0])
+        assert checkout["with"]["persist-credentials"] is False
+
+    def test_self_audit_harden_runner_first_step(self, generator):
+        result = generator.generate(self._config(harden_runner=True))
+        job = yaml.safe_load(result.pipeline_content)["jobs"]["lint-workflows"]
+        assert "harden-runner" in (job["steps"][0].get("uses") or "")
+
+    def test_self_audit_ignored_on_gitlab(self, generator):
+        config = self._config()
+        config.platform = CICDPlatform.GITLAB_CI
+        result = generator.generate(config)
+        assert "lint-workflows" not in result.pipeline_content
+        assert "zizmor" not in result.pipeline_content

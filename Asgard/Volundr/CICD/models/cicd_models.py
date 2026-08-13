@@ -140,6 +140,14 @@ class PipelineConfig(BaseModel):
             "stage is present"
         ),
     )
+    self_audit: bool = Field(
+        default=False,
+        description=(
+            "Append a workflow-lint self-audit job (zizmor + actionlint) "
+            "to generated GitHub Actions workflows (plan 04 §8). "
+            "GitHub Actions only; ignored on other platforms."
+        ),
+    )
     harden_runner: bool = Field(
         default=False,
         description="Prepend a step-security/harden-runner egress-hardening step to each job",
