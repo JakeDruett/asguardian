@@ -20,6 +20,7 @@ from Asgard.Freya.Visual.models.visual_models import (
     ScreenshotConfig,
     ComparisonConfig,
     ComparisonMethod,
+    DeviceConfig,
     RegressionTestSuite,
     RegressionTestCase,
 )
@@ -34,103 +35,87 @@ class TestVisualIntegrationScreenshotCapture:
     @pytest.mark.integration
     async def test_screenshot_capture_basic(self, sample_visual_page, output_dir):
         """Test basic screenshot capture of HTML page."""
-        config = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(output_dir / "screenshots"),
-        )
-        capture = ScreenshotCapture(config)
+        capture = ScreenshotCapture(output_directory=str(output_dir / "screenshots"))
 
         url = file_url(sample_visual_page)
-        result = await capture.capture(url, "visual_page")
+        result = await capture.capture_full_page(url, "visual_page.png")
 
         assert result is not None
-        assert result.success is True
-        assert result.screenshot_path is not None
-        assert Path(result.screenshot_path).exists()
-        assert Path(result.screenshot_path).stat().st_size > 0
+        assert result.file_path is not None
+        assert Path(result.file_path).exists()
+        assert Path(result.file_path).stat().st_size > 0
 
     @pytest.mark.asyncio
     @pytest.mark.integration
     async def test_screenshot_capture_viewport_sizes(self, sample_responsive_page, output_dir):
         """Test screenshot capture at different viewport sizes."""
-        config = ScreenshotConfig(
-            full_page=False,
-            width=1920,
-            height=1080,
-            output_directory=str(output_dir / "screenshots"),
-        )
-        capture = ScreenshotCapture(config)
-
+        capture = ScreenshotCapture(output_directory=str(output_dir / "screenshots"))
         url = file_url(sample_responsive_page)
-        result_desktop = await capture.capture(url, "responsive_desktop")
 
-        assert result_desktop.success is True
-        assert Path(result_desktop.screenshot_path).exists()
+        desktop_config = ScreenshotConfig(
+            full_page=False,
+            custom_device=DeviceConfig(name="Desktop", width=1920, height=1080),
+        )
+        result_desktop = await capture.capture_viewport(
+            url, "responsive_desktop.png", desktop_config
+        )
 
-        config.width = 375
-        config.height = 667
-        capture_mobile = ScreenshotCapture(config)
-        result_mobile = await capture_mobile.capture(url, "responsive_mobile")
+        assert Path(result_desktop.file_path).exists()
 
-        assert result_mobile.success is True
-        assert Path(result_mobile.screenshot_path).exists()
+        mobile_config = ScreenshotConfig(
+            full_page=False,
+            custom_device=DeviceConfig(name="Mobile", width=375, height=667),
+        )
+        result_mobile = await capture.capture_viewport(
+            url, "responsive_mobile.png", mobile_config
+        )
 
-        desktop_size = Path(result_desktop.screenshot_path).stat().st_size
-        mobile_size = Path(result_mobile.screenshot_path).stat().st_size
+        assert Path(result_mobile.file_path).exists()
+
+        desktop_size = Path(result_desktop.file_path).stat().st_size
+        mobile_size = Path(result_mobile.file_path).stat().st_size
         assert desktop_size != mobile_size
 
     @pytest.mark.asyncio
     @pytest.mark.integration
     async def test_screenshot_capture_full_page(self, sample_accessible_page, output_dir):
         """Test full page screenshot capture."""
-        config = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(output_dir / "screenshots"),
-        )
-        capture = ScreenshotCapture(config)
+        capture = ScreenshotCapture(output_directory=str(output_dir / "screenshots"))
 
         url = file_url(sample_accessible_page)
-        result = await capture.capture(url, "accessible_full")
+        result = await capture.capture_full_page(url, "accessible_full.png")
 
-        assert result.success is True
+        assert result.width > 0
+        assert result.height > 0
         assert result.metadata is not None
-        assert "viewport" in result.metadata or "width" in result.metadata
 
     @pytest.mark.asyncio
     @pytest.mark.integration
     async def test_screenshot_capture_with_selector(self, sample_visual_page, output_dir):
         """Test screenshot capture of specific element."""
-        config = ScreenshotConfig(
-            full_page=False,
-            output_directory=str(output_dir / "screenshots"),
-        )
-        capture = ScreenshotCapture(config)
+        capture = ScreenshotCapture(output_directory=str(output_dir / "screenshots"))
 
         url = file_url(sample_visual_page)
-        result = await capture.capture_element(url, ".box", "visual_box")
+        result = await capture.capture_element(url, ".box", "visual_box.png")
 
-        assert result.success is True
-        assert Path(result.screenshot_path).exists()
+        assert Path(result.file_path).exists()
 
     @pytest.mark.asyncio
     @pytest.mark.integration
     async def test_screenshot_capture_result_structure(self, sample_visual_page, output_dir):
         """Test screenshot capture result structure."""
-        config = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(output_dir / "screenshots"),
-        )
-        capture = ScreenshotCapture(config)
+        capture = ScreenshotCapture(output_directory=str(output_dir / "screenshots"))
 
         url = file_url(sample_visual_page)
-        result = await capture.capture(url, "structure_test")
+        result = await capture.capture_full_page(url, "structure_test.png")
 
-        assert hasattr(result, 'success')
-        assert hasattr(result, 'screenshot_path')
+        assert hasattr(result, 'file_path')
         assert hasattr(result, 'url')
-        assert hasattr(result, 'name')
-        assert hasattr(result, 'timestamp')
+        assert hasattr(result, 'width')
+        assert hasattr(result, 'height')
+        assert hasattr(result, 'captured_at')
         assert hasattr(result, 'metadata')
+        assert result.url == url
 
 
 class TestVisualIntegrationVisualRegression:
@@ -139,30 +124,22 @@ class TestVisualIntegrationVisualRegression:
     @pytest.fixture
     async def baseline_screenshot(self, sample_visual_page, baseline_fixtures_dir):
         """Create a baseline screenshot for comparison."""
-        config = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(baseline_fixtures_dir),
-        )
-        capture = ScreenshotCapture(config)
+        capture = ScreenshotCapture(output_directory=str(baseline_fixtures_dir))
 
         url = file_url(sample_visual_page)
-        result = await capture.capture(url, "baseline")
+        result = await capture.capture_full_page(url, "baseline.png")
 
-        return Path(result.screenshot_path)
+        return Path(result.file_path)
 
     @pytest.fixture
     async def comparison_screenshot(self, sample_visual_page, output_dir):
         """Create a comparison screenshot (should be identical to baseline)."""
-        config = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(output_dir / "comparisons"),
-        )
-        capture = ScreenshotCapture(config)
+        capture = ScreenshotCapture(output_directory=str(output_dir / "comparisons"))
 
         url = file_url(sample_visual_page)
-        result = await capture.capture(url, "comparison")
+        result = await capture.capture_full_page(url, "comparison.png")
 
-        return Path(result.screenshot_path)
+        return Path(result.file_path)
 
     @pytest.mark.asyncio
     @pytest.mark.integration
@@ -174,7 +151,7 @@ class TestVisualIntegrationVisualRegression:
 
         config = ComparisonConfig(
             threshold=0.95,
-            method=ComparisonMethod.PIXEL_BY_PIXEL,
+            method=ComparisonMethod.PIXEL_DIFF,
         )
 
         result = tester.compare(
@@ -197,7 +174,7 @@ class TestVisualIntegrationVisualRegression:
         tester = VisualRegressionTester(output_directory=str(output_dir / "regression"))
 
         methods = [
-            ComparisonMethod.PIXEL_BY_PIXEL,
+            ComparisonMethod.PIXEL_DIFF,
             ComparisonMethod.PERCEPTUAL_HASH,
             ComparisonMethod.HISTOGRAM_COMPARISON,
         ]
@@ -224,27 +201,23 @@ class TestVisualIntegrationVisualRegression:
         self, sample_visual_page, sample_accessible_page, output_dir
     ):
         """Test visual regression detects differences between different pages."""
-        config_screenshot = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(output_dir / "diff_test"),
-        )
-        capture = ScreenshotCapture(config_screenshot)
+        capture = ScreenshotCapture(output_directory=str(output_dir / "diff_test"))
 
         url1 = file_url(sample_visual_page)
-        result1 = await capture.capture(url1, "page1")
+        result1 = await capture.capture_full_page(url1, "page1.png")
 
         url2 = file_url(sample_accessible_page)
-        result2 = await capture.capture(url2, "page2")
+        result2 = await capture.capture_full_page(url2, "page2.png")
 
         tester = VisualRegressionTester(output_directory=str(output_dir / "regression"))
         config = ComparisonConfig(
             threshold=0.95,
-            method=ComparisonMethod.PIXEL_BY_PIXEL,
+            method=ComparisonMethod.PIXEL_DIFF,
         )
 
         result = tester.compare(
-            str(result1.screenshot_path),
-            str(result2.screenshot_path),
+            str(result1.file_path),
+            str(result2.file_path),
             config
         )
 
@@ -257,27 +230,23 @@ class TestVisualIntegrationVisualRegression:
         self, sample_visual_page, sample_accessible_page, output_dir
     ):
         """Test visual regression generates diff and annotated images."""
-        config_screenshot = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(output_dir / "diff_images"),
-        )
-        capture = ScreenshotCapture(config_screenshot)
+        capture = ScreenshotCapture(output_directory=str(output_dir / "diff_images"))
 
         url1 = file_url(sample_visual_page)
-        result1 = await capture.capture(url1, "diff_base")
+        result1 = await capture.capture_full_page(url1, "diff_base.png")
 
         url2 = file_url(sample_accessible_page)
-        result2 = await capture.capture(url2, "diff_comp")
+        result2 = await capture.capture_full_page(url2, "diff_comp.png")
 
         tester = VisualRegressionTester(output_directory=str(output_dir / "regression"))
         config = ComparisonConfig(
             threshold=0.95,
-            method=ComparisonMethod.PIXEL_BY_PIXEL,
+            method=ComparisonMethod.PIXEL_DIFF,
         )
 
         result = tester.compare(
-            str(result1.screenshot_path),
-            str(result2.screenshot_path),
+            str(result1.file_path),
+            str(result2.file_path),
             config
         )
 
@@ -328,7 +297,7 @@ class TestVisualIntegrationLayoutValidator:
 
         assert report is not None
         assert report.url == url
-        assert report.elements_validated > 0
+        assert report.total_elements > 0
 
     @pytest.mark.asyncio
     @pytest.mark.integration
@@ -340,7 +309,7 @@ class TestVisualIntegrationLayoutValidator:
         report = await validator.validate(url)
 
         assert report is not None
-        assert report.elements_validated > 0
+        assert report.total_elements > 0
 
     @pytest.mark.asyncio
     @pytest.mark.integration
@@ -353,9 +322,10 @@ class TestVisualIntegrationLayoutValidator:
 
         assert report.url is not None
         assert report.tested_at is not None
-        assert report.elements_validated >= 0
+        assert report.total_elements >= 0
+        assert report.viewport_width > 0
+        assert report.viewport_height > 0
         assert isinstance(report.issues, list)
-        assert 0.0 <= report.score <= 100.0
 
 
 class TestVisualIntegrationStyleValidator:
@@ -372,7 +342,7 @@ class TestVisualIntegrationStyleValidator:
 
         assert report is not None
         assert report.url == url
-        assert report.elements_validated > 0
+        assert report.total_elements > 0
 
     @pytest.mark.asyncio
     @pytest.mark.integration
@@ -384,7 +354,7 @@ class TestVisualIntegrationStyleValidator:
         report = await validator.validate(url)
 
         assert report is not None
-        assert report.elements_validated > 0
+        assert report.total_elements > 0
 
     @pytest.mark.asyncio
     @pytest.mark.integration
@@ -397,9 +367,10 @@ class TestVisualIntegrationStyleValidator:
 
         assert report.url is not None
         assert report.tested_at is not None
-        assert report.elements_validated >= 0
+        assert report.total_elements >= 0
         assert isinstance(report.issues, list)
-        assert 0.0 <= report.score <= 100.0
+        assert isinstance(report.colors_found, dict)
+        assert isinstance(report.fonts_found, dict)
 
 
 class TestVisualIntegrationRegressionSuite:
@@ -411,18 +382,14 @@ class TestVisualIntegrationRegressionSuite:
         self, sample_visual_page, baseline_fixtures_dir, output_dir
     ):
         """Test running a complete regression test suite."""
-        config_screenshot = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(baseline_fixtures_dir),
-        )
-        capture = ScreenshotCapture(config_screenshot)
+        capture = ScreenshotCapture(output_directory=str(baseline_fixtures_dir))
 
         url = file_url(sample_visual_page)
-        baseline_result = await capture.capture(url, "suite_test")
+        baseline_result = await capture.capture_full_page(url, "suite_test.png")
 
         current_dir = output_dir / "suite_current"
         current_dir.mkdir(exist_ok=True)
-        shutil.copy(baseline_result.screenshot_path, current_dir / "suite_test_current.png")
+        shutil.copy(baseline_result.file_path, current_dir / "suite_test_current.png")
 
         suite = RegressionTestSuite(
             name="Integration Test Suite",
@@ -434,7 +401,7 @@ class TestVisualIntegrationRegressionSuite:
                     url=url,
                 ),
             ],
-            comparison_method=ComparisonMethod.PIXEL_BY_PIXEL,
+            comparison_method=ComparisonMethod.PIXEL_DIFF,
             default_threshold=0.95,
         )
 
@@ -443,7 +410,7 @@ class TestVisualIntegrationRegressionSuite:
 
         assert report is not None
         assert report.suite_name == "Integration Test Suite"
-        assert report.total_comparisons >= 0
+        assert report.total_comparisons >= 1
         assert report.passed_comparisons + report.failed_comparisons == report.total_comparisons
 
     @pytest.mark.asyncio
@@ -452,18 +419,14 @@ class TestVisualIntegrationRegressionSuite:
         self, sample_visual_page, baseline_fixtures_dir, output_dir
     ):
         """Test regression suite generates HTML report."""
-        config_screenshot = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(baseline_fixtures_dir),
-        )
-        capture = ScreenshotCapture(config_screenshot)
+        capture = ScreenshotCapture(output_directory=str(baseline_fixtures_dir))
 
         url = file_url(sample_visual_page)
-        baseline_result = await capture.capture(url, "report_test")
+        baseline_result = await capture.capture_full_page(url, "report_test.png")
 
         current_dir = output_dir / "report_current"
         current_dir.mkdir(exist_ok=True)
-        shutil.copy(baseline_result.screenshot_path, current_dir / "report_test_current.png")
+        shutil.copy(baseline_result.file_path, current_dir / "report_test_current.png")
 
         suite = RegressionTestSuite(
             name="Report Generation Test",

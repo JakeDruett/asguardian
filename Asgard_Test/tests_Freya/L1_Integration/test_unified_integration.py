@@ -10,19 +10,18 @@ All tests use file:// URLs for local HTML fixtures, making them CI-friendly.
 
 import pytest
 from pathlib import Path
-import shutil
 
 from Asgard.Freya.Integration.services.unified_tester import UnifiedTester
 from Asgard.Freya.Integration.services.html_reporter import HTMLReporter
 from Asgard.Freya.Integration.services.baseline_manager import BaselineManager
 from Asgard.Freya.Integration.services.site_crawler import SiteCrawler
 from Asgard.Freya.Integration.models.integration_models import (
+    BaselineConfig,
+    CrawlConfig,
     UnifiedTestConfig,
     TestCategory,
     TestSeverity,
 )
-from Asgard.Freya.Visual.services.screenshot_capture import ScreenshotCapture
-from Asgard.Freya.Visual.models.visual_models import ScreenshotConfig
 
 from Asgard_Test.tests_Freya.L1_Integration.conftest import file_url
 
@@ -219,8 +218,10 @@ class TestUnifiedIntegrationHTMLReporter:
         url = file_url(sample_accessible_page)
         test_report = await tester.test(url)
 
-        reporter = HTMLReporter(output_directory=str(output_dir / "reports"))
-        html_path = reporter.generate(test_report)
+        reporter = HTMLReporter()
+        html_path = reporter.generate(
+            test_report, str(output_dir / "reports" / "unified_report.html")
+        )
 
         assert html_path is not None
         assert Path(html_path).exists()
@@ -245,8 +246,10 @@ class TestUnifiedIntegrationHTMLReporter:
         url = file_url(sample_inaccessible_page)
         test_report = await tester.test(url)
 
-        reporter = HTMLReporter(output_directory=str(output_dir / "reports"))
-        html_path = reporter.generate(test_report)
+        reporter = HTMLReporter()
+        html_path = reporter.generate(
+            test_report, str(output_dir / "reports" / "results_report.html")
+        )
 
         html_content = Path(html_path).read_text()
         assert str(test_report.total_tests) in html_content
@@ -254,8 +257,8 @@ class TestUnifiedIntegrationHTMLReporter:
 
     @pytest.mark.asyncio
     @pytest.mark.integration
-    async def test_html_reporter_custom_template(self, sample_accessible_page, output_dir):
-        """Test HTML reporter with custom template."""
+    async def test_html_reporter_custom_title(self, sample_accessible_page, output_dir):
+        """Test HTML reporter with custom report title."""
         config = UnifiedTestConfig(
             url="",
             output_directory=str(output_dir / "unified"),
@@ -266,8 +269,12 @@ class TestUnifiedIntegrationHTMLReporter:
         url = file_url(sample_accessible_page)
         test_report = await tester.test(url)
 
-        reporter = HTMLReporter(output_directory=str(output_dir / "reports"))
-        html_path = reporter.generate(test_report, title="Custom Test Report")
+        reporter = HTMLReporter()
+        html_path = reporter.generate(
+            test_report,
+            str(output_dir / "reports" / "custom_report.html"),
+            title="Custom Test Report",
+        )
 
         assert Path(html_path).exists()
 
@@ -278,137 +285,124 @@ class TestUnifiedIntegrationHTMLReporter:
 class TestUnifiedIntegrationBaselineManager:
     """Integration tests for Baseline Manager with real screenshots."""
 
+    def _manager(self, baseline_fixtures_dir) -> BaselineManager:
+        return BaselineManager(BaselineConfig(
+            storage_directory=str(baseline_fixtures_dir / "managed"),
+        ))
+
     @pytest.mark.asyncio
     @pytest.mark.integration
     async def test_baseline_manager_save_baseline(self, sample_visual_page, baseline_fixtures_dir):
-        """Test baseline manager saves baselines."""
-        config = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(baseline_fixtures_dir / "temp"),
-        )
-        capture = ScreenshotCapture(config)
+        """Test baseline manager creates baselines."""
+        manager = self._manager(baseline_fixtures_dir)
 
         url = file_url(sample_visual_page)
-        screenshot_result = await capture.capture(url, "baseline_test")
+        entry = await manager.create_baseline(url, "baseline_test")
 
-        manager = BaselineManager(baseline_directory=str(baseline_fixtures_dir / "managed"))
-        saved_path = manager.save_baseline("baseline_test", screenshot_result.screenshot_path)
-
-        assert saved_path is not None
-        assert Path(saved_path).exists()
+        assert entry is not None
+        assert Path(entry.screenshot_path).exists()
+        assert entry.url == url
+        assert entry.hash
 
     @pytest.mark.asyncio
     @pytest.mark.integration
     async def test_baseline_manager_load_baseline(self, sample_visual_page, baseline_fixtures_dir):
-        """Test baseline manager loads baselines."""
-        config = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(baseline_fixtures_dir / "temp"),
-        )
-        capture = ScreenshotCapture(config)
+        """Test baseline manager retrieves stored baselines."""
+        manager = self._manager(baseline_fixtures_dir)
 
         url = file_url(sample_visual_page)
-        screenshot_result = await capture.capture(url, "load_test")
+        created = await manager.create_baseline(url, "load_test")
 
-        manager = BaselineManager(baseline_directory=str(baseline_fixtures_dir / "managed"))
-        saved_path = manager.save_baseline("load_test", screenshot_result.screenshot_path)
+        loaded = manager.get_baseline(url, "load_test")
 
-        loaded_path = manager.load_baseline("load_test")
-
-        assert loaded_path is not None
-        assert Path(loaded_path).exists()
-        assert loaded_path == saved_path
+        assert loaded is not None
+        assert Path(loaded.screenshot_path).exists()
+        assert loaded.screenshot_path == created.screenshot_path
 
     @pytest.mark.asyncio
     @pytest.mark.integration
     async def test_baseline_manager_update_baseline(self, sample_visual_page, baseline_fixtures_dir):
         """Test baseline manager updates existing baselines."""
-        config = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(baseline_fixtures_dir / "temp"),
-        )
-        capture = ScreenshotCapture(config)
+        manager = self._manager(baseline_fixtures_dir)
 
         url = file_url(sample_visual_page)
-        screenshot_result1 = await capture.capture(url, "update_test_1")
-        screenshot_result2 = await capture.capture(url, "update_test_2")
+        entry1 = await manager.create_baseline(url, "update_test")
+        entry2 = await manager.update_baseline(url, "update_test")
 
-        manager = BaselineManager(baseline_directory=str(baseline_fixtures_dir / "managed"))
-
-        saved_path1 = manager.save_baseline("update_test", screenshot_result1.screenshot_path)
-        saved_path2 = manager.save_baseline("update_test", screenshot_result2.screenshot_path)
-
-        assert saved_path1 is not None
-        assert saved_path2 is not None
-        assert Path(saved_path2).exists()
+        assert entry1 is not None
+        assert entry2 is not None
+        assert Path(entry2.screenshot_path).exists()
 
     @pytest.mark.asyncio
     @pytest.mark.integration
     async def test_baseline_manager_list_baselines(self, sample_visual_page, baseline_fixtures_dir):
         """Test baseline manager lists all baselines."""
-        config = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(baseline_fixtures_dir / "temp"),
-        )
-        capture = ScreenshotCapture(config)
+        manager = self._manager(baseline_fixtures_dir)
 
         url = file_url(sample_visual_page)
-
-        manager = BaselineManager(baseline_directory=str(baseline_fixtures_dir / "managed"))
-
         for i in range(3):
-            screenshot_result = await capture.capture(url, f"list_test_{i}")
-            manager.save_baseline(f"baseline_{i}", screenshot_result.screenshot_path)
+            await manager.create_baseline(url, f"baseline_{i}")
 
         baselines = manager.list_baselines()
 
         assert baselines is not None
         assert len(baselines) >= 3
 
+        names = [b.name for b in baselines]
+        for i in range(3):
+            assert f"baseline_{i}" in names
+
     @pytest.mark.asyncio
     @pytest.mark.integration
     async def test_baseline_manager_delete_baseline(self, sample_visual_page, baseline_fixtures_dir):
         """Test baseline manager deletes baselines."""
-        config = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(baseline_fixtures_dir / "temp"),
-        )
-        capture = ScreenshotCapture(config)
+        manager = self._manager(baseline_fixtures_dir)
 
         url = file_url(sample_visual_page)
-        screenshot_result = await capture.capture(url, "delete_test")
+        entry = await manager.create_baseline(url, "delete_test")
 
-        manager = BaselineManager(baseline_directory=str(baseline_fixtures_dir / "managed"))
-        saved_path = manager.save_baseline("delete_test", screenshot_result.screenshot_path)
+        assert Path(entry.screenshot_path).exists()
 
-        assert Path(saved_path).exists()
-
-        success = manager.delete_baseline("delete_test")
+        success = manager.delete_baseline(url, "delete_test")
 
         assert success is True
-        loaded = manager.load_baseline("delete_test")
-        assert loaded is None
+        assert manager.get_baseline(url, "delete_test") is None
 
 
 class TestUnifiedIntegrationSiteCrawler:
     """Integration tests for Site Crawler with real HTML pages."""
 
+    @staticmethod
+    def _crawl_config(start_url: str, output_dir: Path, **kwargs) -> CrawlConfig:
+        return CrawlConfig(
+            start_url=start_url,
+            output_directory=str(output_dir),
+            discover_items=False,
+            delay_between_requests=0.0,
+            **kwargs,
+        )
+
     @pytest.mark.asyncio
     @pytest.mark.integration
-    async def test_site_crawler_single_page(self, sample_accessible_page):
+    async def test_site_crawler_single_page(self, sample_accessible_page, output_dir):
         """Test site crawler on single page."""
-        crawler = SiteCrawler(max_depth=0, max_pages=1)
+        config = self._crawl_config(
+            file_url(sample_accessible_page),
+            output_dir / "crawl_single",
+            max_depth=0,
+            max_pages=1,
+        )
+        crawler = SiteCrawler(config)
 
-        url = file_url(sample_accessible_page)
-        pages = await crawler.crawl(url)
+        report = await crawler.crawl_and_test()
 
-        assert pages is not None
-        assert len(pages) >= 1
-        assert url in pages
+        assert report is not None
+        assert report.pages_discovered >= 1
+        assert report.pages_tested >= 1
 
     @pytest.mark.asyncio
     @pytest.mark.integration
-    async def test_site_crawler_with_links(self, html_fixtures_dir):
+    async def test_site_crawler_with_links(self, html_fixtures_dir, output_dir):
         """Test site crawler follows links."""
         page1_html = """<!DOCTYPE html>
 <html lang="en">
@@ -433,29 +427,39 @@ class TestUnifiedIntegrationSiteCrawler:
         page1.write_text(page1_html, encoding="utf-8")
         page2.write_text(page2_html, encoding="utf-8")
 
-        crawler = SiteCrawler(max_depth=1, max_pages=5)
+        config = self._crawl_config(
+            file_url(page1),
+            output_dir / "crawl_links",
+            max_depth=1,
+            max_pages=5,
+        )
+        crawler = SiteCrawler(config)
 
-        url = file_url(page1)
-        pages = await crawler.crawl(url)
+        report = await crawler.crawl_and_test()
 
-        assert pages is not None
-        assert len(pages) >= 1
+        assert report is not None
+        assert report.pages_discovered >= 1
 
     @pytest.mark.asyncio
     @pytest.mark.integration
-    async def test_site_crawler_respects_max_pages(self, sample_accessible_page):
+    async def test_site_crawler_respects_max_pages(self, sample_accessible_page, output_dir):
         """Test site crawler respects max pages limit."""
-        crawler = SiteCrawler(max_depth=2, max_pages=1)
+        config = self._crawl_config(
+            file_url(sample_accessible_page),
+            output_dir / "crawl_max_pages",
+            max_depth=2,
+            max_pages=1,
+        )
+        crawler = SiteCrawler(config)
 
-        url = file_url(sample_accessible_page)
-        pages = await crawler.crawl(url)
+        report = await crawler.crawl_and_test()
 
-        assert pages is not None
-        assert len(pages) <= 1
+        assert report is not None
+        assert report.pages_tested <= 1
 
     @pytest.mark.asyncio
     @pytest.mark.integration
-    async def test_site_crawler_respects_max_depth(self, html_fixtures_dir):
+    async def test_site_crawler_respects_max_depth(self, html_fixtures_dir, output_dir):
         """Test site crawler respects max depth limit."""
         page_html = """<!DOCTYPE html>
 <html lang="en">
@@ -468,13 +472,18 @@ class TestUnifiedIntegrationSiteCrawler:
         page = html_fixtures_dir / "depth_test.html"
         page.write_text(page_html, encoding="utf-8")
 
-        crawler = SiteCrawler(max_depth=0, max_pages=10)
+        config = self._crawl_config(
+            file_url(page),
+            output_dir / "crawl_max_depth",
+            max_depth=0,
+            max_pages=10,
+        )
+        crawler = SiteCrawler(config)
 
-        url = file_url(page)
-        pages = await crawler.crawl(url)
+        report = await crawler.crawl_and_test()
 
-        assert pages is not None
-        assert len(pages) == 1
+        assert report is not None
+        assert report.pages_discovered == 1
 
 
 class TestUnifiedIntegrationEndToEnd:
@@ -498,8 +507,10 @@ class TestUnifiedIntegrationEndToEnd:
         assert test_report is not None
         assert test_report.total_tests > 0
 
-        reporter = HTMLReporter(output_directory=str(output_dir / "e2e_reports"))
-        html_path = reporter.generate(test_report)
+        reporter = HTMLReporter()
+        html_path = reporter.generate(
+            test_report, str(output_dir / "e2e_reports" / "e2e_report.html")
+        )
 
         assert Path(html_path).exists()
 
@@ -507,30 +518,29 @@ class TestUnifiedIntegrationEndToEnd:
     @pytest.mark.integration
     async def test_regression_testing_workflow(self, sample_visual_page, baseline_fixtures_dir, output_dir):
         """Test complete visual regression workflow."""
-        config = ScreenshotConfig(
-            full_page=True,
-            output_directory=str(baseline_fixtures_dir / "regression"),
-        )
-        capture = ScreenshotCapture(config)
-
-        url = file_url(sample_visual_page)
-        baseline_result = await capture.capture(url, "regression_baseline")
-
-        manager = BaselineManager(baseline_directory=str(baseline_fixtures_dir / "regression_managed"))
-        baseline_path = manager.save_baseline("regression_test", baseline_result.screenshot_path)
-
-        assert Path(baseline_path).exists()
-
-        current_result = await capture.capture(url, "regression_current")
-
+        from Asgard.Freya.Visual.services.screenshot_capture import ScreenshotCapture
         from Asgard.Freya.Visual.services.visual_regression import VisualRegressionTester
         from Asgard.Freya.Visual.models.visual_models import ComparisonConfig
+
+        url = file_url(sample_visual_page)
+
+        manager = BaselineManager(BaselineConfig(
+            storage_directory=str(baseline_fixtures_dir / "regression_managed"),
+        ))
+        baseline_entry = await manager.create_baseline(url, "regression_test")
+
+        assert Path(baseline_entry.screenshot_path).exists()
+
+        capture = ScreenshotCapture(
+            output_directory=str(baseline_fixtures_dir / "regression")
+        )
+        current_result = await capture.capture_full_page(url, "regression_current.png")
 
         tester = VisualRegressionTester(output_directory=str(output_dir / "regression"))
         comparison_config = ComparisonConfig(threshold=0.95)
         comparison_result = tester.compare(
-            baseline_path,
-            current_result.screenshot_path,
+            baseline_entry.screenshot_path,
+            current_result.file_path,
             comparison_config
         )
 

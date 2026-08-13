@@ -38,8 +38,9 @@ def mock_wcag_report():
     violation.description = "Missing alt text"
     violation.element_selector = "img.logo"
     violation.suggested_fix = "Add alt attribute"
-    violation.wcag_criterion = "1.1.1"
-    violation.rule_id = "image-alt"
+    violation.wcag_reference = "1.1.1"
+    violation.id = "image-alt"
+    violation.criticality = None
 
     report = Mock()
     report.violations = [violation]
@@ -50,14 +51,13 @@ def mock_wcag_report():
 def mock_contrast_report():
     """Create a mock color contrast report."""
     issue = Mock()
-    issue.severity = "moderate"
-    issue.description = "Insufficient contrast"
     issue.element_selector = ".text"
-    issue.suggested_fix = "Increase contrast ratio"
-    issue.wcag_criterion = "1.4.3"
     issue.foreground_color = "#777777"
     issue.background_color = "#FFFFFF"
     issue.contrast_ratio = 3.5
+    issue.required_ratio = 4.5
+    issue.suggested_foreground = "#595959"
+    issue.suggested_background = None
 
     report = Mock()
     report.issues = [issue]
