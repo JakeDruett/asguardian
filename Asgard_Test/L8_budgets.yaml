@@ -6,6 +6,11 @@
 # Budgets are deliberately generous (5-10x typical local latency) so they
 # catch order-of-magnitude regressions (accidental O(n^2), pathological
 # regex, unbounded rescans) without flaking on slow CI runners.
+#
+# Policy (see _Docs/Testing/L8_Perf_Budget_Policy.md): every budget carries
+# >= 5x headroom over the maximum timing observed on the reference run,
+# then is rounded up to a coarse figure. Per-suite gates compare against
+# the FASTEST benchmark round (stats.min), the most noise-resistant stat.
 
 heimdall:
   secrets_detection:
@@ -16,6 +21,9 @@ heimdall:
     single_file_ms: 1500
   taint_analyzer:
     single_file_ms: 4000
+  # Heimdall Plan-02: synthetic ~50k LOC CIR build. Plan target was <5s on
+  # 4 cores; budget set with >= 5x headroom over that target.
+  cir_build_50kloc_ms: 25000
 
 forseti:
   openapi_validation_ms: 3000
@@ -26,3 +34,47 @@ verdandi:
 volundr:
   dockerfile_lint_ms: 1000
   pipeline_generation_ms: 2000
+
+# Synthetic benchmark corpus (Asgard_Test/_fixtures/l8_bench_corpus) and a
+# bounded self-scan of Asgard's own source. Enforced by
+# Asgard_Test/L8_PerfBudgets/test_corpus_and_self_scan.py.
+l8_corpus:
+  secrets_scan_ms: 3000
+  injection_scan_ms: 4000
+  taint_scan_ms: 8000
+self_scan:
+  heimdall_security_services_secrets_ms: 8000
+  heimdall_security_services_injection_ms: 10000
+
+# Per-suite gates for the pytest-benchmark modules under */L8_Performance/,
+# enforced by the autouse fixture in Asgard_Test/L8_PerfBudgets/enforcement.py.
+# Keyed by module filename stem; the budget applies to every test in the
+# module and is compared against the fastest observed round (stats.min).
+# Reference observations (2026-08-13, local dev box, max per-test stats.max):
+# architecture 56ms, forseti 0.1ms, forseti_subpackage 3ms, freya_helpers
+# 31ms, freya 7ms, oop_and_services 295ms, quality_scanner 899ms, scanner
+# 12ms, security_scanner 107ms, verdandi 7ms, volundr 34ms.
+suites:
+  default_per_test_ms: 5000
+  test_architecture_performance:
+    per_test_ms: 1000
+  test_forseti_performance:
+    per_test_ms: 500
+  test_forseti_subpackage_performance:
+    per_test_ms: 500
+  test_freya_helpers_performance:
+    per_test_ms: 1000
+  test_freya_performance:
+    per_test_ms: 500
+  test_oop_and_services_performance:
+    per_test_ms: 3000
+  test_quality_scanner_performance:
+    per_test_ms: 8000
+  test_scanner_performance:
+    per_test_ms: 500
+  test_security_scanner_performance:
+    per_test_ms: 2000
+  test_verdandi_performance:
+    per_test_ms: 500
+  test_volundr_performance:
+    per_test_ms: 1000

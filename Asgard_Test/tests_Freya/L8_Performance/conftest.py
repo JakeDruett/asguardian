@@ -26,3 +26,8 @@ if "playwright" not in sys.modules:
     playwright_stub.async_api = async_api_stub
     sys.modules["playwright"] = playwright_stub
     sys.modules["playwright.async_api"] = async_api_stub
+
+# Budget gating for this directory's pytest-benchmark suites: the autouse
+# `l8_suite_budget_gate` fixture fails any benchmark test whose fastest
+# round exceeds its per-suite budget in Asgard_Test/L8_budgets.yaml.
+from Asgard_Test.L8_PerfBudgets.enforcement import l8_suite_budget_gate  # noqa: E402,F401
