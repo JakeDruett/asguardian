@@ -1,0 +1,12 @@
+# CWE-94: Code Injection — untrusted github context interpolated into run script
+# CIS Software Supply Chain: 1.3 / GitHub Actions script-injection pattern
+# Expected scanner: Volundr CICD find_untrusted_interpolations
+# Expected severity: HIGH
+name: bad-workflow
+on: [pull_request_target]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo title
+        run: echo "${{ github.event.pull_request.title }}"
