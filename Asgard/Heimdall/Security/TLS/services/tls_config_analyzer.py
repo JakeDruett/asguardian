@@ -19,6 +19,12 @@ Documented FN: dynamically-generated/templated config (Jinja2, Helm,
 environment substitution) that only resolves at deploy time is invisible
 to a static text scan.
 """
+# AST-Migration-Skipped: web-server/TLS config files (nginx/apache/etc.) are text surfaces.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("tls.config_analyzer", reason="Regex optimal (lexical): config/text surface with no useful parse tree")
 
 import re
 from pathlib import Path

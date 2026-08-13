@@ -5,6 +5,13 @@ Regex fallback for the six hotspot families on languages without an AST
 front-end yet (JS/TS, Go, Java, ...). For Python files the AST checks are
 authoritative; the detector deduplicates (category, line) overlaps.
 """
+# AST-Migration-Skipped: explicitly the regex tier of hotspot detection; AST-precision variants are
+# tracked in Plan 01 Phase D.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("hotspots.regex_hotspot_checks", reason="Regex-only lexical sweep (multi-language); AST migration deferred (Plan 01 Phase D)")
 
 import re
 from typing import List, Optional, Pattern, Tuple

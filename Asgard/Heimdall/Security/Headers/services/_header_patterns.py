@@ -3,6 +3,12 @@ Heimdall Header Pattern Definitions
 
 Pattern definitions for detecting security header issues.
 """
+# AST-Migration-Skipped: security-header presence/value checks are config/text surface.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("headers.header_patterns", reason="Regex optimal (lexical): config/text surface with no useful parse tree")
 
 import re
 from typing import List

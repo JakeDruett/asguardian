@@ -3,6 +3,12 @@ Heimdall CORS Pattern Definitions
 
 Pattern definitions for detecting CORS security issues.
 """
+# AST-Migration-Skipped: CORS header values are config/text surface; matching is string-shaped.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("headers.cors_patterns", reason="Regex optimal (lexical): config/text surface with no useful parse tree")
 
 import re
 from typing import List

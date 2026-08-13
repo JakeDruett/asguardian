@@ -18,6 +18,12 @@ Severity is capped at MEDIUM: TOCTOU findings are never gate-blocking
 (plan 07.7 explicit instruction) since exploitability depends on runtime
 scheduling this static pass cannot observe.
 """
+# AST-Migration-Skipped: TOCTOU detection sweeps file-API call pairs; AST port deferred.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("racecondition.race_condition_detector", reason="Regex-only lexical sweep (multi-language); AST migration deferred (Plan 01 Phase D)")
 
 import ast
 import os

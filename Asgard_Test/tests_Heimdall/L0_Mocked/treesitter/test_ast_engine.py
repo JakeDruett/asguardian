@@ -2,6 +2,7 @@
 
 All tests pass whether or not the tree-sitter optional dependency is installed.
 """
+import importlib
 import logging
 
 import pytest
@@ -209,9 +210,66 @@ def test_engine_status_includes_rules_map():
     assert isinstance(status["rules"], dict)
 
 
-def test_lexical_modules_register_as_regex_only():
-    import Asgard.Heimdall.Security.services._secret_patterns  # noqa: F401
-    import Asgard.Heimdall.Security.services._requirements_parser  # noqa: F401
+#: Every intentionally-unmigrated (AST-Migration-Skipped) module and the rule
+#: name it registers.  Importing the module must self-register it.
+_REGEX_ONLY_MODULES = [
+    ("Asgard.Heimdall.Security.services._secret_patterns", "secrets.hardcoded_patterns"),
+    ("Asgard.Heimdall.Security.services._requirements_parser", "dependencies.requirements_parser"),
+    ("Asgard.Heimdall.Security.services._crypto_patterns", "crypto.crypto_patterns"),
+    ("Asgard.Heimdall.Security.services._injection_patterns", "injection.regex_patterns"),
+    ("Asgard.Heimdall.Security.services._supply_chain_analysis", "dependencies.supply_chain"),
+    ("Asgard.Heimdall.Security.Access.services.control_analyzer", "access.control_analyzer"),
+    ("Asgard.Heimdall.Security.Access.services.permission_analyzer", "access.permission_analyzer"),
+    ("Asgard.Heimdall.Security.API.services.api_scanner", "api.api_scanner"),
+    ("Asgard.Heimdall.Security.Auth.services._jwt_patterns", "auth.jwt_patterns"),
+    ("Asgard.Heimdall.Security.Auth.services._password_patterns", "auth.password_patterns"),
+    ("Asgard.Heimdall.Security.Auth.services.session_analyzer", "auth.session_analyzer"),
+    ("Asgard.Heimdall.Security.Backdoor.services.backdoor_detector", "backdoor.backdoor_detector"),
+    ("Asgard.Heimdall.Security.Container.services._dockerfile_patterns", "container.dockerfile_patterns"),
+    ("Asgard.Heimdall.Security.DataExfil.services.data_exfil_detector", "dataexfil.data_exfil_detector"),
+    ("Asgard.Heimdall.Security.Deserialization.services.deserialization_scanner", "deserialization.deserialization_scanner"),
+    ("Asgard.Heimdall.Security.Frontend.services.frontend_scanner", "frontend.frontend_scanner"),
+    ("Asgard.Heimdall.Security.Headers.services._cors_patterns", "headers.cors_patterns"),
+    ("Asgard.Heimdall.Security.Headers.services._header_patterns", "headers.header_patterns"),
+    ("Asgard.Heimdall.Security.Hotspots.services._regex_hotspot_checks", "hotspots.regex_hotspot_checks"),
+    ("Asgard.Heimdall.Security.InfoDisclosure.services.info_disclosure_scanner", "infodisclosure.info_disclosure_scanner"),
+    ("Asgard.Heimdall.Security.Infrastructure.services._config_patterns", "infrastructure.config_patterns"),
+    ("Asgard.Heimdall.Security.Infrastructure.services._credential_patterns", "infrastructure.credential_patterns"),
+    ("Asgard.Heimdall.Security.Infrastructure.services._hardening_patterns", "infrastructure.hardening_patterns"),
+    ("Asgard.Heimdall.Security.InputValidation.services.input_validation_scanner", "inputvalidation.input_validation_scanner"),
+    ("Asgard.Heimdall.Security.LogAnalysis.services.log_analyzer", "loganalysis.log_analyzer"),
+    ("Asgard.Heimdall.Security.Malware.services.malware_scanner", "malware.malware_scanner"),
+    ("Asgard.Heimdall.Security.Misconfig.services.misconfig_scanner", "misconfig.misconfig_scanner"),
+    ("Asgard.Heimdall.Security.PathTraversal.services.path_traversal_scanner", "pathtraversal.path_traversal_scanner"),
+    ("Asgard.Heimdall.Security.RaceCondition.services.race_condition_detector", "racecondition.race_condition_detector"),
+    ("Asgard.Heimdall.Security.ReDoS.services.redos_scanner", "redos.redos_scanner"),
+    ("Asgard.Heimdall.Security.SensitiveData.services.sensitive_data_scanner", "sensitivedata.sensitive_data_scanner"),
+    ("Asgard.Heimdall.Security.SSRF.services.ssrf_scanner", "ssrf.ssrf_scanner"),
+    ("Asgard.Heimdall.Security.TLS.services._certificate_patterns", "tls.certificate_patterns"),
+    ("Asgard.Heimdall.Security.TLS.services._cipher_patterns", "tls.cipher_patterns"),
+    ("Asgard.Heimdall.Security.TLS.services._protocol_patterns", "tls.protocol_patterns"),
+    ("Asgard.Heimdall.Security.TLS.services.tls_config_analyzer", "tls.config_analyzer"),
+]
+
+
+@pytest.mark.parametrize("module_name,rule_name", _REGEX_ONLY_MODULES)
+def test_lexical_modules_register_as_regex_only(module_name, rule_name):
+    importlib.import_module(module_name)
     rules = ast_engine.rule_engine_status()
-    assert rules["secrets.hardcoded_patterns"]["engine"] == "regex"
-    assert rules["dependencies.requirements_parser"]["engine"] == "regex"
+    assert rule_name in rules
+    info = rules[rule_name]
+    assert info["engine"] == "regex"
+    assert info["active_engine"] == "regex"
+    assert info["language"] is None
+    assert isinstance(info["reason"], str) and info["reason"]
+
+
+def test_regex_only_registrations_do_not_shadow_dual_rules():
+    for module_name, _ in _REGEX_ONLY_MODULES:
+        importlib.import_module(module_name)
+    import Asgard.Heimdall.Security.services._ast_python_rules  # noqa: F401
+    rules = ast_engine.rule_engine_status()
+    assert rules["check_eval_exec"]["engine"] == "dual"
+    regex_names = {name for m, name in _REGEX_ONLY_MODULES}
+    dual_names = {n for n, i in rules.items() if i["engine"] == "dual"}
+    assert not (regex_names & dual_names)

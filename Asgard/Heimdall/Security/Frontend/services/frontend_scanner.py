@@ -1,4 +1,11 @@
 """Frontend (client-side) security vulnerability scanner."""
+# AST-Migration-Skipped: DOM-sink/JS checks would benefit from the javascript grammar; AST port
+# deferred.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("frontend.frontend_scanner", reason="Regex-only lexical sweep (multi-language); AST migration deferred (Plan 01 Phase D)")
 
 import os
 import re

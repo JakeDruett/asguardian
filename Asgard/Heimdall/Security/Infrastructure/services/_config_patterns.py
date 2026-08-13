@@ -3,6 +3,12 @@ Heimdall Config Pattern Definitions
 
 Pattern definitions for detecting configuration security issues.
 """
+# AST-Migration-Skipped: infrastructure config files (INI/YAML-ish text) are matched lexically.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("infrastructure.config_patterns", reason="Regex optimal (lexical): config/text surface with no useful parse tree")
 
 import re
 from typing import List, Optional

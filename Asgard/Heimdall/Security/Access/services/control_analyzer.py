@@ -3,6 +3,13 @@ Heimdall Access Control Analyzer Service
 
 Service for detecting RBAC/ABAC patterns and access control issues.
 """
+# AST-Migration-Skipped: access-control checks sweep decorators/calls across languages; AST port
+# deferred.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("access.control_analyzer", reason="Regex-only lexical sweep (multi-language); AST migration deferred (Plan 01 Phase D)")
 
 import re
 import time

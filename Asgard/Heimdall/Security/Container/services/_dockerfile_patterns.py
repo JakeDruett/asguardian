@@ -4,6 +4,13 @@ Heimdall Dockerfile Security - Pattern Definitions
 DockerfilePattern class and the list of security patterns for use
 in RUN instruction analysis.
 """
+# AST-Migration-Skipped: Dockerfiles are line-oriented config text; no tree-sitter grammar in use
+# and none needed for RUN-instruction pattern checks.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("container.dockerfile_patterns", reason="Regex optimal (lexical): config/text surface with no useful parse tree")
 
 import re
 from typing import List, Optional

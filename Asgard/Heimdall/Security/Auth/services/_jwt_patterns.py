@@ -3,6 +3,13 @@ Heimdall JWT Pattern Definitions
 
 Pattern definitions and constant lists for JWT security detection.
 """
+# AST-Migration-Skipped: JWT patterns sweep tokens/config strings across languages; a per-language
+# AST port is deferred, not declined.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("auth.jwt_patterns", reason="Regex-only lexical sweep (multi-language); AST migration deferred (Plan 01 Phase D)")
 
 import re
 from typing import List

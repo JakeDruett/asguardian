@@ -1,4 +1,11 @@
 """Backdoor and web-shell detector."""
+# AST-Migration-Skipped: backdoor detection keys on string signatures (hosts, ports, payload
+# markers) that regex captures directly.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("backdoor.backdoor_detector", reason="Regex optimal (lexical): string-surface signatures; parse trees add no signal")
 
 import hashlib
 import os

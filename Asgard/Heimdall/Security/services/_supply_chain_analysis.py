@@ -36,6 +36,13 @@ heuristic (no live query of the public index, per "no network in default
 paths"), so it is FN-prone for internal packages that don't match the
 naming heuristic, and it is advisory-only (LOW/MEDIUM, "possible").
 """
+# AST-Migration-Skipped: typosquat/confusion checks operate on manifest metadata (names/versions),
+# not code.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("dependencies.supply_chain", reason="Regex optimal (lexical): config/text surface with no useful parse tree")
 
 import re
 from pathlib import Path

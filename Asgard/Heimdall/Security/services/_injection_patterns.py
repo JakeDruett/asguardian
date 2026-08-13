@@ -1,4 +1,12 @@
 """Heimdall Injection Detection Patterns for SQL, XSS, command injection, and path traversal."""
+# AST-Migration-Skipped: regex layer for SQL/XSS/command/path-traversal patterns across languages;
+# Python sink precision is provided separately by the dual-engine pilot rules
+# in _ast_python_rules.py.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("injection.regex_patterns", reason="Regex-only lexical sweep (multi-language); AST migration deferred (Plan 01 Phase D)")
 
 import re
 from typing import List, Optional, Set

@@ -1,4 +1,11 @@
 """API security scanner — detects vulnerabilities in REST and GraphQL API code."""
+# AST-Migration-Skipped: API route/handler checks sweep decorators/paths across frameworks; AST
+# port deferred.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("api.api_scanner", reason="Regex-only lexical sweep (multi-language); AST migration deferred (Plan 01 Phase D)")
 
 import os
 import re

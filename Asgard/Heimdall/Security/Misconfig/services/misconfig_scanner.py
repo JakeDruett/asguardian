@@ -1,4 +1,10 @@
 """Security misconfiguration scanner."""
+# AST-Migration-Skipped: misconfiguration checks target config/text surfaces.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("misconfig.misconfig_scanner", reason="Regex optimal (lexical): config/text surface with no useful parse tree")
 
 import os
 import re
