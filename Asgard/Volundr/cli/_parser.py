@@ -14,6 +14,7 @@ from Asgard.Volundr.cli._parser_commands_2 import (
     _add_flux_commands,
     _add_compose_commands,
     _add_score_command,
+    _add_posture_command,
     _add_gitops_commands,
     _add_validate_commands,
     _add_scaffold_commands,
@@ -64,6 +65,7 @@ def create_parser() -> argparse.ArgumentParser:
     _add_compose_commands(subparsers)
     _add_validate_commands(subparsers)
     _add_score_command(subparsers)
+    _add_posture_command(subparsers)
     _add_gitops_commands(subparsers)
     _add_scaffold_commands(subparsers)
 

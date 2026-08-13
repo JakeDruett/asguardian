@@ -148,6 +148,46 @@ def _add_score_command(subparsers: argparse._SubParsersAction) -> None:
     )
 
 
+def _add_posture_command(subparsers: argparse._SubParsersAction) -> None:
+    """Add the posture command."""
+    posture = subparsers.add_parser(
+        "posture",
+        help=(
+            "Portfolio Graph-Weighted Posture Index: validate every "
+            "artifact under a directory, weight resources by PageRank "
+            "over declared cross-references, and roll risk up with an "
+            "L3-norm so the weakest link dominates"
+        ),
+    )
+    posture.add_argument(
+        "path", help="Directory (or single artifact file) to assess"
+    )
+    posture.add_argument(
+        "--edges", metavar="edges.json",
+        help=(
+            "Optional JSON list of [from, to] resource-name pairs "
+            "declaring cross-references beyond what Volundr detects "
+            "(resource names are paths relative to the scan root)"
+        ),
+    )
+    posture.add_argument(
+        "--external-tools-ran", action="store_true",
+        help=(
+            "Assert that independent external validators (kubeconform/"
+            "hadolint/...) were also run over these artifacts; lowers "
+            "the epistemic floor. Only pass this if it is actually true."
+        ),
+    )
+    posture.add_argument(
+        "--threshold", type=float, default=0.0,
+        help="Exit non-zero when the posture is below this (default: 0)",
+    )
+    posture.add_argument(
+        "--format", choices=["text", "json"], default="text",
+        help="Output format (default: text)",
+    )
+
+
 def _add_gitops_commands(subparsers: argparse._SubParsersAction) -> None:
     """Add the gitops command group."""
     gitops_parser = subparsers.add_parser(
