@@ -7,6 +7,8 @@ from Asgard.Heimdall.treesitter.ast_engine import (
     is_engine_enabled,
     log_engine_mode,
     engine_status,
+    rule_engine_status,
+    register_regex_only,
     with_ast_fallback,
 )
 
@@ -16,4 +18,5 @@ __all__ = [
     "run_query", "run_query_all",
     "FileParseContext", "language_for_path",
     "is_engine_enabled", "log_engine_mode", "engine_status", "with_ast_fallback",
+    "rule_engine_status", "register_regex_only",
 ]

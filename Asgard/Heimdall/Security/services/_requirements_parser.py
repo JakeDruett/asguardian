@@ -3,6 +3,12 @@ Heimdall Requirements Parser
 
 Parser classes for Python dependency files.
 """
+# AST-Migration-Skipped: Regex optimal (lexical) — requirements/.env style
+# files are line-oriented config, not code (Plan 01 Phase D).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("dependencies.requirements_parser")
 
 import re
 from pathlib import Path

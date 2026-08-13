@@ -153,3 +153,65 @@ def test_log_engine_mode_silent_when_available(monkeypatch, caplog):
         log_engine_mode()
     assert all(r.message != REGEX_MODE_MESSAGE for r in caplog.records)
     reset_engine_mode_logged()
+
+
+# ---------------------------------------------------------------------------
+# Per-rule engine registry (Plan 01 Phase D)
+# ---------------------------------------------------------------------------
+
+def test_register_regex_only_and_rule_engine_status():
+    ast_engine.register_regex_only("test.lexical_rule", reason="Regex optimal (lexical)")
+    try:
+        rules = ast_engine.rule_engine_status()
+        info = rules["test.lexical_rule"]
+        assert info["engine"] == "regex"
+        assert info["active_engine"] == "regex"
+        assert info["language"] is None
+        assert "lexical" in info["reason"]
+    finally:
+        ast_engine._RULE_REGISTRY.pop("test.lexical_rule", None)
+
+
+def test_dual_rule_auto_registers_and_degrades_when_ts_disabled(monkeypatch):
+    def _ast_impl(file_path, ctx):
+        return []
+
+    @with_ast_fallback("python", _ast_impl)
+    def my_dual_rule_for_registry(file_path, lines, enabled=True, **kwargs):
+        return []
+
+    try:
+        rules = ast_engine.rule_engine_status()
+        info = rules["my_dual_rule_for_registry"]
+        assert info["engine"] == "dual"
+        assert info["language"] == "python"
+        assert info["active_engine"] in ("ast", "regex")
+
+        monkeypatch.setattr(ast_engine, "TS_AVAILABLE", False)
+        assert ast_engine.rule_engine_status()["my_dual_rule_for_registry"]["active_engine"] == "regex"
+    finally:
+        ast_engine._RULE_REGISTRY.pop("my_dual_rule_for_registry", None)
+
+
+def test_rule_engine_status_deterministic_order():
+    ast_engine.register_regex_only("zz.rule")
+    ast_engine.register_regex_only("aa.rule")
+    try:
+        keys = list(ast_engine.rule_engine_status().keys())
+        assert keys == sorted(keys)
+    finally:
+        ast_engine._RULE_REGISTRY.pop("zz.rule", None)
+        ast_engine._RULE_REGISTRY.pop("aa.rule", None)
+
+
+def test_engine_status_includes_rules_map():
+    status = engine_status()
+    assert isinstance(status["rules"], dict)
+
+
+def test_lexical_modules_register_as_regex_only():
+    import Asgard.Heimdall.Security.services._secret_patterns  # noqa: F401
+    import Asgard.Heimdall.Security.services._requirements_parser  # noqa: F401
+    rules = ast_engine.rule_engine_status()
+    assert rules["secrets.hardcoded_patterns"]["engine"] == "regex"
+    assert rules["dependencies.requirements_parser"]["engine"] == "regex"

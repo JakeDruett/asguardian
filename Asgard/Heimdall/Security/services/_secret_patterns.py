@@ -3,6 +3,13 @@ Heimdall Secret Detection Patterns
 
 Pattern definitions for detecting hardcoded secrets in source code.
 """
+# AST-Migration-Skipped: Regex optimal (lexical) — secrets scanning is
+# string-surface work; parse trees drop nothing but add no signal here
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("secrets.hardcoded_patterns")
 
 import re
 from typing import List, Pattern
