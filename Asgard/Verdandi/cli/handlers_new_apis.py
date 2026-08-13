@@ -250,6 +250,94 @@ def run_cache_stampede(args, output_format: str = "text") -> int:
     return 1 if report.status == "critical" else 0
 
 
+def run_cache_slo(args, output_format: str = "text") -> int:
+    """`verdandi cache slo <latencies.json>`.
+
+    Input: {"hit_latencies_ms": [...], "miss_latencies_ms": [...],
+    "baseline_hit_median_ms"?: float, "baseline_hit_mad_ms"?: float}
+    for labeled samples, or {"latencies_ms": [...]} (unlabeled — split via
+    the bimodality guard, honestly marked labeled=false).
+    """
+    from Asgard.Verdandi.Cache.services.segmented_slo import SegmentedSloAnalyzer
+
+    data = _load_json(args.metrics_file)
+    if data is None:
+        return 1
+    if not isinstance(data, dict):
+        print(
+            "Error: Expected a JSON object with hit_latencies_ms/"
+            "miss_latencies_ms (labeled) or latencies_ms (unlabeled)."
+        )
+        return 1
+
+    kwargs = {}
+    hit_threshold = getattr(args, "hit_threshold", None)
+    if hit_threshold is not None:
+        kwargs["hit_threshold_ms"] = hit_threshold
+    miss_threshold = getattr(args, "miss_threshold", None)
+    if miss_threshold is not None:
+        kwargs["miss_threshold_ms"] = miss_threshold
+    analyzer = SegmentedSloAnalyzer(**kwargs)
+
+    baseline_median = data.get("baseline_hit_median_ms")
+    baseline_mad = data.get("baseline_hit_mad_ms")
+
+    hits = data.get("hit_latencies_ms")
+    misses = data.get("miss_latencies_ms")
+    unlabeled = data.get("latencies_ms")
+    try:
+        if hits is not None or misses is not None:
+            result = analyzer.analyze(
+                hit_latencies_ms=hits or [],
+                miss_latencies_ms=misses or [],
+                baseline_hit_median_ms=baseline_median,
+                baseline_hit_mad_ms=baseline_mad,
+            )
+        elif unlabeled:
+            result = analyzer.analyze_unlabeled(
+                unlabeled,
+                baseline_hit_median_ms=baseline_median,
+                baseline_hit_mad_ms=baseline_mad,
+            )
+        else:
+            print(
+                "Error: Provide hit_latencies_ms/miss_latencies_ms or a "
+                "non-empty latencies_ms array."
+            )
+            return 1
+    except (TypeError, ValueError) as e:
+        print(f"Error: {e}")
+        return 1
+
+    if output_format == "json":
+        print(json.dumps(_dump(result), indent=2, default=str))
+    else:
+        lines = ["", "SEGMENTED CACHE SLO", "=" * 60,
+                 f"  Labeled samples: {result.labeled}"]
+        if result.hit_sli is not None:
+            lines.append(
+                f"  Hit SLI:  {result.hit_sli:.4f} "
+                f"({result.hit_good}/{result.hit_total} <= "
+                f"{result.hit_threshold_ms:g} ms)"
+            )
+        if result.miss_sli is not None:
+            lines.append(
+                f"  Miss SLI: {result.miss_sli:.4f} "
+                f"({result.miss_good}/{result.miss_total} <= "
+                f"{result.miss_threshold_ms:g} ms)"
+            )
+        if result.hit_ratio is not None:
+            lines.append(f"  Hit ratio: {result.hit_ratio:.4f}")
+        if result.hit_median_ms is not None:
+            lines.append(f"  Hit-mode median: {result.hit_median_ms:g} ms")
+        lines.append(f"  Mode-shift alert: {result.mode_shift_alert}")
+        for note in result.notes:
+            lines.append(f"  - {note}")
+        print("\n".join(lines))
+
+    return 1 if result.mode_shift_alert else 0
+
+
 def run_pool_signature(args, output_format: str = "text") -> int:
     """`verdandi db pool-signature <latencies.json>`.
 

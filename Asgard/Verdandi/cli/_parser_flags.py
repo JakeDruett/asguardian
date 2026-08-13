@@ -251,6 +251,34 @@ def _add_cache_parser(subparsers) -> None:
         help="XFetch-style beta parameter (default: service default)",
     )
 
+    slo_parser = cache_subparsers.add_parser(
+        "slo",
+        help=(
+            "Segmented hit/miss latency SLIs plus hit-ratio and "
+            "fast-path mode-shift alarm"
+        ),
+    )
+    slo_parser.add_argument(
+        "metrics_file",
+        help=(
+            "JSON file: {hit_latencies_ms: [...], miss_latencies_ms: [...], "
+            "baseline_hit_median_ms?, baseline_hit_mad_ms?} or "
+            "{latencies_ms: [...]} for unlabeled samples"
+        ),
+    )
+    slo_parser.add_argument(
+        "--hit-threshold",
+        type=float,
+        default=None,
+        help="Hit-path latency budget in ms (default: 20)",
+    )
+    slo_parser.add_argument(
+        "--miss-threshold",
+        type=float,
+        default=None,
+        help="Miss-path latency budget in ms (default: 1000)",
+    )
+
     add_performance_flags(cache_parser)
 
 

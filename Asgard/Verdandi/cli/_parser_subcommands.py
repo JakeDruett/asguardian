@@ -332,6 +332,7 @@ def _add_network_parser(subparsers) -> None:
 
     signature_parser = network_subparsers.add_parser(
         "signature",
+        aliases=["classify"],
         help=(
             "Classify network signature (route change / congestion / DNS "
             "hijack / clock skew) from RTT and related series"
