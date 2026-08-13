@@ -21,6 +21,7 @@ from Asgard.Verdandi.cli.handlers_anomaly_trend import (
 )
 from Asgard.Verdandi.cli.handlers_new_apis import (
     run_burn_rate_policy,
+    run_cache_slo,
     run_cache_stampede,
     run_cache_warmup,
     run_cwv_assess,
@@ -113,6 +114,8 @@ def main(args=None) -> int:
             exit_code = run_cache_warmup(args, output_format)
         elif args.cache_command == "stampede":
             exit_code = run_cache_stampede(args, output_format)
+        elif args.cache_command == "slo":
+            exit_code = run_cache_slo(args, output_format)
         else:
             print(f"Unknown cache command: {args.cache_command}")
             sys.exit(1)
@@ -202,7 +205,7 @@ def main(args=None) -> int:
             exit_code = run_network_phases(args, output_format)
         elif args.network_command == "use":
             exit_code = run_network_use(args, output_format)
-        elif args.network_command == "signature":
+        elif args.network_command in ("signature", "classify"):
             exit_code = run_network_signature(args, output_format)
         else:
             print(f"Unknown network command: {args.network_command}")
