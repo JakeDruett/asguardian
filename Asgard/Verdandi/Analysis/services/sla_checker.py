@@ -6,8 +6,11 @@ Checks Service Level Agreement compliance for performance metrics.
 
 from typing import Optional, Sequence, Union
 
+import math
+
 from Asgard.Verdandi.Analysis.models.analysis_models import (
     SLAConfig,
+    SLAFractionResult,
     SLAResult,
     SLAStatus,
 )
@@ -114,6 +117,84 @@ class SLAChecker:
             margin_percent=round(margin, 2),
             availability_actual=round(availability, 2) if availability else None,
             error_rate_actual=round(error_rate, 2) if error_rate else None,
+            violations=violations,
+        )
+
+    def check_fraction(
+        self,
+        response_times_ms: Sequence[Union[int, float]],
+        threshold_ms: Optional[float] = None,
+        target_fraction: float = 0.99,
+    ) -> SLAFractionResult:
+        """
+        Threshold-fraction SLI check: fraction of events at or under a
+        latency threshold, compared against a target fraction.
+
+        This is the sanctioned mode for SLO use (DEEPTHINK_04): fractions
+        aggregate across time and hosts and weight by traffic, whereas the
+        percentile point targets used by :meth:`check` do not — prefer this
+        method when the result feeds an SLO or error budget.
+
+        Applies the minimum-traffic validity rule
+        ``min_events = 10 / (1 - target_fraction)``: below that floor the
+        window cannot statistically support the target, so the result is
+        flagged ``insufficient_traffic`` (WARNING, never confidently
+        compliant).
+
+        Args:
+            response_times_ms: Response times in milliseconds
+            threshold_ms: Latency threshold defining a good event
+                (defaults to config.threshold_ms)
+            target_fraction: Required fraction of good events (0-1 exclusive
+                of 1.0)
+
+        Returns:
+            SLAFractionResult with good/total counts and compliance status
+
+        Raises:
+            ValueError: If dataset is empty or target_fraction not in (0, 1)
+        """
+        if not response_times_ms:
+            raise ValueError("Cannot check SLA for empty dataset")
+        if not (0.0 < target_fraction < 1.0):
+            raise ValueError("target_fraction must be in (0, 1)")
+
+        threshold = threshold_ms if threshold_ms is not None else self.config.threshold_ms
+        total = len(response_times_ms)
+        good = sum(1 for t in response_times_ms if t <= threshold)
+        good_fraction = good / total
+
+        minimum_events = int(math.ceil(10.0 / (1.0 - target_fraction)))
+        insufficient = total < minimum_events
+
+        violations: list[str] = []
+        if good_fraction < target_fraction:
+            violations.append(
+                f"Good-event fraction {good_fraction:.4f} below target "
+                f"{target_fraction:.4f} at threshold {threshold}ms"
+            )
+            status = SLAStatus.BREACHED
+        else:
+            status = SLAStatus.COMPLIANT
+
+        if insufficient:
+            violations.append(
+                f"Insufficient traffic: {total} events < {minimum_events} "
+                f"required to validate a {target_fraction:.4f} target; "
+                "lower the target, widen the window, or add synthetic probes"
+            )
+            if status == SLAStatus.COMPLIANT:
+                status = SLAStatus.WARNING
+
+        return SLAFractionResult(
+            status=status,
+            good_events=good,
+            total_events=total,
+            good_fraction=round(good_fraction, 6),
+            target_fraction=target_fraction,
+            threshold_ms=threshold,
+            minimum_events_required=minimum_events,
+            insufficient_traffic=insufficient,
             violations=violations,
         )
 
