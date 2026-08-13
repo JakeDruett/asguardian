@@ -175,3 +175,54 @@ class IsotonicCalibrator:
         """Serializable (raw, calibrated) knot pairs, e.g. for persisting
         the fitted map alongside a rule-version manifest."""
         return list(zip(self._knots_x, self._knots_y))
+
+    @classmethod
+    def from_map(cls, knots: Sequence[Tuple[float, float]]) -> "IsotonicCalibrator":
+        """Rebuild a calibrator from persisted ``to_map()`` knot pairs.
+
+        Validation (monotonicity, range) is delegated to the shared
+        normalization-side loader so both consumers reject the same
+        corrupt maps.
+        """
+        from Asgard.Heimdall.Security.normalization.calibration import (
+            calibration_from_knots,
+        )
+        validated = calibration_from_knots(list(knots))
+        calibrator = cls()
+        calibrator._knots_x = list(validated.knots_x)
+        calibrator._knots_y = list(validated.knots_y)
+        return calibrator
+
+    def save_map(self, path) -> None:
+        """Persist the fitted map as the shared JSON schema
+        (``{"version": 1, "knots": [[raw, calibrated], ...]}``) consumed by
+        ``Asgard.Heimdall.Security.normalization.calibration``.
+
+        Refuses to persist an unfitted (empty) calibrator -- an empty map
+        would fail loading anyway, and silently writing one would look
+        like a successful calibration run.
+        """
+        import json
+        from pathlib import Path
+
+        from Asgard.Heimdall.Security.normalization.calibration import (
+            CALIBRATION_MAP_VERSION,
+        )
+        if not self._knots_x:
+            raise ValueError("Cannot save an unfitted calibrator (no knots)")
+        payload = {
+            "version": CALIBRATION_MAP_VERSION,
+            "knots": [[x, y] for x, y in zip(self._knots_x, self._knots_y)],
+        }
+        Path(path).write_text(
+            json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+
+
+def load_calibrator(path) -> IsotonicCalibrator:
+    """Load a persisted calibration-map file back into a calibrator."""
+    from Asgard.Heimdall.Security.normalization.calibration import (
+        load_calibration_map,
+    )
+    loaded = load_calibration_map(path)
+    return IsotonicCalibrator.from_map(list(zip(loaded.knots_x, loaded.knots_y)))

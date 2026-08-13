@@ -135,3 +135,12 @@ def setup_eval_command(subparsers) -> None:
         "--gate-profile", type=str, default=None,
         help="Acceptance-profile name to gate the run against (skips gating if omitted)",
     )
+    corpus_parser.add_argument(
+        "--save-calibration", type=str, default=None, metavar="PATH",
+        help=(
+            "Persist the fitted isotonic calibration map as JSON at PATH. "
+            "Point HEIMDALL_CALIBRATION_MAP at that file to have the "
+            "normalization engine convert raw confidence to calibrated "
+            "probabilities before bucketing (identity when unset)."
+        ),
+    )
