@@ -1,4 +1,11 @@
 """Input validation vulnerability scanner."""
+# AST-Migration-Skipped: input-validation checks sweep call/parameter surfaces across languages;
+# AST port deferred.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("inputvalidation.input_validation_scanner", reason="Regex-only lexical sweep (multi-language); AST migration deferred (Plan 01 Phase D)")
 
 import ast
 import os

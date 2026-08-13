@@ -1,4 +1,10 @@
 """Security log analyzer — scans log files for security events and suspicious activity."""
+# AST-Migration-Skipped: log files are line-oriented text; regex is the right tool.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("loganalysis.log_analyzer", reason="Regex optimal (lexical): config/text surface with no useful parse tree")
 
 import re
 from collections import defaultdict

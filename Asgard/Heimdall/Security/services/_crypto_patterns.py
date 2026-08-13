@@ -3,6 +3,13 @@ Heimdall Cryptographic Validation Patterns
 
 Pattern definitions for detecting cryptographic issues.
 """
+# AST-Migration-Skipped: weak-algorithm/call patterns are code-facing across languages; a Python
+# AST port would add precision and is deferred, not declined.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("crypto.crypto_patterns", reason="Regex-only lexical sweep (multi-language); AST migration deferred (Plan 01 Phase D)")
 
 import re
 from typing import List, Optional, Set

@@ -3,6 +3,12 @@ Heimdall Protocol Pattern Definitions
 
 Pattern definitions for detecting deprecated TLS/SSL protocol usage.
 """
+# AST-Migration-Skipped: protocol version identifiers are string/constant surface; matching is lexical.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("tls.protocol_patterns", reason="Regex optimal (lexical): string-surface signatures; parse trees add no signal")
 
 import re
 from typing import List

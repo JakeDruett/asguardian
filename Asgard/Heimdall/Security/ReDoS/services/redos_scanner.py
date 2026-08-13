@@ -10,6 +10,13 @@ low-FP text match and not where the false positives came from; dynamic
 constant-folded f-string/concat would need the AST/taint layer and is
 deferred to a separate CWE-400 regex-injection rule, not this scanner.
 """
+# AST-Migration-Skipped: ReDoS analysis inspects regex literals themselves — a lexical artifact
+# regardless of host language.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("redos.redos_scanner", reason="Regex optimal (lexical): string-surface signatures; parse trees add no signal")
 
 import os
 import re

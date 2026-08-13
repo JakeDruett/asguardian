@@ -1,4 +1,11 @@
 """Sensitive data and PII exposure scanner."""
+# AST-Migration-Skipped: sensitive-data detection is string-surface work, same rationale as
+# secrets.hardcoded_patterns.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("sensitivedata.sensitive_data_scanner", reason="Regex optimal (lexical): string-surface signatures; parse trees add no signal")
 
 import ast
 import os

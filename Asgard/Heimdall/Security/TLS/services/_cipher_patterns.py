@@ -3,6 +3,12 @@ Heimdall Cipher Pattern Definitions
 
 Pattern definitions for detecting weak cipher suite usage.
 """
+# AST-Migration-Skipped: cipher-suite names are string literals in code/config; matching is lexical.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("tls.cipher_patterns", reason="Regex optimal (lexical): string-surface signatures; parse trees add no signal")
 
 import re
 from typing import List

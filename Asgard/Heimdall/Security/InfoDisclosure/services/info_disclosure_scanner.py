@@ -1,4 +1,11 @@
 """Information disclosure vulnerability scanner."""
+# AST-Migration-Skipped: info-disclosure detection keys on string surfaces (paths, messages,
+# stack-trace markers).
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("infodisclosure.info_disclosure_scanner", reason="Regex optimal (lexical): string-surface signatures; parse trees add no signal")
 
 import os
 import re

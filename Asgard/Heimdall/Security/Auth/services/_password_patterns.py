@@ -3,6 +3,13 @@ Heimdall Password Pattern Definitions
 
 Pattern definitions for detecting password security issues.
 """
+# AST-Migration-Skipped: password-policy patterns sweep assignments/config strings across languages;
+# AST port deferred.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("auth.password_patterns", reason="Regex-only lexical sweep (multi-language); AST migration deferred (Plan 01 Phase D)")
 
 import re
 from typing import List

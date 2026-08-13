@@ -11,6 +11,13 @@ relabel it "Potential SSRF Validation Bypass" -- it never escalates a
 finding the regex layer didn't already raise. See
 ``_ssrf_ast_analysis.py`` for documented precision/recall limitations.
 """
+# AST-Migration-Skipped: SSRF checks sweep HTTP-client call surfaces across languages; AST port
+# deferred.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("ssrf.ssrf_scanner", reason="Regex-only lexical sweep (multi-language); AST migration deferred (Plan 01 Phase D)")
 
 import ast
 import os

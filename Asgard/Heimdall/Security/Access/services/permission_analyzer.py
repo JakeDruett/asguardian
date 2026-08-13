@@ -3,6 +3,12 @@ Heimdall Permission Analyzer Service
 
 Service for detecting permission-related issues in route handlers.
 """
+# AST-Migration-Skipped: permission checks sweep chmod/umask/ACL call surfaces; AST port deferred.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("access.permission_analyzer", reason="Regex-only lexical sweep (multi-language); AST migration deferred (Plan 01 Phase D)")
 
 import ast
 import re

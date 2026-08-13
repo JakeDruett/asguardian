@@ -3,6 +3,13 @@ Heimdall Session Analyzer Service
 
 Service for detecting session management security issues.
 """
+# AST-Migration-Skipped: session/cookie flag checks sweep call/config strings across languages;
+# AST port deferred.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("auth.session_analyzer", reason="Regex-only lexical sweep (multi-language); AST migration deferred (Plan 01 Phase D)")
 
 import re
 import time

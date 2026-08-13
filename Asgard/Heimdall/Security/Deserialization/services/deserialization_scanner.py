@@ -1,4 +1,12 @@
 """Insecure deserialization scanner."""
+# AST-Migration-Skipped: unsafe-deserialization calls are code-facing; Python yaml.load is already
+# AST-backed via the dual-engine pilot, the wider multi-language sweep stays
+# regex for now.
+# (Plan 01 Phase D / DEEPTHINK_05 §4).
+
+from Asgard.Heimdall.treesitter.ast_engine import register_regex_only
+
+register_regex_only("deserialization.deserialization_scanner", reason="Regex-only lexical sweep (multi-language); AST migration deferred (Plan 01 Phase D)")
 
 import ast
 import os
