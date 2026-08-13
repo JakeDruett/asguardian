@@ -27,6 +27,48 @@ REGEX_MODE_MESSAGE = "Regex mode. Install 'asguardian[ast]' for AST-precision sc
 
 _engine_mode_logged = False
 
+#: Per-rule engine registry (Plan 01 Phase D).  Dual-engine rules register
+#: automatically via :func:`with_ast_fallback`; intentionally-unmigrated
+#: lexical rules register via :func:`register_regex_only` so users can see
+#: which rules are AST-backed and which stay regex by design.
+_RULE_REGISTRY: dict = {}
+
+
+def register_regex_only(rule_name: str, reason: str = "Regex optimal (lexical)") -> None:
+    """Record a rule that intentionally stays regex (AST-Migration-Skipped)."""
+    _RULE_REGISTRY[rule_name] = {
+        "engine": "regex",
+        "language": None,
+        "reason": reason,
+    }
+
+
+def _register_dual(rule_name: str, language: str) -> None:
+    _RULE_REGISTRY[rule_name] = {
+        "engine": "dual",
+        "language": language,
+        "reason": None,
+    }
+
+
+def rule_engine_status() -> dict:
+    """Per-rule engine map: rule name -> engine info (deterministic order).
+
+    ``active_engine`` reports what actually runs for that rule right now:
+    a dual rule degrades to regex when its language's grammar is missing.
+    """
+    out = {}
+    for name in sorted(_RULE_REGISTRY):
+        info = dict(_RULE_REGISTRY[name])
+        if info["engine"] == "dual":
+            info["active_engine"] = (
+                "ast" if is_engine_enabled(info["language"]) else "regex"
+            )
+        else:
+            info["active_engine"] = "regex"
+        out[name] = info
+    return out
+
 
 def is_engine_enabled(language: str) -> bool:
     """True when the AST engine can be used for *language*."""
@@ -56,6 +98,7 @@ def engine_status() -> dict:
         "engine": "ast" if TS_AVAILABLE else "regex",
         "tree_sitter_available": bool(TS_AVAILABLE),
         "languages": languages if TS_AVAILABLE else [],
+        "rules": rule_engine_status(),
     }
 
 
@@ -93,6 +136,7 @@ def with_ast_fallback(language: str, ast_impl):
         wrapper.__regex_impl__ = regex_impl
         wrapper.__ast_language__ = language
         wrapper.__engine__ = "dual"
+        _register_dual(regex_impl.__name__, language)
         return wrapper
 
     return decorator
