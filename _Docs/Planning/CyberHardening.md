@@ -24,8 +24,8 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Planned | Accepted risk |
 |----------|------|---------|---------------|
 | Critical | 0    | 0       | 0             |
-| High     | 6    | 0       | 0             |
-| Medium   | 17   | 0       | 0             |
+| High     | 16   | 0       | 0             |
+| Medium   | 27   | 0       | 0             |
 | Low      | 15   | 0       | 0             |
 | Info     | 5    | 0       | 0             |
 
@@ -385,7 +385,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 - **Confidence:** High
 - **CWE / class:** CWE-78 / CWE-829 (untrusted git repo)
 - **Primary file:** `Asgard/Bragi/Calibration/services/szz.py`
-- **Also on trace:** `Asgard/Bragi/Calibration/services/rule_validator.py` (`compute_rule_validity_stage2`)
+- **Also on trace:** `Asgard/Bragi/Calibration/services/rule_validator.py`, `Asgard/Bragi/Quality/services/_git_friction.py`, `Asgard/Bragi/QualityGate/services/_git_diff.py` (live `git diff` on `heimdall --diff`), `Asgard/Bragi/QualityGate/services/_hotspot_ranker.py`
 - **Location:** `_run_git` → `_fix_commit_hunks` (`git diff`)
 - **Trace:** `compute_szz(repo_root)` / Stage 2 validity → `subprocess.run(["git", "-C", repo_root] + args)` with inherited env → `git diff` honors that repo’s `diff.external` / `GIT_EXTERNAL_DIFF` / pager/fsmonitor
 - **Impact:** Pointing Stage 2 at a hostile clone can execute a command from repo config or env. Not `shell=True` injection. **Not on Heimdall CLI today** (Stage 1 only); public API is live.
@@ -659,7 +659,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Confidence:** High
 - **CWE / class:** CWE-532
 - **Primary file:** `Asgard/Bragi/Quality/languages/javascript/services/_js_security_rules.py`
-- **Also on trace:** `Asgard/Bragi/Quality/languages/php/services/_php_rules.py`, `Asgard/Bragi/Quality/languages/ruby/services/_ruby_rules.py`, `Asgard/Bragi/Quality/languages/rust/services/_rust_rules.py`, `Asgard/Heimdall/cli/handlers/lang_analyzers.py` (prints `Code:` / JSON)
+- **Also on trace:** `Asgard/Bragi/Quality/languages/php/services/_php_rules.py`, `Asgard/Bragi/Quality/languages/ruby/services/_ruby_rules.py`, `Asgard/Bragi/Quality/languages/rust/services/_rust_rules.py`, `Asgard/Bragi/Quality/models/env_fallback_models.py`, `Asgard/Bragi/Quality/services/_env_fallback_reporter.py`, `Asgard/Heimdall/cli/handlers/lang_analyzers.py`
 - **Location:** `check_hardcoded_credentials`
 - **Trace:** Matching source line (including the literal) → `code_snippet` → CLI print / `report.dict()`
 - **Impact:** Detected secrets leave the file into reports, logs, and CI artifacts.
@@ -697,13 +697,313 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Planned fix:** Bound `.{0,200}`; skip lines over a max length; apply `max_file_lines`.
 - **Fix wave:** W4
 
+### CH-0046 — Code-smell HTML report interpolates scan strings unescaped
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-79
+- **Primary file:** `Asgard/Bragi/Quality/services/_code_smell_report_html.py`
+- **Also on trace:** `Asgard/Bragi/Quality/services/code_smell_detector.py`, `Asgard/Bragi/Quality/services/_code_smell_visitor.py`
+- **Location:** `generate_html_report` (`scan_path`, `filename`, `description`, `evidence`, `sev` class attribute)
+- **Trace:** AST names / file basenames / scan_path → f-string HTML with no `html.escape` → CLI report string (if saved/opened in a browser)
+- **Impact:** Stored XSS when the HTML report is opened. Attribute breakout if `severity` is a raw string.
+- **Evidence:** No `html.escape`. `{sev}` used in `class="smell-{sev}"`.
+- **Planned fix:** `html.escape` every interpolated field; never put untrusted values in attributes without quoting+escape. Tests with `<img` in a filename and scan_path.
+- **Fix wave:** W5
+
+### CH-0047 — Unsigned debt-state JSON cache can skip re-analysis
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-345
+- **Primary file:** `Asgard/Bragi/Quality/services/_debt_state_store.py`
+- **Also on trace:** `{scan_root}/.asgard_cache/bragi_debt_state.json`
+- **Location:** `load_state` / `changed_files` / `apply_delta`
+- **Trace:** Planted cache with matching SHA-256 hashes + `total_debt_minutes: 0` → delta is a no-op → gate sees planted total. Pydantic validates schema (better than CH-0017) but there is no MAC.
+- **Impact:** Integrity of Plan 06 PR-differential debt gating. Not RCE. `rel` join can also read outside `scan_root`.
+- **Evidence:** Cache lives in the scanned tree. Skip is hash-only.
+- **Planned fix:** Refuse cache unless produced this run or HMAC’d; confine `rel` with `is_relative_to`; treat missing/forged state as full rescan.
+- **Fix wave:** W3
+
+### CH-0048 — Incremental file-hash cache is unsigned and mtime-skips
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-345 / CWE-22
+- **Primary file:** `Asgard/Bragi/Quality/services/_incremental_cache.py`
+- **Also on trace:** `Asgard/Bragi/Quality/services/incremental_scanner.py` (not yet popped if later)
+- **Location:** `FileHashCache.load` / `is_changed` / `save`
+- **Trace:** `json.load` → trust `hash`/`result`; `is_changed` returns unchanged on mtime+size match without hashing; `cache_path` may be absolute
+- **Impact:** Planted `.asgard-cache.json` can skip re-scan and inject stored results. Latent: `enabled` defaults False; no in-repo scanner subclass found.
+- **Evidence:** `max_cache_age_days` is never read.
+- **Planned fix:** Always re-hash; schema+HMAC; confine `cache_path`; honor TTL. Do not enable until fixed.
+- **Fix wave:** W3
+
+### CH-0049 — Type checkers / linters execute untrusted project config
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-94 / CWE-829
+- **Primary file:** `Asgard/Bragi/Quality/services/_syntax_linters.py`
+- **Also on trace:** `Asgard/Bragi/Quality/services/_mypy_runner.py`, `Asgard/Bragi/Quality/services/_pyright_runner.py`
+- **Location:** `run_pylint` / `run_flake8` / `run_mypy`; `run_mypy` cwd=scan path; `invoke_pyright` `npx` with cwd=scan path
+- **Trace:** CLI `heimdall` syntax/type-check → subprocess argv-list (no `shell=True`) but no isolation flags → pylint `init-hook` / flake8 local-plugins / mypy `plugins=` / `npx` local `node_modules/.bin/pyright` from the scanned tree
+- **Impact:** Scanning a hostile repo executes attacker code as the analyst. Same class as CH-0024.
+- **Evidence:** No `--rcfile` override / isolated config; mypy cwd is the scan path; npx uses scan cwd.
+- **Planned fix:** Pass isolated config files from Asgard; `cwd` a empty/safe dir; `npx --no-install` or invoke a pinned absolute binary; disable plugins. Add `--` before path operands. Tests that a planted `mypy.ini` plugin is not loaded.
+- **Fix wave:** W1
+
+### CH-0050 — Pyright runner writes/unlinks config in the scan tree (symlink clobber)
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-59
+- **Primary file:** `Asgard/Bragi/Quality/services/_pyright_runner.py`
+- **Also on trace:** `Asgard/Bragi/Quality/services/type_checker.py`
+- **Location:** `invoke_pyright` write of `pyrightconfig.json` / `.pyrightconfig.heimdall.json` then `unlink`
+- **Trace:** `open(..., "w")` follows a planted symlink → overwrite an arbitrary file; dangling symlink: write creates the target, unlink removes only the link
+- **Impact:** Arbitrary file overwrite as the scanner user. Race if two scans share a dir.
+- **Evidence:** Writes inside the untrusted scan tree; no `O_NOFOLLOW`.
+- **Planned fix:** Write config to a `tempfile.mkdtemp` outside the tree; pass `--project` that path; never write into the scan root. Refuse if the dest is a symlink.
+- **Fix wave:** W2
+
+### CH-0051 — Unsigned QualityGate fingerprint baseline can hide all PR findings
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-345
+- **Primary file:** `Asgard/Bragi/QualityGate/baseline_store.py`
+- **Also on trace:** `Asgard/Bragi/QualityGate/services/quality_gate_evaluator.py`, `{scan}/.asgard_cache/bragi_fingerprint_baseline.json`
+- **Location:** `_read_all` / `load` → `BranchBaseline(**raw)`
+- **Trace:** `heimdall --diff` → `evaluate_differential` → load unsigned JSON from the scan tree → classify matching fingerprints PRE-EXISTING
+- **Impact:** Plant the current finding fingerprints → no blockers. Combined with CH-0052 (weak identity) one planted file+rule hash hides a whole file.
+- **Evidence:** Schema-only Pydantic; no HMAC/commit binding. Missing JSON fail-closes to `NOT_EVALUATED`.
+- **Planned fix:** HMAC or refuse cache unless produced this run; bind to commit SHA; treat load-hash mismatch as empty baseline for gates. Tests with a planted baseline of current fingerprints.
+- **Fix wave:** W3
+
+### CH-0052 — Gate fingerprints collapse to rule+path when snippet is empty
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-345
+- **Primary file:** `Asgard/Bragi/QualityGate/fingerprint.py`
+- **Also on trace:** `Asgard/Bragi/QualityGate/services/_differential_engine.py` (`ensure_fingerprint` keeps a caller-supplied fingerprint)
+- **Location:** `fingerprint_with_anchor`; `ensure_fingerprint`
+- **Trace:** CLI `GateFinding` with empty fp → hash(rule + path + "") if no snippet → one baseline entry matches every finding of that rule in that file. Non-empty `finding.fingerprint` is never recomputed (SARIF/dict can match a planted baseline).
+- **Impact:** Over-suppression of NEW findings; assists CH-0051.
+- **Evidence:** Anchor is snippet else file; `ensure_fingerprint` trusts pre-set fp.
+- **Planned fix:** Always include line + message (or source hash); recompute unless a signed fp is present. Tests that two findings in one file get distinct fps.
+- **Fix wave:** W3
+
+### CH-0053 — `ParallelScanner` pickles analyzer callables over fork IPC
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** Medium
+- **CWE / class:** CWE-502 / CWE-400
+- **Primary file:** `Asgard/Bragi/Quality/services/parallel_scanner.py`
+- **Also on trace:** none
+- **Location:** `_scan_parallel` / `_process_file_wrapper`
+- **Trace:** `ProcessPoolExecutor` pickles `(file_path, analyze_func, config)` to workers (Linux fork copies parent FDs/secrets). Per-file timeout does not kill hung workers.
+- **Impact:** Not standalone RCE today. Compromised worker + pickle-decode in parent is RCE. Hung worker hangs the scan.
+- **Evidence:** No spawn context; no result-type allowlist; `timeout_per_file` on `future.result` only.
+- **Planned fix:** `multiprocessing.get_context("spawn")`; do not pickle callables (import a named worker); kill workers on timeout; cap `workers`.
+- **Fix wave:** W4
+
+### CH-0054 — Unmeasured Ratings dimensions default to letter A
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-693 / fail-open scoring
+- **Primary file:** `Asgard/Bragi/Ratings/services/ratings_calculator.py`
+- **Also on trace:** `Asgard/Bragi/Ratings/services/_report_extractors.py`, QualityGate metric extract
+- **Location:** `_calculate_maintainability` / `_calculate_reliability` / `_calculate_security` when report missing
+- **Trace:** Missing/disabled dimension → `LetterRating.A` + `NOT_MEASURED` → `_derive_overall_rating` worst-of letters ignores confidence → CLI prints A
+- **Impact:** A scan that skipped security still looks like A. `"blocker"` severity maps to A. GENERATED path regex can drop file-level security tallies.
+- **Evidence:** Confidence not used in overall letter. Extractors treat `blocker` as cap but calculator does not.
+- **Planned fix:** Unmeasured dimensions must be `N/A` and excluded from overall, or fail-closed. Map `blocker` to E. Tests for missing security report.
+- **Fix wave:** W3
+
+### CH-0055 — Dashboard HTML interpolates request path and issue fields unescaped
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-79
+- **Primary file:** `Asgard/Dashboard/services/html_renderer.py`
+- **Also on trace:** `Asgard/Dashboard/adapters/web/dashboard_handler.py`, `Asgard/Dashboard/services/_html_renderer_pages.py`, `Asgard/Dashboard/services/_html_helpers.py`
+- **Location:** `render_error({message})`; issue `file_path` / `rule_id` / `assigned_to` in tables; `title="{project_path}"`
+- **Trace:** GET path → 404 `Page not found: {path}` → raw HTML. Stored: scan-derived `file_path`/`rule_id`/`assigned_to` → table cells/attributes. `html.escape` is unused.
+- **Impact:** Reflected XSS on any reachable dashboard. Stored XSS from a hostile scan tree or writable `~/.asgard/issues.db`.
+- **Evidence:** No escape helper. Badge helpers interpolate raw class and text.
+- **Planned fix:** `html.escape` every interpolated field; never put untrusted values in attributes without quoting. Tests for `<img` in 404 path and `file_path`.
+- **Fix wave:** W5
+
+### CH-0056 — Dashboard has no authentication; `--host` can bind all interfaces
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-306
+- **Primary file:** `Asgard/Dashboard/adapters/web/dashboard_handler.py`
+- **Also on trace:** `Asgard/Dashboard/server.py` (`--host`, default `localhost`)
+- **Location:** `do_GET`; `HTTPServer((host, port), …)`
+- **Trace:** Any client that can reach the port reads issues/history. `--host 0.0.0.0` binds all interfaces with no warning/TLS/auth.
+- **Impact:** LAN/WAN exposure of analysis data + CH-0055 XSS if bound broadly. Default localhost limits blast radius.
+- **Evidence:** No cookie/token/Basic auth. Host unrestricted.
+- **Planned fix:** Keep default localhost; warn/refuse `0.0.0.0` unless `--expose`. Optional token query or loopback-only check. Document that the dashboard is not a multi-user UI.
+- **Fix wave:** W1
+
+### CH-0057 — Alignment config `file:` paths are not confined to `base_dir`
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-22
+- **Primary file:** `Asgard/Forseti/Alignment/services/alignment_loader_service.py`
+- **Also on trace:** `forseti align check` / `forseti audit` (`alignment-config.yaml`)
+- **Location:** `build_ir_record` — `Path(base_dir) / source.file`
+- **Trace:** YAML `EntitySource.file` absolute or `../` → `read_text` / validator on files outside the project. `forseti audit` auto-loads `alignment-config.yaml`.
+- **Impact:** A committed malicious config reads arbitrary files the process can open (then may emit snippets in reports).
+- **Evidence:** No `is_relative_to(base_dir.resolve())`. `yaml.safe_load` (no RCE from tags).
+- **Planned fix:** Resolve and require paths under `base_dir`. Reject absolute/`..`. Tests for `/etc/passwd` and `../`.
+- **Fix wave:** W2
+
+### CH-0058 — CodeGen interpolates untrusted OpenAPI strings into generated source
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-94
+- **Primary file:** `Asgard/Forseti/CodeGen/services/_python_generator_helpers.py`
+- **Also on trace:** `Asgard/Forseti/CodeGen/services/_typescript_generator_helpers.py`, `Asgard/Forseti/CodeGen/services/_golang_generator_client_helpers.py`
+- **Location:** Python `path = f"{path}"` from OpenAPI path; TS template literals; Go quoted `fmt.Sprintf`
+- **Trace:** Hostile OpenAPI path/operationId/schema name → generated client source → RCE when that client is imported/run
+- **Impact:** A malicious spec poisons generated Python/TS/Go. Write paths are currently hardcoded (no zip-slip today) but `_write_files` does not jail `file.path`.
+- **Evidence:** No escaping of `path`/`operationId`/descriptions. Python emits a live f-string of the spec path.
+- **Planned fix:** Treat spec strings as data: JSON-encode paths; allowlist identifiers `[A-Za-z_][A-Za-z0-9_]*`; escape comments. Jail writes with `is_relative_to(output_dir)`. Tests with `{__import__('os')}` in a path.
+- **Fix wave:** W2
+
+### CH-0059 — JSON Schema `$ref` reads arbitrary local files
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-22 / CWE-73
+- **Primary file:** `Asgard/Forseti/JSONSchema/services/_ref_resolver_helpers.py`
+- **Also on trace:** `Asgard/Forseti/JSONSchema/services/schema_compiler_service.py`, `schema_validator_service.py`
+- **Location:** `SchemaRegistry._load_external`
+- **Trace:** File-backed validate → compile with `schema_path` → `$ref` `file:///…` or `/…` or `../` → `load_schema_file` with no jail. HTTP `$ref` is rejected.
+- **Impact:** Untrusted schema exfiltrates local files into the compilation/validation process.
+- **Evidence:** Absolute and `file:` refs used as-is; no `is_relative_to(root_path)`.
+- **Planned fix:** Allow only relative refs under `root_path.resolve()`. Reject `file:` absolute and `http(s)`. Tests for `/etc/passwd` and `../`.
+- **Fix wave:** W2
+
+### CH-0060 — GraphQL introspection `urlopen` is unauthenticated SSRF
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-918
+- **Primary file:** `Asgard/Forseti/GraphQL/services/introspection_service.py`
+- **Also on trace:** none
+- **Location:** `_execute_query` → `urllib.request.urlopen(Request(endpoint))`
+- **Trace:** Caller `endpoint` (CLI) → POST; follows redirects; no scheme/host allowlist (`file:` possible)
+- **Impact:** Operator-controlled today; library API can be pointed at internal hosts or `file:`.
+- **Evidence:** No allowlist. `allow_introspection` gates the feature, not the URL.
+- **Planned fix:** Require `http`/`https`; block link-local/RFC1918 unless `--allow-internal`; disable redirects or re-validate Location.
+- **Fix wave:** W1
+
+### CH-0061 — Generated mock servers bind `0.0.0.0` with no auth and Flask `debug=True`
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-306 / CWE-489
+- **Primary file:** `Asgard/Forseti/MockServer/services/_mock_server_generator_helpers.py`
+- **Also on trace:** `Asgard/Forseti/MockServer/models/mock_models.py` (`host` default), `mock_server_generator.py`
+- **Location:** generated Flask `app.run(host="0.0.0.0", debug=True)`
+- **Trace:** `forseti mock generate` → artifact listens on all interfaces, no security, Werkzeug debugger on
+- **Impact:** Network-exposed debugger and unauthenticated mock API.
+- **Evidence:** CLI never overrides host. `MockEndpoint.security` unused.
+- **Planned fix:** Default `127.0.0.1`; `debug=False`; honor security schemes or document local-only. Tests assert generated host/debug.
+- **Fix wave:** W1
+
+### CH-0062 — Validation proxy is an open SSRF forwarder
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-918
+- **Primary file:** `Asgard/Forseti/MockServer/services/validation_proxy_service.py`
+- **Also on trace:** `_validation_proxy_helpers.py`
+- **Location:** `handle_request` — `urlopen(upstream + path)`
+- **Trace:** Client method/path/headers/body → `urlopen`; follows redirects; no path `..` check; no scheme allowlist
+- **Impact:** Anyone who can hit the proxy (default bind `0.0.0.0`) can pivot to `--upstream` or follow a 3xx to metadata IPs.
+- **Evidence:** Headers forwarded except Content-Length. `file:` accepted by urllib.
+- **Planned fix:** Bind localhost; require `http(s)` upstream; strip hop-by-hop headers; refuse `..` and scheme-relative paths; do not follow off-host redirects.
+- **Fix wave:** W1
+
+### CH-0063 — LiveContract probe URL join can rewrite authority; `urlopen` follows redirects
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-918
+- **Primary file:** `Asgard/Forseti/LiveContract/services/live_validator_service.py`
+- **Also on trace:** `probe_planner_service.py`, `workflow_runner_service.py`
+- **Location:** `base_url.rstrip("/") + path` without requiring `path` starts with `/`
+- **Trace:** Spec path `@host/...` or missing `/` → `http://intended@attacker/` ; `urlopen` follows 3xx; `verify_tls=False` is opt-in
+- **Impact:** Hostile spec or workflow params redirect probes to attacker/internal hosts.
+- **Evidence:** `extract_operations` does not enforce OpenAPI “paths start with `/`”.
+- **Planned fix:** `urllib.parse.urljoin` + require path `/`; allowlist scheme/host; no off-host redirects; URL-encode workflow params.
+- **Fix wave:** W1
+
+### CH-0064 — Documentation HTML interpolates title/contact/custom_css unescaped
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-79
+- **Primary file:** `Asgard/Forseti/Documentation/services/docs_generator.py`
+- **Also on trace:** `_docs_generator_helpers.py`, `templates/base.html` (unused `{{ title }}`)
+- **Location:** `<title>{doc_structure.title}</title>`; contact `href`; `custom_css` in `<style>`
+- **Trace:** OpenAPI title/contact/css → HTML file. Most other fields use `html.escape`.
+- **Impact:** XSS if generated docs are served as HTML.
+- **Evidence:** `javascript:` possible in contact.url; `</style><script>` in custom_css.
+- **Planned fix:** Escape title/contact; allowlist CSS or drop `custom_css`. Tests for `javascript:` URL.
+- **Fix wave:** W5
+
+### CH-0065 — SQL `DEFAULT` interpolated unsanitized into migrations/Alembic
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** Medium
+- **CWE / class:** CWE-89 / CWE-94
+- **Primary file:** `Asgard/Forseti/Database/services/_schema_analyzer_helpers.py`
+- **Also on trace:** `migration_generator_service.py`, `_schema_diff_helpers.py`
+- **Location:** `parse_column` `DEFAULT\s+([^\s,]+)`; `to_sql` `DEFAULT {self.default_value}`
+- **Trace:** Hostile SQL dump → default value → generated `.sql` / Alembic `op.execute('...')` string
+- **Impact:** Stacked SQL or Python breakout if generated migrations are executed. Names are `\w+`; `quote_identifier` exists but unused.
+- **Evidence:** Alembic escape is only `'` → `\'`.
+- **Planned fix:** Restrict defaults to literals; use `quote_identifier`; emit parameterized Alembic. Tests with `1;DROP`.
+- **Fix wave:** W2
+
 ## Planned fix waves
 
-- **W1 — CI / supply chain / secrets policy (do first):** CH-0001, CH-0002, CH-0003, CH-0004, CH-0005, CH-0006, CH-0023, CH-0024, CH-0033. Pin actions, stop executing PR code on ARC, lock PyPI publish, isolate git, do not phone home to PyPI unless opted in.
-- **W2 — Path confinement:** CH-0007, CH-0008, CH-0010, CH-0014, CH-0026, CH-0028, CH-0034, CH-0035, CH-0037, CH-0040, CH-0041, CH-0042. Shared symlink-safe walker for Performance, BugDetection, and language analyzers.
-- **W3 — Baseline / cache / policy integrity:** CH-0011, CH-0012, CH-0013, CH-0015, CH-0027, CH-0032, CH-0036, CH-0038, CH-0043. Sign or refuse caches; fail-closed license defaults; redact secrets in findings.
-- **W4 — Analyzer robustness:** CH-0016, CH-0017, CH-0018, CH-0021, CH-0022, CH-0025, CH-0031, CH-0039, CH-0045. Size/recursion/hunk/regex caps; cache schema.
-- **W5 — Output / template hygiene:** CH-0009, CH-0019, CH-0020, CH-0030, CH-0044. Escape markdown; tighten gitignore; fix unsafe remediations.
+- **W1 — CI / supply chain / secrets policy (do first):** CH-0001–CH-0006, CH-0023, CH-0024, CH-0033, CH-0049, CH-0056, CH-0060, CH-0061, CH-0062, CH-0063. Isolate git/linters; lock mock/proxy/probe/introspection network.
+- **W2 — Path confinement:** … CH-0050, CH-0057, CH-0058, CH-0059, CH-0065. Jail `$ref` and generated SQL/Alembic.
+- **W3 — Baseline / cache / policy integrity:** CH-0011, CH-0012, CH-0013, CH-0015, CH-0027, CH-0032, CH-0036, CH-0038, CH-0043, CH-0047, CH-0048, CH-0051, CH-0052, CH-0054. Sign QualityGate baselines; fix fingerprint identity; do not grade unmeasured dimensions as A.
+- **W4 — Analyzer robustness:** CH-0016, CH-0017, CH-0018, CH-0021, CH-0022, CH-0025, CH-0031, CH-0039, CH-0045, CH-0053. Size/recursion/hunk/regex caps; spawn-safe parallel workers.
+- **W5 — Output / template hygiene:** CH-0009, CH-0019, CH-0020, CH-0030, CH-0044, CH-0046, CH-0055, CH-0064. Escape Dashboard and Forseti docs HTML.
 
 ## Accepted risks
 
@@ -718,16 +1018,12 @@ None yet.
 - Batch 4 merged: OOP + Performance + BugDetection (48 files)
 - Batch 5 merged: Quality language analyzers C++ through PHP
 - Batch 6 merged (2026-08-16): Quality ruby/rust/shell/typescript + Quality models A
-- Last paths completed: through `Asgard/Bragi/Quality/models/debt_models.py`
-- Next batch: remaining `Asgard/Bragi/Quality/models/*` then Quality services
-- Resume pointer (2026-08-16 session cap): remaining=3600 completed=275. Next paths:
-  - `Asgard/Bragi/Quality/models/documentation_models.py`
-  - `Asgard/Bragi/Quality/models/duplication_models.py`
-  - `Asgard/Bragi/Quality/models/env_fallback_models.py`
-  - `Asgard/Bragi/Quality/models/error_handling_models.py`
-  - `Asgard/Bragi/Quality/models/future_leak_models.py`
-  - then more `Quality/models/*` and Quality services
-- Commands: `python3 scripts/cyberhardening_inventory.py status` / `next 8` / `done PATH --disposition …`
-- Spot-check batch 6: language `eval` rules detect scanned source; shell rules do not execute. CH-0042/CH-0043 extended to ruby/rust/ts/shell.
-- Highest ID: CH-0045
-- **Successor:** do not rebuild inventory unless `todo.json` is missing. Continue `next N`. Do not implement fixes. Unit of progress is one inventoried file traced + ledger + `done`.
+- Last paths completed: through Quality services `error_handling_scanner.py` (batch 7, ~80 files)
+- Next batch: remaining Quality scanners (file_length, taint, type_checker, parallel_scanner) + QualityGate + Ratings
+- Resume pointer: `python3 scripts/cyberhardening_inventory.py status` then `next 8`
+- Spot-check batch 7: `_git_friction` git -C (CH-0024); HTML smell report unescaped; mypy/pyright/pylint untrusted config; pyright writes into scan tree.
+- Batch 8 merged: remaining Quality scanners + taint + QualityGate + Ratings
+- Batch 9: Dashboard + Forseti Alignment/AsyncAPI/Avro/CodeGen
+- Batch 10: Forseti Compatibility through MockServer/LiveContract
+- Highest ID: CH-0065
+- **Successor:** do not rebuild inventory unless `todo.json` is missing. Continue `next N`. Do not implement fixes.
