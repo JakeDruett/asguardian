@@ -247,6 +247,30 @@ class TestRepoWorkflowPins:
                 window = "\n".join(text.splitlines()[max(0, i - 8) : i + 1])
                 assert "pull_request" in window
 
+    def test_publish_is_split_trust(self):
+        path = os.path.join(self._REPO_ROOT, ".github", "workflows", "publish.yml")
+        data = yaml.safe_load(open(path, encoding="utf-8"))
+        assert data["permissions"] == {}
+        on_block = data.get("on") or data.get(True)
+        assert on_block["push"]["tags"] == ["v[0-9].*"]
+        jobs = data["jobs"]
+        assert "id-token" not in (jobs["build"].get("permissions") or {})
+        assert jobs["build"]["runs-on"] == "ubuntu-latest"
+        pub = jobs["publish"]
+        assert pub["environment"] == "pypi"
+        assert pub["permissions"]["id-token"] == "write"
+        assert pub["runs-on"] == "ubuntu-latest"
+        assert pub["needs"] == ["build", "provenance"]
+        assert jobs["provenance"]["permissions"]["attestations"] == "write"
+        uses = [
+            step.get("uses", "")
+            for job in jobs.values()
+            for step in job.get("steps") or []
+        ]
+        assert any("attest-build-provenance" in u for u in uses)
+        assert any("gh-action-pypi-publish" in u for u in uses)
+        assert any("download-artifact" in u for u in uses)
+
 
 class TestInjectionImmunity:
     def test_adversarial_issue_title_is_rewritten(self, generator):

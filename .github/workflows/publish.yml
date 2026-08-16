@@ -1,18 +1,26 @@
 name: Publish to PyPI
 
-on:
+# Tag protection (repo Settings → Rules → Rulesets) should allow only
+# v[0-9].* and require a reviewer before creating release tags.
+"on":
   push:
     tags:
-      - "v*"
+      - "v[0-9].*"
+
+permissions: {}
 
 jobs:
-  publish:
-    runs-on: arc-x86
+  build:
+    name: Build
+    runs-on: ubuntu-latest
     permissions:
-      id-token: write
+      contents: read
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          persist-credentials: false
 
       - name: Set up Python
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5.6.0
@@ -25,5 +33,57 @@ jobs:
       - name: Build distribution
         run: python -m build
 
+      - name: Checksum artifacts
+        run: sha256sum dist/* | tee dist/SHA256SUMS
+
+      - name: Upload dist
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
+        with:
+          name: python-dist
+          path: dist/
+          if-no-files-found: error
+
+  provenance:
+    name: Attest
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    timeout-minutes: 15
+    steps:
+      - name: Download dist
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4.3.0
+        with:
+          name: python-dist
+          path: dist
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be  # v2.4.0
+        with:
+          subject-path: dist/**
+
+  publish:
+    name: Publish
+    needs: [build, provenance]
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      contents: read
+      id-token: write
+    timeout-minutes: 15
+    steps:
+      - name: Download dist
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4.3.0
+        with:
+          name: python-dist
+          path: dist
+
+      - name: Verify checksums
+        run: sha256sum -c dist/SHA256SUMS
+
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33  # v1.14.2
+        with:
+          packages-dir: dist

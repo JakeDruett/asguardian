@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 26   | 2     | 0             |
+| High     | 25   | 3     | 0             |
 | Medium   | 59   | 0     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
@@ -72,7 +72,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0003 — PyPI OIDC publish: floating publisher, no environment, no split-trust
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T09:58:00Z
+- **Implementation note:** Split build (no OIDC) / attest / publish; environment pypi; ubuntu-latest; tags v[0-9].*; workflow permissions {}.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-345 / CWE-269
@@ -1768,12 +1771,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 112
-- Fixed: 2
+- Open: 111
+- Fixed: 3
 - Accepted risk: 0
 - Current wave: W1
-- Next: CH-0003, CH-0024, CH-0049, CH-0060
-- Last commit: ca95bf4
+- Next: CH-0024, CH-0049, CH-0060, CH-0061
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
