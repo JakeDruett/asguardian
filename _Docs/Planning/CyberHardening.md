@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
 | Medium   | 35   | 24    | 0             |
-| Low      | 20   | 2     | 0             |
+| Low      | 19   | 3     | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -162,7 +162,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0008 — BackendInit `.gitignore` merge follows symlinks
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T14:10:00Z
+- **Implementation note:** _ensure_gitignore and _write_if_absent skip symlink paths; target file contents are unchanged.
 - **Severity:** Low
 - **Confidence:** Medium
 - **CWE / class:** CWE-59
@@ -1906,12 +1909,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 66
-- Fixed: 48
+- Open: 65
+- Fixed: 49
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0008, CH-0014, CH-0028, CH-0034
-- Last commit: 112dd47
+- Next: CH-0014, CH-0028, CH-0034, CH-0037
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

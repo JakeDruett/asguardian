@@ -27,8 +27,9 @@ def _write_if_absent(path: Path, content: str) -> bool:
     """Write content to path only if the file does not already exist.
 
     Returns True if the file was written, False if it was skipped.
+    Refuses to follow or replace a symlink.
     """
-    if path.exists():
+    if path.is_symlink() or path.exists():
         return False
     path.write_text(content, encoding="utf-8")
     return True
@@ -37,6 +38,10 @@ def _write_if_absent(path: Path, content: str) -> bool:
 def _ensure_gitignore(path: Path) -> None:
     """Create or update .gitignore to include required exclusions."""
     required = list(GITIGNORE_ENTRIES)
+
+    if path.is_symlink():
+        print(f"  Skipped  {path.name}  (refusing symlink)")
+        return
 
     if not path.exists():
         path.write_text(GITIGNORE_FULL, encoding="utf-8")

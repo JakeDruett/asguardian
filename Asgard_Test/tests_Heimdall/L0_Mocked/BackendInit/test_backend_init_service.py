@@ -85,6 +85,26 @@ class TestWriteIfAbsent:
 class TestEnsureGitignore:
     """Tests for the _ensure_gitignore helper function."""
 
+    def test_symlink_gitignore_does_not_change_target(self, tmp_path: Path) -> None:
+        target = tmp_path / "real_ignore"
+        target.write_text("keep-me\n", encoding="utf-8")
+        gitignore = tmp_path / ".gitignore"
+        gitignore.symlink_to(target)
+
+        _ensure_gitignore(gitignore)
+
+        assert gitignore.is_symlink()
+        assert target.read_text(encoding="utf-8") == "keep-me\n"
+
+    def test_write_if_absent_skips_symlink(self, tmp_path: Path) -> None:
+        target = tmp_path / "real.txt"
+        target.write_text("original\n", encoding="utf-8")
+        link = tmp_path / "link.txt"
+        link.symlink_to(target)
+
+        assert _write_if_absent(link, "hijack\n") is False
+        assert target.read_text(encoding="utf-8") == "original\n"
+
     def test_creates_full_gitignore_when_file_absent(self, tmp_path: Path) -> None:
         # Arrange
         gitignore = tmp_path / ".gitignore"
