@@ -5,12 +5,16 @@ FileHashCache class for tracking content changes via hashing.
 """
 
 import hashlib
+import hmac
 import json
+import os
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Union
 
 from Asgard.common._incremental_models import HashEntry, IncrementalConfig
+
+_HMAC_ENV = "ASGARD_COMMON_HASH_HMAC_KEY"
 
 
 class FileHashCache:
@@ -45,11 +49,46 @@ class FileHashCache:
             project_path: Root path for cache file
             config: Incremental configuration
         """
-        self.project_path = project_path
+        self.project_path = Path(project_path).resolve()
         self.config = config or IncrementalConfig()
-        self.cache_file = project_path / self.config.cache_path
+        self.cache_file = self._confine_cache_path(self.project_path, self.config.cache_path)
         self._entries: Dict[str, HashEntry] = {}
         self._dirty = False
+
+    @staticmethod
+    def _confine_cache_path(project_path: Path, cache_path: str) -> Path:
+        raw = Path(cache_path)
+        if raw.is_absolute() or ".." in raw.parts:
+            raise ValueError("cache_path must stay under the project path")
+        dest = project_path / raw
+        resolved = dest.resolve()
+        if not resolved.is_relative_to(project_path.resolve()):
+            raise ValueError("cache_path must stay under the project path")
+        return dest
+
+    def _hmac_key(self) -> bytes:
+        env = os.environ.get(_HMAC_ENV, "").strip()
+        if env:
+            return env.encode("utf-8")
+        key_path = self.cache_file.with_name(self.cache_file.name + ".key")
+        if key_path.is_symlink():
+            raise ValueError("hash cache key path must not be a symlink")
+        if key_path.exists():
+            return key_path.read_bytes()
+        key_path.parent.mkdir(parents=True, exist_ok=True)
+        key = os.urandom(32)
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+        fd = os.open(key_path, flags, 0o600)
+        try:
+            os.write(fd, key)
+        finally:
+            os.close(fd)
+        os.chmod(key_path, 0o600)
+        return key
+
+    def _sign(self, payload: dict) -> str:
+        canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str)
+        return hmac.new(self._hmac_key(), canonical.encode("utf-8"), hashlib.sha256).hexdigest()
 
     def load(self) -> bool:
         """
@@ -58,13 +97,20 @@ class FileHashCache:
         Returns:
             True if cache was loaded successfully
         """
-        if not self.cache_file.exists():
+        if not self.cache_file.exists() or self.cache_file.is_symlink():
             return False
 
         try:
-            with open(self.cache_file, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-
+            data = json.loads(self.cache_file.read_text(encoding='utf-8'))
+            if not isinstance(data, dict):
+                self._entries = {}
+                return False
+            expected = data.pop("hmac", None)
+            if not isinstance(expected, str) or not hmac.compare_digest(
+                expected, self._sign(data)
+            ):
+                self._entries = {}
+                return False
             entries = data.get('entries', {})
             for item_id, entry_data in entries.items():
                 self._entries[item_id] = HashEntry(**entry_data)
@@ -72,16 +118,18 @@ class FileHashCache:
             self._dirty = False
             return True
 
-        except (json.JSONDecodeError, KeyError, TypeError):
+        except (OSError, json.JSONDecodeError, KeyError, TypeError, ValueError):
             self._entries = {}
             return False
 
     def save(self) -> None:
-        """Save cache to disk."""
+        """Save cache to disk with HMAC."""
         if not self._dirty and self.cache_file.exists():
             return
+        if self.cache_file.is_symlink():
+            raise ValueError("hash cache path must not be a symlink")
 
-        data = {
+        payload = {
             'version': '1.0.0',
             'created_at': datetime.now().isoformat(),
             'project_path': str(self.project_path),
@@ -98,10 +146,17 @@ class FileHashCache:
                 for item_id, entry in self._entries.items()
             }
         }
+        payload["hmac"] = self._sign({k: v for k, v in payload.items() if k != "hmac"})
 
         self.cache_file.parent.mkdir(parents=True, exist_ok=True)
-        with open(self.cache_file, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=2)
+        raw = json.dumps(payload, indent=2).encode("utf-8")
+        flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, "O_NOFOLLOW", 0)
+        fd = os.open(self.cache_file, flags, 0o600)
+        try:
+            os.write(fd, raw)
+        finally:
+            os.close(fd)
+        os.chmod(self.cache_file, 0o600)
 
         self._dirty = False
 
@@ -155,14 +210,7 @@ class FileHashCache:
 
         entry = self._entries[item_id]
 
-        # Quick check using file stats if available
-        if file_path and file_path.exists():
-            stat = file_path.stat()
-            if entry.last_modified is not None and entry.size is not None:
-                if stat.st_mtime == entry.last_modified and stat.st_size == entry.size:
-                    return False
-
-        # Full hash check if content provided
+        # Always re-hash; mtime/size is not a skip (CWE-345).
         if content is not None:
             current_hash = self.compute_hash(content)
             return current_hash != entry.hash

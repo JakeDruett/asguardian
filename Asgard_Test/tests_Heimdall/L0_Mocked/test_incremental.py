@@ -30,7 +30,7 @@ class TestIncrementalConfig:
         config = IncrementalConfig()
         assert config.enabled is False
         assert config.cache_path == ".asgard-cache.json"
-        assert config.store_results is True
+        assert config.store_results is False
         assert config.max_cache_age_days == 30
         assert config.hash_func == "sha256"
 
@@ -116,6 +116,11 @@ class TestFileHashCache:
             cache = FileHashCache(Path(tmpdir))
             assert isinstance(cache.config, IncrementalConfig)
 
+    def test_absolute_cache_path_is_refused(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            with pytest.raises(ValueError, match="project path"):
+                FileHashCache(Path(tmpdir), IncrementalConfig(cache_path="/tmp/evil.json"))
+
     def test_load_nonexistent_file(self):
         """Test loading cache when file doesn't exist."""
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -152,10 +157,9 @@ class TestFileHashCache:
             cache = FileHashCache(project_path)
             result = cache.load()
 
-            assert result is True
-            assert 'item1' in cache._entries
-            assert cache._entries['item1'].hash == 'hash1'
-            assert cache._dirty is False
+            assert result is False
+            assert cache._entries == {}
+            assert cache.get_cached_result('item1') is None
 
     def test_load_invalid_json(self):
         """Test loading cache with invalid JSON."""
@@ -316,8 +320,8 @@ class TestFileHashCache:
                 size=stat.st_size,
             )
 
-            # Should use quick check and return False
-            assert cache.is_changed('item1', file_path=test_file) is False
+            # mtime/size match is not enough; hash mismatch is changed
+            assert cache.is_changed('item1', file_path=test_file) is True
 
     def test_is_changed_file_stat_changed(self):
         """Test is_changed detects file stat changes."""
@@ -367,7 +371,7 @@ class TestFileHashCache:
     def test_update_with_content(self):
         """Test updating cache with content."""
         with tempfile.TemporaryDirectory() as tmpdir:
-            cache = FileHashCache(Path(tmpdir))
+            cache = FileHashCache(Path(tmpdir), IncrementalConfig(store_results=True))
             content = "test content"
             result = {'status': 'processed'}
 
@@ -515,20 +519,10 @@ class TestIncrementalMixin:
         with tempfile.TemporaryDirectory() as tmpdir:
             # Create a cache file
             cache_file = Path(tmpdir) / ".asgard-cache.json"
-            cache_file.write_text(json.dumps({
-                'version': '1.0.0',
-                'entries': {
-                    'item1': {
-                        'item_id': 'item1',
-                        'hash': 'hash1',
-                        'last_modified': None,
-                        'size': None,
-                        'last_processed': datetime.now().isoformat(),
-                        'result': None,
-                        'metadata': {},
-                    }
-                }
-            }))
+            writer = FileHashCache(Path(tmpdir))
+            writer._entries['item1'] = HashEntry(item_id='item1', hash='hash1')
+            writer._dirty = True
+            writer.save()
 
             obj = TestClass()
             obj._init_cache(Path(tmpdir))
@@ -575,7 +569,7 @@ class TestIncrementalMixin:
         """Test _get_cached method."""
         class TestClass(IncrementalMixin):
             def __init__(self):
-                self.incremental_config = IncrementalConfig(enabled=True)
+                self.incremental_config = IncrementalConfig(enabled=True, store_results=True)
                 self._cache = None
 
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -605,7 +599,7 @@ class TestIncrementalMixin:
         """Test _update_cache method."""
         class TestClass(IncrementalMixin):
             def __init__(self):
-                self.incremental_config = IncrementalConfig(enabled=True)
+                self.incremental_config = IncrementalConfig(enabled=True, store_results=True)
                 self._cache = None
 
         with tempfile.TemporaryDirectory() as tmpdir:

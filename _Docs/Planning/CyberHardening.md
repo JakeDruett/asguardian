@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 15   | 44    | 0             |
+| Medium   | 14   | 45    | 0             |
 | Low      | 11   | 11    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1876,7 +1876,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0109 — Incremental `FileHashCache` is unsigned and unconfined
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T17:28:00Z
+- **Implementation note:** HMAC + jail cache_path; always re-hash; `store_results` defaults False. Unsigned planted result is ignored.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-345 / CWE-22
@@ -2008,12 +2011,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 32
-- Fixed: 82
+- Open: 31
+- Fixed: 83
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0092, CH-0107, CH-0109
-- Last commit: b5bfe5c
+- Next: CH-0092, CH-0107, CH-0114
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

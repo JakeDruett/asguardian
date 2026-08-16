@@ -26,6 +26,6 @@ class IncrementalConfig:
     """Configuration for incremental processing."""
     enabled: bool = False
     cache_path: str = ".asgard-cache.json"
-    store_results: bool = True
+    store_results: bool = False
     max_cache_age_days: int = 30
     hash_func: str = "sha256"  # sha256, sha1, md5
