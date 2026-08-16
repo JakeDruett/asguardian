@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
 | Medium   | 2    | 57    | 0             |
-| Low      | 6    | 16    | 0             |
+| Low      | 5    | 17    | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -1678,7 +1678,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0095 — Tree-sitter parse has no size/timeout cap
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 11ed22f
+- **Fixed at:** 2026-08-16T13:32:00Z
+- **Implementation note:** 2 MiB parse cap, Parser.timeout_micros 250ms, iterative ERROR walk, query cache evicts at 256.
 - **Severity:** Low
 - **Confidence:** High
 - **CWE / class:** CWE-400
@@ -2062,12 +2065,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 14
-- Fixed: 100
+- Open: 13
+- Fixed: 101
 - Accepted risk: 0
 - Current wave: W4
 - Next: CH-0025, CH-0031, CH-0039
-- Last commit: 77fbace
+- Last commit: 11ed22f
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

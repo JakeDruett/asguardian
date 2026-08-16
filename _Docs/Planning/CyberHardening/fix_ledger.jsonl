@@ -98,3 +98,4 @@
 {"id":"CH-0021","at":"2026-08-16T13:22:00Z","commit":"1a4faba","wave":"W4","summary":"Bound JS/TS SOLID fallback regexes; skip overlong lines"}
 {"id":"CH-0045","at":"2026-08-16T13:25:00Z","commit":"a12949d","wave":"W4","summary":"Bound PHP SQL/XSS rule regexes; skip overlong lines"}
 {"id":"CH-0087","at":"2026-08-16T13:28:00Z","commit":"77fbace","wave":"W4","summary":"Private-index detection ignores comments"}
+{"id":"CH-0095","at":"2026-08-16T13:32:00Z","commit":"11ed22f","wave":"W4","summary":"Cap tree-sitter parse size/timeout and query cache"}
