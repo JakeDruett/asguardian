@@ -46,3 +46,4 @@
 {"id":"CH-0057","at":"2026-08-16T13:42:00Z","commit":"fc911d0","wave":"W2","summary":"Jail alignment EntitySource.file under base_dir"}
 {"id":"CH-0042","at":"2026-08-16T13:50:00Z","commit":"25aefeb","wave":"W2","summary":"Confined language-analyzer walk; honor exclude/size/finding caps"}
 {"id":"CH-0065","at":"2026-08-16T13:51:00Z","commit":"112dd47","wave":"W2","summary":"Restrict SQL DEFAULT to literals; harden Alembic execute"}
+{"id":"CH-0008","at":"2026-08-16T14:10:00Z","commit":"5e36f15","wave":"W2","summary":"Refuse BackendInit writes through symlink .gitignore"}
