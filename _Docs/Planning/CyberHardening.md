@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 14   | 14    | 0             |
-| Medium   | 55   | 4     | 0             |
+| Medium   | 54   | 5     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
 
@@ -1624,7 +1624,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0104 — Helm chart name is interpolated into `{{ define }}` / `include`
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T11:04:00Z
+- **Implementation note:** HelmChart.name allowlisted to ^[a-z0-9-]+$.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-94 / SSTI
@@ -1816,12 +1819,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 96
-- Fixed: 18
+- Open: 95
+- Fixed: 19
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0066, CH-0004, CH-0005, CH-0033
-- Last commit: 39f6d7c
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

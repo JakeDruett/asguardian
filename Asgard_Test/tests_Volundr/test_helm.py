@@ -27,6 +27,12 @@ def basic_config():
     )
 
 
+class TestChartNameAllowlist:
+    def test_rejects_template_breakout_name(self):
+        with pytest.raises(ValueError, match="chart name"):
+            HelmChart(name="foo}}.evil")
+
+
 class TestValuesSchema:
     def test_values_schema_json_is_generated(self, generator, basic_config):
         result = generator.generate(basic_config)

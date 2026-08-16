@@ -9,7 +9,9 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel, Field
+import re
+
+from pydantic import BaseModel, Field, field_validator
 
 
 class ChartType(str, Enum):
@@ -36,10 +38,20 @@ class HelmDependency(BaseModel):
     import_values: List[Any] = Field(default_factory=list, description="Values to import")
 
 
+_CHART_NAME_RE = re.compile(r"^[a-z0-9-]+$")
+
+
 class HelmChart(BaseModel):
     """Helm Chart.yaml configuration."""
     api_version: str = Field(default="v2", description="Chart API version")
     name: str = Field(description="Chart name")
+
+    @field_validator("name")
+    @classmethod
+    def _chart_name_safe(cls, value: str) -> str:
+        if not _CHART_NAME_RE.fullmatch(value or ""):
+            raise ValueError("chart name must match ^[a-z0-9-]+$")
+        return value
     version: str = Field(default="0.1.0", description="Chart version")
     app_version: str = Field(default="1.0.0", description="Application version")
     description: str = Field(default="", description="Chart description")
