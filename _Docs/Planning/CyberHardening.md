@@ -1625,7 +1625,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0104 — Helm chart name is interpolated into `{{ define }}` / `include`
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 7f92539
 - **Fixed at:** 2026-08-16T11:04:00Z
 - **Implementation note:** HelmChart.name allowlisted to ^[a-z0-9-]+$.
 - **Severity:** Medium
@@ -1824,7 +1824,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0066, CH-0004, CH-0005, CH-0033
-- Last commit: PENDING
+- Last commit: 7f92539
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

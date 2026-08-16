@@ -16,4 +16,4 @@
 {"id":"CH-0004","at":"2026-08-16T10:12:09Z","commit":"f2f0701","wave":"W1","summary":"Already closed by CH-0002/CH-0003 timeouts and concurrency"}
 {"id":"CH-0033","at":"2026-08-16T10:13:40Z","commit":"7945612","wave":"W1","summary":"Gate license PyPI lookup behind enable_network default False"}
 {"id":"CH-0056","at":"2026-08-16T10:14:53Z","commit":"39f6d7c","wave":"W1","summary":"Dashboard refuses wildcard bind unless --expose"}
-{"id":"CH-0104","at":"2026-08-16T11:04:00Z","commit":"PENDING","wave":"W1","summary":"Allowlist Helm chart names to block template breakout"}
+{"id":"CH-0104","at":"2026-08-16T10:16:53Z","commit":"7f92539","wave":"W1","summary":"Allowlist Helm chart names to block template breakout"}
