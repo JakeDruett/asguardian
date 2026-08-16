@@ -1265,7 +1265,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0078 — Heimdall security walker follows symlinks out of the scan root
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 90c656b
 - **Fixed at:** 2026-08-16T13:30:00Z
 - **Implementation note:** iter_confined_files skips file/dir symlinks and requires resolved.is_relative_to(root); dispatch/deps/config-secrets no longer rglob/walk.
 - **Severity:** Medium

@@ -41,3 +41,4 @@
 {"id":"CH-0106","at":"2026-08-16T13:16:00Z","commit":"e11ec5a","wave":"W2","summary":"Allowlist pipeline names; jail pipeline/scaffold writes"}
 {"id":"CH-0026","at":"2026-08-16T13:22:00Z","commit":"7b81377","wave":"W2","summary":"Allowlist LanguageProfileService language path under profiles_dir"}
 {"id":"CH-0040","at":"2026-08-16T13:23:00Z","commit":"62fb89a","wave":"W2","summary":"Skip performance walker symlinks; inode cycle guard"}
+{"id":"CH-0078","at":"2026-08-16T13:30:00Z","commit":"90c656b","wave":"W2","summary":"Skip security-walker symlinks; confine dispatch/deps/config-secrets"}
