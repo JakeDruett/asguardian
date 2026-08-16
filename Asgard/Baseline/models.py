@@ -131,19 +131,24 @@ class BaselineFile(BaseModel):
         self.entries.append(entry)
         self.updated_at = datetime.now()
 
-    def remove_entry(self, violation_id: str) -> bool:
-        """
-        Remove an entry by violation ID.
-
-        Returns:
-            True if entry was found and removed
-        """
-        original_count = len(self.entries)
-        self.entries = [e for e in self.entries if e.violation_id != violation_id]
-        if len(self.entries) < original_count:
-            self.updated_at = datetime.now()
-            return True
-        return False
+    def remove_entry(
+        self,
+        violation_id: str,
+        file_path: str = "",
+        line_number: Optional[int] = None,
+    ) -> bool:
+        """Remove exactly one entry. Ambiguous IDs are not deleted."""
+        candidates = [e for e in self.entries if e.violation_id == violation_id]
+        if file_path:
+            candidates = [e for e in candidates if e.file_path == file_path]
+        if line_number is not None:
+            candidates = [e for e in candidates if e.line_number == line_number]
+        if len(candidates) != 1:
+            return False
+        target = candidates[0]
+        self.entries = [e for e in self.entries if e is not target]
+        self.updated_at = datetime.now()
+        return True
 
     def find_match(
         self,

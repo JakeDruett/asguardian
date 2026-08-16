@@ -119,4 +119,4 @@ def generate_violation_id(
 ) -> str:
     """Generate a unique ID for a violation."""
     content = f"{file_path}:{line_number}:{violation_type}:{message}"
-    return hashlib.sha256(content.encode()).hexdigest()[:12]
+    return hashlib.sha256(content.encode()).hexdigest()

@@ -247,10 +247,15 @@ class BaselineManager:
         self.save()
         return True
 
-    def remove_entry(self, violation_id: str) -> bool:
-        """Remove a baseline entry by ID."""
+    def remove_entry(
+        self,
+        violation_id: str,
+        file_path: str = "",
+        line_number: Optional[int] = None,
+    ) -> bool:
+        """Remove a unique baseline entry by ID (and optional file/line)."""
         baseline = self.load()
-        result = baseline.remove_entry(violation_id)
+        result = baseline.remove_entry(violation_id, file_path, line_number)
         if result:
             self.save()
         return cast(bool, result)

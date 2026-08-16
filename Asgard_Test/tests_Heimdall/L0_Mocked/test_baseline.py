@@ -168,6 +168,21 @@ class TestBaselineFileCleanPath:
         assert result is True
         assert len(bf.entries) == 0
 
+    def test_remove_entry_refuses_ambiguous_id(self):
+        bf = BaselineFile()
+        bf.add_entry(BaselineEntry(
+            file_path="a.py", line_number=1, violation_type="lint",
+            violation_id="same-id", message="one",
+        ))
+        bf.add_entry(BaselineEntry(
+            file_path="b.py", line_number=2, violation_type="lint",
+            violation_id="same-id", message="two",
+        ))
+        assert bf.remove_entry("same-id") is False
+        assert len(bf.entries) == 2
+        assert bf.remove_entry("same-id", file_path="a.py", line_number=1) is True
+        assert len(bf.entries) == 1
+
     def test_get_stats_returns_baseline_stats(self):
         bf = BaselineFile()
         stats = bf.get_stats()
@@ -412,7 +427,7 @@ class TestBaselineHelpersInstantiation:
     def test_generate_violation_id_returns_string(self):
         vid = generate_violation_id("src/foo.py", 10, "lazy_import", "import os")
         assert isinstance(vid, str)
-        assert len(vid) == 12
+        assert len(vid) == 64
 
 
 class TestBaselineHelpersCleanPath:
