@@ -10,7 +10,6 @@ implementation details.
 import fnmatch
 import os
 import re
-import shutil
 import subprocess
 from pathlib import Path
 from typing import Dict, List
@@ -22,6 +21,12 @@ from Asgard.Bragi.Quality.models.type_check_models import (
     TypeCheckDiagnostic,
     TypeCheckReport,
     TypeCheckSeverity,
+)
+from Asgard.Bragi.Quality.services._tool_isolation import (
+    argv_with_paths,
+    isolated_tool_workspace,
+    trusted_executable,
+    write_isolated_mypy_ini,
 )
 
 
@@ -38,7 +43,8 @@ def run_mypy(path: Path, report: TypeCheckReport, config: TypeCheckConfig) -> No
     hangs on subsequent invocations.  Each module group has far fewer files
     than the per-process OS argument-list limit.
     """
-    mypy_bin = shutil.which("mypy")
+    path = Path(path).resolve()
+    mypy_bin = trusted_executable("mypy", path)
     if not mypy_bin:
         raise RuntimeError(
             "mypy is not available. Install with: pip install mypy"
@@ -61,49 +67,51 @@ def run_mypy(path: Path, report: TypeCheckReport, config: TypeCheckConfig) -> No
         top = str(rel.parts[0]) if len(rel.parts) > 1 else "__root__"
         groups.setdefault(top, []).append(f)
 
-    base_cmd: List[str] = [
-        mypy_bin,
-        "--show-error-codes",
-        "--no-error-summary",
-        "--ignore-missing-imports",
-        "--no-incremental",
-        "--explicit-package-bases",
-    ]
-
-    if config.type_checking_mode == "strict":
-        base_cmd.append("--strict")
-
-    if config.python_version:
-        base_cmd.extend(["--python-version", config.python_version])
-
-    if config.venv_path:
-        base_cmd.extend(
-            ["--python-executable", str(Path(config.venv_path) / "bin" / "python")]
-        )
-
     combined_output = ""
     worst_exit = 0
-    cwd = str(path) if path.is_dir() else str(path.parent)
 
-    for group_files in groups.values():
-        cmd = base_cmd + [str(f) for f in group_files]
-        try:
-            result = subprocess.run(
-                cmd,
-                capture_output=True,
-                text=True,
-                timeout=config.subprocess_timeout,
-                cwd=cwd,
+    with isolated_tool_workspace() as workdir:
+        config_file = write_isolated_mypy_ini(workdir)
+        base_cmd: List[str] = [
+            mypy_bin,
+            "--config-file", str(config_file),
+            "--show-error-codes",
+            "--no-error-summary",
+            "--ignore-missing-imports",
+            "--no-incremental",
+            "--explicit-package-bases",
+        ]
+
+        if config.type_checking_mode == "strict":
+            base_cmd.append("--strict")
+
+        if config.python_version:
+            base_cmd.extend(["--python-version", config.python_version])
+
+        if config.venv_path:
+            base_cmd.extend(
+                ["--python-executable", str(Path(config.venv_path) / "bin" / "python")]
             )
-            combined_output += result.stdout + result.stderr
-            ec = result.returncode
-            if ec == 2:
-                ec = 1
-            worst_exit = max(worst_exit, ec)
-        except subprocess.TimeoutExpired:
-            worst_exit = max(worst_exit, 1)
-        except Exception:
-            pass
+
+        for group_files in groups.values():
+            cmd = argv_with_paths(base_cmd, *[f.resolve() for f in group_files])
+            try:
+                result = subprocess.run(
+                    cmd,
+                    capture_output=True,
+                    text=True,
+                    timeout=config.subprocess_timeout,
+                    cwd=str(workdir),
+                )
+                combined_output += result.stdout + result.stderr
+                ec = result.returncode
+                if ec == 2:
+                    ec = 1
+                worst_exit = max(worst_exit, ec)
+            except subprocess.TimeoutExpired:
+                worst_exit = max(worst_exit, 1)
+            except Exception:
+                pass
 
     report.exit_code = worst_exit
     parse_mypy_output(combined_output, path, report, config)
@@ -112,10 +120,12 @@ def run_mypy(path: Path, report: TypeCheckReport, config: TypeCheckConfig) -> No
 def get_mypy_version(mypy_bin: str) -> str:
     """Get mypy version string (e.g. '1.19.1')."""
     try:
-        result = subprocess.run(
-            [mypy_bin, "--version"],
-            capture_output=True, text=True, timeout=10,
-        )
+        with isolated_tool_workspace() as workdir:
+            result = subprocess.run(
+                [mypy_bin, "--version"],
+                capture_output=True, text=True, timeout=10,
+                cwd=str(workdir),
+            )
         parts = result.stdout.strip().split()
         return parts[1] if len(parts) >= 2 else "unknown"
     except Exception:

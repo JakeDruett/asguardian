@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 16   | 12    | 0             |
+| High     | 15   | 13    | 0             |
 | Medium   | 59   | 0     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
@@ -757,7 +757,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0049 — Type checkers / linters execute untrusted project config
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T10:42:00Z
+- **Implementation note:** Isolated cwd/config for pylint/flake8/mypy/pyright; no project plugins; npx --no-install; -- before paths.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-94 / CWE-829
@@ -1798,12 +1801,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 102
-- Fixed: 12
+- Open: 101
+- Fixed: 13
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0066
-- Last commit: fc58544
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

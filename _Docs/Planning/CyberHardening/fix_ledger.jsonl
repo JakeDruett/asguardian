@@ -10,3 +10,4 @@
 {"id":"CH-0024","at":"2026-08-16T10:04:31Z","commit":"dd664de","wave":"W1","summary":"Isolate git config/env for SZZ and other caller-supplied repos"}
 {"id":"CH-0060","at":"2026-08-16T10:04:43Z","commit":"37214ee","wave":"W1","summary":"GraphQL introspection URL allowlist, internal block, safe redirects"}
 {"id":"CH-0093","at":"2026-08-16T10:07:47Z","commit":"fc58544","wave":"W1","summary":"PR decorator https allowlist, quoted repo, same-origin redirects"}
+{"id":"CH-0049","at":"2026-08-16T10:42:00Z","commit":"PENDING","wave":"W1","summary":"Isolate linter/typechecker config, cwd, and binaries from the scan tree"}

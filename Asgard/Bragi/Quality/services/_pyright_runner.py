@@ -21,22 +21,32 @@ from Asgard.Bragi.Quality.models.type_check_models import (
     TypeCheckReport,
     TypeCheckSeverity,
 )
+from Asgard.Bragi.Quality.services._tool_isolation import (
+    argv_with_paths,
+    isolated_tool_workspace,
+    pyright_invocation,
+)
 
 
 def run_pyright(path: Path, report: TypeCheckReport, config: TypeCheckConfig) -> None:
     """Run Pyright and populate the report."""
-    verify_pyright_available(config)
+    path = Path(path).resolve()
+    verify_pyright_available(config, path)
     pyright_output = invoke_pyright(path, config)
     parse_pyright_output(pyright_output, path, report, config)
 
 
-def verify_pyright_available(config: TypeCheckConfig) -> None:
-    """Verify that pyright is available via npx."""
+def verify_pyright_available(config: TypeCheckConfig, path: Optional[Path] = None) -> None:
+    """Verify that pyright is available via a pinned binary or npx --no-install."""
+    scan = Path(path).resolve() if path is not None else Path.cwd()
+    cmd = pyright_invocation(config.npx_path, scan) + ["--version"]
     try:
-        result = subprocess.run(
-            [config.npx_path, "pyright", "--version"],
-            capture_output=True, text=True, timeout=30,
-        )
+        with isolated_tool_workspace() as workdir:
+            result = subprocess.run(
+                cmd,
+                capture_output=True, text=True, timeout=30,
+                cwd=str(workdir),
+            )
         if result.returncode != 0:
             raise RuntimeError(
                 "Pyright is not available. Install with: npm install -g pyright"
@@ -71,33 +81,28 @@ def build_pyright_config(path: Path, config: TypeCheckConfig) -> dict:
 
 def invoke_pyright(path: Path, config: TypeCheckConfig) -> dict:
     """Run pyright subprocess and return parsed JSON."""
-    cmd: List[str] = [config.npx_path, "pyright", "--outputjson"]
+    path = Path(path).resolve()
     config_data = build_pyright_config(path, config)
-
-    config_dir = path if path.is_dir() else path.parent
-    existing_config = config_dir / "pyrightconfig.json"
-    temp_config_path: Optional[Path] = None
-    use_project_flag = existing_config.exists()
+    # Config lives outside the scan tree; include the target so pyright
+    # still analyzes it when --project points at the isolated file.
+    config_data["include"] = [str(path)]
 
     try:
-        if use_project_flag:
-            temp_config_path = config_dir / ".pyrightconfig.heimdall.json"
-            cmd.extend(["--project", str(temp_config_path)])
-        else:
-            temp_config_path = existing_config
-
-        with open(temp_config_path, "w") as f:
-            json.dump(config_data, f, indent=2)
-
-        cmd.append(str(path))
-
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=config.subprocess_timeout,
-            cwd=str(path) if path.is_dir() else str(path.parent),
-        )
+        with isolated_tool_workspace() as workdir:
+            project_file = workdir / "pyrightconfig.json"
+            project_file.write_text(json.dumps(config_data, indent=2), encoding="utf-8")
+            cmd = argv_with_paths(
+                pyright_invocation(config.npx_path, path)
+                + ["--outputjson", "--project", str(project_file)],
+                path,
+            )
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                timeout=config.subprocess_timeout,
+                cwd=str(workdir),
+            )
 
         if result.stdout:
             try:
@@ -111,12 +116,8 @@ def invoke_pyright(path: Path, config: TypeCheckConfig) -> dict:
                         except json.JSONDecodeError:
                             continue
 
-    finally:
-        if temp_config_path and temp_config_path.exists():
-            try:
-                temp_config_path.unlink()
-            except OSError:
-                pass
+    except (subprocess.TimeoutExpired, FileNotFoundError, OSError):
+        pass
 
     return {
         "version": "unknown",

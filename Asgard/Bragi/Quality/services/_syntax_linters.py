@@ -1,4 +1,5 @@
 import json
+import os
 import subprocess
 from pathlib import Path
 from typing import List, Optional
@@ -9,30 +10,48 @@ from Asgard.Bragi.Quality.models.syntax_models import (
     SyntaxIssue,
     SyntaxSeverity,
 )
+from Asgard.Bragi.Quality.services._tool_isolation import (
+    argv_with_paths,
+    isolated_tool_workspace,
+    trusted_executable,
+    write_isolated_mypy_ini,
+    write_isolated_pylint_rc,
+)
+
+
+def _run_isolated(cmd: List[str], timeout: int, cwd: Path, env: Optional[dict] = None):
+    """Run *cmd* with cwd in an Asgard-owned empty directory."""
+    return subprocess.run(
+        cmd,
+        capture_output=True,
+        text=True,
+        timeout=timeout,
+        check=False,
+        cwd=str(cwd),
+        env=env,
+    )
 
 
 def run_ruff(scan_path: Path, config: SyntaxConfig) -> List[SyntaxIssue]:
     """Run ruff linter and parse output."""
     issues = []
+    scan_path = Path(scan_path).resolve()
+    ruff_bin = trusted_executable("ruff", scan_path)
+    if not ruff_bin:
+        return issues
 
     try:
         exclude_args = []
         for pattern in config.exclude_patterns:
             exclude_args.extend(["--exclude", pattern])
 
-        cmd = [
-            "ruff", "check",
-            str(scan_path),
-            "--output-format", "json",
-        ] + exclude_args
-
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=300,
-            check=False,
+        cmd = argv_with_paths(
+            [ruff_bin, "check", "--isolated", "--output-format", "json", *exclude_args],
+            scan_path,
         )
+
+        with isolated_tool_workspace() as workdir:
+            result = _run_isolated(cmd, timeout=300, cwd=workdir)
 
         if result.stdout:
             try:
@@ -64,25 +83,23 @@ def run_ruff(scan_path: Path, config: SyntaxConfig) -> List[SyntaxIssue]:
 
 def run_ruff_fix(scan_path: Path, config: SyntaxConfig) -> int:
     """Run ruff with --fix and return number of fixes."""
+    scan_path = Path(scan_path).resolve()
+    ruff_bin = trusted_executable("ruff", scan_path)
+    if not ruff_bin:
+        return 0
+
     try:
         exclude_args = []
         for pattern in config.exclude_patterns:
             exclude_args.extend(["--exclude", pattern])
 
-        cmd = [
-            "ruff", "check",
-            str(scan_path),
-            "--fix",
-            "--output-format", "json",
-        ] + exclude_args
-
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=300,
-            check=False,
+        cmd = argv_with_paths(
+            [ruff_bin, "check", "--isolated", "--fix", "--output-format", "json", *exclude_args],
+            scan_path,
         )
+
+        with isolated_tool_workspace() as workdir:
+            result = _run_isolated(cmd, timeout=300, cwd=workdir)
 
         if result.stdout:
             try:
@@ -100,24 +117,26 @@ def run_ruff_fix(scan_path: Path, config: SyntaxConfig) -> int:
 def run_flake8(scan_path: Path, config: SyntaxConfig) -> List[SyntaxIssue]:
     """Run flake8 linter and parse output."""
     issues = []
+    scan_path = Path(scan_path).resolve()
+    flake8_bin = trusted_executable("flake8", scan_path)
+    if not flake8_bin:
+        return issues
 
     try:
         exclude_str = ",".join(config.exclude_patterns)
 
-        cmd = [
-            "flake8",
-            str(scan_path),
-            "--format", "%(path)s:%(row)d:%(col)d:%(code)s:%(text)s",
-            "--exclude", exclude_str,
-        ]
-
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=300,
-            check=False,
+        cmd = argv_with_paths(
+            [
+                flake8_bin,
+                "--isolated",
+                "--format", "%(path)s:%(row)d:%(col)d:%(code)s:%(text)s",
+                "--exclude", exclude_str,
+            ],
+            scan_path,
         )
+
+        with isolated_tool_workspace() as workdir:
+            result = _run_isolated(cmd, timeout=300, cwd=workdir)
 
         for line in result.stdout.strip().split("\n"):
             if not line:
@@ -147,24 +166,29 @@ def run_flake8(scan_path: Path, config: SyntaxConfig) -> List[SyntaxIssue]:
 def run_pylint(scan_path: Path, config: SyntaxConfig) -> List[SyntaxIssue]:
     """Run pylint and parse output."""
     issues = []
+    scan_path = Path(scan_path).resolve()
+    pylint_bin = trusted_executable("pylint", scan_path)
+    if not pylint_bin:
+        return issues
 
     try:
         ignore_str = ",".join(config.exclude_patterns)
 
-        cmd = [
-            "pylint",
-            str(scan_path),
-            "--output-format", "json",
-            "--ignore", ignore_str,
-        ]
-
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=300,
-            check=False,
-        )
+        with isolated_tool_workspace() as workdir:
+            rcfile = write_isolated_pylint_rc(workdir)
+            cmd = argv_with_paths(
+                [
+                    pylint_bin,
+                    "--rcfile", str(rcfile),
+                    "--init-hook=",
+                    "--output-format", "json",
+                    "--ignore", ignore_str,
+                ],
+                scan_path,
+            )
+            env = os.environ.copy()
+            env["PYLINTRC"] = str(rcfile)
+            result = _run_isolated(cmd, timeout=300, cwd=workdir, env=env)
 
         if result.stdout:
             try:
@@ -194,24 +218,28 @@ def run_pylint(scan_path: Path, config: SyntaxConfig) -> List[SyntaxIssue]:
 def run_mypy(scan_path: Path, config: SyntaxConfig) -> List[SyntaxIssue]:
     """Run mypy type checker and parse output."""
     issues = []
+    scan_path = Path(scan_path).resolve()
+    mypy_bin = trusted_executable("mypy", scan_path)
+    if not mypy_bin:
+        return issues
 
     try:
         exclude_pattern = "|".join(config.exclude_patterns)
 
-        cmd = [
-            "mypy",
-            str(scan_path),
-            "--output", "json",
-            "--exclude", exclude_pattern,
-        ]
-
-        result = subprocess.run(
-            cmd,
-            capture_output=True,
-            text=True,
-            timeout=300,
-            check=False,
-        )
+        with isolated_tool_workspace() as workdir:
+            config_file = write_isolated_mypy_ini(workdir)
+            cmd = argv_with_paths(
+                [
+                    mypy_bin,
+                    "--config-file", str(config_file),
+                    "--no-incremental",
+                    "--explicit-package-bases",
+                    "--output", "json",
+                    "--exclude", exclude_pattern,
+                ],
+                scan_path,
+            )
+            result = _run_isolated(cmd, timeout=300, cwd=workdir)
 
         for line in result.stdout.strip().split("\n"):
             if not line:
