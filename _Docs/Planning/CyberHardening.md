@@ -1586,7 +1586,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0092 — Calibration map write is unsigned and unconfined
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 472088e
 - **Fixed at:** 2026-08-16T17:40:00Z
 - **Implementation note:** Jail save/load under CWD or HEIMDALL_CALIBRATION_DIR; HMAC when HEIMDALL_CALIBRATION_HMAC_KEY is set.
 - **Severity:** Medium
@@ -2019,7 +2019,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0107, CH-0114
-- Last commit: pending
+- Last commit: 472088e
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
