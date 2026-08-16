@@ -953,7 +953,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0062 — Validation proxy is an open SSRF forwarder
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 33b0266
 - **Fixed at:** 2026-08-16T10:08:00Z
 - **Implementation note:** Localhost bind; http(s) upstream only; path jail; hop-by-hop strip; same-host redirects only.
 - **Severity:** High
@@ -1782,7 +1782,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0063
-- Last commit: PENDING
+- Last commit: 33b0266
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
