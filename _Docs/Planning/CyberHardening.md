@@ -1094,7 +1094,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0068 — Visual baseline index can delete/copy arbitrary files
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 664c720
 - **Fixed at:** 2026-08-16T12:56:00Z
 - **Implementation note:** confine_storage_path refuses dest symlinks and paths outside storage_directory; delete/version/load skip or raise on hostile screenshot_path.
 - **Severity:** High
