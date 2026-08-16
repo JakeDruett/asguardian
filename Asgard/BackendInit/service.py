@@ -63,6 +63,21 @@ def _ensure_gitignore(path: Path) -> None:
     print(f"  Updated  {path.name}  (added: {', '.join(missing)})")
 
 
+def _confined_project_root(folder_name: str, base_dir: Optional[Path]) -> Path:
+    """Resolve folder_name under base_dir; reject abs, separators, and ``..``."""
+    name = (folder_name or "").strip()
+    if not name or name in {".", ".."}:
+        raise ValueError("folder_name must be a simple directory name")
+    raw = Path(name)
+    if raw.is_absolute() or ".." in raw.parts or "/" in name or "\\" in name:
+        raise ValueError("folder_name must be a simple directory name")
+    base = (base_dir or Path.cwd()).resolve()
+    root = (base / name).resolve()
+    if not root.is_relative_to(base):
+        raise ValueError("folder_name escapes the base directory")
+    return root
+
+
 def init_backend(folder_name: str, base_dir: Optional[Path] = None) -> int:
     """Scaffold a standard backend project structure.
 
@@ -74,7 +89,11 @@ def init_backend(folder_name: str, base_dir: Optional[Path] = None) -> int:
     Returns:
         Exit code (0 on success, 1 on error).
     """
-    root = (base_dir or Path.cwd()) / folder_name
+    try:
+        root = _confined_project_root(folder_name, base_dir)
+    except ValueError as exc:
+        print(f"Error: {exc}")
+        return 1
     root.mkdir(parents=True, exist_ok=True)
 
     print(f"Initializing backend project in: {root}")

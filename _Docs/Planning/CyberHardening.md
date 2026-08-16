@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 10   | 18    | 0             |
-| Medium   | 46   | 13    | 0             |
+| Medium   | 45   | 14    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -144,7 +144,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0007 — `init-backend` writes outside the intended base directory
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T12:42:00Z
+- **Implementation note:** folder_name must be a single path segment; reject abs/empty/./../separators; dest is_relative_to(base); return 1 on error.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-22
@@ -1864,12 +1867,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 80
-- Fixed: 34
+- Open: 79
+- Fixed: 35
 - Accepted risk: 0
 - Current wave: W2
 - Next: CH-0058, CH-0059, CH-0068
-- Last commit: b7fc3e8
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

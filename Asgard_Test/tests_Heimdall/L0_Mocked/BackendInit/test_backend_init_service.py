@@ -504,3 +504,21 @@ class TestInitBackend:
         content = (root / ".gitignore").read_text(encoding="utf-8")
         for entry in GITIGNORE_ENTRIES:
             assert entry in content
+
+    def test_absolute_folder_name_is_rejected(self, tmp_path: Path) -> None:
+        outside = tmp_path / "outside"
+        result = init_backend(str(outside), base_dir=tmp_path)
+        assert result == 1
+        assert not outside.exists()
+
+    def test_parent_folder_name_is_rejected(self, tmp_path: Path) -> None:
+        result = init_backend("..", base_dir=tmp_path)
+        assert result == 1
+
+    def test_nested_escape_folder_name_is_rejected(self, tmp_path: Path) -> None:
+        result = init_backend("a/../../b", base_dir=tmp_path)
+        assert result == 1
+
+    def test_empty_folder_name_is_rejected(self, tmp_path: Path) -> None:
+        result = init_backend("", base_dir=tmp_path)
+        assert result == 1
