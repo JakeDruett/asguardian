@@ -1232,7 +1232,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0073 — Freya Scoring empty/unknown findings grade as A and pass
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** ef426af
 - **Fixed at:** 2026-08-16T15:52:00Z
 - **Implementation note:** Empty category scores are N/A (not A); unknown severity is BLOCKER; needs_review fails the gate; empty findings fail-closed.
 - **Severity:** Medium
@@ -1965,7 +1965,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0013, CH-0032, CH-0036
-- Last commit: pending
+- Last commit: ef426af
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
