@@ -10,16 +10,23 @@ import urllib.error
 from typing import Dict, List
 from datetime import datetime
 
+try:
+    from _url_safety import build_safe_opener, validate_target_url
+except ImportError:
+    from ._url_safety import build_safe_opener, validate_target_url
+
 
 class CORSChecker:
     """Checks for CORS misconfigurations."""
 
-    def __init__(self, timeout: float = 10.0):
+    def __init__(self, timeout: float = 10.0, allow_internal: bool = False):
         self.timeout = timeout
+        self.allow_internal = allow_internal
         self.results = {}
 
     def check_cors(self, url: str) -> Dict:
         """Check CORS configuration for a URL."""
+        url = validate_target_url(url, allow_internal=self.allow_internal)
         results = {
             'url': url,
             'timestamp': datetime.now().isoformat(),
@@ -27,11 +34,6 @@ class CORSChecker:
             'vulnerabilities': [],
             'score': 100
         }
-
-        # Ensure URL has scheme
-        if not url.startswith(('http://', 'https://')):
-            url = 'https://' + url
-            results['url'] = url
 
         # Test origins to check
         test_origins = [
@@ -103,7 +105,7 @@ class CORSChecker:
         return f"{parsed.scheme}://evil{parsed.netloc}"
 
     def _test_origin(self, url: str, origin: str) -> Dict:
-        """Test a specific origin."""
+        """Test a specific origin (Origin header only; never urlopen origin)."""
         result = {
             'origin': origin,
             'reflects_origin': False,
@@ -119,7 +121,8 @@ class CORSChecker:
             request.add_header('Access-Control-Request-Method', 'GET')
             request.add_header('User-Agent', 'CORSChecker/1.0')
 
-            with urllib.request.urlopen(request, timeout=self.timeout) as response:
+            opener = build_safe_opener(allow_internal=self.allow_internal)
+            with opener.open(request, timeout=self.timeout) as response:
                 headers = dict(response.headers)
 
                 acao = headers.get('Access-Control-Allow-Origin', '')
@@ -273,11 +276,23 @@ def main():
         default=10.0,
         help='Request timeout in seconds (default: 10.0)'
     )
+    parser.add_argument(
+        '--allow-internal',
+        action='store_true',
+        help='Allow loopback, private, and link-local targets'
+    )
 
     args = parser.parse_args()
-    checker = CORSChecker(timeout=args.timeout)
+    checker = CORSChecker(
+        timeout=args.timeout,
+        allow_internal=args.allow_internal,
+    )
 
-    checker.check_cors(args.url)
+    try:
+        checker.check_cors(args.url)
+    except (ValueError, ConnectionError) as exc:
+        print(f"Error: {exc}")
+        return 1
     return checker.print_report()
 
 

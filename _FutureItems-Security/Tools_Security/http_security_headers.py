@@ -10,6 +10,11 @@ import urllib.error
 from typing import Dict, List, Optional
 from datetime import datetime
 
+try:
+    from _url_safety import build_safe_opener, validate_target_url
+except ImportError:
+    from ._url_safety import build_safe_opener, validate_target_url
+
 
 class HTTPSecurityHeadersChecker:
     """Analyzes HTTP security headers."""
@@ -102,12 +107,14 @@ class HTTPSecurityHeadersChecker:
         }
     }
 
-    def __init__(self, timeout: float = 10.0):
+    def __init__(self, timeout: float = 10.0, allow_internal: bool = False):
         self.timeout = timeout
+        self.allow_internal = allow_internal
         self.results = {}
 
     def check_url(self, url: str) -> Dict:
         """Check security headers for a URL."""
+        url = validate_target_url(url, allow_internal=self.allow_internal)
         results = {
             'url': url,
             'timestamp': datetime.now().isoformat(),
@@ -120,16 +127,12 @@ class HTTPSecurityHeadersChecker:
             'max_score': 100
         }
 
-        # Ensure URL has scheme
-        if not url.startswith(('http://', 'https://')):
-            url = 'https://' + url
-            results['url'] = url
-
         try:
             request = urllib.request.Request(url, method='GET')
             request.add_header('User-Agent', 'SecurityHeadersChecker/1.0')
 
-            with urllib.request.urlopen(request, timeout=self.timeout) as response:
+            opener = build_safe_opener(allow_internal=self.allow_internal)
+            with opener.open(request, timeout=self.timeout) as response:
                 results['status'] = response.status
                 results['headers'] = dict(response.headers)
 
@@ -355,11 +358,23 @@ def main():
         action='store_true',
         help='Show all response headers'
     )
+    parser.add_argument(
+        '--allow-internal',
+        action='store_true',
+        help='Allow loopback, private, and link-local targets'
+    )
 
     args = parser.parse_args()
-    checker = HTTPSecurityHeadersChecker(timeout=args.timeout)
+    checker = HTTPSecurityHeadersChecker(
+        timeout=args.timeout,
+        allow_internal=args.allow_internal,
+    )
 
-    checker.check_url(args.url)
+    try:
+        checker.check_url(args.url)
+    except (ValueError, ConnectionError) as exc:
+        print(f"Error: {exc}")
+        return 1
     exit_code = checker.print_report()
 
     if args.all_headers and 'headers' in checker.results:

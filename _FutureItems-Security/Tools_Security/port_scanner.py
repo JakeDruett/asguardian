@@ -10,6 +10,27 @@ import concurrent.futures
 from typing import Dict, List, Tuple
 from datetime import datetime
 
+try:
+    from _url_safety import validate_target_host
+except ImportError:
+    from ._url_safety import validate_target_host
+
+DEFAULT_WORKERS = 16
+MAX_WORKERS = 32
+
+
+def clamp_workers(workers: int) -> int:
+    """Bound concurrent connect workers (default 16, hard max 32)."""
+    try:
+        n = int(workers)
+    except (TypeError, ValueError):
+        return DEFAULT_WORKERS
+    if n < 1:
+        return 1
+    if n > MAX_WORKERS:
+        return MAX_WORKERS
+    return n
+
 
 class PortScanner:
     """Network port scanner for security assessments."""
@@ -48,12 +69,14 @@ class PortScanner:
     HIGH_RISK_PORTS = {23, 21, 135, 139, 445, 3389, 5900}
     MEDIUM_RISK_PORTS = {25, 110, 143, 111}
 
-    def __init__(self, timeout: float = 1.0):
+    def __init__(self, timeout: float = 1.0, allow_internal: bool = False):
         self.timeout = timeout
+        self.allow_internal = allow_internal
         self.results: Dict[int, Dict] = {}
 
     def scan_port(self, host: str, port: int) -> Tuple[int, bool, str]:
         """Scan a single port."""
+        validate_target_host(host, allow_internal=self.allow_internal)
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(self.timeout)
@@ -69,6 +92,7 @@ class PortScanner:
 
     def get_banner(self, host: str, port: int) -> str:
         """Try to grab service banner."""
+        validate_target_host(host, allow_internal=self.allow_internal)
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.settimeout(self.timeout)
@@ -80,8 +104,10 @@ class PortScanner:
         except (socket.error, socket.timeout):
             return ''
 
-    def scan_host(self, host: str, ports: List[int], workers: int = 100) -> Dict:
+    def scan_host(self, host: str, ports: List[int], workers: int = DEFAULT_WORKERS) -> Dict:
         """Scan multiple ports on a host."""
+        host = validate_target_host(host, allow_internal=self.allow_internal)
+        workers = clamp_workers(workers)
         open_ports = []
         scan_start = datetime.now()
 
@@ -90,6 +116,8 @@ class PortScanner:
             ip_address = socket.gethostbyname(host)
         except socket.gaierror:
             return {'error': f'Cannot resolve hostname: {host}'}
+
+        validate_target_host(ip_address, allow_internal=self.allow_internal)
 
         print(f"Scanning {host} ({ip_address})...")
         print(f"Ports to scan: {len(ports)}")
@@ -264,17 +292,25 @@ def main():
     parser.add_argument(
         '-w', '--workers',
         type=int,
-        default=100,
-        help='Number of concurrent workers (default: 100)'
+        default=DEFAULT_WORKERS,
+        help=f'Number of concurrent workers (default: {DEFAULT_WORKERS}, max {MAX_WORKERS})'
     )
     parser.add_argument(
         '--top',
         type=int,
         help='Scan top N most common ports'
     )
+    parser.add_argument(
+        '--allow-internal',
+        action='store_true',
+        help='Allow loopback, private, and link-local targets'
+    )
 
     args = parser.parse_args()
-    scanner = PortScanner(timeout=args.timeout)
+    scanner = PortScanner(
+        timeout=args.timeout,
+        allow_internal=args.allow_internal,
+    )
 
     # Determine ports to scan
     if args.ports == 'common':
@@ -291,7 +327,11 @@ def main():
     if args.top:
         ports = sorted(PortScanner.COMMON_PORTS.keys())[:args.top]
 
-    scanner.scan_host(args.host, ports, workers=args.workers)
+    try:
+        scanner.scan_host(args.host, ports, workers=args.workers)
+    except (ValueError, ConnectionError) as exc:
+        print(f"Error: {exc}")
+        return 1
     return scanner.print_report()
 
 

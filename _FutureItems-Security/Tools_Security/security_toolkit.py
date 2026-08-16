@@ -390,6 +390,11 @@ Examples:
         metavar='PATH',
         help='Run comprehensive security audit on path'
     )
+    parser.add_argument(
+        '--allow-internal',
+        action='store_true',
+        help='Forwarded to cors/headers/ports only; default remains deny'
+    )
 
     # Parse only known args to allow tool-specific args to pass through
     args, unknown = parser.parse_known_args()
@@ -408,6 +413,9 @@ Examples:
 
     # Combine args and unknown for tool
     tool_args = args.args + unknown
+    if args.allow_internal and args.tool in ('cors', 'headers', 'ports'):
+        if '--allow-internal' not in tool_args:
+            tool_args.append('--allow-internal')
 
     return toolkit.run_tool(args.tool, tool_args)
 

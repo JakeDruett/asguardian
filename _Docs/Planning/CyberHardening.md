@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 13   | 15    | 0             |
-| Medium   | 47   | 12    | 0             |
+| Medium   | 46   | 13    | 0             |
 | Low      | 21   | 1     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1774,7 +1774,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0112 — CORS/headers checkers `urlopen` operator URLs with no host allowlist
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T12:20:00Z
+- **Implementation note:** Standalone URL/host allowlist; block private/metadata unless --allow-internal; cap port-scan workers at 32; re-validate redirects. CORS evil.* remain Origin headers only.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-918
@@ -1849,11 +1852,11 @@ None yet.
 
 ## Implementation progress
 
-- Open: 85
-- Fixed: 29
+- Open: 84
+- Fixed: 30
 - Accepted risk: 0
 - Current wave: W1
-- Next: CH-0112, CH-0082
+- Next: CH-0082
 - Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
