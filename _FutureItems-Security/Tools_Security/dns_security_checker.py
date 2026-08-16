@@ -4,11 +4,29 @@ DNS Security Checker
 Analyzes DNS configuration for security issues.
 """
 
-import socket
 import argparse
+import re
+import socket
 import subprocess
-from typing import Dict, List, Optional
 from datetime import datetime
+from typing import Dict, List, Optional
+
+_DNS_LABEL = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?$")
+
+
+def validate_dns_name(domain: str) -> str:
+    """Return an IDNA hostname or raise ValueError."""
+    raw = (domain or "").strip().rstrip(".")
+    if not raw or raw.startswith("-") or raw.startswith("@") or "/" in raw or " " in raw:
+        raise ValueError("invalid domain")
+    try:
+        ascii_name = raw.encode("idna").decode("ascii")
+    except UnicodeError as exc:
+        raise ValueError("invalid domain") from exc
+    labels = ascii_name.split(".")
+    if not labels or any(not _DNS_LABEL.fullmatch(label) for label in labels):
+        raise ValueError("invalid domain")
+    return ascii_name
 
 
 class DNSSecurityChecker:
@@ -20,6 +38,7 @@ class DNSSecurityChecker:
 
     def check_dns_security(self, domain: str) -> Dict:
         """Check DNS security for a domain."""
+        domain = validate_dns_name(domain)
         results = {
             'domain': domain,
             'timestamp': datetime.now().isoformat(),
@@ -57,7 +76,7 @@ class DNSSecurityChecker:
         try:
             # Try using dig first
             result = subprocess.run(
-                ['dig', '+short', domain, record_type],
+                ['dig', '+short', '--', domain, record_type],
                 capture_output=True,
                 text=True,
                 timeout=self.timeout
@@ -258,7 +277,7 @@ class DNSSecurityChecker:
         try:
             # Check for DNSKEY records
             result = subprocess.run(
-                ['dig', '+short', domain, 'DNSKEY'],
+                ['dig', '+short', '--', domain, 'DNSKEY'],
                 capture_output=True,
                 text=True,
                 timeout=self.timeout

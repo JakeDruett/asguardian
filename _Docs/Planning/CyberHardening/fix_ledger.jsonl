@@ -24,3 +24,4 @@
 {"id":"CH-0023","at":"2026-08-16T10:25:24Z","commit":"bfdd668","wave":"W1","summary":"Keep CLAUDE.md gitignored; rotation/secret-scan remain human Jake-todo"}
 {"id":"CH-0071","at":"2026-08-16T10:28:55Z","commit":"2c99bab","wave":"W1","summary":"Link validator http(s) only; skip private; re-validate redirects"}
 {"id":"CH-0110","at":"2026-08-16T10:30:33Z","commit":"5021986","wave":"W1","summary":"FutureItems scan fail-closed; drop missing security-tools cd"}
+{"id":"CH-0113","at":"2026-08-16T11:38:00Z","commit":"PENDING","wave":"W1","summary":"Validate DNS names and pass dig -- before the domain"}

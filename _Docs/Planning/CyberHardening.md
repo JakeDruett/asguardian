@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 13   | 15    | 0             |
-| Medium   | 50   | 9     | 0             |
+| Medium   | 49   | 10    | 0             |
 | Low      | 21   | 1     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1783,7 +1783,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0113 — DNS checker passes unsanitized domain to `dig`
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T11:38:00Z
+- **Implementation note:** RFC1123/IDNA hostname validation; reject leading -/ @; pass dig -- domain type.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-88
@@ -1840,12 +1843,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 88
-- Fixed: 26
+- Open: 87
+- Fixed: 27
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0071, CH-0097, CH-0105, CH-0108
-- Last commit: 5021986
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
