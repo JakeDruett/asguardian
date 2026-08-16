@@ -1286,7 +1286,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0077 — `StaticSecurityService.scan` swallows domain failures (fail-open PASS)
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** fff5004
 - **Fixed at:** 2026-08-16T15:24:00Z
 - **Implementation note:** Domain exceptions go to `SecurityReport.domain_errors` and fail `is_passing`; scanners log instead of `except: pass`.
 - **Severity:** High
@@ -1944,7 +1944,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0051
-- Last commit: pending
+- Last commit: fff5004
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
