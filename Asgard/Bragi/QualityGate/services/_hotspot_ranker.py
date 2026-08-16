@@ -25,6 +25,7 @@ from pathlib import Path
 from typing import Callable, Dict, List, Optional, Sequence
 
 from Asgard.Bragi.QualityGate.models.quality_gate_models import GateFinding
+from Asgard.Shared.common._git_isolated import run_isolated_git
 
 SEVERITY_WEIGHTS: Dict[str, float] = {
     "critical": 10.0,
@@ -80,14 +81,11 @@ def git_churn(repo_path: Path, since: str = "90.days") -> Dict[str, int]:
     Returns {} when the path is not a git repository (churn multiplier then
     stays 1.0 for every file — degraded, not broken).
     """
-    command = [
-        "git", "-C", str(repo_path), "log", f"--since={since}",
-        "--name-only", "--pretty=format:",
-    ]
     try:
-        completed = subprocess.run(
-            command, capture_output=True, text=True,
-            timeout=GIT_TIMEOUT_SECONDS, check=False,
+        completed = run_isolated_git(
+            ["log", f"--since={since}", "--name-only", "--pretty=format:"],
+            repo=repo_path,
+            timeout=GIT_TIMEOUT_SECONDS,
         )
     except (subprocess.TimeoutExpired, FileNotFoundError):
         return {}

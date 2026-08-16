@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import List
 
 from Asgard.Heimdall.Security.Git.models.git_models import GitFinding, GitScanReport, GitSeverity
+from Asgard.Shared.common._git_isolated import run_isolated_git
 
 _SENSITIVE_FILES = [
     (r"\.env$|\.env\.\w+$", "CRITICAL", "env_file", "Environment file with secrets"),
@@ -85,9 +86,7 @@ class GitSecurityScanner:
 
     def _git(self, args: List[str]) -> str:
         try:
-            result = subprocess.run(
-                ["git"] + args, cwd=self._repo, capture_output=True, text=True, timeout=30
-            )
+            result = run_isolated_git(args, repo=self._repo, timeout=30)
             return result.stdout
         except (subprocess.TimeoutExpired, FileNotFoundError):
             return ""

@@ -6,6 +6,7 @@ pure git subprocess, so this is the only honest way to test it without
 mocking subprocess (which would just re-assert the mock).
 """
 
+import os
 import subprocess
 from pathlib import Path
 
@@ -14,10 +15,12 @@ import pytest
 from Asgard.Bragi.Calibration.models.calibration_models import SZZStatus
 from Asgard.Bragi.Calibration.services.szz import (
     MIN_FIX_COMMITS,
+    _run_git,
     compute_szz,
     identify_bugfix_commits,
     is_bugfix_subject,
 )
+from Asgard.Shared.common._git_isolated import isolated_git_env
 
 
 def _git(repo: Path, *args):
@@ -98,3 +101,52 @@ class TestComputeSzz:
             _commit(repo, f"fix: guard missing case {i}", {f"noise_{i}.py": f"n = {i}\n"})
         result = compute_szz(repo, min_fix_commits=MIN_FIX_COMMITS)
         assert result.status == SZZStatus.OK  # doesn't crash; just no trace for a.py
+
+
+class TestGitIsolation:
+    def test_diff_external_is_not_executed(self, repo, tmp_path, monkeypatch):
+        sentinel = tmp_path / "pwned"
+        script = tmp_path / "evil.sh"
+        script.write_text("#!/bin/sh\nprintf x > \"$SENTINEL\"\n")
+        script.chmod(0o755)
+        monkeypatch.setenv("SENTINEL", str(sentinel))
+
+        _commit(repo, "initial commit", {"a.py": "x = 1\n"})
+        _commit(repo, "fix: typo", {"a.py": "x = 2\n"})
+        _git(repo, "config", "diff.external", str(script))
+
+        subprocess.run(
+            ["git", "-C", str(repo), "diff", "HEAD~1", "HEAD"],
+            check=False, capture_output=True, text=True,
+            env={**os.environ, "SENTINEL": str(sentinel)},
+        )
+        assert sentinel.exists(), "control: unisolated git must honor diff.external"
+        sentinel.unlink()
+
+        out = _run_git(repo, ["diff", "-U0", "--no-color", "HEAD~1", "HEAD"])
+        assert not sentinel.exists()
+        assert out is not None
+        assert "a.py" in out
+
+    def test_git_external_diff_env_is_cleared(self, repo, tmp_path, monkeypatch):
+        sentinel = tmp_path / "pwned"
+        script = tmp_path / "evil.sh"
+        script.write_text("#!/bin/sh\nprintf x > \"$SENTINEL\"\n")
+        script.chmod(0o755)
+        monkeypatch.setenv("SENTINEL", str(sentinel))
+        monkeypatch.setenv("GIT_EXTERNAL_DIFF", str(script))
+        monkeypatch.setenv("GIT_PAGER", str(script))
+        monkeypatch.setenv("GIT_DIR", str(repo / ".git"))
+
+        env = isolated_git_env()
+        assert "GIT_EXTERNAL_DIFF" not in env
+        assert "GIT_PAGER" not in env
+        assert "GIT_DIR" not in env
+        assert env["GIT_CONFIG_NOSYSTEM"] == "1"
+
+        _commit(repo, "initial commit", {"a.py": "x = 1\n"})
+        _commit(repo, "fix: typo", {"a.py": "x = 2\n"})
+        out = _run_git(repo, ["diff", "-U0", "--no-color", "HEAD~1", "HEAD"])
+        assert not sentinel.exists()
+        assert out is not None
+        assert "a.py" in out

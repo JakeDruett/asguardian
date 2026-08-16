@@ -19,6 +19,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, List, Optional
 
+from Asgard.Shared.common._git_isolated import run_isolated_git
+
 _HUNK_RE = re.compile(
     r"^@@ -\d+(?:,\d+)? \+(?P<start>\d+)(?:,(?P<count>\d+))? @@"
 )
@@ -109,14 +111,14 @@ def git_changed_lines(
     Raises RuntimeError when git fails (missing repo, unknown ref) — a diff
     that cannot be computed must surface, not silently gate nothing.
     """
-    command = [
-        "git", "-C", str(repo_path), "diff", "--unified=0",
-        "--no-color", "--find-renames", f"{base}...{head}",
-    ]
     try:
-        completed = subprocess.run(
-            command, capture_output=True, text=True,
-            timeout=GIT_TIMEOUT_SECONDS, check=False,
+        completed = run_isolated_git(
+            [
+                "diff", "--unified=0",
+                "--no-color", "--find-renames", f"{base}...{head}",
+            ],
+            repo=repo_path,
+            timeout=GIT_TIMEOUT_SECONDS,
         )
     except (subprocess.TimeoutExpired, FileNotFoundError) as error:
         raise RuntimeError(f"git diff failed: {error}") from error

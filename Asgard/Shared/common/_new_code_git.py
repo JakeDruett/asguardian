@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from typing import List, Optional, Tuple
 
+from Asgard.Shared.common._git_isolated import run_isolated_git
 from Asgard.Shared.common._new_code_models import (
     NewCodePeriodConfig,
     NewCodePeriodResult,
@@ -16,9 +17,10 @@ from Asgard.Shared.common._new_code_models import (
 def git_available(scan_path: str) -> bool:
     """Check whether git is available and the path is inside a git repo."""
     try:
-        result = subprocess.run(
-            ["git", "rev-parse", "--is-inside-work-tree"],
-            capture_output=True, text=True, cwd=scan_path, timeout=10,
+        result = run_isolated_git(
+            ["rev-parse", "--is-inside-work-tree"],
+            repo=scan_path,
+            timeout=10,
         )
         return result.returncode == 0
     except (FileNotFoundError, subprocess.TimeoutExpired, OSError):
@@ -28,10 +30,7 @@ def git_available(scan_path: str) -> bool:
 def run_git(args: List[str], cwd: str) -> Optional[str]:
     """Run a git command and return stdout, or None on failure."""
     try:
-        result = subprocess.run(
-            ["git"] + args,
-            capture_output=True, text=True, cwd=cwd, timeout=30,
-        )
+        result = run_isolated_git(args, repo=cwd, timeout=30)
         if result.returncode == 0:
             return result.stdout.strip()
         return None
@@ -51,9 +50,10 @@ def count_new_lines(scan_path: str, files: List[str]) -> int:
     if not files:
         return 0
     try:
-        result = subprocess.run(
-            ["git", "diff", "--numstat", "HEAD"],
-            capture_output=True, text=True, cwd=scan_path, timeout=30,
+        result = run_isolated_git(
+            ["diff", "--numstat", "HEAD"],
+            repo=scan_path,
+            timeout=30,
         )
         if result.returncode != 0:
             return 0

@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 19   | 9     | 0             |
+| High     | 18   | 10    | 0             |
 | Medium   | 59   | 0     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
@@ -390,7 +390,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0024 — SZZ runs `git diff` against an untrusted repo without isolating git config
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T10:32:00Z
+- **Implementation note:** Shared isolated git helper; --no-ext-diff, blank global, cleared GIT_EXTERNAL_DIFF/PAGER/DIR; applied on all caller-repo git sinks.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-78 / CWE-829 (untrusted git repo)
@@ -1789,12 +1792,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 105
-- Fixed: 9
+- Open: 104
+- Fixed: 10
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0066
-- Last commit: 5f79ace
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

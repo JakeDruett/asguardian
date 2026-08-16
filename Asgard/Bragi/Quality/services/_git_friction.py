@@ -17,6 +17,7 @@ from pathlib import Path
 from typing import Dict, Optional
 
 from Asgard.Bragi.Quality.models.debt_models import FileFriction
+from Asgard.Shared.common._git_isolated import run_isolated_git
 
 _BUGFIX_RE = re.compile(r"\b(fix|fixes|fixed|bug|hotfix|patch)\b", re.IGNORECASE)
 
@@ -32,14 +33,15 @@ _FIELD_SEP = "\x1f"
 def _run_git_log(repo_root: Path, since: str) -> Optional[str]:
     """Run `git log --numstat` for `since`; return stdout or None on any failure."""
     try:
-        result = subprocess.run(
+        result = run_isolated_git(
             [
-                "git", "-C", str(repo_root), "log",
+                "log",
                 f"--since={since}",
                 f"--pretty=format:{_RECORD_SEP}%H{_FIELD_SEP}%an{_FIELD_SEP}%s",
                 "--numstat",
             ],
-            capture_output=True, text=True, timeout=60, check=False,
+            repo=repo_root,
+            timeout=60,
         )
     except (OSError, subprocess.SubprocessError):
         return None
@@ -50,9 +52,10 @@ def _run_git_log(repo_root: Path, since: str) -> Optional[str]:
 
 def _is_git_repo(repo_root: Path) -> bool:
     try:
-        result = subprocess.run(
-            ["git", "-C", str(repo_root), "rev-parse", "--is-inside-work-tree"],
-            capture_output=True, text=True, timeout=10, check=False,
+        result = run_isolated_git(
+            ["rev-parse", "--is-inside-work-tree"],
+            repo=repo_root,
+            timeout=10,
         )
     except (OSError, subprocess.SubprocessError):
         return False

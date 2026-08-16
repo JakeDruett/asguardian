@@ -17,6 +17,7 @@ from Asgard.Shared.Issues.services._issue_repository import (
     IIssueRepository,
     SQLiteIssueRepository,
 )
+from Asgard.Shared.common._git_isolated import run_isolated_git
 
 
 class IssueTracker:
@@ -97,9 +98,9 @@ class IssueTracker:
     def get_git_blame(self, file_path: str, line_number: int) -> Optional[Dict[str, str]]:
         """Run git blame on a specific line to identify the author and commit."""
         try:
-            result = subprocess.run(
-                ["git", "blame", "-L", f"{line_number},{line_number}", "--porcelain", file_path],
-                capture_output=True, text=True, timeout=10,
+            result = run_isolated_git(
+                ["blame", "-L", f"{line_number},{line_number}", "--porcelain", file_path],
+                timeout=10,
             )
             if result.returncode != 0:
                 return None

@@ -42,6 +42,7 @@ from Asgard.Bragi.Calibration.models.calibration_models import (
     SZZResult,
     SZZStatus,
 )
+from Asgard.Shared.common._git_isolated import run_isolated_git
 
 MIN_FIX_COMMITS = 5
 MAX_FIX_COMMITS_SCANNED = 500  # deterministic cap so runtime stays bounded on huge histories
@@ -57,10 +58,7 @@ _ISSUE_REF_RE = re.compile(r"(#\d+|\b[A-Z][A-Z0-9]+-\d+\b|CVE-\d{4}-\d+)")
 
 def _run_git(repo_root: Path, args: List[str], timeout: int = 60) -> Optional[str]:
     try:
-        result = subprocess.run(
-            ["git", "-C", str(repo_root)] + args,
-            capture_output=True, text=True, timeout=timeout, check=False,
-        )
+        result = run_isolated_git(args, repo=repo_root, timeout=timeout)
     except (OSError, subprocess.SubprocessError):
         return None
     if result.returncode != 0:

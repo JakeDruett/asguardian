@@ -7,3 +7,4 @@
 {"id":"CH-0094","at":"2026-08-16T10:00:29Z","commit":"85f6957","wave":"W1","summary":"Encode GitHub workflow-command fields to block command injection"}
 {"id":"CH-0102","at":"2026-08-16T10:02:33Z","commit":"882c7b8","wave":"W1","summary":"Refuse Dockerfile field injection; pin Trivy; no docker.sock by default"}
 {"id":"CH-0103","at":"2026-08-16T10:03:41Z","commit":"5f79ace","wave":"W1","summary":"Jenkins harden_steps + quoted sh; refuse triple-quote breakout"}
+{"id":"CH-0024","at":"2026-08-16T10:32:00Z","commit":"PENDING","wave":"W1","summary":"Isolate git config/env for SZZ and other caller-supplied repos"}
