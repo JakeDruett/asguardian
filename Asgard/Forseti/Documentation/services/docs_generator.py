@@ -4,6 +4,7 @@ API Documentation Generator Service.
 Generates comprehensive API documentation from OpenAPI specifications.
 """
 
+import html
 import json
 import time
 from pathlib import Path
@@ -182,13 +183,12 @@ class DocsGeneratorService:
         css = get_css()
         html_parts = [
             "<!DOCTYPE html>", "<html lang=\"en\">", "<head>",
-            f"  <title>{doc_structure.title}</title>",
+            f"  <title>{html.escape(doc_structure.title)}</title>",
             "  <meta charset=\"UTF-8\">",
             "  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">",
             f"  <style>{css}</style>",
         ]
-        if self.config.custom_css:
-            html_parts.append(f"  <style>{self.config.custom_css}</style>")
+        # CH-0064: do not interpolate caller custom_css into <style>.
         html_parts.extend(["</head>", "<body>", "  <div class=\"container\">",
             generate_html_header(doc_structure), generate_html_overview(doc_structure)])
         if self.config.include_authentication and doc_structure.security_schemes:

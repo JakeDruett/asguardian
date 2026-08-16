@@ -6,6 +6,7 @@ HTML and Markdown generation helper functions for DocsGeneratorService.
 
 import html
 import json
+from urllib.parse import urlparse
 
 from Asgard.Forseti.Documentation.models.docs_models import (
     DocumentationStructure,
@@ -13,6 +14,17 @@ from Asgard.Forseti.Documentation.models.docs_models import (
     SchemaInfo,
     TagGroup,
 )
+
+
+def _safe_href(url: str) -> str:
+    """Allow only http(s)/mailto hrefs; reject javascript: and similar."""
+    try:
+        parsed = urlparse(url)
+    except ValueError:
+        return "#"
+    if (parsed.scheme or "").lower() not in {"http", "https", "mailto"}:
+        return "#"
+    return html.escape(url, quote=True)
 
 
 def get_css() -> str:
@@ -89,9 +101,17 @@ def generate_html_overview(doc: DocumentationStructure) -> str:
     if doc.contact:
         parts.append("      <h3>Contact</h3>")
         if doc.contact.get("email"):
-            parts.append(f"      <p>Email: <a href=\"mailto:{doc.contact['email']}\">{doc.contact['email']}</a></p>")
+            email = str(doc.contact["email"])
+            href = _safe_href(f"mailto:{email}")
+            parts.append(
+                f"      <p>Email: <a href=\"{href}\">{html.escape(email)}</a></p>"
+            )
         if doc.contact.get("url"):
-            parts.append(f"      <p>URL: <a href=\"{doc.contact['url']}\">{doc.contact['url']}</a></p>")
+            url = str(doc.contact["url"])
+            href = _safe_href(url)
+            parts.append(
+                f"      <p>URL: <a href=\"{href}\">{html.escape(url)}</a></p>"
+            )
     parts.append("    </section>")
     return "\n".join(parts)
 
