@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
 | Medium   | 8    | 51    | 0             |
-| Low      | 11   | 11    | 0             |
+| Low      | 10   | 12    | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -336,7 +336,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0018 — `fnmatch` on attacker-controlled architecture.yml patterns
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T18:08:00Z
+- **Implementation note:** Sanitize path_patterns (max length 200, max 8 `*`, strings only). Matchers skip oversized globs.
 - **Severity:** Low
 - **Confidence:** Medium
 - **CWE / class:** CWE-1333
@@ -2029,12 +2032,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 25
-- Fixed: 89
+- Open: 24
+- Fixed: 90
 - Accepted risk: 0
 - Current wave: W4
 - Next: CH-0070, CH-0074, CH-0083
-- Last commit: 8bc755e
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

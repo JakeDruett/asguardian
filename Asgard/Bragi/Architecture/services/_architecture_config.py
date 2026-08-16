@@ -41,12 +41,33 @@ class ArchitectureConfig:
         return any(layer.level is not None for layer in self.layers)
 
 
+_MAX_FNMATCH_PATTERN_LEN = 200
+_MAX_FNMATCH_STARS = 8
+_MAX_FNMATCH_PATTERNS = 64
+
+
+def sanitize_path_patterns(patterns) -> list[str]:
+    """Bound attacker-controlled fnmatch patterns (CWE-1333)."""
+    if not isinstance(patterns, list):
+        return []
+    cleaned: list[str] = []
+    for item in patterns[:_MAX_FNMATCH_PATTERNS]:
+        if not isinstance(item, str):
+            continue
+        if len(item) > _MAX_FNMATCH_PATTERN_LEN or item.count("*") > _MAX_FNMATCH_STARS:
+            continue
+        cleaned.append(item)
+    return cleaned
+
+
 def _parse_layer(layer: dict) -> LayerConfig:
     heuristics = layer.get("heuristics") or {}
     # New schema nests path patterns/suffixes/external anchors under
     # `heuristics:`; old schema keeps `path_patterns` at the layer's top
     # level. Support both — heuristics.paths wins if both are present.
-    path_patterns = heuristics.get("paths") or layer.get("path_patterns", [])
+    path_patterns = sanitize_path_patterns(
+        heuristics.get("paths") or layer.get("path_patterns", [])
+    )
     suffixes = heuristics.get("suffixes", [])
     external_imports = heuristics.get("external_imports", [])
 

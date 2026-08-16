@@ -39,6 +39,8 @@ def _match_layer(module: str, class_names: Set[str], config: ArchitectureConfig)
         if layer.level is None:
             continue
         for pattern in layer.path_patterns:
+            if not isinstance(pattern, str) or len(pattern) > 200 or pattern.count("*") > 8:
+                continue
             if fnmatch.fnmatch(path_str, pattern) or fnmatch.fnmatch(module, pattern):
                 return layer
         for suffix in layer.suffixes:

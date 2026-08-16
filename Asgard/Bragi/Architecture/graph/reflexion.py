@@ -73,6 +73,8 @@ def layer_name_for_module(
     path_str = "/" + module.replace(".", "/")
     for layer in config.layers:
         for pattern in layer.path_patterns:
+            if not isinstance(pattern, str) or len(pattern) > 200 or pattern.count("*") > 8:
+                continue
             if fnmatch.fnmatch(path_str, pattern) or fnmatch.fnmatch(module, pattern):
                 return layer.name
         for suffix in layer.suffixes:
