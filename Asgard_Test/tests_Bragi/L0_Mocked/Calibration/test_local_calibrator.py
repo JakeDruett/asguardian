@@ -8,10 +8,14 @@ from Asgard.Bragi.Calibration.models.calibration_models import LanguageProfile, 
 from Asgard.Bragi.Calibration.services.local_calibrator import (
     MIN_SAMPLE_SIZE,
     calibrate,
+    clamp_profile_to_anchor,
     percentile,
     write_local_profile,
 )
-from Asgard.Bragi.Calibration.services.profile_service import LOCAL_PROFILE_RELATIVE_PATH
+from Asgard.Bragi.Calibration.services.profile_service import (
+    LOCAL_PROFILE_RELATIVE_PATH,
+    LanguageProfileService,
+)
 
 
 class TestPercentile:
@@ -57,6 +61,9 @@ class TestCalibrate:
         assert profile is not None
         assert "cyclomatic_complexity" in run.clamped_metrics
         assert profile.thresholds["cyclomatic_complexity"].fail <= 20 * 1.5 + 1e-9
+        assert profile.thresholds["cyclomatic_complexity"].warn <= profile.thresholds[
+            "cyclomatic_complexity"
+        ].fail
 
     def test_determinism_same_input_same_output(self):
         samples = {"cyclomatic_complexity": [float(i % 30) for i in range(MIN_SAMPLE_SIZE)]}
@@ -121,3 +128,33 @@ class TestWriteLocalProfile:
             write_local_profile(_calibrated_profile())
         assert dest.is_symlink()
         assert target.read_text(encoding="utf-8") == "untouched\n"
+
+    def test_write_then_load_stays_within_anchor_clamp(self, tmp_path, monkeypatch):
+        monkeypatch.chdir(tmp_path)
+        write_local_profile(_calibrated_profile(), project_path=tmp_path)
+        service = LanguageProfileService(project_path=tmp_path)
+        spec = service.threshold("python", "cyclomatic_complexity")
+        assert spec.fail <= 20 * 1.5 + 1e-9
+        assert spec.warn <= spec.fail
+
+
+class TestClampProfileToAnchor:
+    def test_extreme_fail_is_clamped_to_anchor(self):
+        local = LanguageProfile(
+            language="python",
+            thresholds={"cyclomatic_complexity": ThresholdSpec(warn=10, fail=1000)},
+        )
+        clamped = clamp_profile_to_anchor(local, TestCalibrate.ANCHOR)
+        assert clamped.thresholds["cyclomatic_complexity"].fail <= 20 * 1.5 + 1e-9
+        assert clamped.thresholds["cyclomatic_complexity"].warn <= clamped.thresholds[
+            "cyclomatic_complexity"
+        ].fail
+
+    def test_in_band_values_are_preserved(self):
+        local = LanguageProfile(
+            language="python",
+            thresholds={"cyclomatic_complexity": ThresholdSpec(warn=8, fail=16)},
+        )
+        clamped = clamp_profile_to_anchor(local, TestCalibrate.ANCHOR)
+        assert clamped.thresholds["cyclomatic_complexity"].warn == 8
+        assert clamped.thresholds["cyclomatic_complexity"].fail == 16

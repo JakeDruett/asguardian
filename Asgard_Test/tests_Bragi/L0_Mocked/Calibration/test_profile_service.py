@@ -1,5 +1,6 @@
 """Tests for the Plan 05 language-profile fallback chain."""
 
+import math
 import textwrap
 
 import pytest
@@ -79,16 +80,20 @@ class TestFallbackChain:
         assert php_profile.severity_confidence["global_dead_code"] == "LOW"
 
 
+def _plant_local_profile(tmp_path, body: str) -> None:
+    cache_dir = tmp_path / ".asgard_cache"
+    cache_dir.mkdir()
+    (cache_dir / "bragi_local_profile.yaml").write_text(textwrap.dedent(body), encoding="utf-8")
+
+
 class TestLocalOverride:
     def test_local_profile_overrides_language_profile(self, tmp_path):
-        cache_dir = tmp_path / ".asgard_cache"
-        cache_dir.mkdir()
-        (cache_dir / "bragi_local_profile.yaml").write_text(textwrap.dedent("""\
+        _plant_local_profile(tmp_path, """\
             language: local
             provenance: "local P95, 2026-01-01, n=500"
             thresholds:
               cyclomatic_complexity: {warn: 8, fail: 16}
-        """))
+        """)
         service = LanguageProfileService(project_path=tmp_path)
         profile = service.resolve("python")
         assert profile.thresholds["cyclomatic_complexity"].warn == 8
@@ -100,6 +105,119 @@ class TestLocalOverride:
         service = LanguageProfileService(project_path=tmp_path)
         profile = service.resolve("python")
         assert profile.thresholds["cyclomatic_complexity"].warn == 10
+
+
+class TestLocalOverrideIntegrity:
+    """CH-0027: planted local YAML cannot bypass the rot-guard clamp."""
+
+    def test_extreme_fail_is_clamped(self, tmp_path):
+        _plant_local_profile(tmp_path, """\
+            language: python
+            provenance: "planted extreme fail"
+            thresholds:
+              cyclomatic_complexity: {warn: 10, fail: 1000}
+        """)
+        service = LanguageProfileService(project_path=tmp_path)
+        spec = service.threshold("python", "cyclomatic_complexity")
+        assert spec.fail <= 20 * 1.5 + 1e-9
+        assert spec.fail >= 20 * 0.5 - 1e-9
+        assert spec.warn <= spec.fail
+
+    def test_extreme_scalar_is_clamped(self, tmp_path):
+        _plant_local_profile(tmp_path, """\
+            language: python
+            provenance: "planted extreme scalar"
+            scalar_thresholds:
+              wmc: 10000
+        """)
+        service = LanguageProfileService(project_path=tmp_path)
+        wmc = service.scalar("python", "wmc")
+        assert wmc is not None
+        assert wmc <= 20 * 1.5 + 1e-9
+        assert wmc >= 20 * 0.5 - 1e-9
+
+    def test_go_anchor_cannot_bypass_python_clamp(self, tmp_path):
+        # Go's fail is 30, so +-50% allows 45. That must not become python's live fail.
+        _plant_local_profile(tmp_path, """\
+            language: go
+            provenance: "planted go-wide fail"
+            thresholds:
+              cyclomatic_complexity: {warn: 15, fail: 45}
+        """)
+        service = LanguageProfileService(project_path=tmp_path)
+        spec = service.threshold("python", "cyclomatic_complexity")
+        assert spec.fail <= 20 * 1.5 + 1e-9
+
+    def test_extreme_weights_are_refused(self, tmp_path):
+        _plant_local_profile(tmp_path, """\
+            language: python
+            provenance: "planted extreme weights"
+            thresholds:
+              cyclomatic_complexity: {warn: 8, fail: 16}
+            category_weights:
+              reliability: 1.0e9
+              maintainability: 0.3
+              comprehensibility: 0.1
+        """)
+        service = LanguageProfileService(project_path=tmp_path)
+        profile = service.resolve("python")
+        assert profile.thresholds["cyclomatic_complexity"].warn == 10
+        assert profile.thresholds["cyclomatic_complexity"].fail == 20
+        assert not profile.category_weights
+        assert "planted extreme weights" not in (profile.provenance or "")
+
+    def test_zero_weight_is_refused(self, tmp_path):
+        _plant_local_profile(tmp_path, """\
+            language: python
+            provenance: "planted zero weight"
+            category_weights:
+              reliability: 0
+              maintainability: 0.5
+              comprehensibility: 0.5
+        """)
+        service = LanguageProfileService(project_path=tmp_path)
+        profile = service.resolve("python")
+        assert not profile.category_weights
+        assert "planted zero weight" not in (profile.provenance or "")
+
+    def test_nan_fail_does_not_become_live_profile(self, tmp_path):
+        _plant_local_profile(tmp_path, """\
+            language: python
+            provenance: "planted nan"
+            thresholds:
+              cyclomatic_complexity: {warn: 10, fail: .nan}
+        """)
+        service = LanguageProfileService(project_path=tmp_path)
+        spec = service.threshold("python", "cyclomatic_complexity")
+        assert spec.warn == 10
+        assert spec.fail == 20
+        assert math.isfinite(spec.fail)
+
+    def test_inf_fail_does_not_become_live_profile(self, tmp_path):
+        _plant_local_profile(tmp_path, """\
+            language: python
+            provenance: "planted inf"
+            thresholds:
+              cyclomatic_complexity: {warn: 10, fail: .inf}
+        """)
+        service = LanguageProfileService(project_path=tmp_path)
+        spec = service.threshold("python", "cyclomatic_complexity")
+        assert spec.fail == 20
+        assert math.isfinite(spec.fail)
+
+    def test_warn_greater_than_fail_is_refused(self, tmp_path):
+        _plant_local_profile(tmp_path, """\
+            language: python
+            provenance: "planted inverted"
+            thresholds:
+              cyclomatic_complexity: {warn: 50, fail: 10}
+        """)
+        service = LanguageProfileService(project_path=tmp_path)
+        spec = service.threshold("python", "cyclomatic_complexity")
+        assert spec.warn == 10
+        assert spec.fail == 20
+        profile = service.resolve("python")
+        assert "planted inverted" not in (profile.provenance or "")
 
 
 class TestLanguagePathJail:

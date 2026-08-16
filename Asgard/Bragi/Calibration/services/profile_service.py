@@ -11,12 +11,18 @@ Missing profile -> generic defaults, never KeyError. Individual missing
 thresholds fall through the same chain independently (a local profile that
 only overrides `cyclomatic_complexity` still inherits everything else from
 the language profile).
+
+The local YAML is unsigned project cache (CH-0027): invalid numerics are
+refused entirely; accepted values are re-clamped to +-50% of the
+language/generic anchor before they can become the live profile.
 """
 
+import math
 from pathlib import Path
 from typing import Dict, Optional
 
 import yaml
+from pydantic import ValidationError
 
 from Asgard.Bragi.Calibration.models.calibration_models import (
     LANGUAGE_ID_RE,
@@ -27,6 +33,32 @@ from Asgard.Bragi.Calibration.models.calibration_models import (
 _PROFILES_DIR = Path(__file__).resolve().parent.parent / "profiles"
 _GENERIC_LANGUAGE = "generic"
 LOCAL_PROFILE_RELATIVE_PATH = Path(".asgard_cache") / "bragi_local_profile.yaml"
+# Unsigned local cache (CH-0027): category weights must stay in (0, 1].
+_WEIGHT_MIN_EXCLUSIVE = 0.0
+_WEIGHT_MAX = 1.0
+
+
+def _finite_number(value: object) -> bool:
+    return isinstance(value, (int, float)) and not isinstance(value, bool) and math.isfinite(value)
+
+
+def _local_override_schema_ok(profile: LanguageProfile) -> bool:
+    """Finite numerics, warn <= fail, weight bounds. Fail-closed on anything else."""
+    for spec in profile.thresholds.values():
+        if not (_finite_number(spec.warn) and _finite_number(spec.fail)):
+            return False
+        if spec.warn > spec.fail:
+            return False
+    for value in profile.scalar_thresholds.values():
+        if not _finite_number(value):
+            return False
+    if profile.category_weights:
+        for weight in profile.category_weights.values():
+            if not _finite_number(weight):
+                return False
+            if weight <= _WEIGHT_MIN_EXCLUSIVE or weight > _WEIGHT_MAX:
+                return False
+    return True
 
 
 def _load_yaml_profile(path: Path) -> Optional[LanguageProfile]:
@@ -82,39 +114,86 @@ class LanguageProfileService:
             self._cache[language] = profile
         return profile
 
-    def _load_local_override(self) -> Optional[LanguageProfile]:
-        return _load_yaml_profile(self.project_path / LOCAL_PROFILE_RELATIVE_PATH)
-
-    def resolve(self, language: str) -> LanguageProfile:
-        """
-        Merged profile for a language: local override values win, then the
-        language profile, then generic defaults. Never raises - an unknown
-        language returns the generic profile relabeled.
-        """
+    def _anchor_for(self, language: str) -> LanguageProfile:
+        """Language profile over generic defaults, with no local override."""
         language_profile = self._load_language(language) or LanguageProfile(
             language=language, provenance="no dedicated profile; using generic defaults"
         )
-
         merged_thresholds = dict(self._generic.thresholds)
         merged_thresholds.update(language_profile.thresholds)
         merged_scalars = dict(self._generic.scalar_thresholds)
         merged_scalars.update(language_profile.scalar_thresholds)
         merged_severity = dict(self._generic.severity_confidence)
         merged_severity.update(language_profile.severity_confidence)
-        category_weights = language_profile.category_weights or self._generic.category_weights
-        provenance = language_profile.provenance or self._generic.provenance
-
-        if self._local is not None:
-            merged_thresholds.update(self._local.thresholds)
-            merged_scalars.update(self._local.scalar_thresholds)
-            merged_severity.update(self._local.severity_confidence)
-            if self._local.category_weights:
-                category_weights = self._local.category_weights
-            provenance = self._local.provenance or provenance
-
         return LanguageProfile(
             language=language,
-            provenance=provenance,
+            provenance=language_profile.provenance or self._generic.provenance,
+            thresholds=merged_thresholds,
+            scalar_thresholds=merged_scalars,
+            severity_confidence=merged_severity,
+            category_weights=language_profile.category_weights or self._generic.category_weights,
+        )
+
+    @staticmethod
+    def _clamp_local(local: LanguageProfile, anchor: LanguageProfile) -> LanguageProfile:
+        # Lazy: local_calibrator imports LOCAL_PROFILE_RELATIVE_PATH from this module.
+        from Asgard.Bragi.Calibration.services.local_calibrator import clamp_profile_to_anchor
+
+        return clamp_profile_to_anchor(local, anchor)
+
+    def _load_local_override(self) -> Optional[LanguageProfile]:
+        """Load unsigned project cache; refuse invalid numerics, re-clamp survivors."""
+        path = self.project_path / LOCAL_PROFILE_RELATIVE_PATH
+        if path.is_symlink() or not path.is_file():
+            return None
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                data = yaml.safe_load(f) or {}
+        except (yaml.YAMLError, OSError):
+            return None
+        if not isinstance(data, dict):
+            return None
+        try:
+            profile = LanguageProfile.model_validate(data)
+        except (TypeError, ValueError, ValidationError):
+            return None
+        if not isinstance(profile.language, str) or not LANGUAGE_ID_RE.fullmatch(profile.language):
+            return None
+        if not _local_override_schema_ok(profile):
+            return None
+        return self._clamp_local(profile, self._anchor_for(profile.language))
+
+    def resolve(self, language: str) -> LanguageProfile:
+        """
+        Merged profile for a language: local override values win, then the
+        language profile, then generic defaults. Never raises - an unknown
+        language returns the generic profile relabeled.
+
+        Local YAML is re-clamped to +-50% of this language/generic anchor
+        so a planted cache cannot normalize its own rot (CH-0027).
+        """
+        anchor = self._anchor_for(language)
+        if self._local is None:
+            return LanguageProfile(
+                language=language,
+                provenance=anchor.provenance,
+                thresholds=dict(anchor.thresholds),
+                scalar_thresholds=dict(anchor.scalar_thresholds),
+                severity_confidence=dict(anchor.severity_confidence),
+                category_weights=anchor.category_weights,
+            )
+
+        local = self._clamp_local(self._local, anchor)
+        merged_thresholds = dict(anchor.thresholds)
+        merged_thresholds.update(local.thresholds)
+        merged_scalars = dict(anchor.scalar_thresholds)
+        merged_scalars.update(local.scalar_thresholds)
+        merged_severity = dict(anchor.severity_confidence)
+        merged_severity.update(local.severity_confidence)
+        category_weights = local.category_weights or anchor.category_weights
+        return LanguageProfile(
+            language=language,
+            provenance=local.provenance or anchor.provenance,
             thresholds=merged_thresholds,
             scalar_thresholds=merged_scalars,
             severity_confidence=merged_severity,

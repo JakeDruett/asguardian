@@ -51,12 +51,72 @@ def percentile(samples: Sequence[float], pct: float) -> float:
 
 
 def _clamp(local_value: float, anchor_value: float, fraction: float = CLAMP_FRACTION) -> float:
-    """Clamp `local_value` to within +-fraction of `anchor_value`."""
+    """Clamp `local_value` to within +-fraction of `anchor_value`.
+
+    Applied at generate time and again when loading a local profile YAML
+    (CH-0027): unsigned cache cannot bypass the rot guard.
+    """
     if anchor_value <= 0:
         return local_value
     lo = anchor_value * (1.0 - fraction)
     hi = anchor_value * (1.0 + fraction)
     return min(max(local_value, lo), hi)
+
+
+def clamp_profile_to_anchor(
+    local: LanguageProfile,
+    anchor: LanguageProfile,
+    fraction: float = CLAMP_FRACTION,
+) -> LanguageProfile:
+    """Re-apply `_clamp` to every local numeric against `anchor`.
+
+    Thresholds/scalars without an anchor pass through unchanged (callers
+    must already have schema-validated them). After clamp, `warn` is
+    never greater than `fail`.
+    """
+    thresholds: Dict[str, ThresholdSpec] = {}
+    for metric_id, spec in local.thresholds.items():
+        if metric_id in anchor.thresholds:
+            anchor_spec = anchor.thresholds[metric_id]
+            fail = _clamp(spec.fail, anchor_spec.fail, fraction)
+            warn = _clamp(spec.warn, anchor_spec.warn, fraction)
+            if warn > fail:
+                warn = fail
+            thresholds[metric_id] = ThresholdSpec(warn=warn, fail=fail)
+        else:
+            warn, fail = spec.warn, spec.fail
+            if warn > fail:
+                warn = fail
+            thresholds[metric_id] = ThresholdSpec(warn=warn, fail=fail)
+
+    scalars: Dict[str, float] = {}
+    for metric_id, value in local.scalar_thresholds.items():
+        if metric_id in anchor.scalar_thresholds:
+            scalars[metric_id] = _clamp(value, anchor.scalar_thresholds[metric_id], fraction)
+        elif metric_id in anchor.thresholds:
+            scalars[metric_id] = _clamp(value, anchor.thresholds[metric_id].fail, fraction)
+        else:
+            scalars[metric_id] = value
+
+    weights = local.category_weights
+    if weights and anchor.category_weights:
+        clamped_weights: Dict[str, float] = {}
+        for key, value in weights.items():
+            anchor_w = anchor.category_weights.get(key)
+            if anchor_w is not None and anchor_w > 0:
+                clamped_weights[key] = _clamp(value, anchor_w, fraction)
+            else:
+                clamped_weights[key] = value
+        weights = clamped_weights
+
+    return LanguageProfile(
+        language=local.language,
+        provenance=local.provenance,
+        thresholds=thresholds,
+        scalar_thresholds=scalars,
+        severity_confidence=local.severity_confidence,
+        category_weights=weights,
+    )
 
 
 def calibrate(
@@ -110,7 +170,8 @@ def calibrate(
                 clamped_metrics.append(metric_id)
 
         if metric_id in anchor_profile.thresholds:
-            thresholds[metric_id] = ThresholdSpec(warn=p90, fail=clamped_p95)
+            warn = p90 if p90 <= clamped_p95 else clamped_p95
+            thresholds[metric_id] = ThresholdSpec(warn=warn, fail=clamped_p95)
         else:
             scalars[metric_id] = clamped_p95
 
