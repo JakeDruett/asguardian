@@ -6,12 +6,16 @@ merge such that merge(a, b) approximates the sketch of the concatenation
 (RESEARCH_15).
 """
 
+import math
 import random
 
 import pytest
 
 from Asgard.Verdandi.Analysis.services.quantile_sketch import (
     DDSketch,
+    MAX_DDSKETCH_BUCKETS,
+    MAX_TDIGEST_CENTROIDS,
+    MAX_TDIGEST_COMPRESSION,
     TDigest,
     sketch_from_values,
 )
@@ -145,3 +149,135 @@ class TestMergeSketchesPath:
     def test_empty_input_raises(self):
         with pytest.raises(ValueError):
             PercentileCalculator().merge_sketches([])
+
+
+class TestFromDictHardening:
+    """CH-0099: from_dict rejects unbounded / non-finite attacker JSON."""
+
+    def test_tdigest_rejects_too_many_centroids(self):
+        n = MAX_TDIGEST_CENTROIDS + 1
+        payload = {
+            "type": "tdigest",
+            "compression": 100,
+            "count": float(n),
+            "min": 0.0,
+            "max": float(n - 1),
+            "centroids": [[float(i), 1.0] for i in range(n)],
+        }
+        with pytest.raises(ValueError, match="centroid count"):
+            TDigest.from_dict(payload)
+
+    def test_tdigest_rejects_negative_weight(self):
+        with pytest.raises(ValueError, match="positive"):
+            TDigest.from_dict({
+                "type": "tdigest",
+                "compression": 100,
+                "count": 1.0,
+                "min": 1.0,
+                "max": 1.0,
+                "centroids": [[1.0, -1.0]],
+            })
+
+    def test_tdigest_rejects_nonfinite_weight(self):
+        with pytest.raises(ValueError, match="finite"):
+            TDigest.from_dict({
+                "type": "tdigest",
+                "compression": 100,
+                "count": 1.0,
+                "min": 1.0,
+                "max": 1.0,
+                "centroids": [[1.0, math.inf]],
+            })
+
+    def test_tdigest_rejects_nonfinite_mean(self):
+        with pytest.raises(ValueError, match="finite"):
+            TDigest.from_dict({
+                "type": "tdigest",
+                "compression": 100,
+                "count": 1.0,
+                "min": 1.0,
+                "max": 1.0,
+                "centroids": [[math.nan, 1.0]],
+            })
+
+    def test_tdigest_rejects_huge_compression(self):
+        with pytest.raises(ValueError, match="compression"):
+            TDigest.from_dict({
+                "type": "tdigest",
+                "compression": MAX_TDIGEST_COMPRESSION + 1,
+                "count": 1.0,
+                "min": 1.0,
+                "max": 1.0,
+                "centroids": [[1.0, 1.0]],
+            })
+
+    def test_tdigest_rejects_count_mismatch(self):
+        with pytest.raises(ValueError, match="count"):
+            TDigest.from_dict({
+                "type": "tdigest",
+                "compression": 100,
+                "count": 1e308,
+                "min": 1.0,
+                "max": 1.0,
+                "centroids": [[1.0, 1.0]],
+            })
+
+    def test_ddsketch_rejects_too_many_buckets(self):
+        n = MAX_DDSKETCH_BUCKETS + 1
+        payload = {
+            "type": "ddsketch",
+            "relative_accuracy": 0.01,
+            "zero_count": 0.0,
+            "count": float(n),
+            "buckets": {str(i): 1.0 for i in range(n)},
+        }
+        with pytest.raises(ValueError, match="bucket count"):
+            DDSketch.from_dict(payload)
+
+    def test_ddsketch_rejects_negative_weight(self):
+        with pytest.raises(ValueError, match="positive"):
+            DDSketch.from_dict({
+                "type": "ddsketch",
+                "relative_accuracy": 0.01,
+                "zero_count": 0.0,
+                "count": 1.0,
+                "buckets": {"1": -3.0},
+            })
+
+    def test_ddsketch_rejects_nonfinite_weight(self):
+        with pytest.raises(ValueError, match="finite"):
+            DDSketch.from_dict({
+                "type": "ddsketch",
+                "relative_accuracy": 0.01,
+                "zero_count": 0.0,
+                "count": 1.0,
+                "buckets": {"1": math.nan},
+            })
+
+    def test_ddsketch_clamps_huge_index(self):
+        sketch = DDSketch.from_dict({
+            "type": "ddsketch",
+            "relative_accuracy": 0.01,
+            "zero_count": 0.0,
+            "count": 1.0,
+            "buckets": {"999999999": 1.0},
+        })
+        index = next(iter(sketch._buckets))
+        assert abs(index) < 999999999
+        assert math.isfinite(sketch.quantile(0.5))
+
+    def test_ddsketch_rejects_oversized_index_key(self):
+        with pytest.raises(ValueError, match="bucket index"):
+            DDSketch.from_dict({
+                "type": "ddsketch",
+                "relative_accuracy": 0.01,
+                "zero_count": 0.0,
+                "count": 1.0,
+                "buckets": {"9" * 40: 1.0},
+            })
+
+    def test_add_rejects_nonfinite_value(self):
+        with pytest.raises(ValueError, match="finite"):
+            TDigest().add(math.inf)
+        with pytest.raises(ValueError, match="finite"):
+            DDSketch().add(math.nan)

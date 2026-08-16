@@ -216,7 +216,8 @@ def _add_analyze_parser(subparsers) -> None:
         nargs="+",
         help=(
             "One or more JSON files produced by TDigest.to_dict() or "
-            "DDSketch.to_dict(); all must be the same sketch type"
+            "DDSketch.to_dict(); all must be the same sketch type "
+            "(at most 256 files, 8 MiB each)"
         ),
     )
     sketch_merge_parser.add_argument(
@@ -231,7 +232,10 @@ def _add_analyze_parser(subparsers) -> None:
         "-o",
         type=str,
         default=None,
-        help="Optional path to write the merged sketch as JSON",
+        help=(
+            "Optional path to write the merged sketch as JSON "
+            "(must stay under the working directory)"
+        ),
     )
 
     co_check_parser = analyze_subparsers.add_parser(

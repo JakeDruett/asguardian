@@ -10,6 +10,7 @@ import json
 
 import pytest
 
+from Asgard.Verdandi.cli import handlers_new_apis
 from Asgard.Verdandi.cli import main as verdandi_main
 from Asgard.Verdandi.cli._parser import create_parser
 from Asgard.Verdandi.Analysis.services.quantile_sketch import DDSketch, TDigest
@@ -123,14 +124,82 @@ def test_sketch_merge_text_output(tmp_path, capsys):
     assert "tdigest" in out
 
 
-def test_sketch_merge_writes_output_sketch(tmp_path, capsys):
+def test_sketch_merge_writes_output_sketch(tmp_path, capsys, monkeypatch):
+    monkeypatch.chdir(tmp_path)
     a = tmp_path / "a.json"
     out_file = tmp_path / "merged.json"
     _write_tdigest(a, [5.0] * 10)
-    code = _run(["analyze", "sketch-merge", str(a), "-o", str(out_file)])
+    code = _run(["analyze", "sketch-merge", str(a), "-o", "merged.json"])
     assert code == 0
     merged = TDigest.from_dict(json.loads(out_file.read_text()))
     assert merged.count == 10.0
+
+
+def test_sketch_merge_rejects_hostile_tdigest(tmp_path, capsys):
+    payload = {
+        "type": "tdigest",
+        "compression": 100,
+        "count": 1.0,
+        "min": 1.0,
+        "max": 1.0,
+        "centroids": [[1.0, -1.0]],
+    }
+    f = tmp_path / "bad.json"
+    f.write_text(json.dumps(payload))
+    code = _run(["analyze", "sketch-merge", str(f)])
+    assert code == 1
+    assert "Error" in capsys.readouterr().out
+
+
+def test_sketch_merge_rejects_huge_centroid_map(tmp_path, capsys):
+    from Asgard.Verdandi.Analysis.services.quantile_sketch import (
+        MAX_TDIGEST_CENTROIDS,
+    )
+
+    n = MAX_TDIGEST_CENTROIDS + 1
+    payload = {
+        "type": "tdigest",
+        "compression": 100,
+        "count": float(n),
+        "min": 0.0,
+        "max": 1.0,
+        "centroids": [[0.0, 1.0]] * n,
+    }
+    f = tmp_path / "huge.json"
+    f.write_text(json.dumps(payload))
+    code = _run(["analyze", "sketch-merge", str(f)])
+    assert code == 1
+    assert "centroid" in capsys.readouterr().out
+
+
+def test_sketch_merge_rejects_too_many_files(tmp_path, capsys, monkeypatch):
+    monkeypatch.setattr(handlers_new_apis, "_MAX_SKETCH_FILES", 2)
+    files = []
+    for i in range(3):
+        path = tmp_path / f"s{i}.json"
+        _write_tdigest(path, [1.0])
+        files.append(str(path))
+    code = _run(["analyze", "sketch-merge", *files])
+    assert code == 1
+    assert "At most" in capsys.readouterr().out
+
+
+def test_sketch_merge_rejects_oversized_json(tmp_path, capsys, monkeypatch):
+    monkeypatch.setattr(handlers_new_apis, "_MAX_SKETCH_JSON_BYTES", 64)
+    f = tmp_path / "big.json"
+    f.write_text("{" + "a" * 100 + "}")
+    code = _run(["analyze", "sketch-merge", str(f)])
+    assert code == 1
+    assert "exceeds" in capsys.readouterr().out
+
+
+def test_sketch_merge_rejects_escaping_output(tmp_path, capsys, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    a = tmp_path / "a.json"
+    _write_tdigest(a, [1.0])
+    code = _run(["analyze", "sketch-merge", str(a), "-o", "../evil.json"])
+    assert code == 1
+    assert "working directory" in capsys.readouterr().out
 
 
 def test_sketch_merge_rejects_mixed_types(tmp_path, capsys):

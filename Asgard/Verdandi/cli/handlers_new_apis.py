@@ -16,16 +16,36 @@ from pathlib import Path
 from typing import Any, Optional
 
 
-def _load_json(path: str) -> Optional[Any]:
+_MAX_SKETCH_FILES = 256
+_MAX_SKETCH_JSON_BYTES = 8 * 1024 * 1024
+
+
+def _load_json(path: str, max_bytes: Optional[int] = None) -> Optional[Any]:
     file_path = Path(path)
     if not file_path.exists():
         print(f"Error: File not found: {file_path}")
         return None
     try:
+        if max_bytes is not None and file_path.stat().st_size > max_bytes:
+            print(
+                f"Error: {file_path} exceeds the {max_bytes} byte sketch limit."
+            )
+            return None
         return json.loads(file_path.read_text(encoding="utf-8"))
     except (json.JSONDecodeError, OSError) as e:
         print(f"Error: Could not parse JSON from {file_path}: {e}")
         return None
+
+
+def _confine_cli_path(raw: str) -> Path:
+    cwd = Path.cwd().resolve()
+    dest = Path(raw)
+    resolved = dest.resolve() if dest.is_absolute() else (cwd / dest).resolve()
+    if not resolved.is_relative_to(cwd):
+        raise ValueError(
+            f"output path {raw!r} is outside the working directory"
+        )
+    return resolved
 
 
 def _dump(model: Any) -> Any:
@@ -501,8 +521,13 @@ def run_sketch_merge(args, output_format: str = "text") -> int:
     loaders = {"tdigest": TDigest.from_dict, "ddsketch": DDSketch.from_dict}
     sketches = []
     sketch_type = None
+    if len(args.sketch_files) > _MAX_SKETCH_FILES:
+        print(
+            f"Error: At most {_MAX_SKETCH_FILES} sketch files can be merged."
+        )
+        return 1
     for path in args.sketch_files:
-        data = _load_json(path)
+        data = _load_json(path, max_bytes=_MAX_SKETCH_JSON_BYTES)
         if data is None:
             return 1
         if not isinstance(data, dict) or data.get("type") not in loaders:
@@ -542,9 +567,13 @@ def run_sketch_merge(args, output_format: str = "text") -> int:
 
     if args.output:
         try:
-            Path(args.output).write_text(
+            out_path = _confine_cli_path(args.output)
+            out_path.write_text(
                 json.dumps(merged.to_dict(), indent=2), encoding="utf-8"
             )
+        except ValueError as e:
+            print(f"Error: {e}")
+            return 1
         except OSError as e:
             print(f"Error: Could not write merged sketch to {args.output}: {e}")
             return 1

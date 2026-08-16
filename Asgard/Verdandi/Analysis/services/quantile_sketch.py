@@ -11,7 +11,39 @@ sketches, then query quantiles on the merged sketch.
 """
 
 import math
+import sys
 from typing import Any, Dict, Iterable, List, Sequence, Tuple
+
+# CWE-400: untrusted sketch JSON must not allocate or exponentiate without bound.
+MAX_TDIGEST_COMPRESSION = 10_000.0
+MIN_TDIGEST_COMPRESSION = 20.0
+MAX_TDIGEST_CENTROIDS = 20_000
+MAX_DDSKETCH_BUCKETS = 20_000
+MIN_DDSKETCH_RELATIVE_ACCURACY = 1e-4
+
+
+def _require_finite(name: str, value: Any) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ValueError(f"{name} must be a finite number")
+    parsed = float(value)
+    if not math.isfinite(parsed):
+        raise ValueError(f"{name} must be a finite number")
+    return parsed
+
+
+def _require_positive_weight(name: str, value: Any) -> float:
+    parsed = _require_finite(name, value)
+    if parsed <= 0.0:
+        raise ValueError(f"{name} must be positive")
+    return parsed
+
+
+def _max_safe_bucket_index(log_gamma: float) -> int:
+    """Largest |index| for which gamma**index stays finite."""
+    if log_gamma <= 0.0 or not math.isfinite(log_gamma):
+        raise ValueError("invalid sketch gamma")
+    # Leave headroom for 2 * gamma**i / (gamma + 1) in quantile().
+    return max(1, int(math.log(sys.float_info.max / 4.0) / log_gamma) - 1)
 
 
 class TDigest:
@@ -45,9 +77,13 @@ class TDigest:
                 heavy tails; use DDSketch when a guaranteed relative
                 value-space error is required.
         """
-        if compression < 20:
-            raise ValueError("compression must be >= 20")
-        self.compression = float(compression)
+        compression = _require_finite("compression", compression)
+        if not MIN_TDIGEST_COMPRESSION <= compression <= MAX_TDIGEST_COMPRESSION:
+            raise ValueError(
+                f"compression must be in "
+                f"[{MIN_TDIGEST_COMPRESSION:g}, {MAX_TDIGEST_COMPRESSION:g}]"
+            )
+        self.compression = compression
         self._centroids: List[Tuple[float, float]] = []  # (mean, weight), sorted
         self._buffer: List[Tuple[float, float]] = []
         self._buffer_limit = int(10 * compression)
@@ -57,11 +93,13 @@ class TDigest:
 
     def add(self, value: float, weight: float = 1.0) -> None:
         """Add a single value (optionally weighted) to the sketch."""
-        if weight <= 0:
-            raise ValueError("weight must be positive")
-        value = float(value)
-        self._buffer.append((value, float(weight)))
-        self.count += weight
+        value = _require_finite("value", value)
+        weight = _require_positive_weight("weight", weight)
+        next_count = self.count + weight
+        if not math.isfinite(next_count):
+            raise ValueError("weight overflow")
+        self._buffer.append((value, weight))
+        self.count = next_count
         self.min_value = min(self.min_value, value)
         self.max_value = max(self.max_value, value)
         if len(self._buffer) >= self._buffer_limit:
@@ -179,15 +217,58 @@ class TDigest:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "TDigest":
         """Deserialize a sketch produced by to_dict()."""
-        if data.get("type") != "tdigest":
+        if not isinstance(data, dict) or data.get("type") != "tdigest":
             raise ValueError("Not a serialized t-digest")
-        digest = cls(compression=data["compression"])
-        digest._centroids = [(float(m), float(w)) for m, w in data["centroids"]]
-        digest.count = float(data["count"])
+        try:
+            compression = data["compression"]
+            raw_centroids = data["centroids"]
+        except KeyError as exc:
+            raise ValueError(f"missing sketch field: {exc}") from exc
+        if not isinstance(raw_centroids, list):
+            raise ValueError("centroids must be a list")
+        if len(raw_centroids) > MAX_TDIGEST_CENTROIDS:
+            raise ValueError(
+                f"centroid count exceeds {MAX_TDIGEST_CENTROIDS}"
+            )
+
+        digest = cls(compression=compression)
+        parsed: List[Tuple[float, float]] = []
+        weight_sum = 0.0
+        for item in raw_centroids:
+            if not isinstance(item, (list, tuple)) or len(item) != 2:
+                raise ValueError("centroid must be [mean, weight]")
+            mean = _require_finite("centroid mean", item[0])
+            weight = _require_positive_weight("centroid weight", item[1])
+            weight_sum += weight
+            if not math.isfinite(weight_sum):
+                raise ValueError("centroid weight overflow")
+            parsed.append((mean, weight))
+        parsed.sort(key=lambda c: c[0])
+
+        if "count" in data:
+            count = _require_finite("count", data["count"])
+            if count < 0.0:
+                raise ValueError("count must be non-negative")
+            if not math.isclose(count, weight_sum, rel_tol=1e-6, abs_tol=1e-6):
+                raise ValueError("count does not match centroid weights")
+        digest._centroids = parsed
+        digest.count = weight_sum
+
         if data.get("min") is not None:
-            digest.min_value = float(data["min"])
+            digest.min_value = _require_finite("min", data["min"])
+        elif parsed:
+            digest.min_value = parsed[0][0]
         if data.get("max") is not None:
-            digest.max_value = float(data["max"])
+            digest.max_value = _require_finite("max", data["max"])
+        elif parsed:
+            digest.max_value = parsed[-1][0]
+        if (
+            parsed
+            and math.isfinite(digest.min_value)
+            and math.isfinite(digest.max_value)
+            and digest.min_value > digest.max_value
+        ):
+            raise ValueError("min must be <= max")
         return digest
 
 
@@ -204,8 +285,12 @@ class DDSketch:
     """
 
     def __init__(self, relative_accuracy: float = 0.01):
-        if not 0.0 < relative_accuracy < 1.0:
-            raise ValueError("relative_accuracy must be in (0, 1)")
+        relative_accuracy = _require_finite("relative_accuracy", relative_accuracy)
+        if not MIN_DDSKETCH_RELATIVE_ACCURACY <= relative_accuracy < 1.0:
+            raise ValueError(
+                f"relative_accuracy must be in "
+                f"[{MIN_DDSKETCH_RELATIVE_ACCURACY}, 1)"
+            )
         self.relative_accuracy = relative_accuracy
         self._gamma = (1.0 + relative_accuracy) / (1.0 - relative_accuracy)
         self._log_gamma = math.log(self._gamma)
@@ -215,14 +300,27 @@ class DDSketch:
 
     def add(self, value: float, weight: float = 1.0) -> None:
         """Add a value to the sketch."""
-        if weight <= 0:
-            raise ValueError("weight must be positive")
+        weight = _require_positive_weight("weight", weight)
+        value = _require_finite("value", value)
+        next_count = self.count + weight
+        if not math.isfinite(next_count):
+            raise ValueError("weight overflow")
         if value <= 0:
-            self._zero_count += weight
+            next_zero = self._zero_count + weight
+            if not math.isfinite(next_zero):
+                raise ValueError("weight overflow")
+            self._zero_count = next_zero
         else:
             index = math.ceil(math.log(value) / self._log_gamma)
+            max_index = _max_safe_bucket_index(self._log_gamma)
+            if index > max_index:
+                index = max_index
+            elif index < -max_index:
+                index = -max_index
+            if index not in self._buckets and len(self._buckets) >= MAX_DDSKETCH_BUCKETS:
+                raise ValueError(f"bucket count exceeds {MAX_DDSKETCH_BUCKETS}")
             self._buckets[index] = self._buckets.get(index, 0.0) + weight
-        self.count += weight
+        self.count = next_count
 
     def add_batch(self, values: Iterable[float]) -> None:
         """Add many values."""
@@ -234,9 +332,15 @@ class DDSketch:
         if abs(other.relative_accuracy - self.relative_accuracy) > 1e-12:
             raise ValueError("Cannot merge DDSketches with different accuracies")
         for index, weight in other._buckets.items():
+            if index not in self._buckets and len(self._buckets) >= MAX_DDSKETCH_BUCKETS:
+                raise ValueError(f"bucket count exceeds {MAX_DDSKETCH_BUCKETS}")
             self._buckets[index] = self._buckets.get(index, 0.0) + weight
-        self._zero_count += other._zero_count
-        self.count += other.count
+        next_zero = self._zero_count + other._zero_count
+        next_count = self.count + other.count
+        if not math.isfinite(next_zero) or not math.isfinite(next_count):
+            raise ValueError("weight overflow")
+        self._zero_count = next_zero
+        self.count = next_count
 
     def quantile(self, q: float) -> float:
         """Estimate the q-quantile (q in [0, 1])."""
@@ -275,12 +379,57 @@ class DDSketch:
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "DDSketch":
         """Deserialize a sketch produced by to_dict()."""
-        if data.get("type") != "ddsketch":
+        if not isinstance(data, dict) or data.get("type") != "ddsketch":
             raise ValueError("Not a serialized DDSketch")
-        sketch = cls(relative_accuracy=data["relative_accuracy"])
-        sketch._buckets = {int(k): float(v) for k, v in data["buckets"].items()}
-        sketch._zero_count = float(data["zero_count"])
-        sketch.count = float(data["count"])
+        try:
+            relative_accuracy = data["relative_accuracy"]
+            raw_buckets = data["buckets"]
+        except KeyError as exc:
+            raise ValueError(f"missing sketch field: {exc}") from exc
+        if not isinstance(raw_buckets, dict):
+            raise ValueError("buckets must be an object")
+        if len(raw_buckets) > MAX_DDSKETCH_BUCKETS:
+            raise ValueError(f"bucket count exceeds {MAX_DDSKETCH_BUCKETS}")
+
+        sketch = cls(relative_accuracy=relative_accuracy)
+        max_index = _max_safe_bucket_index(sketch._log_gamma)
+        parsed: Dict[int, float] = {}
+        weight_sum = 0.0
+        for key, raw_weight in raw_buckets.items():
+            if isinstance(key, bool):
+                raise ValueError("invalid bucket index")
+            if isinstance(key, str) and len(key) > 32:
+                raise ValueError("bucket index too large")
+            try:
+                index = int(key)
+            except (TypeError, ValueError) as exc:
+                raise ValueError(f"invalid bucket index: {key!r}") from exc
+            if index > max_index:
+                index = max_index
+            elif index < -max_index:
+                index = -max_index
+            weight = _require_positive_weight("bucket weight", raw_weight)
+            weight_sum += weight
+            if not math.isfinite(weight_sum):
+                raise ValueError("bucket weight overflow")
+            parsed[index] = parsed.get(index, 0.0) + weight
+
+        zero_count = _require_finite("zero_count", data.get("zero_count", 0.0))
+        if zero_count < 0.0:
+            raise ValueError("zero_count must be non-negative")
+        weight_sum += zero_count
+        if not math.isfinite(weight_sum):
+            raise ValueError("bucket weight overflow")
+
+        if "count" in data:
+            count = _require_finite("count", data["count"])
+            if count < 0.0:
+                raise ValueError("count must be non-negative")
+            if not math.isclose(count, weight_sum, rel_tol=1e-6, abs_tol=1e-6):
+                raise ValueError("count does not match bucket weights")
+        sketch._buckets = parsed
+        sketch._zero_count = zero_count
+        sketch.count = weight_sum
         return sketch
 
 
