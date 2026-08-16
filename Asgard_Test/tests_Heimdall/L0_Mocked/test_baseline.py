@@ -9,7 +9,14 @@ from Asgard.Baseline.models import BaselineEntry, BaselineFile, BaselineStats
 from Asgard.Baseline._baseline_helpers import (
     generate_violation_id,
     get_violation_message,
+    is_usable_fuzzy_message,
+    persistable_violation_message,
     relative_path,
+)
+from Asgard.Heimdall.Security.models.security_models_base import (
+    SecretFinding,
+    SecretType,
+    SecuritySeverity,
 )
 
 
@@ -89,6 +96,28 @@ class TestBaselineEntryEdgeCases:
             message="some import",
         )
         assert entry.matches_fuzzy("src/foo.py", "lazy_import", "some import") is True
+
+    def test_fuzzy_match_empty_message_is_unmatched(self):
+        entry = BaselineEntry(
+            file_path="src/foo.py",
+            line_number=1,
+            violation_type="heimdall_secret",
+            violation_id="abc123",
+            message="",
+        )
+        assert entry.matches_fuzzy("src/foo.py", "heimdall_secret", "") is False
+        assert entry.matches_fuzzy("src/foo.py", "heimdall_secret", "   ") is False
+
+    def test_fuzzy_match_whitespace_query_against_stored_key_is_unmatched(self):
+        entry = BaselineEntry(
+            file_path="src/foo.py",
+            line_number=1,
+            violation_type="heimdall_secret",
+            violation_id="abc123",
+            message="aws_access_key:AKIA****1111",
+        )
+        assert entry.matches_fuzzy("src/foo.py", "heimdall_secret", "") is False
+        assert entry.matches_fuzzy("src/foo.py", "heimdall_secret", "   ") is False
 
 
 # ---------------------------------------------------------------------------
@@ -179,6 +208,29 @@ class TestBaselineFileEdgeCases:
         stats = bf.get_stats()
         assert stats.entries_by_type["lazy_import"] == 2
         assert stats.entries_by_type["complexity"] == 1
+
+    def test_add_entry_replaces_empty_message_with_violation_id(self):
+        bf = BaselineFile()
+        bf.add_entry(BaselineEntry(
+            file_path="src/foo.py",
+            line_number=1,
+            violation_type="heimdall_secret",
+            violation_id="vid-empty",
+            message="",
+        ))
+        assert bf.entries[0].message == "vid-empty"
+
+    def test_find_fuzzy_match_empty_message_returns_none(self):
+        bf = BaselineFile()
+        bf.add_entry(BaselineEntry(
+            file_path="src/foo.py",
+            line_number=1,
+            violation_type="heimdall_secret",
+            violation_id="abc123",
+            message="aws_access_key:AKIA****1111",
+        ))
+        assert bf.find_fuzzy_match("src/foo.py", "heimdall_secret", "") is None
+        assert bf.find_fuzzy_match("src/foo.py", "heimdall_secret", "   ") is None
 
 
 # ---------------------------------------------------------------------------
@@ -381,3 +433,163 @@ class TestBaselineHelpersEdgeCases:
         class V:
             pass
         assert get_violation_message(V()) == ""
+
+    def test_get_violation_message_skips_empty_message_attr(self):
+        class V:
+            message = ""
+            description = "   "
+            pattern_name = "aws_access_key"
+            masked_value = "AKIA****1111"
+        assert get_violation_message(V()) == "aws_access_key:AKIA****1111"
+
+    def test_get_violation_message_secret_finding_like_uses_pattern_and_masked(self):
+        class SecretLike:
+            file_path = "src/foo.py"
+            line_number = 1
+            pattern_name = "aws_access_key"
+            masked_value = "AKIA****1111"
+        assert get_violation_message(SecretLike()) == "aws_access_key:AKIA****1111"
+
+    def test_get_violation_message_falls_back_to_violation_id(self):
+        class V:
+            violation_id = "stable-id-9"
+        assert get_violation_message(V()) == "stable-id-9"
+
+    def test_get_violation_message_uses_secret_finding_property(self):
+        finding = SecretFinding(
+            file_path="src/foo.py",
+            line_number=1,
+            secret_type=SecretType.API_KEY,
+            severity=SecuritySeverity.HIGH,
+            pattern_name="aws_access_key",
+            masked_value="AKIA****1111",
+            line_content="key=***",
+            confidence=0.9,
+        )
+        assert get_violation_message(finding) == "aws_access_key:AKIA****1111"
+        assert finding.message == "aws_access_key:AKIA****1111"
+
+    def test_usable_fuzzy_message_rejects_empty_and_whitespace(self):
+        assert is_usable_fuzzy_message("") is False
+        assert is_usable_fuzzy_message("   ") is False
+        assert is_usable_fuzzy_message("aws_access_key:AKIA****1111") is True
+
+    def test_persistable_message_replaces_empty_with_violation_id(self):
+        assert persistable_violation_message("", "vid1") == "vid1"
+        assert persistable_violation_message("   ", "vid1") == "vid1"
+        assert persistable_violation_message("keep", "vid1") == "keep"
+
+
+class _SecretLike:
+    def __init__(self, file_path, line_number, pattern_name="", masked_value=""):
+        self.file_path = file_path
+        self.line_number = line_number
+        self.pattern_name = pattern_name
+        self.masked_value = masked_value
+
+
+class _BareFinding:
+    def __init__(self, file_path, line_number):
+        self.file_path = file_path
+        self.line_number = line_number
+
+
+class TestFuzzyEmptyMessageSuppression:
+    def test_baselining_secret_like_does_not_hide_other_secrets_when_fuzzy(
+        self, tmp_path
+    ):
+        src = str(tmp_path / "config.py")
+        first = _SecretLike(src, 1, "aws_access_key", "AKIA****1111")
+        later = _SecretLike(src, 8, "db_password", "Sup3****word")
+        manager = BaselineManager(project_path=tmp_path)
+        assert manager.create_from_violations([first], "heimdall_secret") == 1
+
+        stored = manager.list_entries()[0].message
+        assert stored == "aws_access_key:AKIA****1111"
+
+        remaining = manager.filter_violations(
+            [first, later], "heimdall_secret", use_fuzzy_matching=True
+        )
+        assert remaining == [later]
+
+        shifted = _SecretLike(src, 99, "aws_access_key", "AKIA****1111")
+        still_baselined = manager.filter_violations(
+            [shifted], "heimdall_secret", use_fuzzy_matching=True
+        )
+        assert still_baselined == []
+
+    def test_baselining_object_with_no_message_does_not_hide_same_file_type(
+        self, tmp_path
+    ):
+        src = str(tmp_path / "config.py")
+        first = _BareFinding(src, 1)
+        later = _BareFinding(src, 12)
+        manager = BaselineManager(project_path=tmp_path)
+        assert manager.create_from_violations([first], "heimdall_secret") == 1
+        assert manager.list_entries()[0].message.strip()
+
+        remaining = manager.filter_violations(
+            [later], "heimdall_secret", use_fuzzy_matching=True
+        )
+        assert remaining == [later]
+
+    def test_empty_message_fuzzy_lookup_is_unmatched(self, tmp_path):
+        src = str(tmp_path / "config.py")
+        manager = BaselineManager(project_path=tmp_path)
+        manager.create_from_violations([_BareFinding(src, 1)], "heimdall_secret")
+
+        query = _BareFinding(src, 1)
+        remaining = manager.filter_violations(
+            [query], "heimdall_secret", use_fuzzy_matching=True
+        )
+        assert remaining == [query]
+
+    def test_create_from_violations_does_not_persist_empty_message(self, tmp_path):
+        src = str(tmp_path / "config.py")
+        manager = BaselineManager(project_path=tmp_path)
+        manager.create_from_violations([_BareFinding(src, 3)], "heimdall_secret")
+        entry = manager.list_entries()[0]
+        assert entry.message
+        assert entry.message.strip()
+        assert entry.message == entry.violation_id
+
+    def test_add_entry_does_not_persist_empty_message(self, tmp_path):
+        manager = BaselineManager(project_path=tmp_path)
+        assert manager.add_entry(
+            file_path=str(tmp_path / "a.py"),
+            line_number=1,
+            violation_type="heimdall_secret",
+            message="",
+        )
+        entry = manager.list_entries()[0]
+        assert entry.message
+        assert entry.message == entry.violation_id
+
+    def test_real_secret_finding_baseline_does_not_hide_other_secret(self, tmp_path):
+        src = str(tmp_path / "config.py")
+        first = SecretFinding(
+            file_path=src,
+            line_number=1,
+            secret_type=SecretType.API_KEY,
+            severity=SecuritySeverity.HIGH,
+            pattern_name="aws_access_key",
+            masked_value="AKIA****1111",
+            line_content="key=***",
+            confidence=0.9,
+        )
+        later = SecretFinding(
+            file_path=src,
+            line_number=4,
+            secret_type=SecretType.PASSWORD,
+            severity=SecuritySeverity.CRITICAL,
+            pattern_name="db_password",
+            masked_value="Sup3****word",
+            line_content="pwd=***",
+            confidence=0.9,
+        )
+        manager = BaselineManager(project_path=tmp_path)
+        manager.create_from_violations([first], "heimdall_secret")
+        remaining = manager.filter_violations(
+            [first, later], "heimdall_secret", use_fuzzy_matching=True
+        )
+        assert remaining == [later]

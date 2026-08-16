@@ -109,6 +109,15 @@ class SecretFinding(BaseModel):
     class Config:
         use_enum_values = True
 
+    @property
+    def message(self) -> str:
+        """Stable baseline key: pattern plus masked value, never the raw secret."""
+        pattern = (self.pattern_name or "").strip()
+        masked = (self.masked_value or "").strip()
+        if pattern and masked:
+            return f"{pattern}:{masked}"
+        return pattern or masked
+
 
 class VulnerabilityFinding(BaseModel):
     """A detected security vulnerability in the code."""

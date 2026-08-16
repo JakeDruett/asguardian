@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 5    | 23    | 0             |
+| High     | 4    | 24    | 0             |
 | Medium   | 35   | 24    | 0             |
 | Low      | 13   | 9     | 0             |
 | Info     | 4    | 1     | 0             |
@@ -228,7 +228,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0012 — Fuzzy match with empty message suppresses a whole file+type
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T15:22:00Z
+- **Implementation note:** Empty/whitespace fuzzy keys unmatched; persist `violation_id` instead of blank; SecretFinding.message is pattern:masked_value.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-184
@@ -1933,12 +1936,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 57
-- Fixed: 57
+- Open: 56
+- Fixed: 58
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0012, CH-0051, CH-0077
-- Last commit: 27b3092
+- Next: CH-0051, CH-0077
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

@@ -11,7 +11,11 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any, List, Optional, TypeVar, cast
 
-from Asgard.Baseline._baseline_helpers import generate_violation_id, relative_path
+from Asgard.Baseline._baseline_helpers import (
+    generate_violation_id,
+    persistable_violation_message,
+    relative_path,
+)
 from Asgard.Baseline._baseline_operations import (
     create_from_violations as _create_from_violations,
     filter_violations as _filter_violations,
@@ -181,6 +185,7 @@ class BaselineManager:
             return False
 
         violation_id = generate_violation_id(rel_path, line_number, violation_type, message)
+        message = persistable_violation_message(message, violation_id)
 
         entry = BaselineEntry(
             file_path=rel_path,

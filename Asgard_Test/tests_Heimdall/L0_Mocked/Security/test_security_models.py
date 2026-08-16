@@ -101,6 +101,7 @@ class TestSecretFinding:
         assert finding.pattern_name == "aws_access_key"
         assert finding.masked_value == "AKIA****1234"
         assert finding.confidence == 0.85
+        assert finding.message == "aws_access_key:AKIA****1234"
 
     def test_secret_finding_enum_conversion(self):
         """Test that enums are properly converted to string values."""

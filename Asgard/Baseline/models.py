@@ -56,6 +56,9 @@ class BaselineEntry(BaseModel):
         """
         Fuzzy match for violations where line numbers may shift.
 
+        Empty or whitespace messages are not identities: matching on them
+        would suppress every same-file/type finding.
+
         Args:
             file_path: File path to check
             violation_type: Type of violation
@@ -64,10 +67,14 @@ class BaselineEntry(BaseModel):
         Returns:
             True if this entry likely matches the violation
         """
+        query = (message or "").strip()
+        stored = (self.message or "").strip()
+        if not query or not stored:
+            return False
         return (
             self.file_path == file_path
             and self.violation_type == violation_type
-            and self.message == message
+            and stored == query
             and not self.is_expired
         )
 
@@ -102,6 +109,9 @@ class BaselineFile(BaseModel):
 
     def add_entry(self, entry: BaselineEntry) -> None:
         """Add a new baseline entry."""
+        if not (entry.message or "").strip():
+            # Empty message is a file+type wildcard under fuzzy match.
+            entry.message = entry.violation_id
         self.entries.append(entry)
         self.updated_at = datetime.now()
 
@@ -158,6 +168,8 @@ class BaselineFile(BaseModel):
         Returns:
             Matching BaselineEntry or None
         """
+        if not (message or "").strip():
+            return None
         for entry in self.entries:
             if entry.matches_fuzzy(file_path, violation_type, message):
                 return entry

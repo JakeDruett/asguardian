@@ -6,11 +6,13 @@ These are extracted from BaselineManager to keep that class under 300 lines.
 """
 
 from pathlib import Path
-from typing import Any, Callable, List, Optional, TypeVar
+from typing import Any, Callable, List, TypeVar
 
 from Asgard.Baseline._baseline_helpers import (
     generate_violation_id,
     get_violation_message,
+    is_usable_fuzzy_message,
+    persistable_violation_message,
     relative_path,
 )
 from Asgard.Baseline.models import BaselineEntry, BaselineFile
@@ -48,8 +50,8 @@ def create_from_violations(
         file_path = relative_path(project_path, getattr(v, 'file_path', ''))
         line_number = getattr(v, 'line_number', 0)
         message = get_violation_message(v)
-
         violation_id = generate_violation_id(file_path, line_number, violation_type, message)
+        message = persistable_violation_message(message, violation_id)
 
         if baseline.find_match(file_path, line_number, violation_type):
             continue
@@ -99,9 +101,12 @@ def filter_violations(
         message = get_violation_message(v)
 
         if use_fuzzy_matching:
-            match: Optional[BaselineEntry] = baseline.find_fuzzy_match(
-                file_path, violation_type, message
-            )
+            if not is_usable_fuzzy_message(message):
+                match = None
+            else:
+                match = baseline.find_fuzzy_match(
+                    file_path, violation_type, message
+                )
         else:
             match = baseline.find_match(file_path, line_number, violation_type)
 
