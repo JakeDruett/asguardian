@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 21   | 7     | 0             |
+| High     | 20   | 8     | 0             |
 | Medium   | 59   | 0     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
@@ -1561,7 +1561,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0102 — Dockerfile generator concatenates untrusted fields as instructions
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T10:24:00Z
+- **Implementation note:** Reject newline/# in interpolated fields; JSON-quote HEALTHCHECK; pin Trivy digest; docker.sock only with privileged_scan.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-94
@@ -1783,12 +1786,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 107
-- Fixed: 7
+- Open: 106
+- Fixed: 8
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0066
-- Last commit: 85f6957
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

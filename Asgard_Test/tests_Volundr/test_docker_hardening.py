@@ -219,6 +219,19 @@ class TestPackageHygieneAndCopyOrdering:
         assert result.scan_workflow_content is not None
         assert "trivy" in result.scan_workflow_content.lower()
         assert "cyclonedx" in result.scan_workflow_content.lower()
+        assert "docker.sock" not in result.scan_workflow_content
+        assert "@sha256:" in result.scan_workflow_content
+
+    def test_newline_in_base_image_is_refused(self):
+        config = simple_config(stages=[BuildStage(
+            name="app", base_image="ubuntu\nUSER root",
+        )])
+        with pytest.raises(ValueError, match="base_image"):
+            generate(config)
+
+    def test_privileged_scan_opt_in_mounts_docker_sock(self):
+        result = generate(simple_config(emit_scan_workflow=True, privileged_scan=True))
+        assert "docker.sock" in result.scan_workflow_content
 
 
 class TestComposeDedup:

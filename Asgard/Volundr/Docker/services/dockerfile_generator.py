@@ -98,14 +98,51 @@ _RENOVATE_SNIPPET = {
     ],
 }
 
-_SCAN_WORKFLOW = """\
+_TRIVY_IMAGE = (
+    "aquasec/trivy:0.66.0@sha256:"
+    "086971aaf400beebd94e8300fd8ea623774419597169156cec56eec5b00dfb1e"
+)
+_UNSAFE_INSTRUCTION_RE = re.compile(r"[\r\n#]")
+
+
+def _require_safe_field(value: str, field: str) -> str:
+    if _UNSAFE_INSTRUCTION_RE.search(value):
+        raise ValueError(
+            f"Refusing to generate: {field} contains a newline or comment marker"
+        )
+    return value
+
+
+def _scan_workflow(privileged_scan: bool) -> str:
+    if privileged_scan:
+        trivy_invoke = f"""          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \\
+            {_TRIVY_IMAGE} image --exit-code 1 \\
+            --severity HIGH,CRITICAL "$IMAGE"
+        env:
+          IMAGE: local/scan-target:ci
+      - name: SBOM (CycloneDX)
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \\
+            {_TRIVY_IMAGE} image --format cyclonedx \\
+            --output sbom.cdx.json "$IMAGE\""""
+    else:
+        trivy_invoke = f"""          docker save "$IMAGE" -o /tmp/scan-target.tar
+          docker run --rm -v /tmp/scan-target.tar:/image.tar:ro \\
+            {_TRIVY_IMAGE} image --input /image.tar --exit-code 1 \\
+            --severity HIGH,CRITICAL
+      - name: SBOM (CycloneDX)
+        run: |
+          docker run --rm -v /tmp/scan-target.tar:/image.tar:ro \\
+            {_TRIVY_IMAGE} image --input /image.tar --format cyclonedx \\
+            --output sbom.cdx.json"""
+    return f"""\
 # Volundr scanner pairing (RESEARCH_04): Trivy gate + CycloneDX SBOM.
 # Prefer VEX statements over .trivyignore for accepted findings.
 name: image-scan
 on:
   push:
     branches: [main]
-permissions: {}
+permissions: {{}}
 jobs:
   scan:
     runs-on: ubuntu-latest
@@ -120,16 +157,7 @@ jobs:
           IMAGE: local/scan-target:ci
       - name: Trivy vulnerability scan (fails on HIGH/CRITICAL)
         run: |
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \\
-            aquasec/trivy:latest image --exit-code 1 \\
-            --severity HIGH,CRITICAL "$IMAGE"
-        env:
-          IMAGE: local/scan-target:ci
-      - name: SBOM (CycloneDX)
-        run: |
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \\
-            aquasec/trivy:latest image --format cyclonedx \\
-            --output sbom.cdx.json "$IMAGE"
+{trivy_invoke}
         env:
           IMAGE: local/scan-target:ci
 """
@@ -144,6 +172,49 @@ class DockerfileGenerator:
     # ------------------------------------------------------------------
     # Rendering helpers
     # ------------------------------------------------------------------
+
+    @staticmethod
+    def _assert_safe_config(config: DockerfileConfig) -> None:
+        _require_safe_field(config.name, "name")
+        _require_safe_field(config.syntax_version, "syntax_version")
+        for arg_name, arg_default in config.args.items():
+            _require_safe_field(arg_name, "args")
+            _require_safe_field(str(arg_default), "args")
+        for label_key, label_value in config.labels.items():
+            _require_safe_field(label_key, "labels")
+            _require_safe_field(str(label_value), "labels")
+        if config.non_root:
+            _require_safe_field(config.non_root.name, "non_root.name")
+        for stage in config.stages:
+            _require_safe_field(stage.name or "stage", "stage.name")
+            _require_safe_field(stage.base_image, "base_image")
+            if stage.base_image_digest:
+                _require_safe_field(stage.base_image_digest, "base_image_digest")
+            _require_safe_field(stage.workdir, "workdir")
+            if stage.user:
+                _require_safe_field(stage.user, "user")
+            for field_name, value in (
+                ("copy_from", stage.copy_from),
+                ("copy_src", stage.copy_src),
+                ("copy_dst", stage.copy_dst),
+            ):
+                if value:
+                    _require_safe_field(value, field_name)
+            for run_cmd in stage.run_commands:
+                _require_safe_field(run_cmd, "run_commands")
+            for copy_cmd in stage.copy_commands:
+                for key in ("src", "dst", "chown"):
+                    if copy_cmd.get(key):
+                        _require_safe_field(copy_cmd[key], f"copy_commands.{key}")
+            for env_name, env_value in stage.env_vars.items():
+                _require_safe_field(env_name, "env_vars")
+                _require_safe_field(str(env_value), "env_vars")
+            if stage.entrypoint:
+                for part in stage.entrypoint:
+                    _require_safe_field(part, "entrypoint")
+            if stage.cmd:
+                for part in stage.cmd:
+                    _require_safe_field(part, "cmd")
 
     @staticmethod
     def _pinned_from(stage: BuildStage) -> str:
@@ -226,6 +297,7 @@ class DockerfileGenerator:
     def generate(self, config: DockerfileConfig) -> GeneratedDockerConfig:
         """Generate a hardened Dockerfile; refuses plaintext secret ENV/ARG
         values unless explicitly suppressed (VOL-DOCKER-SECRET-ENV)."""
+        self._assert_safe_config(config)
         config_json = config.model_dump_json()
         config_hash = hashlib.sha256(config_json.encode()).hexdigest()[:16]
         config_id = f"{config.name}-dockerfile-{config_hash}"
@@ -374,7 +446,9 @@ class DockerfileGenerator:
                 json.dumps(_RENOVATE_SNIPPET, indent=2)
                 if config.emit_renovate_config else None
             ),
-            scan_workflow_content=_SCAN_WORKFLOW if config.emit_scan_workflow else None,
+            scan_workflow_content=(
+                _scan_workflow(config.privileged_scan) if config.emit_scan_workflow else None
+            ),
             created_at=datetime.now(),
         )
 
@@ -417,12 +491,22 @@ class DockerfileGenerator:
         if config.healthcheck:
             hc = config.healthcheck
             hc_cmd = hc.get("test", ["CMD", "echo", "ok"])
-            hc_cmd_str = " ".join(hc_cmd) if isinstance(hc_cmd, list) else hc_cmd
+            if isinstance(hc_cmd, list):
+                tokens = [str(part) for part in hc_cmd]
+                if tokens and tokens[0].upper() == "CMD":
+                    tokens = tokens[1:]
+                hc_cmd_str = "CMD " + json.dumps(tokens)
+            else:
+                hc_cmd_str = "CMD-SHELL " + json.dumps(str(hc_cmd))
+            interval = _require_safe_field(str(hc.get("interval", "30s")), "healthcheck.interval")
+            timeout = _require_safe_field(str(hc.get("timeout", "10s")), "healthcheck.timeout")
+            start = _require_safe_field(str(hc.get("start_period", "5s")), "healthcheck.start_period")
+            retries = _require_safe_field(str(hc.get("retries", 3)), "healthcheck.retries")
             tail.append(
-                f"HEALTHCHECK --interval={hc.get('interval', '30s')} "
-                f"--timeout={hc.get('timeout', '10s')} "
-                f"--start-period={hc.get('start_period', '5s')} "
-                f"--retries={hc.get('retries', 3)} {hc_cmd_str}"
+                f"HEALTHCHECK --interval={interval} "
+                f"--timeout={timeout} "
+                f"--start-period={start} "
+                f"--retries={retries} {hc_cmd_str}"
             )
             tail.append("")
 

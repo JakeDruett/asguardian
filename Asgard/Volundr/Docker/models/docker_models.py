@@ -117,6 +117,10 @@ class DockerfileConfig(BaseModel):
             "(RESEARCH_04 pairing); Volundr does not scan images itself"
         ),
     )
+    privileged_scan: bool = Field(
+        default=False,
+        description="Mount docker.sock in the emitted Trivy workflow (off by default)",
+    )
     suppressions: List[Suppression] = Field(
         default_factory=list,
         description="Reified rule suppressions — the only sanctioned relaxation path",
