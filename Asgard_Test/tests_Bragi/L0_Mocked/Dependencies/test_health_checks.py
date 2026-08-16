@@ -37,8 +37,8 @@ class TestOptInDiscipline:
         assert "opt-in" in result.reason
         assert not result.has_vulnerabilities  # but NOT a claimed clean scan
 
-    def test_network_mode_requires_explicit_flag(self, monkeypatch):
-        checker = VulnerabilityChecker(enable_network=True)
+    def test_network_mode_requires_explicit_flag(self, tmp_path, monkeypatch):
+        checker = VulnerabilityChecker(enable_network=True, cache_dir=tmp_path / "cache")
         monkeypatch.setattr(checker, "_post_batch", lambda batch: {
             "results": [
                 {"vulns": [{"id": "GHSA-xxxx", "summary": "bad thing"}]},
@@ -49,9 +49,9 @@ class TestOptInDiscipline:
         assert result.findings[0].vulnerability_id == "GHSA-xxxx"
         assert result.findings[0].confidence == "measured"
 
-    def test_network_failure_is_graceful_and_honest(self, monkeypatch):
+    def test_network_failure_is_graceful_and_honest(self, tmp_path, monkeypatch):
         import urllib.error
-        checker = VulnerabilityChecker(enable_network=True)
+        checker = VulnerabilityChecker(enable_network=True, cache_dir=tmp_path / "cache")
 
         def down(batch):
             raise urllib.error.URLError("offline")
