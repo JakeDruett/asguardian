@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 22   | 6     | 0             |
+| High     | 21   | 7     | 0             |
 | Medium   | 59   | 0     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
@@ -1438,7 +1438,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0094 — GitHub Actions formatter emits unsanitized workflow commands
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T10:18:00Z
+- **Implementation note:** Percent-encode %, CR/LF, property :/, and :: in messages; strip remaining C0.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-74
@@ -1780,12 +1783,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 108
-- Fixed: 6
+- Open: 107
+- Fixed: 7
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0066
-- Last commit: b454c81
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

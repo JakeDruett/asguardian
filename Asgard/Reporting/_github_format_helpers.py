@@ -13,6 +13,20 @@ from typing import Any, Callable, List, Optional, Tuple
 AnnotationTuple = Tuple[str, str, int, str, Optional[str], Optional[int]]
 
 
+def encode_workflow_command_value(value: str, *, property_field: bool = False) -> str:
+    """Encode a GitHub workflow-command field so it cannot inject extra commands.
+
+    Percent-encodes ``%``, CR, LF, and ``:`` (and ``,`` in property values),
+    then strips remaining C0 controls.
+    """
+    text = str(value).replace("%", "%25").replace("\r", "%0D").replace("\n", "%0A")
+    if property_field:
+        text = text.replace(":", "%3A").replace(",", "%2C")
+    else:
+        text = text.replace("::", "%3A%3A")
+    return "".join(ch for ch in text if ord(ch) >= 32 and ch != "\x7f")
+
+
 def format_lazy_imports_tuples(
     report: Any,
     relative_path_func: Callable[[str], str],

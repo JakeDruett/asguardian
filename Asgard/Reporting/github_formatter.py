@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Protocol
 
 from Asgard.Reporting._github_format_helpers import (
+    encode_workflow_command_value,
     format_complexity_tuples,
     format_datetime_tuples,
     format_forbidden_imports_tuples,
@@ -42,7 +43,8 @@ class Annotation:
 
     def to_workflow_command(self) -> str:
         """Convert to GitHub Actions workflow command format."""
-        parts = [f"file={self.file}", f"line={self.line}"]
+        file_path = encode_workflow_command_value(self.file, property_field=True)
+        parts = [f"file={file_path}", f"line={self.line}"]
 
         if self.end_line:
             parts.append(f"endLine={self.end_line}")
@@ -51,10 +53,12 @@ class Annotation:
         if self.end_col:
             parts.append(f"endColumn={self.end_col}")
         if self.title:
-            parts.append(f"title={self.title}")
+            title = encode_workflow_command_value(self.title, property_field=True)
+            parts.append(f"title={title}")
 
         properties = ",".join(parts)
-        return f"::{self.level.value} {properties}::{self.message}"
+        message = encode_workflow_command_value(self.message)
+        return f"::{self.level.value} {properties}::{message}"
 
 
 class ReportProtocol(Protocol):

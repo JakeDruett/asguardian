@@ -32,6 +32,21 @@ class TestAnnotationWorkflowCommand:
         ann = Annotation(AnnotationLevel.NOTICE, "a.py", 1, "info")
         assert ann.to_workflow_command().startswith("::notice ")
 
+    def test_encodes_newline_in_file_path(self):
+        ann = Annotation(AnnotationLevel.ERROR, "src/evil.py\n::set-output", 1, "x")
+        cmd = ann.to_workflow_command()
+        assert "\n" not in cmd
+        assert "%0A" in cmd
+        assert cmd.startswith("::error ")
+        assert cmd.count("::") == 2
+
+    def test_encodes_double_colon_in_message(self):
+        ann = Annotation(AnnotationLevel.ERROR, "a.py", 1, "see ::error file=pwned")
+        cmd = ann.to_workflow_command()
+        assert "::error file=pwned" not in cmd
+        assert "%3A%3A" in cmd
+        assert cmd.count("\n") == 0
+
 
 class TestSeverityMapping:
     def setup_method(self):
@@ -122,7 +137,7 @@ class TestFormatReports:
         )
         out = self.fmt.format_typing(report)
         assert out.startswith("::notice ")
-        assert "Typing coverage: 91.2% (threshold: 80.0%)" in out
+        assert "Typing coverage: 91.2%25 (threshold: 80.0%25)" in out
 
     def test_format_typing_failing_lists_functions(self):
         func = SimpleNamespace(
