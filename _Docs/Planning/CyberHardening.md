@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 32   | 27    | 0             |
+| Medium   | 31   | 28    | 0             |
 | Low      | 13   | 9     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1669,7 +1669,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0100 — Invalid anomaly baseline is treated as in-bounds
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T15:46:00Z
+- **Implementation note:** Invalid baseline is not in-bounds; deviation 1.0; compare status `unknown` + significant. Empty current is unknown, not normal.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-345 / CWE-754
@@ -1951,12 +1954,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 51
-- Fixed: 63
+- Open: 50
+- Fixed: 64
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0013, CH-0027, CH-0032
-- Last commit: c7aba7c
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

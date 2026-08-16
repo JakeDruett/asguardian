@@ -81,11 +81,23 @@ class BaselineComparator:
         Returns:
             BaselineComparison with analysis results
         """
+        if not baseline.is_valid:
+            return BaselineComparison(
+                metric_name=baseline.metric_name,
+                baseline=baseline,
+                sample_count=len(current_values),
+                overall_status="unknown",
+                is_significant=True,
+                recommendations=["Invalid or insufficient baseline; comparison is not in-bounds"],
+            )
+
         if not current_values:
             return BaselineComparison(
                 metric_name=baseline.metric_name,
                 baseline=baseline,
-                overall_status="no_data",
+                overall_status="unknown",
+                is_significant=True,
+                recommendations=["No current samples; comparison is unknown, not normal"],
             )
 
         timestamps = timestamps or [datetime.now() for _ in range(len(current_values))]
@@ -178,7 +190,7 @@ class BaselineComparator:
             Deviation score
         """
         if not baseline.is_valid:
-            return 0.0
+            return 1.0
 
         z_score = (
             abs(value - baseline.mean) / baseline.std_dev
@@ -216,7 +228,7 @@ class BaselineComparator:
             True if value is within baseline tolerance
         """
         if not baseline.is_valid:
-            return True
+            return False
 
         z_score = (
             abs(value - baseline.mean) / baseline.std_dev
