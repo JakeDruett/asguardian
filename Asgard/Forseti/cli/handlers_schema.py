@@ -182,7 +182,11 @@ def _handle_graphql(args: argparse.Namespace) -> int:
         return 0
 
     elif args.command == "introspect":
-        service = IntrospectionService()
+        service = IntrospectionService(
+            GraphQLConfig(
+                allow_internal=bool(getattr(args, "allow_internal", False))
+            )
+        )
         headers = {}
         if args.header:
             for h in args.header:

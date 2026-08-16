@@ -68,6 +68,10 @@ class GraphQLConfig(BaseModel):
         default=True,
         description="Allow introspection queries"
     )
+    allow_internal: bool = Field(
+        default=False,
+        description="Allow introspection of loopback, RFC1918, and link-local URLs"
+    )
     max_depth: int = Field(
         default=10,
         description="Maximum query depth for validation"

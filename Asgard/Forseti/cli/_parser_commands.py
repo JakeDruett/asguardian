@@ -76,6 +76,11 @@ def _add_graphql_parser(subparsers: argparse._SubParsersAction) -> None:
     introspect.add_argument("endpoint", help="GraphQL endpoint URL")
     introspect.add_argument("--output", "-o", help="Output file path")
     introspect.add_argument("--header", "-H", action="append", help="HTTP headers")
+    introspect.add_argument(
+        "--allow-internal",
+        action="store_true",
+        help="Allow loopback, RFC1918, and link-local introspection endpoints",
+    )
 
 
 def _add_database_parser(subparsers: argparse._SubParsersAction) -> None:

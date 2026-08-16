@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 18   | 10    | 0             |
+| High     | 17   | 11    | 0             |
 | Medium   | 59   | 0     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
@@ -922,7 +922,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0060 — GraphQL introspection `urlopen` is unauthenticated SSRF
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T10:33:00Z
+- **Implementation note:** http(s) only; block RFC1918/loopback/link-local unless --allow-internal; re-validate redirects; no file/ftp handlers.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-918
@@ -1792,12 +1795,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 104
-- Fixed: 10
+- Open: 103
+- Fixed: 11
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0066
-- Last commit: dd664de
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

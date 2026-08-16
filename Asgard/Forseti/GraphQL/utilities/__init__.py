@@ -10,6 +10,10 @@ from Asgard.Forseti.GraphQL.utilities.graphql_utils import (
     validate_type_name,
     is_builtin_type,
 )
+from Asgard.Forseti.GraphQL.utilities._url_safety import (
+    build_introspection_opener,
+    validate_introspection_url,
+)
 
 __all__ = [
     "load_schema_file",
@@ -18,4 +22,6 @@ __all__ = [
     "merge_schemas",
     "validate_type_name",
     "is_builtin_type",
+    "build_introspection_opener",
+    "validate_introspection_url",
 ]
