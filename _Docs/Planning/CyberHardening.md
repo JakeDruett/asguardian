@@ -971,7 +971,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0063 — LiveContract probe URL join can rewrite authority; `urlopen` follows redirects
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** b454c81
 - **Fixed at:** 2026-08-16T10:14:00Z
 - **Implementation note:** urljoin + root-relative path jail; encode path params; skip non-/ spec paths; same-host redirects only.
 - **Severity:** High
@@ -1785,7 +1785,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0066
-- Last commit: PENDING
+- Last commit: b454c81
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
