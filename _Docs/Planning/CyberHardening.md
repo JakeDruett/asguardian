@@ -545,7 +545,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0032 — Unsigned license disk cache can bypass license policy
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 12fe9b4
 - **Fixed at:** 2026-08-16T16:28:00Z
 - **Implementation note:** HMAC + `name@version` keys; unsigned/v1 cache ignored. `use_cache` defaults off in CI.
 - **Severity:** Medium
@@ -1983,7 +1983,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0036, CH-0043, CH-0047
-- Last commit: pending
+- Last commit: 12fe9b4
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
