@@ -70,4 +70,4 @@
 {"id":"CH-0013","at":"2026-08-16T16:22:00Z","commit":"9b57bb4","wave":"W3","summary":"Hash baseline messages; omit raw message from JSON report/list"}
 {"id":"CH-0079","at":"2026-08-16T16:24:00Z","commit":"946abc9","wave":"W3","summary":"Secret masks are last-2/length-only; redact line_content by span"}
 {"id":"CH-0032","at":"2026-08-16T16:28:00Z","commit":"12fe9b4","wave":"W3","summary":"HMAC license cache keyed by name@version; CI default off"}
-{"id":"CH-0089","at":"2026-08-16T16:32:00Z","commit":"pending","wave":"W3","summary":"Wire --denied/--warn to LicenseConfig lists"}
+{"id":"CH-0089","at":"2026-08-16T16:32:00Z","commit":"7b60b9c","wave":"W3","summary":"Wire --denied/--warn to LicenseConfig lists"}

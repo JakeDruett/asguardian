@@ -1508,7 +1508,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0089 — License CLI `--denied` never reaches `LicenseConfig`
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 7b60b9c
 - **Fixed at:** 2026-08-16T16:32:00Z
 - **Implementation note:** `--denied` maps to `prohibited_licenses`; `--warn` to `warn_licenses`. Unset keeps dataclass defaults.
 - **Severity:** Medium
@@ -1986,7 +1986,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0036, CH-0043, CH-0047
-- Last commit: pending
+- Last commit: 7b60b9c
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
