@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 13   | 15    | 0             |
 | Medium   | 52   | 7     | 0             |
-| Low      | 22   | 0     | 0             |
+| Low      | 21   | 1     | 0             |
 | Info     | 5    | 0     | 0             |
 
 ## Findings
@@ -126,7 +126,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0006 — Pre-commit pins are movable tags; no secret-scan hook
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T11:24:00Z
+- **Implementation note:** Pin hook revs to SHAs; pin mypy extras with ==; add detect-secrets hook.
 - **Severity:** Low
 - **Confidence:** High
 - **CWE / class:** CWE-829
@@ -1828,12 +1831,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 92
-- Fixed: 22
+- Open: 91
+- Fixed: 23
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0071, CH-0097, CH-0105, CH-0108
-- Last commit: 117770b
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

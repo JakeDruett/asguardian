@@ -97,7 +97,7 @@ exclude_lines = [
 PRE_COMMIT_CONFIG = """\
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: cef0300fd0fc4d2a87a85fa2093c6b283ea36f4b  # v5.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
@@ -109,19 +109,19 @@ repos:
       - id: debug-statements
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.6
+    rev: 89c421dff2e1026ba12cdb9ebd731f4a83aa8021  # v0.8.6
     hooks:
       - id: ruff
         args: ["--fix"]
       - id: ruff-format
 
   - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.14.1
+    rev: bbc3dc1f890007061f18f17e2334f216ea9e5df7  # v1.14.1
     hooks:
       - id: mypy
         additional_dependencies:
-          - pydantic>=2.0.0
-          - pyyaml>=6.0
+          - pydantic==2.10.6
+          - pyyaml==6.0.2
         args: ["--ignore-missing-imports"]
         pass_filenames: false
         entry: mypy {project_name}/
