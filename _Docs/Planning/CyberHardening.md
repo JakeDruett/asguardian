@@ -28,7 +28,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | High     | 0    | 28    | 0             |
 | Medium   | 0    | 59    | 0             |
 | Low      | 0    | 22    | 0             |
-| Info     | 1    | 4     | 0             |
+| Info     | 0    | 5     | 0             |
 
 ## Findings
 
@@ -796,7 +796,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0044 — `js.no-eval` remediates to `Function`
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** e8191c3
+- **Fixed at:** 2026-08-16T14:19:00Z
+- **Implementation note:** js.no-eval fix_suggestion recommends JSON.parse/structured parsers only; never Function/eval.
 - **Severity:** Info
 - **Confidence:** High
 - **CWE / class:** CWE-94 adjacent (unsafe guidance)
@@ -2101,12 +2104,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 1
-- Fixed: 113
+- Open: 0
+- Fixed: 114
 - Accepted risk: 0
 - Current wave: W5
-- Next: CH-0044
-- Last commit: a8d5333
+- Next: (none)
+- Last commit: e8191c3
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
