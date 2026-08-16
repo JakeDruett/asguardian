@@ -28,7 +28,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | High     | 0    | 28    | 0             |
 | Medium   | 0    | 59    | 0             |
 | Low      | 0    | 22    | 0             |
-| Info     | 3    | 2     | 0             |
+| Info     | 2    | 3     | 0             |
 
 ## Findings
 
@@ -378,7 +378,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0020 — Architecture YAML loader: caller path + no schema
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 618c6a8
+- **Fixed at:** 2026-08-16T14:17:00Z
+- **Implementation note:** Require is_file + 256 KiB cap; layers must be mappings; coerce list fields. Keep yaml.safe_load.
 - **Severity:** Info
 - **Confidence:** High
 - **CWE / class:** CWE-20
@@ -2095,12 +2098,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 3
-- Fixed: 111
+- Open: 2
+- Fixed: 112
 - Accepted risk: 0
 - Current wave: W5
-- Next: CH-0020, CH-0030, CH-0044
-- Last commit: 8c214f3
+- Next: CH-0030, CH-0044
+- Last commit: 618c6a8
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
