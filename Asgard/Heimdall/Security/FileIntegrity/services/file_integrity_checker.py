@@ -1,6 +1,7 @@
 """File integrity checker — baseline creation and verification via cryptographic hashes."""
 
 import hashlib
+import hmac
 import json
 import os
 from datetime import datetime
@@ -79,9 +80,12 @@ class FileIntegrityChecker:
 
     def _scan_directory(self, directory: Path, patterns: Optional[List[str]] = None) -> Dict[str, FileRecord]:
         records: Dict[str, FileRecord] = {}
-        for root, dirs, files in os.walk(directory):
+        skip_names = {self.baseline_file.name, self.baseline_file.name + ".key"}
+        for root, dirs, files in os.walk(directory, followlinks=False):
             dirs[:] = [d for d in dirs if d not in _SKIP_DIRS]
             for name in files:
+                if name in skip_names:
+                    continue
                 fp = Path(root) / name
                 if fp.suffix in _SKIP_EXTS:
                     continue
@@ -94,13 +98,22 @@ class FileIntegrityChecker:
 
     def _get_record(self, file_path: Path) -> Optional[FileRecord]:
         try:
-            stat = file_path.stat()
-            md5_h = hashlib.md5()
-            sha256_h = hashlib.sha256()
-            with open(file_path, "rb") as f:
-                for chunk in iter(lambda: f.read(8192), b""):
+            if file_path.is_symlink():
+                return None
+            flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+            fd = os.open(file_path, flags)
+            try:
+                stat = os.fstat(fd)
+                md5_h = hashlib.md5()
+                sha256_h = hashlib.sha256()
+                while True:
+                    chunk = os.read(fd, 8192)
+                    if not chunk:
+                        break
                     md5_h.update(chunk)
                     sha256_h.update(chunk)
+            finally:
+                os.close(fd)
             return FileRecord(
                 path=str(file_path.absolute()),
                 size=stat.st_size,
@@ -112,19 +125,73 @@ class FileIntegrityChecker:
         except OSError:
             return None
 
+    def _read_nofollow(self, path: Path) -> bytes:
+        if path.is_symlink():
+            raise ValueError(f"integrity path must not be a symlink: {path}")
+        flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+        fd = os.open(path, flags)
+        try:
+            chunks: List[bytes] = []
+            while True:
+                chunk = os.read(fd, 65536)
+                if not chunk:
+                    break
+                chunks.append(chunk)
+            return b"".join(chunks)
+        finally:
+            os.close(fd)
+
+    def _hmac_key(self) -> bytes:
+        env = os.environ.get("ASGARD_INTEGRITY_HMAC_KEY", "").strip()
+        if env:
+            return env.encode("utf-8")
+        key_path = self.baseline_file.with_name(self.baseline_file.name + ".key")
+        if key_path.exists():
+            return self._read_nofollow(key_path)
+        key = os.urandom(32)
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+        fd = os.open(key_path, flags, 0o600)
+        try:
+            os.write(fd, key)
+        finally:
+            os.close(fd)
+        os.chmod(key_path, 0o600)
+        return key
+
+    def _sign_files(self, files: dict) -> str:
+        payload = json.dumps(files, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        return hmac.new(self._hmac_key(), payload, hashlib.sha256).hexdigest()
+
     def _save_baseline(self) -> None:
+        if self.baseline_file.is_symlink():
+            raise ValueError("integrity baseline path must not be a symlink")
+        files = {path: rec.model_dump() for path, rec in self._baseline.items()}
         data = {
             "created": datetime.now().isoformat(),
-            "files": {path: rec.model_dump() for path, rec in self._baseline.items()},
+            "files": files,
+            "hmac": self._sign_files(files),
         }
-        self.baseline_file.write_text(json.dumps(data, indent=2))
+        flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, "O_NOFOLLOW", 0)
+        payload = json.dumps(data, indent=2).encode("utf-8")
+        fd = os.open(self.baseline_file, flags, 0o600)
+        try:
+            os.write(fd, payload)
+        finally:
+            os.close(fd)
+        os.chmod(self.baseline_file, 0o600)
 
     def _load_baseline(self) -> bool:
-        if not self.baseline_file.exists():
+        if not self.baseline_file.exists() or self.baseline_file.is_symlink():
             return False
         try:
-            data = json.loads(self.baseline_file.read_text())
-            self._baseline = {path: FileRecord(**rec) for path, rec in data["files"].items()}
+            data = json.loads(self._read_nofollow(self.baseline_file).decode("utf-8"))
+            files = data["files"]
+            expected = data.get("hmac")
+            if not isinstance(expected, str) or not hmac.compare_digest(
+                expected, self._sign_files(files)
+            ):
+                return False
+            self._baseline = {path: FileRecord(**rec) for path, rec in files.items()}
             return True
-        except (OSError, json.JSONDecodeError, KeyError):
+        except (OSError, json.JSONDecodeError, KeyError, TypeError, ValueError, UnicodeDecodeError):
             return False

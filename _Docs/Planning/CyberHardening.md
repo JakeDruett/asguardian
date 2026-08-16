@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 7    | 21    | 0             |
+| High     | 6    | 22    | 0             |
 | Medium   | 35   | 24    | 0             |
 | Low      | 13   | 9     | 0             |
 | Info     | 4    | 1     | 0             |
@@ -1261,7 +1261,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0076 — File-integrity baseline is unsigned; `has_changes` ignores adds
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 5c5873a
+- **Fixed at:** 2026-08-16T15:10:00Z
+- **Implementation note:** HMAC-SHA256 on baseline files (`ASGARD_INTEGRITY_HMAC_KEY` or sibling `.key` 0600); unsigned/rewritten hashes fail-closed; `has_changes` includes added; O_NOFOLLOW + skip file/dir symlinks.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-345
@@ -1927,12 +1930,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 59
-- Fixed: 55
+- Open: 58
+- Fixed: 56
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0012, CH-0051, CH-0069, CH-0076
-- Last commit: pending
+- Next: CH-0012, CH-0051, CH-0069, CH-0077
+- Last commit: 5c5873a
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

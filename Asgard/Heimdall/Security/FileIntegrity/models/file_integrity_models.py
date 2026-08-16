@@ -41,4 +41,4 @@ class FileIntegrityReport(BaseModel):
 
     @property
     def has_changes(self) -> bool:
-        return bool(self.modified or self.deleted)
+        return bool(self.modified or self.deleted or self.added)
