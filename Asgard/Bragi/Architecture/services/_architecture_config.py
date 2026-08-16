@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-import os
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
 import yaml
+
+_MAX_ARCH_YAML_BYTES = 256 * 1024
 
 
 @dataclass
@@ -68,8 +70,12 @@ def _parse_layer(layer: dict) -> LayerConfig:
     path_patterns = sanitize_path_patterns(
         heuristics.get("paths") or layer.get("path_patterns", [])
     )
-    suffixes = heuristics.get("suffixes", [])
-    external_imports = heuristics.get("external_imports", [])
+    raw_suffixes = heuristics.get("suffixes") or []
+    raw_external = heuristics.get("external_imports") or []
+    suffixes = [s for s in raw_suffixes if isinstance(s, str)] if isinstance(raw_suffixes, list) else []
+    external_imports = (
+        [s for s in raw_external if isinstance(s, str)] if isinstance(raw_external, list) else []
+    )
 
     return LayerConfig(
         name=layer["name"],
@@ -83,23 +89,40 @@ def _parse_layer(layer: dict) -> LayerConfig:
 
 
 def load_architecture_config(config_path: str) -> ArchitectureConfig:
-    if not os.path.exists(config_path):
+    path = Path(config_path)
+    if not path.is_file():
+        return default_architecture_config()
+    try:
+        if path.stat().st_size > _MAX_ARCH_YAML_BYTES:
+            return default_architecture_config()
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError):
         return default_architecture_config()
 
-    with open(config_path, "r", encoding="utf-8") as f:
-        data = yaml.safe_load(f)
-
-    if not data:
+    if not isinstance(data, dict) or not data:
         return default_architecture_config()
 
     # New schema nests metadata under `architecture:` with a sibling
     # top-level `layers:`/`rules:`; old schema puts `layers:` at the root
     # with no `architecture:` key. Both are accepted.
     layers_data = data.get("layers", [])
+    if not isinstance(layers_data, list):
+        layers_data = []
     rules_data = data.get("rules") or {}
+    if not isinstance(rules_data, dict):
+        rules_data = {}
     language = data.get("language") or (data.get("architecture") or {}).get("language", "python")
+    if not isinstance(language, str) or not language:
+        language = "python"
 
-    layers = [_parse_layer(layer) for layer in layers_data]
+    layers = []
+    for layer in layers_data:
+        if not isinstance(layer, dict):
+            continue
+        try:
+            layers.append(_parse_layer(layer))
+        except (KeyError, TypeError, ValueError):
+            continue
 
     rules = RulesConfig(
         max_module_fan_out=rules_data.get("max_module_fan_out"),

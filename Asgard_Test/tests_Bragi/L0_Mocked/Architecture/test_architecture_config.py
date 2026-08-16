@@ -90,3 +90,21 @@ layers:
         assert core.path_patterns == ["*/core/*"]
     finally:
         os.unlink(tmp_path)
+
+
+def test_load_rejects_non_mapping_layers():
+    yaml_content = "layers: not-a-list\nlanguage: python\n"
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".yml", delete=False) as f:
+        f.write(yaml_content)
+        tmp_path = f.name
+    try:
+        config = load_architecture_config(tmp_path)
+        assert config.layers == []
+    finally:
+        os.unlink(tmp_path)
+
+
+def test_load_directory_returns_defaults(tmp_path):
+    config = load_architecture_config(str(tmp_path))
+    assert len(config.layers) > 0
+    assert any(layer.name == "domain" for layer in config.layers)
