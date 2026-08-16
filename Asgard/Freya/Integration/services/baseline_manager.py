@@ -20,6 +20,7 @@ from Asgard.Freya.Integration.services._baseline_manager_helpers import (
     calculate_hash,
     capture_fingerprint,
     classify_fingerprint_mismatch,
+    confine_storage_path,
     generate_key,
     load_index,
     save_index,
@@ -51,7 +52,9 @@ class BaselineManager:
 
     def _load_index(self) -> None:
         """Load baseline index from file."""
-        self.baselines: Dict[str, BaselineEntry] = load_index(self.index_file)
+        self.baselines: Dict[str, BaselineEntry] = load_index(
+            self.index_file, self.storage_dir
+        )
 
     def _save_index(self) -> None:
         """Save baseline index to file."""
@@ -331,13 +334,26 @@ class BaselineManager:
             return False
 
         baseline = self.baselines[baseline_key]
-        baseline_path = Path(baseline.screenshot_path)
-
-        if baseline_path.exists():
+        try:
+            baseline_path = confine_storage_path(
+                self.storage_dir, baseline.screenshot_path
+            )
+        except ValueError:
+            baseline_path = None
+        if (
+            baseline_path is not None
+            and baseline_path.exists()
+            and not baseline_path.is_symlink()
+        ):
             baseline_path.unlink()
 
-        baseline_dir = self.storage_dir / baseline_key
-        if baseline_dir.exists():
+        try:
+            baseline_dir = confine_storage_path(
+                self.storage_dir, self.storage_dir / baseline_key
+            )
+        except ValueError:
+            baseline_dir = None
+        if baseline_dir is not None and baseline_dir.exists():
             shutil.rmtree(baseline_dir)
 
         del self.baselines[baseline_key]

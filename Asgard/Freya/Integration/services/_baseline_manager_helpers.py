@@ -136,13 +136,65 @@ def classify_fingerprint_mismatch(
     return "none", []
 
 
-def load_index(index_file: Path) -> Dict[str, BaselineEntry]:
-    """Load baseline index from file."""
-    if index_file.exists():
-        with open(index_file, "r") as f:
-            data = json.load(f)
-            return {k: BaselineEntry(**v) for k, v in data.items()}
-    return {}
+def confine_storage_path(storage_dir: Path, path: str | Path) -> Path:
+    """Resolve *path* under *storage_dir*; reject escapes and dest symlinks.
+
+    Relative paths are joined to *storage_dir*. Absolute paths whose parent
+    is outside *storage_dir* are rejected before dest is followed. Dest
+    symlinks are refused; parent symlinks that resolve outside storage
+    are also refused.
+    """
+    root = Path(storage_dir).resolve()
+    raw = Path(path)
+    dest = raw if raw.is_absolute() else (root / raw)
+
+    if raw.is_absolute():
+        try:
+            parent = dest.parent.resolve()
+        except OSError as exc:
+            raise ValueError("baseline path could not be resolved") from exc
+        if not parent.is_relative_to(root):
+            raise ValueError("absolute path is not under the storage directory")
+
+    if dest.is_symlink():
+        raise ValueError("baseline path must not be a symlink")
+
+    try:
+        resolved = dest.resolve()
+    except OSError as exc:
+        raise ValueError("baseline path could not be resolved") from exc
+
+    if resolved == root or not resolved.is_relative_to(root):
+        raise ValueError("path escapes the storage directory")
+    return resolved
+
+
+def load_index(
+    index_file: Path, storage_dir: Optional[Path] = None
+) -> Dict[str, BaselineEntry]:
+    """Load baseline index from file.
+
+    Entries whose ``screenshot_path`` escapes *storage_dir* (default: the
+    index file's parent) or is a symlink are skipped.
+    """
+    if not index_file.exists():
+        return {}
+    root = (
+        Path(storage_dir).resolve()
+        if storage_dir is not None
+        else Path(index_file).resolve().parent
+    )
+    with open(index_file, "r") as f:
+        data = json.load(f)
+    loaded: Dict[str, BaselineEntry] = {}
+    for key, value in data.items():
+        entry = BaselineEntry(**value)
+        try:
+            confine_storage_path(root, entry.screenshot_path)
+        except ValueError:
+            continue
+        loaded[key] = entry
+    return loaded
 
 
 def save_index(index_file: Path, baselines: Dict[str, BaselineEntry]) -> None:
@@ -175,15 +227,26 @@ def version_baseline(
     max_versions: int,
 ) -> None:
     """Create a versioned copy of a baseline."""
-    versions_dir = storage_dir / baseline_key / "versions"
+    storage_root = Path(storage_dir)
+    source = confine_storage_path(storage_root, screenshot_path)
+    versions_dir = confine_storage_path(
+        storage_root, storage_root / baseline_key / "versions"
+    )
     versions_dir.mkdir(parents=True, exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    version_path = versions_dir / f"v_{timestamp}.png"
+    version_path = confine_storage_path(
+        storage_root, versions_dir / f"v_{timestamp}.png"
+    )
 
-    shutil.copy(screenshot_path, version_path)
+    shutil.copy(source, version_path)
 
     versions = sorted(versions_dir.glob("*.png"))
     if len(versions) > max_versions:
         for old_version in versions[:-max_versions]:
-            old_version.unlink()
+            try:
+                confined = confine_storage_path(storage_root, old_version)
+            except ValueError:
+                continue
+            if confined.exists() and not confined.is_symlink():
+                confined.unlink()

@@ -88,7 +88,7 @@ class TestLegacyBaselines:
         entry = {
             "url": "http://x", "name": "home",
             "created_at": "t", "updated_at": "t",
-            "screenshot_path": "/tmp/a.png",
+            "screenshot_path": "a.png",
             "viewport_width": 1920, "viewport_height": 1080,
             "device": None, "hash": "deadbeef", "metadata": {},
         }

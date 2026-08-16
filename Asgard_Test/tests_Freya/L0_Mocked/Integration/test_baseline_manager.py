@@ -88,7 +88,7 @@ class TestBaselineManagerInit:
                 "name": "test",
                 "created_at": "2025-01-01T00:00:00",
                 "updated_at": "2025-01-01T00:00:00",
-                "screenshot_path": "/path/to/screenshot.png",
+                "screenshot_path": str(storage_dir / "screenshot.png"),
                 "viewport_width": 1920,
                 "viewport_height": 1080,
                 "hash": "test_hash",
@@ -116,7 +116,7 @@ class TestBaselineManagerLoadIndex:
                 "name": "test",
                 "created_at": "2025-01-01T00:00:00",
                 "updated_at": "2025-01-01T00:00:00",
-                "screenshot_path": "/path/to/screenshot.png",
+                "screenshot_path": str(storage_dir / "screenshot.png"),
                 "viewport_width": 1920,
                 "viewport_height": 1080,
                 "hash": "test_hash",
@@ -418,7 +418,7 @@ class TestBaselineManagerPrivateMethods:
 
     def test_version_baseline(self, base_config, tmp_path):
         manager = BaselineManager(config=base_config)
-        src = tmp_path / "src.png"
+        src = Path(base_config.storage_directory) / "src.png"
         src.write_bytes(b"data")
         manager._version_baseline("abc123", str(src))
         versions = list((Path(base_config.storage_directory) / "abc123" / "versions").glob("*.png"))
