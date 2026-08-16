@@ -1499,7 +1499,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0096 — `init-linter` interpolates unsanitized `project_name` into TOML/YAML/hook entry
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 550912b
 - **Fixed at:** 2026-08-16T11:08:00Z
 - **Implementation note:** Restrict project_name to ^[A-Za-z_][A-Za-z0-9_-]*$.
 - **Severity:** Medium
@@ -1827,7 +1827,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0066, CH-0004, CH-0005, CH-0033
-- Last commit: PENDING
+- Last commit: 550912b
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
