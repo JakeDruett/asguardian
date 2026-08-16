@@ -145,7 +145,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0007 — `init-backend` writes outside the intended base directory
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** eea933c
 - **Fixed at:** 2026-08-16T12:42:00Z
 - **Implementation note:** folder_name must be a single path segment; reject abs/empty/./../separators; dest is_relative_to(base); return 1 on error.
 - **Severity:** Medium
@@ -1872,7 +1872,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W2
 - Next: CH-0058, CH-0059, CH-0068
-- Last commit: pending
+- Last commit: eea933c
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
