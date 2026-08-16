@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
-| Medium   | 43   | 16    | 0             |
+| Medium   | 42   | 17    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1211,7 +1211,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0075 — DNS checker runs `dig` with an unvalidated domain
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 55cc51f
 - **Fixed at:** 2026-08-16T13:15:00Z
 - **Implementation note:** RFC1123-style domain allowlist; reject @ and leading -; pass dig -- domain type.
 - **Severity:** Medium
@@ -1708,7 +1708,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0106 — Pipeline `save_to_file` joins unsanitized `config.name`
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T13:16:00Z
+- **Implementation note:** safe_pipeline_name [a-z0-9-]+; confine save_to_file and scaffold writes under output_dir.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-22
@@ -1882,12 +1885,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 74
-- Fixed: 40
+- Open: 73
+- Fixed: 41
 - Accepted risk: 0
 - Current wave: W2
 - Next: CH-0026, CH-0040, CH-0042, CH-0057
-- Last commit: pending
+- Last commit: 55cc51f
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

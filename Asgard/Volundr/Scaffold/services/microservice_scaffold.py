@@ -8,7 +8,19 @@ best practices for various languages and frameworks.
 import hashlib
 import os
 from datetime import datetime
+from pathlib import Path
 from typing import List, Optional
+
+
+def _confine_scaffold_path(target_dir: str, rel_path: str) -> Path:
+    raw = Path(rel_path)
+    if raw.is_absolute() or ".." in raw.parts:
+        raise ValueError("scaffold path must stay under the output directory")
+    root = Path(target_dir).resolve()
+    dest = (root / raw).resolve()
+    if not dest.is_relative_to(root):
+        raise ValueError("scaffold path must stay under the output directory")
+    return dest
 
 from Asgard.Volundr.Scaffold.models.scaffold_models import (
     FileEntry,
@@ -74,15 +86,14 @@ class MicroserviceScaffold:
         target_dir = output_dir or self.output_dir
 
         for directory in report.directories:
-            dir_path = os.path.join(target_dir, directory)
-            os.makedirs(dir_path, exist_ok=True)
+            dest = _confine_scaffold_path(target_dir, directory)
+            dest.mkdir(parents=True, exist_ok=True)
 
         for file_entry in report.files:
-            file_path = os.path.join(target_dir, file_entry.path)
-            os.makedirs(os.path.dirname(file_path), exist_ok=True)
-            with open(file_path, "w", encoding="utf-8") as f:
-                f.write(file_entry.content)
+            dest = _confine_scaffold_path(target_dir, file_entry.path)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(file_entry.content, encoding="utf-8")
             if file_entry.executable:
-                os.chmod(file_path, 0o755)
+                os.chmod(dest, 0o755)
 
-        return os.path.join(target_dir, report.project_name)
+        return str(_confine_scaffold_path(target_dir, report.project_name))

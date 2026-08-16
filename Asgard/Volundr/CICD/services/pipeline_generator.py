@@ -10,8 +10,36 @@ intent. Reified suppressions are the only relaxation mechanism and leave
 
 import hashlib
 import os
+import re
 from datetime import datetime
+from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+
+_PIPELINE_NAME_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+
+def safe_pipeline_name(name: str) -> str:
+    """Normalize a pipeline name to ``[a-z0-9-]+`` and reject parent segments."""
+    raw = name or ""
+    candidate = Path(raw)
+    if candidate.is_absolute() or ".." in candidate.parts:
+        raise ValueError("pipeline name must match [a-z0-9-]+")
+    text = re.sub(r"[^a-z0-9]+", "-", raw.lower()).strip("-")
+    if not text or not _PIPELINE_NAME_RE.fullmatch(text):
+        raise ValueError("pipeline name must match [a-z0-9-]+")
+    return text
+
+
+def confine_pipeline_output(target_dir: str, rel_path: str) -> Path:
+    """Resolve *rel_path* under *target_dir*; reject abs and ``..``."""
+    raw = Path(rel_path)
+    if raw.is_absolute() or ".." in raw.parts:
+        raise ValueError("pipeline path must stay under the output directory")
+    root = Path(target_dir).resolve()
+    dest = (root / raw).resolve()
+    if not dest.is_relative_to(root):
+        raise ValueError("pipeline path must stay under the output directory")
+    return dest
 
 from Asgard.Volundr.CICD.models.cicd_models import (
     CICDPlatform,
@@ -51,7 +79,7 @@ class PipelineGenerator:
 
     def _render(self, config: PipelineConfig) -> Tuple[str, Dict[str, str], str]:
         """Render platform files; returns (primary_content, files, primary_path)."""
-        name = config.name.lower().replace(" ", "-")
+        name = safe_pipeline_name(config.name)
         if config.platform == CICDPlatform.GITHUB_ACTIONS:
             primary, files = generate_github_actions_files(config)
             primary_path = next(iter(files))
@@ -146,11 +174,10 @@ class PipelineGenerator:
         target_dir = output_dir or self.output_dir
         files = pipeline.files or {pipeline.file_path: pipeline.pipeline_content}
 
-        primary_path = os.path.join(target_dir, pipeline.file_path)
+        primary_path = str(confine_pipeline_output(target_dir, pipeline.file_path))
         for rel_path, content in files.items():
-            file_path = os.path.join(target_dir, rel_path)
-            os.makedirs(os.path.dirname(file_path) or ".", exist_ok=True)
-            with open(file_path, "w", encoding="utf-8") as f:
-                f.write(content)
+            dest = confine_pipeline_output(target_dir, rel_path)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(content, encoding="utf-8")
 
         return primary_path

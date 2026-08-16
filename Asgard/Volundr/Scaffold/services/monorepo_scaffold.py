@@ -18,7 +18,10 @@ from Asgard.Volundr.Scaffold.models.scaffold_models import (
     CICDPlatform,
     ContainerOrchestration,
 )
-from Asgard.Volundr.Scaffold.services.microservice_scaffold import MicroserviceScaffold
+from Asgard.Volundr.Scaffold.services.microservice_scaffold import (
+    MicroserviceScaffold,
+    _confine_scaffold_path,
+)
 from Asgard.Volundr.Scaffold.services.monorepo_scaffold_helpers import (
     root_readme,
     root_gitignore,
@@ -302,11 +305,11 @@ class MonorepoScaffold:
         target_dir = output_dir or self.output_dir
 
         for directory in report.directories:
-            dir_path = os.path.join(target_dir, directory)
-            self._writer.make_directory(dir_path)
+            dest = _confine_scaffold_path(target_dir, directory)
+            self._writer.make_directory(str(dest))
 
         for file_entry in report.files:
-            file_path = os.path.join(target_dir, file_entry.path)
-            self._writer.write_file(file_path, file_entry.content, file_entry.executable)
+            dest = _confine_scaffold_path(target_dir, file_entry.path)
+            self._writer.write_file(str(dest), file_entry.content, file_entry.executable)
 
-        return os.path.join(target_dir, report.project_name)
+        return str(_confine_scaffold_path(target_dir, report.project_name))
