@@ -269,8 +269,8 @@ app.use((req, res) => {{
     res.status(404).json({{ error: 'Not found' }});
 }});
 
-app.listen(PORT, () => {{
-    console.log(`Mock server running at http://localhost:${{PORT}}`);
+app.listen(PORT, "{self.config.host}", () => {{
+    console.log(`Mock server running at http://{self.config.host}:${{PORT}}`);
 }});
 '''
         files.append(GeneratedFile(path="server.js", content=server_code, file_type="javascript", is_entry_point=True))

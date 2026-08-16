@@ -14,6 +14,7 @@ from Asgard.Forseti.MockServer.models._mock_base_models import HttpMethod, MockR
 from Asgard.Forseti.MockServer.models.mock_models import MockEndpoint, MockServerDefinition
 from Asgard.Forseti.MockServer.services._mock_server_generator_helpers import (
     collection_key,
+    generate_flask_main,
     generate_flask_route_stateful,
     generate_flask_routes,
     stateful_endpoints_by_collection,
@@ -83,6 +84,20 @@ class TestStatefulRouteGeneration:
         config = MockServerConfig(stateful=False)
         code = generate_flask_routes(server_def, config)
         assert "_STORE" not in code
+        compile(code, "<generated>", "exec")
+
+
+class TestGeneratedServerBind:
+    def test_default_host_is_localhost(self):
+        assert MockServerConfig().host == "127.0.0.1"
+
+    def test_flask_main_binds_localhost_without_debug(self):
+        server_def = MockServerDefinition(title="Users API", endpoints=USERS_ENDPOINTS)
+        code = generate_flask_main(server_def, MockServerConfig())
+        assert 'host="127.0.0.1"' in code
+        assert "debug=False" in code
+        assert "debug=True" not in code
+        assert "0.0.0.0" not in code
         compile(code, "<generated>", "exec")
 
 

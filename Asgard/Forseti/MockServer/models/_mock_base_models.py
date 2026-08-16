@@ -48,7 +48,10 @@ class DataType(str, Enum):
 class MockServerConfig(BaseModel):
     """Configuration for mock server generation."""
 
-    host: str = Field(default="0.0.0.0", description="Host to bind the server to")
+    host: str = Field(
+        default="127.0.0.1",
+        description="Host to bind the server to (localhost-only by default)",
+    )
     port: int = Field(default=8080, description="Port to run the server on")
     base_path: str = Field(default="", description="Base path prefix for all endpoints")
     response_delay_ms: int = Field(

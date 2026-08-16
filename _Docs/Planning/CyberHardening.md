@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 25   | 3     | 0             |
+| High     | 24   | 4     | 0             |
 | Medium   | 59   | 0     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
@@ -934,7 +934,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0061 — Generated mock servers bind `0.0.0.0` with no auth and Flask `debug=True`
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T10:02:00Z
+- **Implementation note:** Default bind 127.0.0.1; generated Flask debug=False; Express listens on config.host; local-only header.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-306 / CWE-489
@@ -1771,12 +1774,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 111
-- Fixed: 3
+- Open: 110
+- Fixed: 4
 - Accepted risk: 0
 - Current wave: W1
-- Next: CH-0024, CH-0049, CH-0060, CH-0061
-- Last commit: 4b7d552
+- Next: CH-0024, CH-0049, CH-0060, CH-0062
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
