@@ -76,4 +76,4 @@
 {"id":"CH-0043","at":"2026-08-16T16:47:00Z","commit":"51b545f","wave":"W3","summary":"Mask hardcoded-credential snippets last-2/length-only"}
 {"id":"CH-0047","at":"2026-08-16T17:00:00Z","commit":"06a1b37","wave":"W3","summary":"HMAC debt-state cache; forged/unsigned is full rescan"}
 {"id":"CH-0090","at":"2026-08-16T17:05:00Z","commit":"a61951b","wave":"W3","summary":"heimdall scan ERROR steps set overall_exit=1"}
-{"id":"CH-0015","at":"2026-08-16T17:08:00Z","commit":"pending","wave":"W3","summary":"Full SHA-256 violation IDs; unique remove_entry only"}
+{"id":"CH-0015","at":"2026-08-16T17:08:00Z","commit":"bbd32e6","wave":"W3","summary":"Full SHA-256 violation IDs; unique remove_entry only"}

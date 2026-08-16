@@ -286,7 +286,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0015 — 12-hex violation IDs collide; `remove_entry` deletes every match
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** bbd32e6
 - **Fixed at:** 2026-08-16T17:08:00Z
 - **Implementation note:** `generate_violation_id` stores the full SHA-256. `remove_entry` deletes only a unique match (optional file/line).
 - **Severity:** Low
@@ -2004,7 +2004,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0048, CH-0052, CH-0081
-- Last commit: pending
+- Last commit: bbd32e6
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
