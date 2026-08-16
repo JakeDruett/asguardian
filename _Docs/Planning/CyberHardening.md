@@ -1709,7 +1709,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0106 — Pipeline `save_to_file` joins unsanitized `config.name`
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** e11ec5a
 - **Fixed at:** 2026-08-16T13:16:00Z
 - **Implementation note:** safe_pipeline_name [a-z0-9-]+; confine save_to_file and scaffold writes under output_dir.
 - **Severity:** Medium
