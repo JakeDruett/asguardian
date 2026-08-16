@@ -1439,7 +1439,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0094 — GitHub Actions formatter emits unsanitized workflow commands
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 85f6957
 - **Fixed at:** 2026-08-16T10:18:00Z
 - **Implementation note:** Percent-encode %, CR/LF, property :/, and :: in messages; strip remaining C0.
 - **Severity:** High
@@ -1788,7 +1788,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0066
-- Last commit: PENDING
+- Last commit: 85f6957
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
