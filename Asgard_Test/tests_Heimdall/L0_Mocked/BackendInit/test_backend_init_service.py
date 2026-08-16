@@ -125,6 +125,12 @@ class TestEnsureGitignore:
         # Assert
         assert gitignore.read_text(encoding="utf-8") == GITIGNORE_FULL
 
+    def test_gitignore_full_does_not_ignore_lib_or_env_trees(self) -> None:
+        lines = {line.strip() for line in GITIGNORE_FULL.splitlines() if line.strip()}
+        assert "lib/" not in lines
+        assert "lib64/" not in lines
+        assert "env/" not in lines
+
     def test_created_gitignore_contains_claude_entry(self, tmp_path: Path) -> None:
         # Arrange
         gitignore = tmp_path / ".gitignore"

@@ -152,15 +152,12 @@ sdist/
 wheels/
 *.egg-link
 .installed.cfg
-lib/
-lib64/
 pip-wheel-metadata/
 .eggs/
 
 # Virtual environments
 .venv/
 venv/
-env/
 ENV/
 .env.local
 .env.*.local
