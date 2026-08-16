@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
 | Medium   | 35   | 24    | 0             |
-| Low      | 15   | 7     | 0             |
+| Low      | 14   | 8     | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -259,7 +259,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0014 — Baseline save is non-atomic and follows symlinks
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 4841f17
 - **Fixed at:** 2026-08-16T14:25:00Z
 - **Implementation note:** Refuse dest symlink; load without exists(); save via temp + os.replace.
 - **Severity:** Low
@@ -480,7 +480,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0028 — `write_local_profile` write root is caller-controlled
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T14:26:00Z
+- **Implementation note:** Confine project_path to cwd; refuse .. / outside roots / dest symlink.
 - **Severity:** Low
 - **Confidence:** High
 - **CWE / class:** CWE-22
@@ -1921,11 +1924,11 @@ None yet.
 
 ## Implementation progress
 
-- Open: 61
-- Fixed: 53
+- Open: 60
+- Fixed: 54
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0028, CH-0034
+- Next: CH-0034
 - Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 

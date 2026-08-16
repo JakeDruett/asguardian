@@ -1,5 +1,9 @@
 """Tests for the Plan 05 local percentile calibrator."""
 
+from pathlib import Path
+
+import pytest
+
 from Asgard.Bragi.Calibration.models.calibration_models import LanguageProfile, ThresholdSpec
 from Asgard.Bragi.Calibration.services.local_calibrator import (
     MIN_SAMPLE_SIZE,
@@ -7,6 +11,7 @@ from Asgard.Bragi.Calibration.services.local_calibrator import (
     percentile,
     write_local_profile,
 )
+from Asgard.Bragi.Calibration.services.profile_service import LOCAL_PROFILE_RELATIVE_PATH
 
 
 class TestPercentile:
@@ -60,11 +65,59 @@ class TestCalibrate:
         assert p1.model_dump() == p2.model_dump()
 
 
+def _calibrated_profile():
+    samples = {"cyclomatic_complexity": [float(i) for i in range(1, MIN_SAMPLE_SIZE + 1)]}
+    profile, _ = calibrate("python", samples, TestCalibrate.ANCHOR)
+    return profile
+
+
 class TestWriteLocalProfile:
-    def test_writes_to_asgard_cache(self, tmp_path):
-        samples = {"cyclomatic_complexity": [float(i) for i in range(1, MIN_SAMPLE_SIZE + 1)]}
-        profile, _ = calibrate("python", samples, TestCalibrate.ANCHOR)
-        out_path = write_local_profile(profile, project_path=tmp_path)
+    def test_writes_to_asgard_cache(self, tmp_path, monkeypatch):
+        monkeypatch.chdir(tmp_path)
+        out_path = write_local_profile(_calibrated_profile(), project_path=tmp_path)
         assert out_path.exists()
         assert out_path.name == "bragi_local_profile.yaml"
         assert out_path.parent.name == ".asgard_cache"
+
+    def test_write_under_cwd_still_works(self, tmp_path, monkeypatch):
+        monkeypatch.chdir(tmp_path)
+        out_path = write_local_profile(_calibrated_profile())
+        assert out_path.exists()
+        assert out_path == tmp_path / LOCAL_PROFILE_RELATIVE_PATH
+        assert out_path.read_text(encoding="utf-8")
+
+    def test_project_path_outside_root_raises_and_writes_nothing(self, tmp_path, monkeypatch):
+        jail = tmp_path / "jail"
+        jail.mkdir()
+        outside = tmp_path / "outside"
+        outside.mkdir()
+        monkeypatch.chdir(jail)
+        expected = outside / LOCAL_PROFILE_RELATIVE_PATH
+        with pytest.raises(ValueError, match="current working directory"):
+            write_local_profile(_calibrated_profile(), project_path=outside)
+        assert not expected.exists()
+        assert not expected.parent.exists()
+
+    def test_parent_escape_raises(self, tmp_path, monkeypatch):
+        jail = tmp_path / "jail"
+        jail.mkdir()
+        monkeypatch.chdir(jail)
+        expected = tmp_path / LOCAL_PROFILE_RELATIVE_PATH
+        with pytest.raises(ValueError, match="current working directory"):
+            write_local_profile(_calibrated_profile(), project_path=Path(".."))
+        with pytest.raises(ValueError, match="current working directory"):
+            write_local_profile(_calibrated_profile(), project_path=Path("../outside"))
+        assert not expected.exists()
+
+    def test_dest_symlink_is_refused(self, tmp_path, monkeypatch):
+        monkeypatch.chdir(tmp_path)
+        cache = tmp_path / ".asgard_cache"
+        cache.mkdir()
+        target = tmp_path / "elsewhere.yaml"
+        target.write_text("untouched\n", encoding="utf-8")
+        dest = tmp_path / LOCAL_PROFILE_RELATIVE_PATH
+        dest.symlink_to(target)
+        with pytest.raises(ValueError, match="symlink"):
+            write_local_profile(_calibrated_profile())
+        assert dest.is_symlink()
+        assert target.read_text(encoding="utf-8") == "untouched\n"

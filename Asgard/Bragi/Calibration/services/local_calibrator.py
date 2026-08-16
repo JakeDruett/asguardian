@@ -127,12 +127,44 @@ def calibrate(
     return profile, run
 
 
+def _confine_project_path(
+    project_path: Optional[Path] = None,
+    root: Optional[Path] = None,
+) -> Path:
+    """Resolve *project_path* to *root* (default cwd) or a descendant.
+
+    Refuses ``..`` in any path component and absolute paths that do not
+    resolve under *root*.
+    """
+    jail = Path(root or Path.cwd()).resolve()
+    raw = Path(project_path) if project_path is not None else Path()
+    if ".." in raw.parts:
+        raise ValueError("project_path must stay under the current working directory")
+    candidate = raw if raw.is_absolute() else jail / raw
+    try:
+        resolved = candidate.resolve()
+    except OSError as exc:
+        raise ValueError("project_path could not be resolved") from exc
+    if not resolved.is_relative_to(jail):
+        raise ValueError("project_path must stay under the current working directory")
+    return resolved
+
+
 def write_local_profile(profile: LanguageProfile, project_path: Optional[Path] = None) -> Path:
     """Persist a calibrated profile to `.asgard_cache/bragi_local_profile.yaml`."""
-    project_path = Path(project_path or Path.cwd())
-    out_path = project_path / LOCAL_PROFILE_RELATIVE_PATH
-    out_path.parent.mkdir(parents=True, exist_ok=True)
+    root = Path.cwd().resolve()
+    project_path = _confine_project_path(project_path, root=root)
+    dest = project_path / LOCAL_PROFILE_RELATIVE_PATH
+    if dest.is_symlink():
+        raise ValueError("local profile destination must not be a symlink")
+    try:
+        resolved_dest = dest.resolve()
+    except OSError as exc:
+        raise ValueError("local profile destination could not be resolved") from exc
+    if not resolved_dest.is_relative_to(root):
+        raise ValueError("local profile destination must stay under the current working directory")
+    dest.parent.mkdir(parents=True, exist_ok=True)
     payload = profile.model_dump(mode="json", exclude_none=True)
-    with open(out_path, "w", encoding="utf-8") as f:
+    with open(dest, "w", encoding="utf-8") as f:
         yaml.safe_dump(payload, f, sort_keys=True, default_flow_style=False)
-    return out_path
+    return dest
