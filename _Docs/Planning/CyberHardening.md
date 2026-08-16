@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 4    | 24    | 0             |
+| High     | 3    | 25    | 0             |
 | Medium   | 35   | 24    | 0             |
 | Low      | 13   | 9     | 0             |
 | Info     | 4    | 1     | 0             |
@@ -1285,7 +1285,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0077 — `StaticSecurityService.scan` swallows domain failures (fail-open PASS)
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T15:24:00Z
+- **Implementation note:** Domain exceptions go to `SecurityReport.domain_errors` and fail `is_passing`; scanners log instead of `except: pass`.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-390 / CWE-754
@@ -1936,12 +1939,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 56
-- Fixed: 58
+- Open: 55
+- Fixed: 59
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0051, CH-0077
-- Last commit: 1801500
+- Next: CH-0051
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

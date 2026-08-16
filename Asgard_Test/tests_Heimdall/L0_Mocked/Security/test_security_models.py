@@ -715,3 +715,21 @@ class TestSecurityReport:
         assert report.is_passing is True
         assert report.critical_issues == 0
         assert report.high_issues == 0
+
+    def test_is_passing_false_when_domain_errors(self):
+        """Requested-domain failures fail the report even with zero findings."""
+        config = SecurityScanConfig()
+        report = SecurityReport(
+            scan_path="/test/path",
+            scan_config=config,
+            domain_errors=[{
+                "domain": "secrets",
+                "exception_type": "RuntimeError",
+                "message": "scanner crashed",
+            }],
+        )
+
+        assert report.critical_issues == 0
+        assert report.high_issues == 0
+        assert report.is_passing is False
+        assert report.is_healthy is False

@@ -4,6 +4,7 @@ Tests for Heimdall Static Security Service
 Unit tests for the comprehensive static security analysis service.
 """
 
+import logging
 import pytest
 import tempfile
 from pathlib import Path
@@ -404,3 +405,41 @@ encryption_key = "hardcoded_key_1234567890abcdef"
                 report2 = service.scan(tmpdir2_path)
 
                 assert report1.scan_path != report2.scan_path
+
+    def test_raising_secrets_scanner_fails_report(self, tmp_path, monkeypatch, caplog):
+        """A crashing secrets scanner must fail-closed, not pass with score 100."""
+        (tmp_path / "app.py").write_text("x = 1\n")
+        config = SecurityScanConfig(
+            scan_secrets=True,
+            scan_vulnerabilities=False,
+            scan_dependencies=False,
+            scan_crypto=False,
+            scan_access=False,
+            scan_auth=False,
+            scan_headers=False,
+            scan_tls=False,
+            scan_container=False,
+            scan_infrastructure=False,
+        )
+        service = StaticSecurityService(config)
+
+        def _boom(_path):
+            raise RuntimeError("scanner crashed")
+
+        monkeypatch.setattr(service.secrets_service, "scan", _boom)
+
+        with caplog.at_level(logging.ERROR):
+            report = service.scan(tmp_path)
+
+        assert report.is_passing is False
+        assert report.is_healthy is False
+        assert report.secrets_report is None
+        assert report.domain_errors
+        error = report.domain_errors[0]
+        assert error["domain"] == "secrets"
+        assert error["exception_type"] == "RuntimeError"
+        assert "scanner crashed" in error["message"]
+        assert any(
+            rec.exc_info and "secrets" in rec.getMessage()
+            for rec in caplog.records
+        )

@@ -197,6 +197,13 @@ class SecurityReport(BaseModel):
     tls_report: Optional[Any] = Field(None, description="TLS/SSL analysis report")
     container_report: Optional[Any] = Field(None, description="Container security analysis report")
     infrastructure_report: Optional[Any] = Field(None, description="Infrastructure security analysis report")
+    domain_errors: List[Dict[str, str]] = Field(
+        default_factory=list,
+        description=(
+            "Requested domains that failed to complete. Each entry is "
+            "{domain, exception_type, message}. Non-empty fails is_passing."
+        ),
+    )
     total_issues: int = Field(0, description="Total security issues found")
     critical_issues: int = Field(0, description="Critical severity issues")
     high_issues: int = Field(0, description="High severity issues")
@@ -354,8 +361,12 @@ class SecurityReport(BaseModel):
 
     @property
     def is_passing(self) -> bool:
-        """Check if the scan passes (no critical or high issues)."""
-        return self.critical_issues == 0 and self.high_issues == 0
+        """Pass only when no critical/high issues and every requested domain completed."""
+        return (
+            self.critical_issues == 0
+            and self.high_issues == 0
+            and not self.domain_errors
+        )
 
     @property
     def is_healthy(self) -> bool:

@@ -5,10 +5,11 @@ Service for comprehensive static security analysis combining multiple
 security checks into a unified analysis.
 """
 
+import logging
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Callable, Optional
 
 from Asgard.Heimdall.Security.models.security_models import (
     SecurityReport,
@@ -41,6 +42,8 @@ from Asgard.Heimdall.Security.Headers.services.headers_analyzer import HeadersAn
 from Asgard.Heimdall.Security.TLS.services.tls_analyzer import TLSAnalyzer
 from Asgard.Heimdall.Security.Container.services.container_analyzer import ContainerAnalyzer
 from Asgard.Heimdall.Security.Infrastructure.services.infra_analyzer import InfraAnalyzer
+
+logger = logging.getLogger(__name__)
 
 
 class StaticSecurityService:
@@ -83,6 +86,25 @@ class StaticSecurityService:
         self.container_analyzer = ContainerAnalyzer()
         self.infrastructure_analyzer = InfraAnalyzer()
 
+    @staticmethod
+    def _scan_domain(
+        report: SecurityReport,
+        domain: str,
+        scanner: Callable,
+        path: Path,
+    ):
+        """Run one domain scanner; record and log failures instead of swallowing them."""
+        try:
+            return scanner(path)
+        except Exception as exc:
+            logger.exception("Security scan domain %s failed to complete", domain)
+            report.domain_errors.append({
+                "domain": domain,
+                "exception_type": type(exc).__name__,
+                "message": str(exc),
+            })
+            return None
+
     def scan(self, scan_path: Optional[Path] = None) -> SecurityReport:
         """
         Perform comprehensive security analysis.
@@ -111,64 +133,54 @@ class StaticSecurityService:
         )
 
         if self.config.scan_secrets:
-            try:
-                report.secrets_report = self.secrets_service.scan(path)
-            except Exception:
-                pass
+            report.secrets_report = self._scan_domain(
+                report, "secrets", self.secrets_service.scan, path
+            )
 
         if self.config.scan_dependencies:
-            try:
-                report.dependency_report = self.dependency_service.scan(path)
-            except Exception:
-                pass
+            report.dependency_report = self._scan_domain(
+                report, "dependencies", self.dependency_service.scan, path
+            )
 
         if self.config.scan_vulnerabilities:
-            try:
-                report.vulnerability_report = self.injection_service.scan(path)
-            except Exception:
-                pass
+            report.vulnerability_report = self._scan_domain(
+                report, "vulnerabilities", self.injection_service.scan, path
+            )
 
         if self.config.scan_crypto:
-            try:
-                report.crypto_report = self.crypto_service.scan(path)
-            except Exception:
-                pass
+            report.crypto_report = self._scan_domain(
+                report, "crypto", self.crypto_service.scan, path
+            )
 
         if self.config.scan_access:
-            try:
-                report.access_report = self.access_analyzer.scan(path)
-            except Exception:
-                pass
+            report.access_report = self._scan_domain(
+                report, "access", self.access_analyzer.scan, path
+            )
 
         if self.config.scan_auth:
-            try:
-                report.auth_report = self.auth_analyzer.scan(path)
-            except Exception:
-                pass
+            report.auth_report = self._scan_domain(
+                report, "auth", self.auth_analyzer.scan, path
+            )
 
         if self.config.scan_headers:
-            try:
-                report.headers_report = self.headers_analyzer.scan(path)
-            except Exception:
-                pass
+            report.headers_report = self._scan_domain(
+                report, "headers", self.headers_analyzer.scan, path
+            )
 
         if self.config.scan_tls:
-            try:
-                report.tls_report = self.tls_analyzer.scan(path)
-            except Exception:
-                pass
+            report.tls_report = self._scan_domain(
+                report, "tls", self.tls_analyzer.scan, path
+            )
 
         if self.config.scan_container:
-            try:
-                report.container_report = self.container_analyzer.scan(path)
-            except Exception:
-                pass
+            report.container_report = self._scan_domain(
+                report, "container", self.container_analyzer.scan, path
+            )
 
         if self.config.scan_infrastructure:
-            try:
-                report.infrastructure_report = self.infrastructure_analyzer.scan(path)
-            except Exception:
-                pass
+            report.infrastructure_report = self._scan_domain(
+                report, "infrastructure", self.infrastructure_analyzer.scan, path
+            )
 
         report.scan_duration_seconds = time.time() - start_time
         report.scanned_at = datetime.now()
