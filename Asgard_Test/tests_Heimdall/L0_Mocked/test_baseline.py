@@ -285,6 +285,59 @@ class TestBaselineManagerEdgeCases:
         assert len(filtered) == len(violations)
 
 
+class TestBaselineManagerSymlinkSafety:
+    def test_save_does_not_overwrite_symlink_target(self, tmp_path):
+        target = tmp_path / "secret.json"
+        original = '{"keep": true}\n'
+        target.write_text(original, encoding="utf-8")
+        dest = tmp_path / ".asgard-baseline.json"
+        dest.symlink_to(target)
+
+        manager = BaselineManager(project_path=tmp_path)
+        manager._baseline = BaselineFile(project_path=str(tmp_path))
+        with pytest.raises(ValueError, match="symlink"):
+            manager.save()
+
+        assert dest.is_symlink()
+        assert dest.resolve() == target.resolve()
+        assert target.read_text(encoding="utf-8") == original
+
+    def test_load_missing_file_still_works(self, tmp_path):
+        manager = BaselineManager(project_path=tmp_path)
+        assert not manager.baseline_path.exists()
+        loaded = manager.load()
+        assert isinstance(loaded, BaselineFile)
+        assert loaded.entries == []
+        assert not manager.baseline_path.exists()
+
+    def test_normal_save_persists_json(self, tmp_path):
+        manager = BaselineManager(project_path=tmp_path)
+        result = manager.add_entry(
+            file_path=str(tmp_path / "src" / "foo.py"),
+            line_number=5,
+            violation_type="lazy_import",
+            message="import os",
+        )
+        assert result is True
+        payload = json.loads(manager.baseline_path.read_text(encoding="utf-8"))
+        assert payload["entries"][0]["file_path"] == "src/foo.py"
+        assert payload["entries"][0]["line_number"] == 5
+        assert payload["entries"][0]["violation_type"] == "lazy_import"
+        assert not manager.baseline_path.is_symlink()
+
+    def test_load_of_symlink_raises(self, tmp_path):
+        target = tmp_path / "secret.json"
+        target.write_text("NOT-JSON-DO-NOT-READ", encoding="utf-8")
+        dest = tmp_path / ".asgard-baseline.json"
+        dest.symlink_to(target)
+
+        manager = BaselineManager(project_path=tmp_path)
+        with pytest.raises(ValueError, match="symlink"):
+            manager.load()
+        assert dest.is_symlink()
+        assert target.read_text(encoding="utf-8") == "NOT-JSON-DO-NOT-READ"
+
+
 # ---------------------------------------------------------------------------
 # _baseline_helpers
 # ---------------------------------------------------------------------------

@@ -5,6 +5,8 @@ Manages creating, loading, and filtering violations against baseline.
 """
 
 import json
+import os
+import tempfile
 from datetime import datetime
 from pathlib import Path
 from typing import Any, List, Optional, TypeVar, cast
@@ -58,9 +60,11 @@ class BaselineManager:
         raw = Path(baseline_file)
         if raw.is_absolute() or ".." in raw.parts:
             raise ValueError("baseline_file must stay under the project path")
-        dest = (project_path / raw).resolve()
-        if not dest.is_relative_to(project_path.resolve()):
+        dest = project_path / raw
+        resolved = dest.resolve()
+        if not resolved.is_relative_to(project_path.resolve()):
             raise ValueError("baseline_file must stay under the project path")
+        # Unfollowed dest so load/save can refuse a planted dest symlink.
         return dest
 
     def load(self) -> BaselineFile:
@@ -68,11 +72,14 @@ class BaselineManager:
         if self._baseline is not None:
             return self._baseline
 
-        if self.baseline_path.exists():
+        if self.baseline_path.is_symlink():
+            raise ValueError("baseline path must not be a symlink")
+
+        try:
             with open(self.baseline_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-                self._baseline = BaselineFile(**data)
-        else:
+            self._baseline = BaselineFile(**data)
+        except FileNotFoundError:
             self._baseline = BaselineFile(project_path=str(self.project_path))
 
         return self._baseline
@@ -82,15 +89,32 @@ class BaselineManager:
         if self._baseline is None:
             return
 
+        dest = self.baseline_path
+        if dest.is_symlink():
+            raise ValueError("baseline path must not be a symlink")
+
         self._baseline.updated_at = datetime.now()
 
-        with open(self.baseline_path, 'w', encoding='utf-8') as f:
-            json.dump(
-                self._baseline.model_dump(mode='json'),
-                f,
-                indent=2,
-                default=str,
-            )
+        fd, tmp_name = tempfile.mkstemp(
+            prefix=f".{dest.name}.",
+            suffix=".tmp",
+            dir=str(dest.parent),
+        )
+        try:
+            with os.fdopen(fd, 'w', encoding='utf-8') as f:
+                json.dump(
+                    self._baseline.model_dump(mode='json'),
+                    f,
+                    indent=2,
+                    default=str,
+                )
+            os.replace(tmp_name, dest)
+        except Exception:
+            try:
+                os.unlink(tmp_name)
+            except OSError:
+                pass
+            raise
 
     def create_from_violations(
         self,

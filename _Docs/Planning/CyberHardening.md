@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
 | Medium   | 35   | 24    | 0             |
-| Low      | 16   | 6     | 0             |
+| Low      | 15   | 7     | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -258,7 +258,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0014 — Baseline save is non-atomic and follows symlinks
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T14:25:00Z
+- **Implementation note:** Refuse dest symlink; load without exists(); save via temp + os.replace.
 - **Severity:** Low
 - **Confidence:** Medium
 - **CWE / class:** CWE-59
@@ -1918,12 +1921,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 62
-- Fixed: 52
+- Open: 61
+- Fixed: 53
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0014, CH-0028, CH-0034
-- Last commit: b66dd42
+- Next: CH-0028, CH-0034
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
