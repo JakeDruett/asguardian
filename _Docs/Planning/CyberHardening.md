@@ -1394,7 +1394,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0081 — Unsigned triage cache can plant advisory verdicts
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** ffe5977
 - **Fixed at:** 2026-08-16T17:12:00Z
 - **Implementation note:** HMAC + hex-64 keys + jail under cache dir; unsigned/planted verdicts miss.
 - **Severity:** Medium
@@ -2007,7 +2007,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0048, CH-0052, CH-0092
-- Last commit: pending
+- Last commit: ffe5977
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
