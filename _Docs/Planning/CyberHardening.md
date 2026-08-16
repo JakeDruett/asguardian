@@ -472,7 +472,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0027 — Local calibration profile YAML is trusted without clamp or authenticity check
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 20512e0
 - **Fixed at:** 2026-08-16T15:50:00Z
 - **Implementation note:** Load refuses invalid YAML/numerics and re-clamps against the language/generic anchor; resolve() re-clamps to the target language.
 - **Severity:** Medium
@@ -1962,7 +1962,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0013, CH-0032, CH-0036
-- Last commit: pending
+- Last commit: 20512e0
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

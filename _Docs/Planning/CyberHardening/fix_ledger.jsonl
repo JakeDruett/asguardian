@@ -62,4 +62,4 @@
 {"id":"CH-0038","at":"2026-08-16T15:38:00Z","commit":"a126eeb","wave":"W3","summary":"PackageLicense.is_allowed defaults False until classified"}
 {"id":"CH-0098","at":"2026-08-16T15:42:00Z","commit":"c7aba7c","wave":"W3","summary":"Empty SLA/SLO windows report 0% not 100%; NaN is BREACHED"}
 {"id":"CH-0100","at":"2026-08-16T15:46:00Z","commit":"b712902","wave":"W3","summary":"Invalid anomaly baseline fail-closes as unknown, not in-bounds"}
-{"id":"CH-0027","at":"2026-08-16T15:50:00Z","commit":"pending","wave":"W3","summary":"Re-clamp/validate local calibration YAML on load"}
+{"id":"CH-0027","at":"2026-08-16T15:50:00Z","commit":"20512e0","wave":"W3","summary":"Re-clamp/validate local calibration YAML on load"}
