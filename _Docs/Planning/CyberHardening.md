@@ -926,7 +926,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0058 — CodeGen interpolates untrusted OpenAPI strings into generated source
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 9b2b360
 - **Fixed at:** 2026-08-16T13:05:00Z
 - **Implementation note:** JSON-encode path templates; sanitize identifiers; escape comments; jail _write_files under output_dir. `{__import__('os')}` is data, not an f-string.
 - **Severity:** High

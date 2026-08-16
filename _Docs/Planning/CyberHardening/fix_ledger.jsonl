@@ -36,3 +36,4 @@
 {"id":"CH-0010","at":"2026-08-16T12:46:00Z","commit":"0e5162a","wave":"W2","summary":"Jail BaselineManager baseline_file under project_path"}
 {"id":"CH-0059","at":"2026-08-16T12:55:00Z","commit":"93529c8","wave":"W2","summary":"Jail JSON Schema file $refs under schema directory"}
 {"id":"CH-0068","at":"2026-08-16T12:56:00Z","commit":"664c720","wave":"W2","summary":"Confine baseline screenshot_path to storage_directory"}
+{"id":"CH-0058","at":"2026-08-16T13:05:00Z","commit":"9b2b360","wave":"W2","summary":"JSON-encode OpenAPI paths; sanitize idents; jail codegen writes"}
