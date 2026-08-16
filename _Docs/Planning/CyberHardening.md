@@ -250,7 +250,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0013 — Raw violation text persisted and dumped
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 9b57bb4
 - **Fixed at:** 2026-08-16T16:22:00Z
 - **Implementation note:** Persist sha256 of message/snippet attrs; default JSON report and CLI list omit `message`. Matching hashes both sides.
 - **Severity:** Medium
@@ -1977,7 +1977,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0032, CH-0036, CH-0043
-- Last commit: pending
+- Last commit: 9b57bb4
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
