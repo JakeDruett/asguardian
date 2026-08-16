@@ -896,7 +896,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0052 — Gate fingerprints collapse to rule+path when snippet is empty
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** b5bfe5c
 - **Fixed at:** 2026-08-16T17:20:00Z
 - **Implementation note:** Fingerprint includes line+message; `ensure_fingerprint` recomputes unless a signed `qg1.` mac is present.
 - **Severity:** Medium
@@ -2013,7 +2013,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0092, CH-0107, CH-0109
-- Last commit: pending
+- Last commit: b5bfe5c
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
