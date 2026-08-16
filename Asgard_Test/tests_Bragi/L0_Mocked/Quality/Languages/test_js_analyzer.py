@@ -75,6 +75,16 @@ class TestJSAnalyzerNoEval:
             assert len(eval_findings) >= 1
             assert eval_findings[0].category == JSRuleCategory.SECURITY.value
 
+    def test_eval_fix_does_not_recommend_function_constructor(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            js_file = Path(tmpdir) / "eval_test.js"
+            js_file.write_text('eval("code");\n')
+            report = JSAnalyzer().analyze(scan_path=tmpdir)
+            eval_findings = [f for f in report.findings if f.rule_id == "js.no-eval"]
+            suggestion = eval_findings[0].fix_suggestion
+            assert "JSON.parse" in suggestion
+            assert "Function" not in suggestion
+
     def test_eval_with_space_before_paren_triggers_rule(self):
         """eval followed by whitespace before the opening paren should still trigger."""
         with tempfile.TemporaryDirectory() as tmpdir:

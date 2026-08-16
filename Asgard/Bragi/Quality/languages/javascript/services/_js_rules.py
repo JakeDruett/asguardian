@@ -52,7 +52,7 @@ def check_no_eval(file_path: str, lines: List[str], enabled: bool) -> List[JSFin
                 title="Use of eval()",
                 description="eval() executes arbitrary code and is a security risk.",
                 code_snippet=line,
-                fix_suggestion="Remove eval() and use a safer alternative such as JSON.parse() or Function.",
+                fix_suggestion="Remove eval() and use a safer alternative such as JSON.parse() or another structured parser.",
             ))
     return findings
 
