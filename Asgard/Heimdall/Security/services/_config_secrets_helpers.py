@@ -9,6 +9,8 @@ These have no dependency on scanner state.
 import math
 from typing import Any, Dict, Iterator, List, Tuple
 
+from Asgard.Heimdall.Security.utilities.security_utils import mask_secret
+
 
 # Values that look like placeholders and should be ignored
 PLACEHOLDER_FRAGMENTS = [
@@ -45,11 +47,8 @@ def shannon_entropy(text: str) -> float:
 
 
 def mask_value(value: str) -> str:
-    """Return a masked version of the value for safe display."""
-    if len(value) <= 4:
-        return "****"
-    visible = max(2, len(value) // 6)
-    return value[:visible] + "****" + value[-visible:]
+    """Return a last-2 (or length-only) mask. Never prints both ends."""
+    return mask_secret(value)
 
 
 def is_credential_key(key: str, credential_key_names: List[str]) -> bool:

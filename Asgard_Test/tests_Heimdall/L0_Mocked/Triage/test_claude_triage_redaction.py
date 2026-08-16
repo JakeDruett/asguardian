@@ -91,7 +91,8 @@ class TestRedactSecretSpans:
         redacted = redact_secret_spans(f"aws_key = {_AWS_EXAMPLE_KEY}")
         assert _AWS_EXAMPLE_KEY not in redacted
         assert redacted.startswith("aws_key = ")
-        assert "AKIA" in redacted
+        assert "AKIA" not in redacted
+        assert redacted.endswith("LE")
 
     def test_strips_password_assignment(self):
         redacted = redact_secret_spans(f"cfg {_PASSWORD_ASSIGNMENT} unused")

@@ -11,6 +11,7 @@ from Asgard.Heimdall.Security.utilities.security_utils import (
     is_binary_file,
     mask_secret,
     read_file_lines,
+    redact_line_span,
     scan_directory_for_security,
 )
 
@@ -21,5 +22,6 @@ __all__ = [
     "is_binary_file",
     "mask_secret",
     "read_file_lines",
+    "redact_line_span",
     "scan_directory_for_security",
 ]

@@ -56,21 +56,65 @@ def extract_code_snippet(
     return "\n".join(snippet_lines)
 
 
-def mask_secret(secret: str, visible_chars: int = 4) -> str:
+# Last-2 is the most a report may reveal. Never a prefix, never both ends.
+_MASK_VISIBLE_MAX = 2
+# Short values are length-only so a 4-char PIN cannot leak half its digits.
+_MASK_FULL_REDACT_LEN = 4
+
+
+def mask_secret(secret: str, visible_chars: int = 2) -> str:
     """
     Mask a secret value for safe display.
 
+    Default is last-2. Never prints a prefix, never both ends.
+    ``visible_chars=0`` is length-only. Values above 2 are capped.
+    Secrets of length 4 or less are always length-only.
+
     Args:
         secret: The secret value to mask
-        visible_chars: Number of characters to show at start and end
+        visible_chars: Trailing characters to keep (0 = length-only, max 2)
 
     Returns:
         Masked secret string
     """
-    if len(secret) <= visible_chars * 2:
+    if not secret:
+        return ""
+
+    try:
+        visible = int(visible_chars)
+    except (TypeError, ValueError):
+        visible = _MASK_VISIBLE_MAX
+    if visible < 0:
+        visible = 0
+    if visible > _MASK_VISIBLE_MAX:
+        visible = _MASK_VISIBLE_MAX
+
+    if visible == 0 or len(secret) <= max(visible, _MASK_FULL_REDACT_LEN):
         return "*" * len(secret)
 
-    return f"{secret[:visible_chars]}{'*' * (len(secret) - visible_chars * 2)}{secret[-visible_chars:]}"
+    return f"{'*' * (len(secret) - visible)}{secret[-visible:]}"
+
+
+def redact_line_span(line: str, column_start: int, column_end: int) -> str:
+    """
+    Replace a 1-indexed [column_start, column_end) span with asterisks.
+
+    Columns match SecretFinding.column_start/column_end (start + length).
+    The span is length-only: no prefix or suffix of the secret is kept.
+    """
+    if not line:
+        return line
+    try:
+        start = int(column_start)
+        end = int(column_end)
+    except (TypeError, ValueError):
+        return line
+    start_idx = max(0, start - 1)
+    end_idx = max(start_idx, end - 1)
+    if start_idx >= len(line) or end_idx <= start_idx:
+        return line
+    end_idx = min(len(line), end_idx)
+    return f"{line[:start_idx]}{'*' * (end_idx - start_idx)}{line[end_idx:]}"
 
 
 def get_cwe_url(cwe_id: str) -> str:
@@ -152,6 +196,7 @@ __all__ = [
     "read_file_lines",
     "extract_code_snippet",
     "mask_secret",
+    "redact_line_span",
     "get_cwe_url",
     "get_owasp_url",
     "calculate_entropy",

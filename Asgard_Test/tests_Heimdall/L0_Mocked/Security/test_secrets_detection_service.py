@@ -364,12 +364,12 @@ API_KEY = "sk_fake_test_key_not_real_000000"
             assert tmpdir_path.name in report.scan_path or str(tmpdir_path) in report.scan_path
 
     def test_masked_value_in_findings(self):
-        """Test that secret values are properly masked in findings."""
+        """Secret values are last-2 masked; prefix is not leaked."""
         with tempfile.TemporaryDirectory() as tmpdir:
             tmpdir_path = Path(tmpdir)
 
             (tmpdir_path / "secrets.py").write_text("""
-STRIPE_KEY = "sk_fake_test_key_not_real_00000000000000000"
+STRIPE_KEY = "sk_live_notarealkey00000000000000000"
 """)
 
             service = SecretsDetectionService()
@@ -378,7 +378,8 @@ STRIPE_KEY = "sk_fake_test_key_not_real_00000000000000000"
             if report.secrets_found > 0:
                 finding = report.findings[0]
                 assert "*" in finding.masked_value
-                assert "sk_fake" not in finding.masked_value or finding.masked_value.startswith("sk_f")
+                assert "sk_live" not in finding.masked_value
+                assert not finding.masked_value.startswith("sk_")
 
     def test_confidence_score_calculation(self):
         """Test that confidence scores are calculated for findings."""

@@ -12,7 +12,7 @@ from Asgard.Heimdall.Security.services._secret_patterns import (
     FALSE_POSITIVE_PATTERNS,
     SecretPattern,
 )
-from Asgard.Heimdall.Security.utilities.security_utils import mask_secret
+from Asgard.Heimdall.Security.utilities.security_utils import redact_line_span
 
 
 def is_false_positive(
@@ -137,20 +137,27 @@ def calculate_confidence(
     return round(confidence, 2)
 
 
-def sanitize_line(line: str, secret_value: str) -> str:
+def sanitize_line(
+    line: str,
+    secret_value: str,
+    column_start: int = 0,
+    column_end: int = 0,
+) -> str:
     """
-    Sanitize a line by masking the secret value.
+    Sanitize a line by redacting the secret span.
 
-    Args:
-        line: The original line content
-        secret_value: The secret value to mask
-
-    Returns:
-        Sanitized line with masked secret
+    Prefers the 1-indexed [column_start, column_end) span (length-only
+    asterisks). Any remaining exact copies of ``secret_value`` are also
+    replaced with a length-only mask. Never prints both ends of a secret.
     """
-    if secret_value in line:
-        return line.replace(secret_value, mask_secret(secret_value))
-    return line
+    if not line:
+        return line
+    redacted = line
+    if column_start and column_end and column_end > column_start:
+        redacted = redact_line_span(redacted, column_start, column_end)
+    if secret_value and secret_value in redacted:
+        redacted = redacted.replace(secret_value, "*" * len(secret_value))
+    return redacted
 
 
 def severity_meets_threshold(severity: str, min_severity: str) -> bool:

@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 26   | 33    | 0             |
+| Medium   | 25   | 34    | 0             |
 | Low      | 12   | 10    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1342,7 +1342,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0079 — Secret reports leak prefix+suffix of matched values
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T16:24:00Z
+- **Implementation note:** `mask_secret` defaults to last-2 or length-only; `line_content` redacted by column span. Never print both ends.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-312 / CWE-532
@@ -1972,12 +1975,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 44
-- Fixed: 70
+- Open: 43
+- Fixed: 71
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0032, CH-0036, CH-0043
-- Last commit: 9b57bb4
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

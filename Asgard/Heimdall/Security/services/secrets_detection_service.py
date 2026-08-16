@@ -199,7 +199,9 @@ class SecretsDetectionService:
                 # _identifier_before_match always returned "" and the
                 # high/low-signal identifier paths never fired.
                 value_start = match.start(1) if match.lastindex and match.lastindex >= 1 else match.start()
+                value_end = match.end(1) if match.lastindex and match.lastindex >= 1 else match.end()
                 _, value_column = find_line_column(content, value_start)
+                value_column_end = value_column + (value_end - value_start)
                 sem = semantic_score(line_content, max(0, value_column - 1), context)
                 folded_confidence = fold_semantic_score(base_confidence, sem)
 
@@ -217,7 +219,12 @@ class SecretsDetectionService:
                     severity=pattern.severity,
                     pattern_name=pattern.name,
                     masked_value=mask_secret(secret_value),
-                    line_content=sanitize_line(line_content, secret_value),
+                    line_content=sanitize_line(
+                        line_content,
+                        secret_value,
+                        column_start=value_column,
+                        column_end=value_column_end,
+                    ),
                     confidence=folded_confidence,
                     confidence_bucket=confidence_bucket(folded_confidence),
                     semantic_score=sem,

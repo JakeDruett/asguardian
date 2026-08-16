@@ -230,12 +230,14 @@ class SecretsScanner:
             for secret_name, config in self.compiled_patterns.items():
                 match = config['regex'].search(line)
                 if match:
-                    # Mask the actual secret in the output
+                    # Mask the actual secret in the output (last-2 or length-only).
                     matched_text = match.group(0)
-                    if len(matched_text) > 10:
-                        masked = matched_text[:4] + '*' * (len(matched_text) - 8) + matched_text[-4:]
-                    else:
+                    if len(matched_text) <= 4:
                         masked = '*' * len(matched_text)
+                    else:
+                        masked = '*' * (len(matched_text) - 2) + matched_text[-2:]
+                    start, end = match.span()
+                    redacted_line = line[:start] + ('*' * (end - start)) + line[end:]
 
                     finding = SecretMatch(
                         file_path=str(file_path),
@@ -243,7 +245,7 @@ class SecretsScanner:
                         secret_type=secret_name,
                         matched_text=masked,
                         severity=config['severity'],
-                        context=line.strip()[:100]
+                        context=redacted_line.strip()[:100]
                     )
                     matches.append(finding)
 

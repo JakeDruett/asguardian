@@ -18,11 +18,14 @@ from Asgard.Heimdall.Security.utilities.security_utils import (
     read_file_lines,
     extract_code_snippet,
     mask_secret,
+    redact_line_span,
     get_cwe_url,
     get_owasp_url,
     calculate_entropy,
     find_line_column,
 )
+from Asgard.Heimdall.Security.services._config_secrets_helpers import mask_value
+from Asgard.Heimdall.Security.services._secrets_detection_helpers import sanitize_line
 
 
 class TestSecurityScanExtensions:
@@ -354,37 +357,86 @@ class TestExtractCodeSnippet:
 
 
 class TestMaskSecret:
-    """Tests for mask_secret function."""
+    """Tests for mask_secret (CH-0079: last-2 or length-only, never both ends)."""
 
     def test_mask_long_secret(self):
-        """Test masking a long secret value."""
+        """Long secrets keep only the last two characters."""
         secret = "AKIAIOSFODNN7EXAMPLE"
-        masked = mask_secret(secret, visible_chars=4)
+        masked = mask_secret(secret)
 
-        assert masked.startswith("AKIA")
-        assert masked.endswith("MPLE")
+        assert not masked.startswith("AKIA")
+        assert masked.endswith("LE")
+        assert masked.startswith("*" * (len(secret) - 2))
         assert "*" in masked
         assert len(masked) == len(secret)
+        assert secret[:4] not in masked
+        assert secret[-4:] not in masked
 
     def test_mask_short_secret(self):
-        """Test masking a short secret value."""
+        """Short secrets are length-only."""
         secret = "abc"
-        masked = mask_secret(secret, visible_chars=4)
+        masked = mask_secret(secret)
 
         assert masked == "***"
         assert len(masked) == len(secret)
 
-    def test_mask_with_different_visible_chars(self):
-        """Test masking with different visible character counts."""
+    def test_mask_never_prints_both_ends(self):
+        """visible_chars is last-N only and is capped at 2."""
         secret = "verylongsecretkey1234567890"
 
         masked_2 = mask_secret(secret, visible_chars=2)
-        assert masked_2.startswith("ve")
+        assert not masked_2.startswith("ve")
         assert masked_2.endswith("90")
+        assert secret[:2] not in masked_2
 
         masked_6 = mask_secret(secret, visible_chars=6)
-        assert masked_6.startswith("verylo")
-        assert masked_6.endswith("567890")
+        assert not masked_6.startswith("verylo")
+        assert masked_6.endswith("90")
+        assert len(masked_6) == len(secret)
+
+        masked_none = mask_secret(secret, visible_chars=0)
+        assert masked_none == "*" * len(secret)
+
+    def test_mask_value_matches_mask_secret_policy(self):
+        token = "Tk7mQ2wL9pN4xR8eY3vB6cH1zJ5uA0Xy"
+        assert len(token) == 32
+        masked = mask_value(token)
+        assert masked == mask_secret(token)
+        assert token not in masked
+        assert token[:4] not in masked
+        assert not (masked.startswith(token[:2]) and masked.endswith(token[-2:]))
+
+
+class TestRedactLineSpan:
+    """Tests for column-span redaction of line_content."""
+
+    def test_redacts_span_length_only(self):
+        line = 'API_KEY = "Tk7mQ2wL9pN4xR8eY3vB6cH1zJ5uA0Xy"'
+        token = "Tk7mQ2wL9pN4xR8eY3vB6cH1zJ5uA0Xy"
+        start = line.index(token) + 1
+        end = start + len(token)
+        redacted = redact_line_span(line, start, end)
+        assert token not in redacted
+        assert "*" * len(token) in redacted
+        assert redacted.startswith("API_KEY = ")
+        assert token[:4] not in redacted
+        assert token[-4:] not in redacted
+
+    def test_sanitize_line_uses_column_span(self):
+        line = 'password = "supersecretvalue12"'
+        token = "supersecretvalue12"
+        start = line.index(token) + 1
+        end = start + len(token)
+        redacted = sanitize_line(line, token, column_start=start, column_end=end)
+        assert token not in redacted
+        assert "*" * len(token) in redacted
+
+    def test_sanitize_line_replaces_leftover_copies(self):
+        token = "supersecretvalue12"
+        line = f"{token} and {token}"
+        redacted = sanitize_line(line, token)
+        assert token not in redacted
+        assert redacted == f"{'*' * len(token)} and {'*' * len(token)}"
 
 
 class TestGetCweUrl:

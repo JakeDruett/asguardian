@@ -102,7 +102,7 @@ _SECRET_SPAN_RULES: Tuple[Tuple[re.Pattern[str], Callable[[re.Match[str]], str]]
 
 
 def redact_secret_spans(text: str) -> str:
-    """Replace secret-like spans with a first/last-4 mask via :func:`mask_secret`."""
+    """Replace secret-like spans with a last-2 (never both-ends) mask via :func:`mask_secret`."""
     if not text:
         return ""
     redacted = text if isinstance(text, str) else str(text)

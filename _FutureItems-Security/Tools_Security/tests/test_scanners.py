@@ -130,6 +130,11 @@ AWS_ACCESS_KEY = "AKIAIOSFODNN7EXAMPLE"
 
         assert len(issues) > 0
         assert any('aws' in i.secret_type.lower() for i in issues)
+        aws = next(i for i in issues if 'aws' in i.secret_type.lower())
+        assert 'AKIAIOSFODNN7EXAMPLE' not in aws.matched_text
+        assert 'AKIAIOSFODNN7EXAMPLE' not in aws.context
+        assert not aws.matched_text.startswith('AKIA')
+        assert aws.matched_text.endswith('LE')
 
     def test_detect_github_token(self):
         """Test detection of GitHub token."""
