@@ -74,4 +74,4 @@
 {"id":"CH-0088","at":"2026-08-16T16:40:00Z","commit":"f2fa8e9","wave":"W3","summary":"Ratings/gate/compliance CLIs exit non-zero on fail/unmeasured"}
 {"id":"CH-0036","at":"2026-08-16T16:45:00Z","commit":"db1a2c3","wave":"W3","summary":"HMAC/schema vuln cache; planted empty envelope is a miss"}
 {"id":"CH-0043","at":"2026-08-16T16:47:00Z","commit":"51b545f","wave":"W3","summary":"Mask hardcoded-credential snippets last-2/length-only"}
-{"id":"CH-0047","at":"2026-08-16T17:00:00Z","commit":"pending","wave":"W3","summary":"HMAC debt-state cache; forged/unsigned is full rescan"}
+{"id":"CH-0047","at":"2026-08-16T17:00:00Z","commit":"06a1b37","wave":"W3","summary":"HMAC debt-state cache; forged/unsigned is full rescan"}
