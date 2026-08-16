@@ -184,6 +184,11 @@ def add_dashboard_args(parser: argparse.ArgumentParser) -> None:
         help="Host to bind to (default: localhost)",
     )
     parser.add_argument(
+        "--expose",
+        action="store_true",
+        help="Allow binding 0.0.0.0 / :: (default is localhost only)",
+    )
+    parser.add_argument(
         "--no-open-browser",
         action="store_true",
         help="Do not automatically open browser on launch",

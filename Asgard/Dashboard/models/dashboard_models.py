@@ -17,6 +17,7 @@ class DashboardConfig(BaseModel):
     port: int = Field(8080, description="Port to serve the dashboard on")
     project_path: str = Field(..., description="Absolute path to the project being visualised")
     open_browser: bool = Field(True, description="Whether to automatically open a browser tab on launch")
+    expose: bool = Field(False, description="Allow binding 0.0.0.0 / ::")
     db_path: Optional[str] = Field(
         None,
         description="Path to the directory containing Asgard SQLite databases. None uses ~/.asgard/",

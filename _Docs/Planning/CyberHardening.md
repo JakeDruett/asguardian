@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 14   | 14    | 0             |
-| Medium   | 56   | 3     | 0             |
+| Medium   | 55   | 4     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
 
@@ -874,7 +874,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0056 — Dashboard has no authentication; `--host` can bind all interfaces
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T11:00:00Z
+- **Implementation note:** Refuse 0.0.0.0/:: unless --expose. Default remains localhost. Dashboard is local-only.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-306
@@ -1813,12 +1816,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 97
-- Fixed: 17
+- Open: 96
+- Fixed: 18
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0066, CH-0004, CH-0005, CH-0033
-- Last commit: 7945612
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

@@ -46,6 +46,11 @@ def main() -> None:
         action="store_true",
         help="Do not automatically open a browser tab on launch",
     )
+    parser.add_argument(
+        "--expose",
+        action="store_true",
+        help="Allow binding 0.0.0.0 / :: (default is localhost only)",
+    )
 
     args = parser.parse_args()
 
@@ -54,6 +59,7 @@ def main() -> None:
         port=args.port,
         project_path=args.path,
         open_browser=not args.no_open_browser,
+        expose=args.expose,
     )
 
     server = DashboardServer(config)

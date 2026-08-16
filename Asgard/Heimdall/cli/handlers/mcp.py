@@ -40,6 +40,7 @@ def run_dashboard(args: argparse.Namespace, verbose: bool = False) -> int:
         port=args.port,
         project_path=args.path,
         open_browser=not args.no_open_browser,
+        expose=bool(getattr(args, "expose", False)),
     )
     server = DashboardServer(config)
     server.run()
