@@ -109,3 +109,40 @@ def test_node_text_roundtrip():
     ctx = FileParseContext.parse("x.py", ["value = 42"], "python")
     assert "value = 42" in ctx.node_text(ctx.root)
     assert ctx.node_text(None) == ""
+
+
+def test_oversized_source_is_skipped():
+    from Asgard.Heimdall.treesitter._parser_pool import MAX_PARSE_BYTES, parse_file, parse_source
+
+    blob = b"x = 1\n" + (b"a" * (MAX_PARSE_BYTES + 1))
+    assert parse_source(blob, "python") is None
+    ctx = FileParseContext.parse("huge.py", [blob.decode("ascii")], "python")
+    assert ctx.root is None
+    assert ctx.tree is None
+
+
+def test_oversized_file_is_skipped(tmp_path):
+    from Asgard.Heimdall.treesitter._parser_pool import MAX_PARSE_BYTES, parse_file
+
+    path = tmp_path / "huge.py"
+    path.write_bytes(b"x = 1\n" + (b"a" * (MAX_PARSE_BYTES + 1)))
+    root, source = parse_file(path, "python")
+    assert root is None
+    assert source == b""
+
+
+def test_query_cache_is_bounded():
+    from Asgard.Heimdall.treesitter._query_runner import (
+        MAX_QUERY_CACHE,
+        _QUERY_CACHE,
+        _get_compiled_query,
+        clear_query_cache,
+    )
+
+    clear_query_cache()
+    try:
+        for i in range(MAX_QUERY_CACHE + 25):
+            _get_compiled_query("python", f"(identifier) @id{i}")
+        assert len(_QUERY_CACHE) <= MAX_QUERY_CACHE
+    finally:
+        clear_query_cache()

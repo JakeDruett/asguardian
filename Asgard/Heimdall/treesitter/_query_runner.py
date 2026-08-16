@@ -13,6 +13,7 @@ from Asgard.Heimdall.treesitter._language_loader import get_language_object
 # file in a scan.  ``None`` is cached for invalid queries so a bad query
 # string is only compiled (and rejected) once.
 _QUERY_CACHE: Dict[Tuple[str, str], Any] = {}
+MAX_QUERY_CACHE = 256
 
 
 def _get_compiled_query(language: str, query_str: str):
@@ -34,6 +35,8 @@ def _get_compiled_query(language: str, query_str: str):
         query = Query(lang_obj, query_str)
     except Exception:
         query = None
+    if len(_QUERY_CACHE) >= MAX_QUERY_CACHE:
+        _QUERY_CACHE.pop(next(iter(_QUERY_CACHE)))
     _QUERY_CACHE[key] = query
     return query
 

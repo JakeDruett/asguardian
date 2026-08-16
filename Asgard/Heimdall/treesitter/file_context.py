@@ -15,6 +15,13 @@ from pathlib import Path
 from typing import List, Optional, Sequence, Tuple, Union
 
 from Asgard.Heimdall.treesitter._language_loader import get_language_object
+from Asgard.Heimdall.treesitter._parser_pool import (
+    MAX_PARSE_BYTES,
+    PARSE_TIMEOUT_MICROS,
+)
+
+_MAX_ERROR_WALK_NODES = 250_000
+_MAX_ERROR_WALK_DEPTH = 2048
 
 #: File-extension → tree-sitter language routing.  ``.tsx`` needs the
 #: dedicated ``language_tsx()`` grammar entry point.
@@ -73,28 +80,35 @@ def _to_utf8_bytes(lines: Optional[Sequence[str]], file_path: Union[str, Path]) 
 def _collect_error_ranges(root) -> List[Tuple[int, int]]:
     """Return 0-based inclusive (start_line, end_line) spans of ERROR/MISSING nodes.
 
-    Only descends into subtrees that actually contain errors, so this is cheap
-    on well-formed files.
+    Iterative walk with a node/depth budget so a hostile CST cannot recurse.
     """
     ranges: List[Tuple[int, int]] = []
+    try:
+        if root is None or not root.has_error:
+            return ranges
+    except Exception:
+        return ranges
 
-    def _walk(node) -> None:
+    stack = [(root, 0)]
+    seen = 0
+    while stack:
+        node, depth = stack.pop()
+        seen += 1
+        if seen > _MAX_ERROR_WALK_NODES:
+            break
         try:
             if node.type == "ERROR" or node.is_missing:
                 ranges.append((node.start_point[0], node.end_point[0]))
-                return
+                continue
             if not node.has_error:
-                return
+                continue
+            if depth >= _MAX_ERROR_WALK_DEPTH:
+                continue
+            children = node.children
         except Exception:
-            return
-        for child in node.children:
-            _walk(child)
-
-    try:
-        if root is not None and root.has_error:
-            _walk(root)
-    except Exception:
-        pass
+            continue
+        for child in reversed(children):
+            stack.append((child, depth + 1))
     return ranges
 
 
@@ -159,7 +173,7 @@ class FileParseContext:
             return ctx
 
         source = _to_utf8_bytes(lines, file_path)
-        if source is None:
+        if source is None or len(source) > MAX_PARSE_BYTES:
             return ctx
         ctx.source_bytes = source
 
@@ -168,7 +182,10 @@ class FileParseContext:
             parser = get_parser(lang)
             if parser is None:
                 return ctx
+            parser.timeout_micros = PARSE_TIMEOUT_MICROS
             tree = parser.parse(source)
+            if tree is None:
+                return ctx
             ctx.tree = tree
             ctx.root = tree.root_node
             ctx.error_ranges = _collect_error_ranges(ctx.root)

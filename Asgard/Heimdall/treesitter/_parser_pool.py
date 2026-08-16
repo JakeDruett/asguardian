@@ -18,6 +18,10 @@ from Asgard.Heimdall.treesitter._language_loader import get_language_object
 
 _PARSERS: dict = {}  # language -> Parser (lazy init)
 
+# Hostile/minified sources must not hang parse (CH-0095).
+MAX_PARSE_BYTES = 2 * 1024 * 1024
+PARSE_TIMEOUT_MICROS = 250_000
+
 
 def _get_or_create_parser(language: str):
     """Return the cached Parser for *language*, creating it on first call.
@@ -59,11 +63,16 @@ def parse_source(source: bytes, language: str):
     CRITICAL: the caller MUST extract all needed values as primitives before
     the calling function returns.  See module docstring for details.
     """
+    if len(source) > MAX_PARSE_BYTES:
+        return None
     parser = _get_or_create_parser(language)
     if parser is None:
         return None
     try:
+        parser.timeout_micros = PARSE_TIMEOUT_MICROS
         tree = parser.parse(source)
+        if tree is None:
+            return None
         return tree.root_node
     except Exception:
         return None
@@ -79,8 +88,13 @@ def parse_file(file_path: Path, language: str) -> Tuple:
     the calling function returns.  See module docstring for details.
     """
     try:
-        source = Path(file_path).read_bytes()
+        path = Path(file_path)
+        if path.stat().st_size > MAX_PARSE_BYTES:
+            return (None, b"")
+        source = path.read_bytes()
     except OSError:
+        return (None, b"")
+    if len(source) > MAX_PARSE_BYTES:
         return (None, b"")
 
     root = parse_source(source, language)
