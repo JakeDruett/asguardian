@@ -167,6 +167,12 @@ class LinkConfig(BaseModel):
     report_redirects: bool = Field(True, description="Report redirect chains")
     min_redirect_chain: int = Field(2, description="Minimum redirects to report")
 
+    # SSRF policy (CH-0071): http(s) only; private/metadata blocked unless set
+    allow_internal: bool = Field(
+        False,
+        description="Allow HEAD of loopback, RFC1918, link-local, and metadata URLs",
+    )
+
     # Reporting
     include_ok_links: bool = Field(False, description="Include OK links in report")
     output_format: str = Field("text", description="Output format")

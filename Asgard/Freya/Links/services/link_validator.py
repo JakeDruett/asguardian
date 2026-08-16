@@ -30,6 +30,7 @@ from Asgard.Freya.Links.services._link_validator_helpers import (
     calculate_health_score,
     filter_links,
     get_link_type,
+    validate_link_url,
 )
 
 
@@ -40,14 +41,22 @@ class LinkValidator:
     Detects broken links, redirect chains, and other link issues.
     """
 
-    def __init__(self, config: Optional[LinkConfig] = None):
+    def __init__(
+        self,
+        config: Optional[LinkConfig] = None,
+        *,
+        resolver: Optional[Any] = None,
+    ):
         """
         Initialize the link validator.
 
         Args:
             config: Link validation configuration
+            resolver: Optional hostname resolver for the URL policy
+                (returns IP strings). Defaults to socket.getaddrinfo.
         """
         self.config = config or LinkConfig()
+        self._resolver = resolver
         self._http_client: Optional[httpx.AsyncClient] = None
 
     async def _get_client(self) -> httpx.AsyncClient:
@@ -159,6 +168,15 @@ class LinkValidator:
         """Determine the type of a link."""
         return get_link_type(url, href, parsed_base)
 
+    def _validate_probe_url(self, url: str) -> None:
+        """Raise if url must not be HEADed (scheme/host/address policy)."""
+        validate_link_url(
+            url,
+            allow_internal=self.config.allow_internal,
+            resolver=self._resolver,
+            resolve_host=True,
+        )
+
     async def _check_links_concurrent(
         self, links: List[Dict], source_url: str
     ) -> List[LinkResult]:
@@ -210,6 +228,18 @@ class LinkValidator:
             result.status = LinkStatus.SKIPPED
             return result
 
+        try:
+            self._validate_probe_url(url)
+        except ValueError as exc:
+            result.status = LinkStatus.SKIPPED
+            result.error_message = str(exc)
+            return result
+        except ConnectionError as exc:
+            result.status = LinkStatus.ERROR
+            result.is_broken = True
+            result.error_message = str(exc)
+            return result
+
         start_time = time.time()
 
         try:
@@ -217,6 +247,7 @@ class LinkValidator:
             redirect_chain = []
             current_url = url
             redirect_count = 0
+            blocked_redirect = False
 
             while redirect_count < self.config.max_redirects:
                 response = await client.head(current_url)
@@ -229,7 +260,17 @@ class LinkValidator:
                     if not location:
                         break
 
-                    current_url = urljoin(current_url, location)
+                    next_url = urljoin(current_url, location)
+                    try:
+                        self._validate_probe_url(next_url)
+                    except (ValueError, ConnectionError) as exc:
+                        blocked_redirect = True
+                        result.error_message = (
+                            f"Redirect target blocked by URL policy: {exc}"
+                        )
+                        break
+
+                    current_url = next_url
                     redirect_count += 1
                 else:
                     break
@@ -245,7 +286,7 @@ class LinkValidator:
             elif result.status_code >= 400:
                 result.status = LinkStatus.BROKEN
                 result.is_broken = True
-            elif redirect_count > 0:
+            elif redirect_count > 0 or blocked_redirect:
                 result.status = LinkStatus.REDIRECT
             else:
                 result.status = LinkStatus.OK

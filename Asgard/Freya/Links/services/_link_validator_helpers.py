@@ -4,10 +4,17 @@ Freya Link Validator helper functions.
 Helper functions extracted from link_validator.py.
 """
 
-import re
-from typing import Any, Dict, List, Set, cast
-from urllib.parse import urljoin, urlparse
+from __future__ import annotations
 
+import re
+from collections.abc import Callable, Sequence
+from typing import Any, Dict, List, Optional, Set, cast
+from urllib.parse import urlparse
+
+from Asgard.Freya.Integration.services._url_safety import (
+    is_allowed_navigation_url,
+    validate_navigation_url,
+)
 from Asgard.Freya.Links.models.link_models import (
     BrokenLink,
     LinkConfig,
@@ -18,6 +25,48 @@ from Asgard.Freya.Links.models.link_models import (
     LinkType,
     RedirectChain,
 )
+
+# Probe-candidate types that would be HEADed. mailto/tel/js/anchor are not.
+_PROBE_LINK_TYPES = frozenset({
+    LinkType.INTERNAL,
+    LinkType.EXTERNAL,
+    LinkType.OTHER,
+})
+
+
+def validate_link_url(
+    url: str,
+    *,
+    allow_internal: bool = False,
+    resolver: Optional[Callable[[str], Sequence[str]]] = None,
+    resolve_host: bool = True,
+) -> None:
+    """Reject non-http(s) schemes and internal/metadata HEAD targets.
+
+    Delegates to the Freya crawler URL policy (CH-0066). Does not weaken it.
+    """
+    validate_navigation_url(
+        url,
+        allow_internal=allow_internal,
+        resolver=resolver,
+        resolve_host=resolve_host,
+    )
+
+
+def is_allowed_link_url(
+    url: str,
+    *,
+    allow_internal: bool = False,
+    resolver: Optional[Callable[[str], Sequence[str]]] = None,
+    resolve_host: bool = False,
+) -> bool:
+    """Return True when url may be HEADed (http/https, host policy)."""
+    return is_allowed_navigation_url(
+        url,
+        allow_internal=allow_internal,
+        resolver=resolver,
+        resolve_host=resolve_host,
+    )
 
 
 def get_link_type(url: str, href: str, parsed_base: Any) -> LinkType:
@@ -78,6 +127,11 @@ def filter_links(links: List[Dict], base_url: str, config: LinkConfig) -> List[D
         if link_type == LinkType.EXTERNAL and not config.check_external:
             continue
         if link_type == LinkType.ANCHOR and not config.check_anchors:
+            continue
+
+        if link_type in _PROBE_LINK_TYPES and not is_allowed_link_url(
+            url, allow_internal=config.allow_internal
+        ):
             continue
 
         skip = False

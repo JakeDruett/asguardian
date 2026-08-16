@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 13   | 15    | 0             |
-| Medium   | 52   | 7     | 0             |
+| Medium   | 51   | 8     | 0             |
 | Low      | 21   | 1     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1123,7 +1123,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0071 — Link validator HEADs extracted links without scheme allowlist
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T11:30:00Z
+- **Implementation note:** Only http(s); skip private/metadata; re-validate Location; reuse Freya URL policy.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-918
@@ -1834,12 +1837,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 90
-- Fixed: 24
+- Open: 89
+- Fixed: 25
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0071, CH-0097, CH-0105, CH-0108
-- Last commit: bfdd668
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

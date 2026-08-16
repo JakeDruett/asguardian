@@ -16,6 +16,8 @@ from Asgard.Freya.Links.services._link_validator_helpers import (
     calculate_health_score,
     filter_links,
     get_link_type,
+    is_allowed_link_url,
+    validate_link_url,
 )
 
 
@@ -81,6 +83,63 @@ class TestFilterLinks:
     def test_empty_url_and_href_skipped(self):
         config = LinkConfig()
         assert filter_links([{"url": "", "href": ""}], "https://example.com", config) == []
+
+    def test_excludes_file_and_ftp_schemes(self):
+        config = LinkConfig()
+        links = self._links([
+            "file:///etc/passwd",
+            "ftp://files.example.com/a",
+            "https://example.com/ok",
+        ])
+        filtered = filter_links(links, "https://example.com", config)
+        assert [item["url"] for item in filtered] == ["https://example.com/ok"]
+
+    def test_excludes_loopback_and_rfc1918_by_default(self):
+        config = LinkConfig()
+        links = self._links([
+            "http://127.0.0.1/admin",
+            "http://10.0.0.1/internal",
+            "https://example.com/ok",
+        ])
+        filtered = filter_links(links, "https://example.com", config)
+        assert [item["url"] for item in filtered] == ["https://example.com/ok"]
+
+    def test_keeps_loopback_and_rfc1918_when_allow_internal(self):
+        config = LinkConfig(allow_internal=True)
+        links = self._links([
+            "http://127.0.0.1/admin",
+            "http://10.0.0.1/internal",
+        ])
+        filtered = filter_links(links, "https://example.com", config)
+        assert {item["url"] for item in filtered} == {
+            "http://127.0.0.1/admin",
+            "http://10.0.0.1/internal",
+        }
+
+    def test_still_excludes_file_when_allow_internal(self):
+        config = LinkConfig(allow_internal=True)
+        links = self._links(["file:///etc/passwd"])
+        assert filter_links(links, "https://example.com", config) == []
+
+
+class TestLinkUrlPolicy:
+    def test_file_and_ftp_rejected(self):
+        assert is_allowed_link_url("file:///etc/passwd") is False
+        assert is_allowed_link_url("ftp://files.example.com/a") is False
+        with pytest.raises(ValueError, match="http or https"):
+            validate_link_url("file:///etc/passwd")
+        with pytest.raises(ValueError, match="http or https"):
+            validate_link_url("ftp://files.example.com/a")
+
+    def test_loopback_and_rfc1918_rejected_unless_allow_internal(self):
+        assert is_allowed_link_url("http://127.0.0.1/") is False
+        assert is_allowed_link_url("http://10.0.0.1/") is False
+        assert is_allowed_link_url("http://127.0.0.1/", allow_internal=True) is True
+        assert is_allowed_link_url("http://10.0.0.1/", allow_internal=True) is True
+
+    def test_public_https_allowed(self):
+        assert is_allowed_link_url("https://93.184.216.34/page") is True
+        validate_link_url("https://93.184.216.34/page", resolve_host=False)
 
 
 class TestCalculateHealthScore:
