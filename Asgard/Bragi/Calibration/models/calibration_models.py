@@ -5,12 +5,13 @@ Pydantic models backing the language-profile plane, the local percentile
 calibrator, and the (opt-in) rule-validity scorer.
 """
 
+import math
 import re
 from datetime import datetime
 from enum import Enum
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 # Filename stem for `Bragi/Calibration/profiles/<language>.yaml`.
 # Rejects path separators, `..`, and absolute paths (CH-0026).
@@ -21,6 +22,19 @@ class ThresholdSpec(BaseModel):
     """A warn/fail pair for one threshold metric."""
     warn: float = Field(..., description="Value at which the metric starts drawing attention")
     fail: float = Field(..., description="Value at which the metric is a hard violation")
+
+    @field_validator("warn", "fail")
+    @classmethod
+    def _finite(cls, value: float) -> float:
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value):
+            raise ValueError("threshold must be a finite number")
+        return float(value)
+
+    @model_validator(mode="after")
+    def _warn_le_fail(self) -> "ThresholdSpec":
+        if self.warn > self.fail:
+            raise ValueError("warn must be <= fail")
+        return self
 
 
 class SeverityConfidence(str, Enum):
@@ -57,6 +71,28 @@ class LanguageProfile(BaseModel):
     category_weights: Optional[Dict[str, float]] = Field(
         None, description="Optional PCA-derived inter-category weights (Plan 05 Sec.3.3)"
     )
+
+    @field_validator("language")
+    @classmethod
+    def _language_id(cls, value: str) -> str:
+        if not LANGUAGE_ID_RE.fullmatch(value or ""):
+            raise ValueError("language must match ^[a-z][a-z0-9_]*$")
+        return value
+
+    @field_validator("category_weights")
+    @classmethod
+    def _positive_finite_weights(cls, value):
+        if value is None:
+            return value
+        cleaned: Dict[str, float] = {}
+        for key, weight in value.items():
+            if isinstance(weight, bool) or not isinstance(weight, (int, float)):
+                raise ValueError("category weights must be finite numbers")
+            parsed = float(weight)
+            if not math.isfinite(parsed) or parsed <= 0:
+                raise ValueError("category weights must be positive and finite")
+            cleaned[str(key)] = parsed
+        return cleaned
 
     class Config:
         use_enum_values = True

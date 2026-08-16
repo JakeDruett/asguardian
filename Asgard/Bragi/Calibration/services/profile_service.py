@@ -127,10 +127,16 @@ class LanguageProfileService:
             self._cache[language] = profile
         return profile
 
+    def _safe_language(self, language: str) -> str:
+        if isinstance(language, str) and LANGUAGE_ID_RE.fullmatch(language):
+            return language
+        return self._generic.language or "generic"
+
     def _anchor_for(self, language: str) -> LanguageProfile:
         """Language profile over generic defaults, with no local override."""
+        safe_language = self._safe_language(language)
         language_profile = self._load_language(language) or LanguageProfile(
-            language=language, provenance="no dedicated profile; using generic defaults"
+            language=safe_language, provenance="no dedicated profile; using generic defaults"
         )
         merged_thresholds = dict(self._generic.thresholds)
         merged_thresholds.update(language_profile.thresholds)
@@ -139,7 +145,7 @@ class LanguageProfileService:
         merged_severity = dict(self._generic.severity_confidence)
         merged_severity.update(language_profile.severity_confidence)
         return LanguageProfile(
-            language=language,
+            language=safe_language,
             provenance=language_profile.provenance or self._generic.provenance,
             thresholds=merged_thresholds,
             scalar_thresholds=merged_scalars,
@@ -187,9 +193,10 @@ class LanguageProfileService:
         so a planted cache cannot normalize its own rot (CH-0027).
         """
         anchor = self._anchor_for(language)
+        safe_language = self._safe_language(language)
         if self._local is None:
             return LanguageProfile(
-                language=language,
+                language=safe_language,
                 provenance=anchor.provenance,
                 thresholds=dict(anchor.thresholds),
                 scalar_thresholds=dict(anchor.scalar_thresholds),
@@ -206,7 +213,7 @@ class LanguageProfileService:
         merged_severity.update(local.severity_confidence)
         category_weights = local.category_weights or anchor.category_weights
         return LanguageProfile(
-            language=language,
+            language=safe_language,
             provenance=local.provenance or anchor.provenance,
             thresholds=merged_thresholds,
             scalar_thresholds=merged_scalars,
