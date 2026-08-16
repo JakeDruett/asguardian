@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|---------|---------------|
 | Critical | 0    | 0       | 0             |
 | High     | 27   | 0       | 0             |
-| Medium   | 52   | 0       | 0             |
+| Medium   | 55   | 0       | 0             |
 | Low      | 19   | 0       | 0             |
 | Info     | 5    | 0       | 0             |
 
@@ -1604,13 +1604,58 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Confidence:** High
 - **CWE / class:** CWE-22
 - **Primary file:** `Asgard/Volundr/CICD/services/pipeline_generator.py`
-- **Also on trace:** `Asgard/Volundr/CICD/services/pipeline_generator_helpers.py`
+- **Also on trace:** `Asgard/Volundr/CICD/services/pipeline_generator_helpers.py`, `Asgard/Volundr/Scaffold/services/microservice_scaffold.py`, `Asgard/Volundr/Scaffold/services/monorepo_scaffold.py`
 - **Location:** `save_to_file` — `os.path.join(target_dir, rel_path)` where path includes `config.name`
 - **Trace:** `--name ../../tmp/x` → write outside output dir
 - **Impact:** Arbitrary write of generated YAML if the operator (or a wrapper) passes a hostile name.
 - **Evidence:** Only spaces→hyphens; no `is_relative_to`.
 - **Planned fix:** Allowlist name `[a-z0-9-]+`; resolve and require under `target_dir`. Tests with `../x`.
 - **Fix wave:** W2
+
+### CH-0107 — Volundr suppressions are unsigned YAML that delete findings
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-345
+- **Primary file:** `Asgard/Volundr/Validation/models/suppression_models.py`
+- **Also on trace:** `Asgard/Volundr/Validation/services/suppression_engine.py`, `Asgard/Volundr/Validation/services/validation_engine.py` (`ignore_rules`)
+- **Location:** `SuppressionSet.from_yaml` / `from_file`; engine first-match annihilates findings
+- **Trace:** PR-committed YAML → `fnmatch` target `*` → finding dropped; score looks clean. Same class as CH-0011.
+- **Impact:** CI posture/gate gamed by an unsigned suppression file.
+- **Evidence:** No HMAC/issuer. `yaml.safe_load` (not `yaml.load`). `ignore_rules` drops with no receipt.
+- **Planned fix:** Sign suppressions or require CODEOWNERS + expiry + exact target (no `*`). Fail-closed if the file is unsigned in CI. Tests with `*` hiding a CRITICAL.
+- **Fix wave:** W3
+
+### CH-0108 — Terraform module builder emits `0.0.0.0/0` egress and unsanitized HCL
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-284 / CWE-94
+- **Primary file:** `Asgard/Volundr/Terraform/services/_module_builder_blocks.py`
+- **Also on trace:** `Asgard/Volundr/Terraform/services/_module_builder_generators.py`
+- **Location:** `aws_security_group` egress `cidr_blocks=["0.0.0.0/0"]`; f-string HCL for names/defaults
+- **Trace:** Defaults → generated `main.tf`. `config.name` / variable defaults with `"`/`${` break HCL.
+- **Impact:** Generated modules open all egress. Hostile names inject HCL.
+- **Evidence:** Score rewards absence of `0.0.0.0/0` but generator still emits it. No HCL escape.
+- **Planned fix:** Default egress to prefix-list/self; escape HCL strings; allowlist module names. Tests for open SG and `"` in name.
+- **Fix wave:** W1
+
+### CH-0109 — Incremental `FileHashCache` is unsigned and unconfined
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-345 / CWE-22
+- **Primary file:** `Asgard/common/_hash_cache.py`
+- **Also on trace:** `Asgard/common/_incremental_models.py`
+- **Location:** `load` `json.load` → `HashEntry`; `cache_file = project_path / cache_path`
+- **Trace:** Planted `.asgard-cache.json` `result` reused; absolute `cache_path` replaces the project root
+- **Impact:** Skip re-analysis / inject cached results. Same class as CH-0036.
+- **Evidence:** No HMAC; `store_results` default True; no `is_relative_to`.
+- **Planned fix:** HMAC; refuse abs/`..` cache paths; default `store_results=False` for gates. Tests with planted `result`.
+- **Fix wave:** W3
 
 ## Planned fix waves
 
@@ -1646,6 +1691,11 @@ None yet.
 - Batch 13 merged (2026-08-16): remaining Heimdall CLI handlers/subparsers/evaluation/treesitter + HooksSetup + MCP + Reporting History/PR/HTML. remaining=2655 completed=1220 ledger=1220. Highest ID: CH-0095.
 - Batch 14 merged (2026-08-16): Reporting html_generator + Shared Init/Issues/Profiles/common + Verdandi APM/Analysis/Anomaly/Cache. remaining=2575 completed=1300 ledger=1300. Highest ID: CH-0101.
 - Batch 15 merged (2026-08-16): Verdandi Database/Network/SLO/System/Tracing/Trend/Web + CLI parsers. remaining=2495 completed=1380 ledger=1380. Highest ID: CH-0101.
+- Batch 16 merged (2026-08-16): Verdandi CLI handlers + Volundr CICD/Compose/Docker/GitOps/Helm/K8s/Kustomize. remaining=2431 completed=1444 ledger=1444. Highest ID: CH-0106.
+- Spot-check: dockerfile f-string newline (CH-0102); Jenkins `sh '''` (CH-0103); Helm `{name}` in define (CH-0104).
+- **RESUME:** remaining=2431. Next: `Asgard/Volundr/Kustomize/services/patch_generator_helpers.py` then Scaffold, remaining Volundr, Asgard CLI/common, `_FutureItems-Security`, `scripts/`, then Asgard_Test (~2289). Do not rebuild inventory. `python3 scripts/cyberhardening_inventory.py status` / `next 8`. Do not implement fixes.
+- Batch 17 merged (2026-08-16): Volundr Scaffold/Terraform/Validation + Asgard CLI/common start. remaining=2351 completed=1524 ledger=1524. Highest ID: CH-0109.
+- **Successor:** remaining=2351. Next: `Asgard/common/_parallel_types.py` then `baseline.py` / `incremental.py` / `config/` then `_FutureItems-Security`, `architecture.yml`, `scripts/cyberhardening_inventory.py`, then Asgard_Test. Do not rebuild inventory. Do not implement fixes.
 - Spot-check: dns_calculator offline (no dig); cgroup_analyzer no /proc I/O; SLO empty=healthy extended CH-0098; tracing cycle walks extended CH-0101.
 - Next: Verdandi cli/handlers_* then Volundr CICD (action_pins / CH-0001) then rest of Volundr / Asgard_Test.
 - Spot-check: html_generator no escape (CH-0046); `_new_code_git` unisolated (CH-0024); `calculate_compliance_rate([])==100` (CH-0098); profile `..` still not exploitable.

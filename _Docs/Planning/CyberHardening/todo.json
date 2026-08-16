@@ -2,491 +2,11 @@
   "version": 1,
   "repo_root": ".",
   "generated_at": "2026-08-16T07:04:47+00:00",
-  "updated_at": "2026-08-16T08:44:18+00:00",
+  "updated_at": "2026-08-16T08:47:35+00:00",
   "planning_dir": "_Docs/Planning",
   "plan_path": "_Docs/Planning/CyberHardening.md",
   "total_discovered": 3875,
   "remaining": [
-    {
-      "path": "Asgard/Volundr/Kustomize/services/patch_generator_helpers.py",
-      "bytes": 8163,
-      "sha256": "89b4298823a553476e63e7669ee8ac6cca09f08e681e7e02c5468fea89e702a5",
-      "mtime": "2026-03-20T02:49:13+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/__init__.py",
-      "bytes": 705,
-      "sha256": "5d5e8087af010caad76c7148dfde9554f1007f41513e47641a63e561f86f920a",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/models/__init__.py",
-      "bytes": 377,
-      "sha256": "ac073ec0ecd29d5209182c7862c253e94ea4d646c7adb7b0b4bc815f7362a26f",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/models/scaffold_models.py",
-      "bytes": 6872,
-      "sha256": "543aa692c1a1cac4d0ad8973979fb7475692187d280aed253995b555489ffd88",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/services/__init__.py",
-      "bytes": 316,
-      "sha256": "5cbec2fec2bfebc78913d8922120f9c3af928f7e19ca25570e08898a06b1eeb4",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/services/_microservice_common_templates.py",
-      "bytes": 4500,
-      "sha256": "229a5ad1a05e6b885792c222e2d6c0988fae6c69de63e1e875687d1adf68f42e",
-      "mtime": "2026-03-21T02:08:06+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/services/_microservice_python_templates.py",
-      "bytes": 6163,
-      "sha256": "d4619b2bc6c9c318c395c5d28c53d096d07bc7588aaaead8f156fd9bbeb3c9ee",
-      "mtime": "2026-03-21T02:08:06+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/services/_microservice_ts_go_templates.py",
-      "bytes": 4392,
-      "sha256": "95782e893c850b2984577ff3068f8025a79861c40d22ce17aff0f4783c8fda0b",
-      "mtime": "2026-03-22T07:35:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/services/_microservice_ts_go_templates_part2.py",
-      "bytes": 3740,
-      "sha256": "e7d8248adcd876430f3028af423dfb24d9827163535d9afcb766755336602f67",
-      "mtime": "2026-03-22T07:35:34+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/services/_monorepo_config_templates.py",
-      "bytes": 4717,
-      "sha256": "5e7abe6106ac1ef12633d05b1fcd2b550eab7c4a10d304b5b8ee8c579c07e00a",
-      "mtime": "2026-03-21T02:08:06+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/services/_monorepo_infra_templates.py",
-      "bytes": 4344,
-      "sha256": "c34700d7faa06c567fac57244231e4b13919e3b3556e96559355d4927ba80997",
-      "mtime": "2026-03-22T07:56:53+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/services/_monorepo_infra_templates_part2.py",
-      "bytes": 2482,
-      "sha256": "ce25588af23aa89a7ec66eff7a22862329e87c6992b71f10337c485c2de6f7a4",
-      "mtime": "2026-03-22T07:56:32+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/services/microservice_scaffold.py",
-      "bytes": 2878,
-      "sha256": "962af00f0dfd2d3e0e8f64fdad140d65463e8c5272595fe8375ec4998b400cc0",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/services/microservice_scaffold_helpers.py",
-      "bytes": 1169,
-      "sha256": "a944ebab91a93f553c4fd9de0c648460a9f56069e81b03a9d094824872f75208",
-      "mtime": "2026-03-22T07:36:08+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/services/monorepo_scaffold.py",
-      "bytes": 11637,
-      "sha256": "18e6dead5531e0ee34f3a809dc65c858f209dee344d9810d5cd7bcf9a2fc95dc",
-      "mtime": "2026-04-16T04:51:34+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Scaffold/services/monorepo_scaffold_helpers.py",
-      "bytes": 785,
-      "sha256": "002f17389fc42ebf0c8a3fd76fc7596c5379eaa9e9378fecfeed40496a03ae1c",
-      "mtime": "2026-03-22T07:57:03+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Terraform/__init__.py",
-      "bytes": 758,
-      "sha256": "02aa2629c1f3e93a0507a021b6075354d49b5f81991b01af7e55137f08adee8e",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Terraform/models/__init__.py",
-      "bytes": 421,
-      "sha256": "eafcda7fce52f83abc013f833c76de797160a1ee70a2e90eb49599af77ea6af2",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Terraform/models/terraform_models.py",
-      "bytes": 5586,
-      "sha256": "6229457afc392863ed4c63fbd4529b398edfe0331becd4d9a293f33e7922130d",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Terraform/services/__init__.py",
-      "bytes": 160,
-      "sha256": "63a1b0c98cbb2f55593499fcbe129222853e86a36e7a72e1d42690de554e1c8a",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Terraform/services/_module_builder_blocks.py",
-      "bytes": 12263,
-      "sha256": "0c6bbc93b6deab5adce0c3522baa5f9b6814c20a24eb323af3b1213550d405da",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Terraform/services/_module_builder_blocks_part2.py",
-      "bytes": 4543,
-      "sha256": "2608fbd8df1a84f740e1913b93b40b4cbe84d5ca938bc7a04c1a16e4df60c0cb",
-      "mtime": "2026-03-22T08:00:25+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Terraform/services/_module_builder_generators.py",
-      "bytes": 6962,
-      "sha256": "4b5facfc610ecc0d852f2fa71951ac17f55c4ec936c0f236faf42d2b98026e5f",
-      "mtime": "2026-03-21T02:08:06+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Terraform/services/module_builder.py",
-      "bytes": 5880,
-      "sha256": "36974502a33f5342016edf94c5ea30ef4f6b005739eb737f54febefe2222444b",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Terraform/services/module_builder_helpers.py",
-      "bytes": 677,
-      "sha256": "f080d7c8599fa7d4104f8ad20b227f826f27ed0fbceba7c1f7802e6c6205acfa",
-      "mtime": "2026-03-22T08:01:02+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/__init__.py",
-      "bytes": 3156,
-      "sha256": "6b82739113e2485fcd8424c3a80899fa94ef45f2bcf24d46fa76f5b4aeece6c3",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/models/__init__.py",
-      "bytes": 397,
-      "sha256": "1aabb9a9e6ad7dec3d59590b1b3985e5c093fb41f03e54f1cf9c30431886c0f0",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/models/canonical_models.py",
-      "bytes": 5646,
-      "sha256": "aad79636f9ef7be1f4bf659c9664f3806142fdad330a4c74c789834c67ef2e6b",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/models/rule_registry.py",
-      "bytes": 35038,
-      "sha256": "9a8fb3d8dea5976295b79bf1f4d0715ae641cd96bf9b3897040b56e9fac5dd65",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/models/score_models.py",
-      "bytes": 5327,
-      "sha256": "bcefddb77a2dabcf2ff9b57735b42911364ec24b6aa21bb59322fa9785848668",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/models/suppression_models.py",
-      "bytes": 2903,
-      "sha256": "b0a6fd60098bec01a5a81b0eda6473887b9b924de186beaefcdbe4d6f3588c40",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/models/validation_models.py",
-      "bytes": 7107,
-      "sha256": "a38b557fb626a49cdda2a181aa194c35f27a8970526065ec2ac05cdfe4a8e079",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/__init__.py",
-      "bytes": 442,
-      "sha256": "d9377a7dd8802c49feb4a727d35a772401a44f5a9d5af016ed5ef6eddaab46cf",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/_dockerfile_validator_report.py",
-      "bytes": 2499,
-      "sha256": "44844ff285ff033b7f0a88a520117e6e318161b77ca2b7c188528dedd24d6b87",
-      "mtime": "2026-03-22T07:36:30+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/_terraform_aws_validators.py",
-      "bytes": 6072,
-      "sha256": "57799403d22a1aff288c3cc2808c9b0a49b49a3a785c193873f2d21260c3d611",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/_terraform_cloud_validators.py",
-      "bytes": 2348,
-      "sha256": "ec116e70197abddb30bd00f6f1c5798afe356d5c9b25f9cf8bc4eb9690b7ed9e",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/_terraform_validator_report.py",
-      "bytes": 2453,
-      "sha256": "6637e69a17439b14c573d4e5d4a93c8b00ece300b081be77af8be67d34817b63",
-      "mtime": "2026-03-22T07:29:11+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/dockerfile_validator.py",
-      "bytes": 8134,
-      "sha256": "32fa4ede0108c32e4b0cc21bff118255f005a0f443d2cb67e693d047edb2e507",
-      "mtime": "2026-03-22T07:37:00+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/dockerfile_validator_helpers.py",
-      "bytes": 10721,
-      "sha256": "375459cc536f7f9ee0c89964794e21c8d4bf29ec930907ba1c317dfc7b480d1b",
-      "mtime": "2026-03-22T07:36:45+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/external_tools.py",
-      "bytes": 4671,
-      "sha256": "d7703757a2a2b1cda571f3a09d4165b67c80b6eba33a13c3513ee33169d6d76c",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/kubernetes_validator.py",
-      "bytes": 8315,
-      "sha256": "d0b03d58e040a5dbb240504c9b3289327de3979a90cd34d2e4ca731243fc8e50",
-      "mtime": "2026-03-20T02:46:05+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/kubernetes_validator_helpers.py",
-      "bytes": 11407,
-      "sha256": "d6032f237ed56d4d64803c98b370f50347d900263e96a5816345fc70c3336bf6",
-      "mtime": "2026-03-22T07:28:05+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/normalizers/__init__.py",
-      "bytes": 944,
-      "sha256": "cde6512e56a69adfd7f2a7c9f620a6ab2fc8f718729c8184642aca6212d22de7",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/normalizers/compose_normalizer.py",
-      "bytes": 1982,
-      "sha256": "c5b3a258d60187dd84c5b2be182ba1b0b633a23ddbbc93767b175d370374a20a",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/normalizers/k8s_normalizer.py",
-      "bytes": 4704,
-      "sha256": "cb4691686fb255dce39ab83b90e52ac86c69bc9594ebd5e77b4e396537e7d202",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/normalizers/pipeline_normalizer.py",
-      "bytes": 6007,
-      "sha256": "a44ee241febb9f071722d3bc028ea987004dbfdf303bfe74ffe0c35be168f8ce",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/posture_index.py",
-      "bytes": 5339,
-      "sha256": "6ca150cffe2b52b11b27d17a0035af903e2b421da9c81e3184dd686b5565ac00",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/render_pipeline.py",
-      "bytes": 5635,
-      "sha256": "f21e31cdf45b57041961f48b806f956f2cfd4ddcec34106fa676da74db744496",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/report_emitters.py",
-      "bytes": 4903,
-      "sha256": "e520413d2e755013cb7690dcdaf5ed643d062946c108e1e05e2539da23d5884a",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/schema_binder.py",
-      "bytes": 9374,
-      "sha256": "fcc8c8149b95187ad26189f287d157e6d8ceb61265e6362e773d1f88749ca824",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/scoring_engine.py",
-      "bytes": 10737,
-      "sha256": "faff6d572ddf2cfad41e1ca600ed43b0419700aeea021b6cfab4085a93fc1e4e",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/scoring_profiles.py",
-      "bytes": 1711,
-      "sha256": "1807aadcb9e699b84f14f4a799f6102fd27a1f0054e947b5798f2b9e0bc6e476",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/semantic_policies.py",
-      "bytes": 13496,
-      "sha256": "57c75a85effda8779fa3019eb8c011cbc2b4aed7b46f53d2fd4165252118a070",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/suppression_engine.py",
-      "bytes": 7368,
-      "sha256": "95e607b293b963f07c3073f05c69b0086238d2bd3b7df894c120bd3856f9abfd",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/terraform_plan_reader.py",
-      "bytes": 12938,
-      "sha256": "882f784d8c0cc327b3cf1b7454716472d1a7a20ea6079c04953b78b93eb99e11",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/terraform_validator.py",
-      "bytes": 8878,
-      "sha256": "00b20dfcfddb18d1cd0a771936d1103c091c9e82dd3c5fef4d5e6c5d24ae49e3",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/terraform_validator_helpers.py",
-      "bytes": 8290,
-      "sha256": "0316d99374c8a23be011f6f8136a4ad7a762bfb2cfa67f3429fb5c6c5f2e3bec",
-      "mtime": "2026-03-22T07:51:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Validation/services/validation_engine.py",
-      "bytes": 10687,
-      "sha256": "2ef21ff3462014b08249612be1e733d0b0d458e0fb63a0530fc6c285fa20b3eb",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/__init__.py",
-      "bytes": 7575,
-      "sha256": "125af5ad605576e2d56bb28b1aed0a555890367e82994d0b316d4c10f326238c",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/__main__.py",
-      "bytes": 163,
-      "sha256": "39fdf79b7f5d21360c8024f57690f266be0bcf5f32d78251fbc257876b7d61d2",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/cli/__init__.py",
-      "bytes": 6967,
-      "sha256": "1769c9d0e6b7016950877a3d72881da20064e5201cea6e85a383e3d645839557",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/cli/_parser.py",
-      "bytes": 1969,
-      "sha256": "5aa03714d3972da87916d0234dc30df5e5c6d67ebde61bd1ed2e1cb089ee594a",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/cli/_parser_commands_1.py",
-      "bytes": 8101,
-      "sha256": "016526138c1091ee0137ceb1ad5951fb03316b4910fb1a6ac05e8dd27a421553",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/cli/_parser_commands_2.py",
-      "bytes": 12964,
-      "sha256": "3af1bcbe6f17139fc7b0f708c2037fa25bcd3c894f873126c436aec222ac6497",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/cli/_parser_flags.py",
-      "bytes": 991,
-      "sha256": "c0feaf249f2278cb375beb8e902e0ca9f9599030ae169fac7d4e1a79489f1c3e",
-      "mtime": "2026-03-20T01:48:36+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/cli/handlers_compose_validate_scaffold.py",
-      "bytes": 8915,
-      "sha256": "85953cfd462ee89dae25ded71f7b3bfb33bb4d4cb922d24b6ee34f74304b4ba8",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/cli/handlers_gitops.py",
-      "bytes": 10464,
-      "sha256": "014b8a45bb66c21da526de61f41692c476d3ff9b444fc56dd261dc2946ecaff2",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/cli/handlers_infra.py",
-      "bytes": 10630,
-      "sha256": "126cb5408d132047a0c1057eb79b43c83c8460e692f7773d0b34d3a8e928a024",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/cli/handlers_posture.py",
-      "bytes": 6627,
-      "sha256": "9da26df7ac39e509a26d6630167a9e571343ffce1c9c85449bf286263fc98ab1",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/cli/handlers_score_gitops.py",
-      "bytes": 12462,
-      "sha256": "fab9706cb4d8305191cd8c38fdf7f44c9fd3ad6facb0cb90026ca9b1dcf2b7d7",
-      "mtime": "2026-08-13T11:26:19+00:00"
-    },
-    {
-      "path": "Asgard/__init__.py",
-      "bytes": 1151,
-      "sha256": "81dffe1d91896e8aee40c309227c9ac3db9fd0dcf24eab8e3d2948dfcaee6ebe",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/_cli_handlers.py",
-      "bytes": 3415,
-      "sha256": "519aaa870d56067112350ebbefe03fddf510bd5067486aa157d5996cdc6b1c56",
-      "mtime": "2026-03-20T02:59:17+00:00"
-    },
-    {
-      "path": "Asgard/_cli_help.py",
-      "bytes": 12557,
-      "sha256": "6f153d5b5d51240781fd625a0c295af13a107c4d735c3efb73b2d5060dd94f6e",
-      "mtime": "2026-03-20T02:59:01+00:00"
-    },
-    {
-      "path": "Asgard/cli.py",
-      "bytes": 9465,
-      "sha256": "6532167e2a49260c841761e44d326aabc5d082ed17fdcb126971395c09752132",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/common/__init__.py",
-      "bytes": 1645,
-      "sha256": "6706fb9d265c1516d62a1e31af10cd009826676c4aa2f10cfad56376bdf7f6d4",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/common/_baseline_models.py",
-      "bytes": 4723,
-      "sha256": "54f0a0b2c8a2e5bb1e445ec8f556921af5e4d5cada78586f7fe2850bf06f4c14",
-      "mtime": "2026-03-20T02:47:22+00:00"
-    },
-    {
-      "path": "Asgard/common/_format_methods.py",
-      "bytes": 8218,
-      "sha256": "79345f0c317ea30e1cec6012f8799ba44f144658c01985a3f9f6f19889a68fac",
-      "mtime": "2026-03-20T02:46:48+00:00"
-    },
-    {
-      "path": "Asgard/common/_formatter_types.py",
-      "bytes": 2614,
-      "sha256": "68b8667ba58ec910b4ca6d6ab2019b3710571c3f8c5865ac87f49067a95768eb",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/common/_hash_cache.py",
-      "bytes": 8637,
-      "sha256": "98199d68e6eec20fc8fa44d6bed11af77d0f4855c4725c923807d20a7962283d",
-      "mtime": "2026-03-20T02:55:58+00:00"
-    },
-    {
-      "path": "Asgard/common/_incremental_models.py",
-      "bytes": 866,
-      "sha256": "df0eaf66a81876ee48877b30c7045bce95748b6e87143ca98ccfd445f74bae62",
-      "mtime": "2026-03-20T02:49:55+00:00"
-    },
     {
       "path": "Asgard/common/_parallel_types.py",
       "bytes": 2380,
@@ -26720,6 +26240,670 @@
       "disposition": "clean",
       "bytes": 5823,
       "sha256": "ced79e27959229a9aeb5e5ca21eb66f22727700d2a4750c8dd3fdd1786667981"
+    },
+    {
+      "path": "Asgard/Volundr/Kustomize/services/patch_generator_helpers.py",
+      "completed_at": "2026-08-16T08:47:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8163,
+      "sha256": "89b4298823a553476e63e7669ee8ac6cca09f08e681e7e02c5468fea89e702a5"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/__init__.py",
+      "completed_at": "2026-08-16T08:47:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 705,
+      "sha256": "5d5e8087af010caad76c7148dfde9554f1007f41513e47641a63e561f86f920a"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/models/__init__.py",
+      "completed_at": "2026-08-16T08:47:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 377,
+      "sha256": "ac073ec0ecd29d5209182c7862c253e94ea4d646c7adb7b0b4bc815f7362a26f"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/models/scaffold_models.py",
+      "completed_at": "2026-08-16T08:47:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6872,
+      "sha256": "543aa692c1a1cac4d0ad8973979fb7475692187d280aed253995b555489ffd88"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/services/__init__.py",
+      "completed_at": "2026-08-16T08:47:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 316,
+      "sha256": "5cbec2fec2bfebc78913d8922120f9c3af928f7e19ca25570e08898a06b1eeb4"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/services/_microservice_common_templates.py",
+      "completed_at": "2026-08-16T08:47:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4500,
+      "sha256": "229a5ad1a05e6b885792c222e2d6c0988fae6c69de63e1e875687d1adf68f42e"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/services/_microservice_python_templates.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [
+        "CH-0096"
+      ],
+      "disposition": "findings",
+      "bytes": 6163,
+      "sha256": "d4619b2bc6c9c318c395c5d28c53d096d07bc7588aaaead8f156fd9bbeb3c9ee"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/services/_microservice_ts_go_templates.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4392,
+      "sha256": "95782e893c850b2984577ff3068f8025a79861c40d22ce17aff0f4783c8fda0b"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/services/_microservice_ts_go_templates_part2.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3740,
+      "sha256": "e7d8248adcd876430f3028af423dfb24d9827163535d9afcb766755336602f67"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/services/_monorepo_config_templates.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [
+        "CH-0096"
+      ],
+      "disposition": "findings",
+      "bytes": 4717,
+      "sha256": "5e7abe6106ac1ef12633d05b1fcd2b550eab7c4a10d304b5b8ee8c579c07e00a"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/services/_monorepo_infra_templates.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4344,
+      "sha256": "c34700d7faa06c567fac57244231e4b13919e3b3556e96559355d4927ba80997"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/services/_monorepo_infra_templates_part2.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2482,
+      "sha256": "ce25588af23aa89a7ec66eff7a22862329e87c6992b71f10337c485c2de6f7a4"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/services/microservice_scaffold.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [
+        "CH-0106"
+      ],
+      "disposition": "findings",
+      "bytes": 2878,
+      "sha256": "962af00f0dfd2d3e0e8f64fdad140d65463e8c5272595fe8375ec4998b400cc0"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/services/microservice_scaffold_helpers.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1169,
+      "sha256": "a944ebab91a93f553c4fd9de0c648460a9f56069e81b03a9d094824872f75208"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/services/monorepo_scaffold.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [
+        "CH-0106"
+      ],
+      "disposition": "findings",
+      "bytes": 11637,
+      "sha256": "18e6dead5531e0ee34f3a809dc65c858f209dee344d9810d5cd7bcf9a2fc95dc"
+    },
+    {
+      "path": "Asgard/Volundr/Scaffold/services/monorepo_scaffold_helpers.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 785,
+      "sha256": "002f17389fc42ebf0c8a3fd76fc7596c5379eaa9e9378fecfeed40496a03ae1c"
+    },
+    {
+      "path": "Asgard/Volundr/Terraform/__init__.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 758,
+      "sha256": "02aa2629c1f3e93a0507a021b6075354d49b5f81991b01af7e55137f08adee8e"
+    },
+    {
+      "path": "Asgard/Volundr/Terraform/models/__init__.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 421,
+      "sha256": "eafcda7fce52f83abc013f833c76de797160a1ee70a2e90eb49599af77ea6af2"
+    },
+    {
+      "path": "Asgard/Volundr/Terraform/models/terraform_models.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5586,
+      "sha256": "6229457afc392863ed4c63fbd4529b398edfe0331becd4d9a293f33e7922130d"
+    },
+    {
+      "path": "Asgard/Volundr/Terraform/services/__init__.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 160,
+      "sha256": "63a1b0c98cbb2f55593499fcbe129222853e86a36e7a72e1d42690de554e1c8a"
+    },
+    {
+      "path": "Asgard/Volundr/Terraform/services/_module_builder_blocks.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [
+        "CH-0108"
+      ],
+      "disposition": "findings",
+      "bytes": 12263,
+      "sha256": "0c6bbc93b6deab5adce0c3522baa5f9b6814c20a24eb323af3b1213550d405da"
+    },
+    {
+      "path": "Asgard/Volundr/Terraform/services/_module_builder_blocks_part2.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4543,
+      "sha256": "2608fbd8df1a84f740e1913b93b40b4cbe84d5ca938bc7a04c1a16e4df60c0cb"
+    },
+    {
+      "path": "Asgard/Volundr/Terraform/services/_module_builder_generators.py",
+      "completed_at": "2026-08-16T08:47:31+00:00",
+      "finding_ids": [
+        "CH-0108"
+      ],
+      "disposition": "findings",
+      "bytes": 6962,
+      "sha256": "4b5facfc610ecc0d852f2fa71951ac17f55c4ec936c0f236faf42d2b98026e5f"
+    },
+    {
+      "path": "Asgard/Volundr/Terraform/services/module_builder.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5880,
+      "sha256": "36974502a33f5342016edf94c5ea30ef4f6b005739eb737f54febefe2222444b"
+    },
+    {
+      "path": "Asgard/Volundr/Terraform/services/module_builder_helpers.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 677,
+      "sha256": "f080d7c8599fa7d4104f8ad20b227f826f27ed0fbceba7c1f7802e6c6205acfa"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/__init__.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3156,
+      "sha256": "6b82739113e2485fcd8424c3a80899fa94ef45f2bcf24d46fa76f5b4aeece6c3"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/models/__init__.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 397,
+      "sha256": "1aabb9a9e6ad7dec3d59590b1b3985e5c093fb41f03e54f1cf9c30431886c0f0"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/models/canonical_models.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5646,
+      "sha256": "aad79636f9ef7be1f4bf659c9664f3806142fdad330a4c74c789834c67ef2e6b"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/models/rule_registry.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 35038,
+      "sha256": "9a8fb3d8dea5976295b79bf1f4d0715ae641cd96bf9b3897040b56e9fac5dd65"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/models/score_models.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5327,
+      "sha256": "bcefddb77a2dabcf2ff9b57735b42911364ec24b6aa21bb59322fa9785848668"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/models/suppression_models.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [
+        "CH-0107"
+      ],
+      "disposition": "findings",
+      "bytes": 2903,
+      "sha256": "b0a6fd60098bec01a5a81b0eda6473887b9b924de186beaefcdbe4d6f3588c40"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/models/validation_models.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7107,
+      "sha256": "a38b557fb626a49cdda2a181aa194c35f27a8970526065ec2ac05cdfe4a8e079"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/__init__.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 442,
+      "sha256": "d9377a7dd8802c49feb4a727d35a772401a44f5a9d5af016ed5ef6eddaab46cf"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/_dockerfile_validator_report.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2499,
+      "sha256": "44844ff285ff033b7f0a88a520117e6e318161b77ca2b7c188528dedd24d6b87"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/_terraform_aws_validators.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6072,
+      "sha256": "57799403d22a1aff288c3cc2808c9b0a49b49a3a785c193873f2d21260c3d611"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/_terraform_cloud_validators.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2348,
+      "sha256": "ec116e70197abddb30bd00f6f1c5798afe356d5c9b25f9cf8bc4eb9690b7ed9e"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/_terraform_validator_report.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2453,
+      "sha256": "6637e69a17439b14c573d4e5d4a93c8b00ece300b081be77af8be67d34817b63"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/dockerfile_validator.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8134,
+      "sha256": "32fa4ede0108c32e4b0cc21bff118255f005a0f443d2cb67e693d047edb2e507"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/dockerfile_validator_helpers.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10721,
+      "sha256": "375459cc536f7f9ee0c89964794e21c8d4bf29ec930907ba1c317dfc7b480d1b"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/external_tools.py",
+      "completed_at": "2026-08-16T08:47:32+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4671,
+      "sha256": "d7703757a2a2b1cda571f3a09d4165b67c80b6eba33a13c3513ee33169d6d76c"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/kubernetes_validator.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8315,
+      "sha256": "d0b03d58e040a5dbb240504c9b3289327de3979a90cd34d2e4ca731243fc8e50"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/kubernetes_validator_helpers.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11407,
+      "sha256": "d6032f237ed56d4d64803c98b370f50347d900263e96a5816345fc70c3336bf6"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/normalizers/__init__.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 944,
+      "sha256": "cde6512e56a69adfd7f2a7c9f620a6ab2fc8f718729c8184642aca6212d22de7"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/normalizers/compose_normalizer.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1982,
+      "sha256": "c5b3a258d60187dd84c5b2be182ba1b0b633a23ddbbc93767b175d370374a20a"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/normalizers/k8s_normalizer.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4704,
+      "sha256": "cb4691686fb255dce39ab83b90e52ac86c69bc9594ebd5e77b4e396537e7d202"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/normalizers/pipeline_normalizer.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6007,
+      "sha256": "a44ee241febb9f071722d3bc028ea987004dbfdf303bfe74ffe0c35be168f8ce"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/posture_index.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5339,
+      "sha256": "6ca150cffe2b52b11b27d17a0035af903e2b421da9c81e3184dd686b5565ac00"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/render_pipeline.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5635,
+      "sha256": "f21e31cdf45b57041961f48b806f956f2cfd4ddcec34106fa676da74db744496"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/report_emitters.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4903,
+      "sha256": "e520413d2e755013cb7690dcdaf5ed643d062946c108e1e05e2539da23d5884a"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/schema_binder.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9374,
+      "sha256": "fcc8c8149b95187ad26189f287d157e6d8ceb61265e6362e773d1f88749ca824"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/scoring_engine.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10737,
+      "sha256": "faff6d572ddf2cfad41e1ca600ed43b0419700aeea021b6cfab4085a93fc1e4e"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/scoring_profiles.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1711,
+      "sha256": "1807aadcb9e699b84f14f4a799f6102fd27a1f0054e947b5798f2b9e0bc6e476"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/semantic_policies.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 13496,
+      "sha256": "57c75a85effda8779fa3019eb8c011cbc2b4aed7b46f53d2fd4165252118a070"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/suppression_engine.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [
+        "CH-0107"
+      ],
+      "disposition": "findings",
+      "bytes": 7368,
+      "sha256": "95e607b293b963f07c3073f05c69b0086238d2bd3b7df894c120bd3856f9abfd"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/terraform_plan_reader.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 12938,
+      "sha256": "882f784d8c0cc327b3cf1b7454716472d1a7a20ea6079c04953b78b93eb99e11"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/terraform_validator.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8878,
+      "sha256": "00b20dfcfddb18d1cd0a771936d1103c091c9e82dd3c5fef4d5e6c5d24ae49e3"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/terraform_validator_helpers.py",
+      "completed_at": "2026-08-16T08:47:33+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8290,
+      "sha256": "0316d99374c8a23be011f6f8136a4ad7a762bfb2cfa67f3429fb5c6c5f2e3bec"
+    },
+    {
+      "path": "Asgard/Volundr/Validation/services/validation_engine.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [
+        "CH-0107"
+      ],
+      "disposition": "findings",
+      "bytes": 10687,
+      "sha256": "2ef21ff3462014b08249612be1e733d0b0d458e0fb63a0530fc6c285fa20b3eb"
+    },
+    {
+      "path": "Asgard/Volundr/__init__.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7575,
+      "sha256": "125af5ad605576e2d56bb28b1aed0a555890367e82994d0b316d4c10f326238c"
+    },
+    {
+      "path": "Asgard/Volundr/__main__.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 163,
+      "sha256": "39fdf79b7f5d21360c8024f57690f266be0bcf5f32d78251fbc257876b7d61d2"
+    },
+    {
+      "path": "Asgard/Volundr/cli/__init__.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6967,
+      "sha256": "1769c9d0e6b7016950877a3d72881da20064e5201cea6e85a383e3d645839557"
+    },
+    {
+      "path": "Asgard/Volundr/cli/_parser.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1969,
+      "sha256": "5aa03714d3972da87916d0234dc30df5e5c6d67ebde61bd1ed2e1cb089ee594a"
+    },
+    {
+      "path": "Asgard/Volundr/cli/_parser_commands_1.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8101,
+      "sha256": "016526138c1091ee0137ceb1ad5951fb03316b4910fb1a6ac05e8dd27a421553"
+    },
+    {
+      "path": "Asgard/Volundr/cli/_parser_commands_2.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 12964,
+      "sha256": "3af1bcbe6f17139fc7b0f708c2037fa25bcd3c894f873126c436aec222ac6497"
+    },
+    {
+      "path": "Asgard/Volundr/cli/_parser_flags.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 991,
+      "sha256": "c0feaf249f2278cb375beb8e902e0ca9f9599030ae169fac7d4e1a79489f1c3e"
+    },
+    {
+      "path": "Asgard/Volundr/cli/handlers_compose_validate_scaffold.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8915,
+      "sha256": "85953cfd462ee89dae25ded71f7b3bfb33bb4d4cb922d24b6ee34f74304b4ba8"
+    },
+    {
+      "path": "Asgard/Volundr/cli/handlers_gitops.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10464,
+      "sha256": "014b8a45bb66c21da526de61f41692c476d3ff9b444fc56dd261dc2946ecaff2"
+    },
+    {
+      "path": "Asgard/Volundr/cli/handlers_infra.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10630,
+      "sha256": "126cb5408d132047a0c1057eb79b43c83c8460e692f7773d0b34d3a8e928a024"
+    },
+    {
+      "path": "Asgard/Volundr/cli/handlers_posture.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6627,
+      "sha256": "9da26df7ac39e509a26d6630167a9e571343ffce1c9c85449bf286263fc98ab1"
+    },
+    {
+      "path": "Asgard/Volundr/cli/handlers_score_gitops.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 12462,
+      "sha256": "fab9706cb4d8305191cd8c38fdf7f44c9fd3ad6facb0cb90026ca9b1dcf2b7d7"
+    },
+    {
+      "path": "Asgard/__init__.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1151,
+      "sha256": "81dffe1d91896e8aee40c309227c9ac3db9fd0dcf24eab8e3d2948dfcaee6ebe"
+    },
+    {
+      "path": "Asgard/_cli_handlers.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3415,
+      "sha256": "519aaa870d56067112350ebbefe03fddf510bd5067486aa157d5996cdc6b1c56"
+    },
+    {
+      "path": "Asgard/_cli_help.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 12557,
+      "sha256": "6f153d5b5d51240781fd625a0c295af13a107c4d735c3efb73b2d5060dd94f6e"
+    },
+    {
+      "path": "Asgard/cli.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9465,
+      "sha256": "6532167e2a49260c841761e44d326aabc5d082ed17fdcb126971395c09752132"
+    },
+    {
+      "path": "Asgard/common/__init__.py",
+      "completed_at": "2026-08-16T08:47:34+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1645,
+      "sha256": "6706fb9d265c1516d62a1e31af10cd009826676c4aa2f10cfad56376bdf7f6d4"
+    },
+    {
+      "path": "Asgard/common/_baseline_models.py",
+      "completed_at": "2026-08-16T08:47:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4723,
+      "sha256": "54f0a0b2c8a2e5bb1e445ec8f556921af5e4d5cada78586f7fe2850bf06f4c14"
+    },
+    {
+      "path": "Asgard/common/_format_methods.py",
+      "completed_at": "2026-08-16T08:47:35+00:00",
+      "finding_ids": [
+        "CH-0094"
+      ],
+      "disposition": "findings",
+      "bytes": 8218,
+      "sha256": "79345f0c317ea30e1cec6012f8799ba44f144658c01985a3f9f6f19889a68fac"
+    },
+    {
+      "path": "Asgard/common/_formatter_types.py",
+      "completed_at": "2026-08-16T08:47:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2614,
+      "sha256": "68b8667ba58ec910b4ca6d6ab2019b3710571c3f8c5865ac87f49067a95768eb"
+    },
+    {
+      "path": "Asgard/common/_hash_cache.py",
+      "completed_at": "2026-08-16T08:47:35+00:00",
+      "finding_ids": [
+        "CH-0109"
+      ],
+      "disposition": "findings",
+      "bytes": 8637,
+      "sha256": "98199d68e6eec20fc8fa44d6bed11af77d0f4855c4725c923807d20a7962283d"
+    },
+    {
+      "path": "Asgard/common/_incremental_models.py",
+      "completed_at": "2026-08-16T08:47:35+00:00",
+      "finding_ids": [
+        "CH-0109"
+      ],
+      "disposition": "findings",
+      "bytes": 866,
+      "sha256": "df0eaf66a81876ee48877b30c7045bce95748b6e87143ca98ccfd445f74bae62"
     }
   ]
 }

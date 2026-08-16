@@ -1442,3 +1442,83 @@
 {"path":"Asgard/Volundr/Kustomize/services/overlay_generator.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
 {"path":"Asgard/Volundr/Kustomize/services/overlay_generator_helpers.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
 {"path":"Asgard/Volundr/Kustomize/services/patch_generator.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kustomize/services/patch_generator_helpers.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Scaffold/__init__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Scaffold/models/__init__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Scaffold/models/scaffold_models.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Scaffold/services/__init__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Scaffold/services/_microservice_common_templates.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Scaffold/services/_microservice_python_templates.py","at":"2026-08-16T08:47:30Z","disposition":"findings","finding_ids":["CH-0096"],"summary":"name into TOML/Python"}
+{"path":"Asgard/Volundr/Scaffold/services/_microservice_ts_go_templates.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Scaffold/services/_microservice_ts_go_templates_part2.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Scaffold/services/_monorepo_config_templates.py","at":"2026-08-16T08:47:30Z","disposition":"findings","finding_ids":["CH-0096"],"summary":"name into Makefile"}
+{"path":"Asgard/Volundr/Scaffold/services/_monorepo_infra_templates.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Scaffold/services/_monorepo_infra_templates_part2.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Scaffold/services/microservice_scaffold.py","at":"2026-08-16T08:47:30Z","disposition":"findings","finding_ids":["CH-0106"],"summary":"save_to_directory unjailed join"}
+{"path":"Asgard/Volundr/Scaffold/services/microservice_scaffold_helpers.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Scaffold/services/monorepo_scaffold.py","at":"2026-08-16T08:47:30Z","disposition":"findings","finding_ids":["CH-0106"],"summary":"writer unjailed join"}
+{"path":"Asgard/Volundr/Scaffold/services/monorepo_scaffold_helpers.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Terraform/__init__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Terraform/models/__init__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Terraform/models/terraform_models.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Terraform/services/__init__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Terraform/services/_module_builder_blocks.py","at":"2026-08-16T08:47:30Z","disposition":"findings","finding_ids":["CH-0108"],"summary":"SG 0.0.0.0/0 egress"}
+{"path":"Asgard/Volundr/Terraform/services/_module_builder_blocks_part2.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Terraform/services/_module_builder_generators.py","at":"2026-08-16T08:47:30Z","disposition":"findings","finding_ids":["CH-0108"],"summary":"unsanitized HCL splice"}
+{"path":"Asgard/Volundr/Terraform/services/module_builder.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Terraform/services/module_builder_helpers.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/__init__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/models/__init__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/models/canonical_models.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/models/rule_registry.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/models/score_models.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/models/suppression_models.py","at":"2026-08-16T08:47:30Z","disposition":"findings","finding_ids":["CH-0107"],"summary":"unsigned YAML suppressions"}
+{"path":"Asgard/Volundr/Validation/models/validation_models.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/__init__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/_dockerfile_validator_report.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/_terraform_aws_validators.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/_terraform_cloud_validators.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/_terraform_validator_report.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/dockerfile_validator.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/dockerfile_validator_helpers.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/external_tools.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/kubernetes_validator.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/kubernetes_validator_helpers.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/normalizers/__init__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/normalizers/compose_normalizer.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/normalizers/k8s_normalizer.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/normalizers/pipeline_normalizer.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/posture_index.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/render_pipeline.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/report_emitters.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/schema_binder.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/scoring_engine.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/scoring_profiles.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/semantic_policies.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/suppression_engine.py","at":"2026-08-16T08:47:30Z","disposition":"findings","finding_ids":["CH-0107"],"summary":"first-match annihilate"}
+{"path":"Asgard/Volundr/Validation/services/terraform_plan_reader.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/terraform_validator.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/terraform_validator_helpers.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Validation/services/validation_engine.py","at":"2026-08-16T08:47:30Z","disposition":"findings","finding_ids":["CH-0107"],"summary":"ignore_rules drop"}
+{"path":"Asgard/Volundr/__init__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/__main__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/cli/__init__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/cli/_parser.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/cli/_parser_commands_1.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/cli/_parser_commands_2.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/cli/_parser_flags.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/cli/handlers_compose_validate_scaffold.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/cli/handlers_gitops.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/cli/handlers_infra.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/cli/handlers_posture.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/cli/handlers_score_gitops.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/__init__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/_cli_handlers.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/_cli_help.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/cli.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/common/__init__.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/common/_baseline_models.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/common/_format_methods.py","at":"2026-08-16T08:47:30Z","disposition":"findings","finding_ids":["CH-0094"],"summary":"GHA/HTML unescaped"}
+{"path":"Asgard/common/_formatter_types.py","at":"2026-08-16T08:47:30Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/common/_hash_cache.py","at":"2026-08-16T08:47:30Z","disposition":"findings","finding_ids":["CH-0109"],"summary":"unsigned incremental cache"}
+{"path":"Asgard/common/_incremental_models.py","at":"2026-08-16T08:47:30Z","disposition":"findings","finding_ids":["CH-0109"],"summary":"store_results default True"}
