@@ -1871,7 +1871,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0111 — SSL checker disables certificate verification then connects to the operator host
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 5c24531
 - **Fixed at:** 2026-08-16T16:15:00Z
 - **Implementation note:** Default verifies the peer (`CERT_REQUIRED`). `--insecure` / `verify=False` is labeled unauthenticated peek.
 - **Severity:** Low
@@ -1974,7 +1974,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0013, CH-0032, CH-0036
-- Last commit: pending
+- Last commit: 5c24531
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
