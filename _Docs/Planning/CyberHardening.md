@@ -641,7 +641,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0038 — `PackageLicense.is_allowed` defaults True (fail-open)
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** a126eeb
 - **Fixed at:** 2026-08-16T15:38:00Z
 - **Implementation note:** Default `is_allowed=False`; gates use `is_policy_allowed` (`verdict == "allowed"`). Classifier still sets WARN True.
 - **Severity:** Medium
@@ -1953,7 +1953,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0013, CH-0027, CH-0032
-- Last commit: pending
+- Last commit: a126eeb
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
