@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
 | Medium   | 2    | 57    | 0             |
-| Low      | 10   | 12    | 0             |
+| Low      | 9    | 13    | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -303,7 +303,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0016 — Unbounded CIR parse / walk / LCOM4 (local DoS)
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 0dc1de5
+- **Fixed at:** 2026-08-16T13:18:00Z
+- **Implementation note:** Cap CIR source bytes/lines; iterative _walk with node/depth budgets; LCOM4 skips and SRP flags classes over 128 methods; evidence string capped.
 - **Severity:** Low
 - **Confidence:** High
 - **CWE / class:** CWE-400
@@ -2050,12 +2053,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 18
-- Fixed: 96
+- Open: 17
+- Fixed: 97
 - Accepted risk: 0
 - Current wave: W4
-- Next: CH-0016, CH-0021, CH-0025
-- Last commit: c055fdc
+- Next: CH-0021, CH-0025, CH-0031
+- Last commit: 0dc1de5
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
