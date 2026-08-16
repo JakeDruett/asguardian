@@ -563,7 +563,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0035 — `RequirementsChecker.sync` writes an unconfined `target_file`
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** f6c81bb
 - **Fixed at:** 2026-08-16T12:32:00Z
 - **Implementation note:** confine_sync_target rejects absolute and `..` paths; dest must be_relative_to(scan_path).
 - **Severity:** High
@@ -1863,7 +1863,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W2
 - Next: CH-0050, CH-0058, CH-0059, CH-0068
-- Last commit: pending
+- Last commit: f6c81bb
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

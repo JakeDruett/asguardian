@@ -29,3 +29,4 @@
 {"id":"CH-0108","at":"2026-08-16T12:12:00Z","commit":"d8f68d3","wave":"W1","summary":"SG egress self-only; allowlist names; escape HCL strings"}
 {"id":"CH-0112","at":"2026-08-16T12:20:00Z","commit":"277342e","wave":"W1","summary":"URL/host allowlist for CORS/headers/ports; cap workers; safe redirects"}
 {"id":"CH-0082","at":"2026-08-16T12:25:00Z","commit":"36692e3","wave":"W1","summary":"Redact secrets and cap Claude triage payload; untrusted model JSON"}
+{"id":"CH-0035","at":"2026-08-16T12:32:00Z","commit":"f6c81bb","wave":"W2","summary":"Jail RequirementsChecker.sync target_file under scan_path"}
