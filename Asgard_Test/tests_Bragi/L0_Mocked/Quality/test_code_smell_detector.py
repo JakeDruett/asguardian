@@ -319,6 +319,28 @@ def simple_function():
         assert "<!DOCTYPE html>" in html
         assert "/test/path" in html
 
+    def test_html_report_escapes_scan_path_and_filename(self):
+        detector = CodeSmellDetector()
+        report = SmellReport(
+            scan_path='/<img src=x onerror=alert(1)>',
+            total_smells=1,
+        )
+        report.add_smell(CodeSmell(
+            name="God Class",
+            category=SmellCategory.BLOATERS,
+            severity=SmellSeverity.HIGH,
+            file_path='/<img src=x>/app.py',
+            line_number=1,
+            description="<script>alert(1)</script>",
+            evidence="x",
+            remediation="split",
+            confidence=0.9,
+        ))
+        html = detector.generate_report(report, "html")
+        assert "<img src=" not in html
+        assert "&lt;img" in html
+        assert "&lt;script&gt;" in html
+
 
 class TestSmellReport:
     """Tests for SmellReport model."""

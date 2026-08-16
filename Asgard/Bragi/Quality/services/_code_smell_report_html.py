@@ -2,6 +2,7 @@
 Heimdall Code Smell Report - HTML report generation.
 """
 
+import html
 import os
 from typing import Callable
 
@@ -10,6 +11,17 @@ from Asgard.Bragi.Quality.models.smell_models import (
     SmellReport,
     SmellSeverity,
 )
+
+_ALLOWED_SEV = frozenset({"critical", "high", "medium", "low"})
+
+
+def _esc(value: object) -> str:
+    return html.escape("" if value is None else str(value), quote=True)
+
+
+def _sev_class(sev: object) -> str:
+    low = str(sev or "").lower()
+    return low if low in _ALLOWED_SEV else "low"
 
 
 def generate_html_report(report: SmellReport, severity_level_fn: Callable) -> str:
@@ -109,7 +121,7 @@ def generate_html_report(report: SmellReport, severity_level_fn: Callable) -> st
         <h1>Code Smells Report</h1>
 
         <p class="scan-info">
-            <strong>Scan Path:</strong> {report.scan_path}<br>
+            <strong>Scan Path:</strong> {_esc(report.scan_path)}<br>
             <strong>Generated:</strong> {report.scanned_at.strftime('%Y-%m-%d %H:%M:%S')}<br>
             <strong>Duration:</strong> {report.scan_duration_seconds:.2f} seconds
         </p>
@@ -129,7 +141,7 @@ def generate_html_report(report: SmellReport, severity_level_fn: Callable) -> st
     for severity in [SmellSeverity.CRITICAL, SmellSeverity.HIGH, SmellSeverity.MEDIUM, SmellSeverity.LOW]:
         count = report.smells_by_severity.get(severity.value, 0)
         html += f"""                <tr>
-                    <td class="{severity.value}">{severity.value.title()}</td>
+                    <td class="{_sev_class(severity.value)}">{_esc(severity.value.title())}</td>
                     <td>{count}</td>
                 </tr>
 """
@@ -147,7 +159,7 @@ def generate_html_report(report: SmellReport, severity_level_fn: Callable) -> st
     for category in SmellCategory:
         count = report.smells_by_category.get(category.value, 0)
         html += f"""                <tr>
-                    <td>{category.value.replace('_', ' ').title()}</td>
+                    <td>{_esc(category.value.replace('_', ' ').title())}</td>
                     <td>{count}</td>
                 </tr>
 """
@@ -167,7 +179,7 @@ def generate_html_report(report: SmellReport, severity_level_fn: Callable) -> st
         for file_path, count in report.most_problematic_files[:10]:
             filename = os.path.basename(file_path)
             html += f"""            <tr>
-                <td>{filename}</td>
+                <td>{_esc(filename)}</td>
                 <td>{count}</td>
             </tr>
 """
@@ -180,7 +192,7 @@ def generate_html_report(report: SmellReport, severity_level_fn: Callable) -> st
             <ul>
 """
         for priority in report.remediation_priorities:
-            html += f"                <li>{priority}</li>\n"
+            html += f"                <li>{_esc(priority)}</li>\n"
         html += """            </ul>
         </div>
 """
@@ -198,12 +210,12 @@ def generate_html_report(report: SmellReport, severity_level_fn: Callable) -> st
         filename = os.path.basename(smell.file_path)
         sev = smell.severity if isinstance(smell.severity, str) else smell.severity.value
         cat = smell.category if isinstance(smell.category, str) else smell.category.value
-        html += f"""        <div class="smell-item smell-{sev}">
-            <h3 class="{sev}">{smell.name} - {filename}:{smell.line_number}</h3>
-            <p><strong>Category:</strong> {cat.replace('_', ' ').title()}</p>
-            <p><strong>Description:</strong> {smell.description}</p>
-            <p><strong>Evidence:</strong> {smell.evidence}</p>
-            <p><strong>Remediation:</strong> {smell.remediation}</p>
+        html += f"""        <div class="smell-item smell-{_sev_class(sev)}">
+            <h3 class="{_sev_class(sev)}">{_esc(smell.name)} - {_esc(filename)}:{_esc(smell.line_number)}</h3>
+            <p><strong>Category:</strong> {_esc(str(cat).replace('_', ' ').title())}</p>
+            <p><strong>Description:</strong> {_esc(smell.description)}</p>
+            <p><strong>Evidence:</strong> {_esc(smell.evidence)}</p>
+            <p><strong>Remediation:</strong> {_esc(smell.remediation)}</p>
             <p><strong>Confidence:</strong> {smell.confidence:.0%}</p>
         </div>
 """
