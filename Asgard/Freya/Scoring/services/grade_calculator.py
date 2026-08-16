@@ -24,6 +24,11 @@ SEVERITY_CAPS: Dict[UniversalSeverity, float] = {
     UniversalSeverity.MAJOR: 79.0,     # -> C at best
 }
 
+#: needs_review items must not be reported as a clean pass (DEEPTHINK_03/06).
+NEEDS_REVIEW_CAP = 79.0  # -> C at best
+
+UNEVALUATED_REASON = "no category scores (not evaluated)"
+
 #: Grade bands over the capped score.
 GRADE_BANDS = [
     (90.0, QualityGrade.A),
@@ -68,9 +73,18 @@ class GradeCalculator:
             weights: Optional per-category weights (default: equal)
 
         Returns:
-            GradedScore with capping applied
+            GradedScore with capping applied. Empty category_scores is N/A
+            (fail-closed), never a letter A.
         """
         base_score = self._weighted_mean(category_scores, weights)
+        if base_score is None:
+            return GradedScore(
+                base_score=0.0,
+                capped_score=0.0,
+                grade=QualityGrade.NA,
+                cap_reason=UNEVALUATED_REASON,
+                category_scores={},
+            )
 
         cap_severity = worst_severity(findings)
         cap_reason: Optional[str] = None
@@ -85,6 +99,16 @@ class GradeCalculator:
             plural = "s" if count != 1 else ""
             cap_reason = f"{count} {cap_severity.value}{plural}: {exemplar.check_id}"
 
+        review_findings = [f for f in findings if f.needs_review]
+        if review_findings:
+            if NEEDS_REVIEW_CAP < capped_score:
+                capped_score = NEEDS_REVIEW_CAP
+            review_count = len(review_findings)
+            review_reason = (
+                f"{review_count} needs_review finding(s): {review_findings[0].check_id}"
+            )
+            cap_reason = f"{cap_reason}; {review_reason}" if cap_reason else review_reason
+
         return GradedScore(
             base_score=base_score,
             capped_score=capped_score,
@@ -97,10 +121,10 @@ class GradeCalculator:
     def _weighted_mean(
         category_scores: Dict[str, float],
         weights: Optional[Dict[str, float]] = None,
-    ) -> float:
-        """Weighted mean of category scores; 100.0 when empty."""
+    ) -> Optional[float]:
+        """Weighted mean of category scores; None when empty (not evaluated)."""
         if not category_scores:
-            return 100.0
+            return None
         if not weights:
             return sum(category_scores.values()) / len(category_scores)
         total_weight = 0.0

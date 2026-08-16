@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 30   | 29    | 0             |
+| Medium   | 29   | 30    | 0             |
 | Low      | 13   | 9     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1231,7 +1231,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0073 — Freya Scoring empty/unknown findings grade as A and pass
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T15:52:00Z
+- **Implementation note:** Empty category scores are N/A (not A); unknown severity is BLOCKER; needs_review fails the gate; empty findings fail-closed.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-693
@@ -1957,12 +1960,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 49
-- Fixed: 65
+- Open: 48
+- Fixed: 66
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0013, CH-0032, CH-0036
-- Last commit: 20512e0
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

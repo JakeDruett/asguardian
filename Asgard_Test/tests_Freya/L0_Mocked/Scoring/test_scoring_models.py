@@ -21,6 +21,13 @@ class TestUniversalSeverity:
     def test_four_values(self):
         assert {s.value for s in UniversalSeverity} == {"blocker", "critical", "major", "minor"}
 
+
+class TestQualityGrade:
+    def test_na_is_not_a_letter_pass(self):
+        assert QualityGrade.NA.value == "N/A"
+        assert QualityGrade.NA != QualityGrade.A
+        assert QualityGrade.NA != QualityGrade.F
+
     def test_order_worst_first(self):
         assert SEVERITY_ORDER[0] == UniversalSeverity.BLOCKER
         assert SEVERITY_ORDER[-1] == UniversalSeverity.MINOR

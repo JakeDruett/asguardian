@@ -42,6 +42,7 @@ class QualityGrade(str, Enum):
     C = "C"
     D = "D"
     F = "F"
+    NA = "N/A"  # no measured scores; never treat as a passing letter
 
 
 class Finding(BaseModel):

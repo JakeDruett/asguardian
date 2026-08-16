@@ -15,7 +15,11 @@ from Asgard.Freya.Scoring.models.scoring_models import (
     QualityGrade,
     UniversalSeverity,
 )
-from Asgard.Freya.Scoring.services.quality_gate import QualityGate
+from Asgard.Freya.Scoring.services.quality_gate import (
+    NA_GRADE_REASON,
+    UNEVALUATED_GATE_REASON,
+    QualityGate,
+)
 
 
 def _finding(severity: UniversalSeverity) -> Finding:
@@ -27,10 +31,10 @@ def _graded(grade: QualityGrade) -> GradedScore:
 
 
 class TestDefaultGate:
-    def test_passes_empty(self):
+    def test_empty_findings_fail_closed(self):
         result = QualityGate().evaluate([])
-        assert result.passed
-        assert result.reasons == []
+        assert not result.passed
+        assert UNEVALUATED_GATE_REASON in result.reasons
 
     def test_fails_on_blocker(self):
         result = QualityGate().evaluate([_finding(UniversalSeverity.BLOCKER)])
@@ -82,8 +86,35 @@ class TestEvaluateCounts:
     def test_non_numeric_counts_are_zero(self):
         """Mock/None values must never crash the gate - they count as 0."""
         result = QualityGate().evaluate_counts({"blocker": Mock(), "critical": None})
-        assert result.passed
+        assert not result.passed
         assert result.severity_counts["blocker"] == 0
+        assert UNEVALUATED_GATE_REASON in result.reasons
+
+    def test_empty_counts_with_measured_grade_pass(self):
+        result = QualityGate().evaluate_counts({}, grade=QualityGrade.A)
+        assert result.passed
+
+    def test_na_grade_fails_closed(self):
+        result = QualityGate().evaluate_counts({}, grade=QualityGrade.NA)
+        assert not result.passed
+        assert NA_GRADE_REASON in result.reasons
+
+    def test_needs_review_fails_even_when_minor(self):
+        finding = _finding(UniversalSeverity.MINOR)
+        finding.needs_review = True
+        result = QualityGate().evaluate([finding])
+        assert not result.passed
+        assert any("needs_review" in r for r in result.reasons)
+
+    def test_empty_findings_with_measured_grade_pass(self):
+        graded = GradedScore(
+            base_score=100.0,
+            capped_score=100.0,
+            grade=QualityGrade.A,
+            category_scores={"accessibility": 100.0},
+        )
+        result = QualityGate().evaluate([], graded=graded)
+        assert result.passed
 
     def test_float_counts_coerced(self):
         result = QualityGate().evaluate_counts({"critical": 1.0})

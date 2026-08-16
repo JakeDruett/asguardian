@@ -23,7 +23,11 @@ _GRADE_RANK = {
     QualityGrade.C: 2,
     QualityGrade.D: 1,
     QualityGrade.F: 0,
+    QualityGrade.NA: -1,
 }
+
+UNEVALUATED_GATE_REASON = "no findings and no scored evaluation (fail-closed)"
+NA_GRADE_REASON = "grade is N/A (not evaluated)"
 
 
 def _safe_count(value: Any) -> int:
@@ -48,10 +52,22 @@ class QualityGate:
     ) -> GateResult:
         """Evaluate the gate over a list of findings (and optional grade)."""
         counts: Dict[str, int] = {s.value: 0 for s in UniversalSeverity}
+        review_count = 0
         for finding in findings:
             counts[finding.severity.value] = counts.get(finding.severity.value, 0) + 1
+            if finding.needs_review:
+                review_count += 1
         grade = graded.grade if graded is not None else None
-        return self.evaluate_counts(counts, grade=grade)
+        result = self.evaluate_counts(counts, grade=grade)
+        if review_count == 0:
+            return result
+        reasons = list(result.reasons)
+        reasons.append(f"{review_count} finding(s) marked needs_review")
+        return GateResult(
+            passed=False,
+            reasons=reasons,
+            severity_counts=result.severity_counts,
+        )
 
     def evaluate_counts(
         self,
@@ -62,13 +78,18 @@ class QualityGate:
         counts = {s.value: _safe_count(severity_counts.get(s.value, 0)) for s in UniversalSeverity}
         reasons: List[str] = []
 
+        if grade == QualityGrade.NA:
+            reasons.append(NA_GRADE_REASON)
+        elif sum(counts.values()) == 0 and grade is None:
+            reasons.append(UNEVALUATED_GATE_REASON)
+
         for severity in self.config.fail_on:
             count = counts.get(severity.value, 0)
             if count > 0:
                 reasons.append(f"{count} {severity.value} finding(s) present (fail_on: {severity.value})")
 
         if self.config.min_grade is not None and grade is not None:
-            if _GRADE_RANK[grade] < _GRADE_RANK[self.config.min_grade]:
+            if _GRADE_RANK.get(grade, -1) < _GRADE_RANK[self.config.min_grade]:
                 reasons.append(
                     f"grade {grade.value} is below required minimum {self.config.min_grade.value}"
                 )

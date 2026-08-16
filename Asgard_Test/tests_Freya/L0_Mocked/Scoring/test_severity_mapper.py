@@ -50,11 +50,15 @@ class TestMappingTables:
         for source in ("critical", "serious", "moderate", "minor"):
             assert mapper.map("performance", source) != UniversalSeverity.BLOCKER
 
-    def test_unknown_category_defaults_minor(self):
-        assert SeverityMapper().map("nonexistent", "critical") == UniversalSeverity.MINOR
+    def test_unknown_category_is_blocker(self):
+        assert SeverityMapper().map("nonexistent", "critical") == UniversalSeverity.BLOCKER
 
-    def test_unknown_severity_defaults_minor(self):
-        assert SeverityMapper().map("visual", "bizarre") == UniversalSeverity.MINOR
+    def test_unknown_severity_is_blocker(self):
+        assert SeverityMapper().map("visual", "bizarre") == UniversalSeverity.BLOCKER
+
+    def test_missing_severity_is_blocker(self):
+        assert SeverityMapper().map("visual", None) == UniversalSeverity.BLOCKER
+        assert SeverityMapper().map("accessibility", "  ") == UniversalSeverity.BLOCKER
 
     def test_keyboard_trap_is_blocker(self):
         mapper = SeverityMapper()
@@ -212,6 +216,32 @@ class TestMapUnifiedResult:
         assert len(findings) == 1
         assert findings[0].severity == UniversalSeverity.CRITICAL
 
+    def test_failed_result_unknown_severity_is_blocker(self):
+        result = UnifiedTestResult(
+            category=TestCategory.VISUAL,
+            test_name="Layout",
+            passed=False,
+            severity=None,
+            message="broken",
+        )
+        finding = SeverityMapper().map_unified_result(result)
+        assert finding is not None
+        assert finding.severity == UniversalSeverity.BLOCKER
+
+    def test_needs_review_flag_is_preserved(self):
+        result = UnifiedTestResult(
+            category=TestCategory.VISUAL,
+            test_name="Layout",
+            passed=False,
+            severity=TestSeverity.MINOR,
+            message="unsure",
+            details={"needs_review": True},
+        )
+        finding = SeverityMapper().map_unified_result(result)
+        assert finding is not None
+        assert finding.needs_review is True
+        assert finding.severity == UniversalSeverity.MINOR
+
 
 class TestIssueDictAdapter:
     def test_basic_mapping(self):
@@ -234,3 +264,10 @@ class TestIssueDictAdapter:
             category="weird",
         )
         assert findings[0].category == "accessibility"
+
+    def test_unknown_severity_is_blocker(self):
+        findings = issue_dicts_to_findings(
+            [{"type": "x", "severity": "bizarre", "message": "m"}],
+            category="visual",
+        )
+        assert findings[0].severity == UniversalSeverity.BLOCKER

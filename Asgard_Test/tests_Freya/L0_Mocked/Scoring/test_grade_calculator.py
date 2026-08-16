@@ -12,6 +12,7 @@ from Asgard.Freya.Scoring.models.scoring_models import (
     UniversalSeverity,
 )
 from Asgard.Freya.Scoring.services.grade_calculator import (
+    UNEVALUATED_REASON,
     GradeCalculator,
     score_to_grade,
     worst_severity,
@@ -60,10 +61,13 @@ class TestGradeCalculator:
         assert graded.grade == QualityGrade.A
         assert graded.cap_reason is None
 
-    def test_empty_category_scores_default_100(self):
+    def test_empty_category_scores_are_na_fail_closed(self):
         graded = GradeCalculator().calculate({}, [])
-        assert graded.base_score == 100.0
-        assert graded.grade == QualityGrade.A
+        assert graded.base_score == 0.0
+        assert graded.capped_score == 0.0
+        assert graded.grade == QualityGrade.NA
+        assert graded.cap_reason == UNEVALUATED_REASON
+        assert graded.grade != QualityGrade.A
 
     def test_blocker_caps_to_f(self):
         graded = GradeCalculator().calculate(
@@ -146,3 +150,28 @@ class TestGradeCalculator:
         scores = {"accessibility": 80.0, "visual": 90.0}
         graded = GradeCalculator().calculate(scores, [])
         assert graded.category_scores == scores
+
+    def test_empty_scores_with_findings_still_na(self):
+        graded = GradeCalculator().calculate(
+            {}, [_finding(UniversalSeverity.MINOR)]
+        )
+        assert graded.grade == QualityGrade.NA
+        assert graded.cap_reason == UNEVALUATED_REASON
+
+    def test_needs_review_caps_below_a(self):
+        finding = _finding(UniversalSeverity.MINOR, "a11y.review")
+        finding.needs_review = True
+        graded = GradeCalculator().calculate({"a": 100.0}, [finding])
+        assert graded.capped_score == 79.0
+        assert graded.grade == QualityGrade.C
+        assert "needs_review" in graded.cap_reason
+        assert "a11y.review" in graded.cap_reason
+
+    def test_needs_review_does_not_raise_blocker_cap(self):
+        finding = _finding(UniversalSeverity.BLOCKER, "sec.x")
+        finding.needs_review = True
+        graded = GradeCalculator().calculate({"a": 100.0}, [finding])
+        assert graded.capped_score == 59.0
+        assert graded.grade == QualityGrade.F
+        assert "blocker" in graded.cap_reason
+        assert "needs_review" in graded.cap_reason

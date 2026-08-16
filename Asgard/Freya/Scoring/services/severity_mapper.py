@@ -142,6 +142,20 @@ _ESCALATION = {
 }
 
 
+def _lookup_severity(
+    table: Dict[str, UniversalSeverity],
+    source_severity: Optional[str],
+) -> UniversalSeverity:
+    """Map a native severity string; unknown/empty is BLOCKER (fail-closed)."""
+    key = (source_severity or "").strip().lower()
+    if not key:
+        return _B
+    mapped = table.get(key)
+    if mapped is None:
+        return _B
+    return mapped
+
+
 def escalate_for_criticality(
     severity: UniversalSeverity,
     category: str,
@@ -189,7 +203,7 @@ class SeverityMapper:
         """
         category_lower = category.lower()
         table = CATEGORY_SEVERITY_MAPS.get(category_lower, {})
-        severity = table.get((source_severity or "").lower(), _N)
+        severity = _lookup_severity(table, source_severity)
 
         if category_lower == "accessibility":
             reference = (wcag_reference or "").strip()
