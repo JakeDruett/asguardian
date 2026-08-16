@@ -1343,7 +1343,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0079 — Secret reports leak prefix+suffix of matched values
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 946abc9
 - **Fixed at:** 2026-08-16T16:24:00Z
 - **Implementation note:** `mask_secret` defaults to last-2 or length-only; `line_content` redacted by column span. Never print both ends.
 - **Severity:** Medium
@@ -1980,7 +1980,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0032, CH-0036, CH-0043
-- Last commit: pending
+- Last commit: 946abc9
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

@@ -68,4 +68,4 @@
 {"id":"CH-0080","at":"2026-08-16T16:08:00Z","commit":"579bd83","wave":"W3","summary":"Unpinned deps are not treated as live-checked/clean"}
 {"id":"CH-0111","at":"2026-08-16T16:15:00Z","commit":"5c24531","wave":"W3","summary":"SSL checker verifies certs by default; --insecure peek labeled"}
 {"id":"CH-0013","at":"2026-08-16T16:22:00Z","commit":"9b57bb4","wave":"W3","summary":"Hash baseline messages; omit raw message from JSON report/list"}
-{"id":"CH-0079","at":"2026-08-16T16:24:00Z","commit":"pending","wave":"W3","summary":"Secret masks are last-2/length-only; redact line_content by span"}
+{"id":"CH-0079","at":"2026-08-16T16:24:00Z","commit":"946abc9","wave":"W3","summary":"Secret masks are last-2/length-only; redact line_content by span"}
