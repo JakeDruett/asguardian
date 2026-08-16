@@ -7,6 +7,11 @@ from typing import Optional
 
 from pydantic import BaseModel, Field
 
+from Asgard.Forseti.Database.utilities.database_utils import (
+    quote_identifier,
+    sanitize_sql_default,
+)
+
 
 class ChangeType(str, Enum):
     """Types of schema changes."""
@@ -94,7 +99,7 @@ class ColumnDefinition(BaseModel):
 
     def to_sql(self, dialect: str = "mysql") -> str:
         """Generate SQL column definition."""
-        parts = [self.name, self.data_type]
+        parts = [quote_identifier(self.name, dialect), self.data_type]
 
         if self.length is not None:
             if self.scale is not None:
@@ -105,8 +110,9 @@ class ColumnDefinition(BaseModel):
         if not self.nullable:
             parts.append("NOT NULL")
 
-        if self.default_value is not None:
-            parts.append(f"DEFAULT {self.default_value}")
+        safe_default = sanitize_sql_default(self.default_value)
+        if safe_default is not None:
+            parts.append(f"DEFAULT {safe_default}")
 
         if self.is_auto_increment:
             if dialect == "postgresql":
@@ -136,8 +142,11 @@ class IndexDefinition(BaseModel):
     def to_sql(self, dialect: str = "mysql") -> str:
         """Generate SQL index creation statement."""
         unique = "UNIQUE " if self.is_unique else ""
-        columns = ", ".join(self.columns)
-        return f"CREATE {unique}INDEX {self.name} ON {self.table_name} ({columns})"
+        columns = ", ".join(quote_identifier(c, dialect) for c in self.columns)
+        return (
+            f"CREATE {unique}INDEX {quote_identifier(self.name, dialect)} "
+            f"ON {quote_identifier(self.table_name, dialect)} ({columns})"
+        )
 
 
 class ForeignKeyDefinition(BaseModel):
@@ -153,9 +162,13 @@ class ForeignKeyDefinition(BaseModel):
 
     def to_sql(self, dialect: str = "mysql") -> str:
         """Generate SQL foreign key constraint."""
-        cols = ", ".join(self.columns)
-        refs = ", ".join(self.reference_columns)
-        sql = f"CONSTRAINT {self.name} FOREIGN KEY ({cols}) REFERENCES {self.reference_table} ({refs})"
+        cols = ", ".join(quote_identifier(c, dialect) for c in self.columns)
+        refs = ", ".join(quote_identifier(c, dialect) for c in self.reference_columns)
+        sql = (
+            f"CONSTRAINT {quote_identifier(self.name, dialect)} "
+            f"FOREIGN KEY ({cols}) "
+            f"REFERENCES {quote_identifier(self.reference_table, dialect)} ({refs})"
+        )
         if self.on_delete:
             sql += f" ON DELETE {self.on_delete}"
         if self.on_update:

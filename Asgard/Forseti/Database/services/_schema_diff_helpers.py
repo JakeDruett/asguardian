@@ -9,6 +9,7 @@ from Asgard.Forseti.Database.models.database_models import (
     SchemaChange,
     SchemaDiffResult,
 )
+from Asgard.Forseti.Database.utilities.database_utils import quote_identifier
 
 
 def columns_differ(source_col, target_col) -> bool:
@@ -47,26 +48,30 @@ def diff_tables(
         source_cols = {k.lower(): v for k, v in source_cols.items()}
         target_cols = {k.lower(): v for k, v in target_cols.items()}
 
+    qtable = quote_identifier(table_name, dialect)
+
     for col_name, col in target_cols.items():
         if col_name not in source_cols:
+            qcol = quote_identifier(col.name, dialect)
             changes.append(SchemaChange(
                 change_type=ChangeType.ADD_COLUMN,
                 table_name=table_name,
                 object_name=col.name,
                 new_definition=col.to_sql(dialect),
-                migration_sql=f"ALTER TABLE {table_name} ADD COLUMN {col.to_sql(dialect)};",
-                rollback_sql=f"ALTER TABLE {table_name} DROP COLUMN {col.name};",
+                migration_sql=f"ALTER TABLE {qtable} ADD COLUMN {col.to_sql(dialect)};",
+                rollback_sql=f"ALTER TABLE {qtable} DROP COLUMN {qcol};",
             ))
 
     for col_name, col in source_cols.items():
         if col_name not in target_cols:
+            qcol = quote_identifier(col.name, dialect)
             changes.append(SchemaChange(
                 change_type=ChangeType.DROP_COLUMN,
                 table_name=table_name,
                 object_name=col.name,
                 old_definition=col.to_sql(dialect),
-                migration_sql=f"ALTER TABLE {table_name} DROP COLUMN {col.name};",
-                rollback_sql=f"ALTER TABLE {table_name} ADD COLUMN {col.to_sql(dialect)};",
+                migration_sql=f"ALTER TABLE {qtable} DROP COLUMN {qcol};",
+                rollback_sql=f"ALTER TABLE {qtable} ADD COLUMN {col.to_sql(dialect)};",
             ))
 
     for col_name in source_cols:
@@ -81,8 +86,8 @@ def diff_tables(
                     object_name=source_col.name,
                     old_definition=source_col.to_sql(dialect),
                     new_definition=target_col.to_sql(dialect),
-                    migration_sql=f"ALTER TABLE {table_name} MODIFY COLUMN {target_col.to_sql(dialect)};",
-                    rollback_sql=f"ALTER TABLE {table_name} MODIFY COLUMN {source_col.to_sql(dialect)};",
+                    migration_sql=f"ALTER TABLE {qtable} MODIFY COLUMN {target_col.to_sql(dialect)};",
+                    rollback_sql=f"ALTER TABLE {qtable} MODIFY COLUMN {source_col.to_sql(dialect)};",
                 ))
 
     if include_indexes:
@@ -91,23 +96,25 @@ def diff_tables(
 
         for idx_name, idx in target_idx.items():
             if idx_name not in source_idx:
+                qidx = quote_identifier(idx.name, dialect)
                 changes.append(SchemaChange(
                     change_type=ChangeType.ADD_INDEX,
                     table_name=table_name,
                     object_name=idx.name,
                     new_definition=idx.to_sql(dialect),
                     migration_sql=idx.to_sql(dialect) + ";",
-                    rollback_sql=f"DROP INDEX {idx.name} ON {table_name};",
+                    rollback_sql=f"DROP INDEX {qidx} ON {qtable};",
                 ))
 
         for idx_name, idx in source_idx.items():
             if idx_name not in target_idx:
+                qidx = quote_identifier(idx.name, dialect)
                 changes.append(SchemaChange(
                     change_type=ChangeType.DROP_INDEX,
                     table_name=table_name,
                     object_name=idx.name,
                     old_definition=idx.to_sql(dialect),
-                    migration_sql=f"DROP INDEX {idx.name} ON {table_name};",
+                    migration_sql=f"DROP INDEX {qidx} ON {qtable};",
                     rollback_sql=idx.to_sql(dialect) + ";",
                 ))
 
@@ -117,24 +124,26 @@ def diff_tables(
 
         for fk_name, fk in target_fks.items():
             if fk_name not in source_fks:
+                qfk = quote_identifier(fk.name, dialect)
                 changes.append(SchemaChange(
                     change_type=ChangeType.ADD_FOREIGN_KEY,
                     table_name=table_name,
                     object_name=fk.name,
                     new_definition=fk.to_sql(dialect),
-                    migration_sql=f"ALTER TABLE {table_name} ADD {fk.to_sql(dialect)};",
-                    rollback_sql=f"ALTER TABLE {table_name} DROP FOREIGN KEY {fk.name};",
+                    migration_sql=f"ALTER TABLE {qtable} ADD {fk.to_sql(dialect)};",
+                    rollback_sql=f"ALTER TABLE {qtable} DROP FOREIGN KEY {qfk};",
                 ))
 
         for fk_name, fk in source_fks.items():
             if fk_name not in target_fks:
+                qfk = quote_identifier(fk.name, dialect)
                 changes.append(SchemaChange(
                     change_type=ChangeType.DROP_FOREIGN_KEY,
                     table_name=table_name,
                     object_name=fk.name,
                     old_definition=fk.to_sql(dialect),
-                    migration_sql=f"ALTER TABLE {table_name} DROP FOREIGN KEY {fk.name};",
-                    rollback_sql=f"ALTER TABLE {table_name} ADD {fk.to_sql(dialect)};",
+                    migration_sql=f"ALTER TABLE {qtable} DROP FOREIGN KEY {qfk};",
+                    rollback_sql=f"ALTER TABLE {qtable} ADD {fk.to_sql(dialect)};",
                 ))
 
     return changes

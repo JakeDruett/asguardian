@@ -13,6 +13,7 @@ from Asgard.Forseti.Database.models.database_models import (
     IndexDefinition,
     TableDefinition,
 )
+from Asgard.Forseti.Database.utilities.database_utils import parse_sql_default
 
 
 def split_table_body(body: str) -> list[str]:
@@ -54,7 +55,8 @@ def parse_column(col_def: str) -> Optional[ColumnDefinition]:
     name = match.group(1)
     data_type = match.group(2).upper()
     size_str = match.group(3)
-    rest = match.group(4).upper() if match.group(4) else ""
+    rest_raw = match.group(4) if match.group(4) else ""
+    rest = rest_raw.upper()
 
     length = None
     scale = None
@@ -69,10 +71,7 @@ def parse_column(col_def: str) -> Optional[ColumnDefinition]:
     is_auto = "AUTO_INCREMENT" in rest or "SERIAL" in data_type
     is_unique = "UNIQUE" in rest
 
-    default_value = None
-    default_match = re.search(r"DEFAULT\s+([^\s,]+)", rest, re.IGNORECASE)
-    if default_match:
-        default_value = default_match.group(1)
+    default_value = parse_sql_default(rest_raw)
 
     return ColumnDefinition(
         name=name,

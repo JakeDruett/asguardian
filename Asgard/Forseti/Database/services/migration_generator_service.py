@@ -13,6 +13,10 @@ from Asgard.Forseti.Database.models.database_models import (
     SchemaDiffResult,
     ChangeType,
 )
+from Asgard.Forseti.Database.utilities.database_utils import (
+    alembic_execute_source,
+    sql_for_execution,
+)
 
 class MigrationGeneratorService:
     """
@@ -86,8 +90,7 @@ class MigrationGeneratorService:
             if drop_fks:
                 lines.append("-- Drop Foreign Keys")
                 for change in drop_fks:
-                    if change.migration_sql:
-                        lines.append(change.migration_sql)
+                    self._append_sql(lines, change.migration_sql)
                 lines.append("")
 
         # Drop indexes
@@ -96,33 +99,30 @@ class MigrationGeneratorService:
             if drop_idxs:
                 lines.append("-- Drop Indexes")
                 for change in drop_idxs:
-                    if change.migration_sql:
-                        lines.append(change.migration_sql)
+                    self._append_sql(lines, change.migration_sql)
                 lines.append("")
 
         # Drop tables
         if table_drops:
             lines.append("-- Drop Tables")
             for change in table_drops:
-                if change.migration_sql:
-                    lines.append(change.migration_sql)
+                self._append_sql(lines, change.migration_sql)
             lines.append("")
 
         # Create tables
         if table_creates:
             lines.append("-- Create Tables")
             for change in table_creates:
-                if change.migration_sql:
-                    lines.append(change.migration_sql)
+                if self._append_sql(lines, change.migration_sql):
                     lines.append("")
 
         # Column changes
         if column_changes:
             lines.append("-- Column Changes")
             for change in column_changes:
-                if change.migration_sql:
+                if sql_for_execution(change.migration_sql):
                     lines.append(f"-- {change.change_type}: {change.table_name}.{change.object_name}")
-                    lines.append(change.migration_sql)
+                    self._append_sql(lines, change.migration_sql)
             lines.append("")
 
         # Add indexes
@@ -131,8 +131,7 @@ class MigrationGeneratorService:
             if add_idxs:
                 lines.append("-- Add Indexes")
                 for change in add_idxs:
-                    if change.migration_sql:
-                        lines.append(change.migration_sql)
+                    self._append_sql(lines, change.migration_sql)
                 lines.append("")
 
         # Add foreign keys last
@@ -141,8 +140,7 @@ class MigrationGeneratorService:
             if add_fks:
                 lines.append("-- Add Foreign Keys")
                 for change in add_fks:
-                    if change.migration_sql:
-                        lines.append(change.migration_sql)
+                    self._append_sql(lines, change.migration_sql)
                 lines.append("")
 
         # Rollback section
@@ -163,10 +161,20 @@ class MigrationGeneratorService:
             )
 
             for change in all_changes:
-                if change.rollback_sql:
-                    lines.append(f"-- {change.rollback_sql}")
+                safe = sql_for_execution(change.rollback_sql)
+                if safe:
+                    for raw_line in safe.splitlines():
+                        lines.append(f"-- {raw_line}")
 
         return "\n".join(lines)
+
+    @staticmethod
+    def _append_sql(lines: list[str], sql: Optional[str]) -> bool:
+        safe = sql_for_execution(sql)
+        if not safe:
+            return False
+        lines.append(safe)
+        return True
 
     def generate_rollback(self, diff_result: SchemaDiffResult) -> str:
         """
@@ -188,9 +196,10 @@ class MigrationGeneratorService:
 
         # Reverse the changes
         for change in reversed(diff_result.changes):
-            if change.rollback_sql:
+            safe = sql_for_execution(change.rollback_sql)
+            if safe:
                 lines.append(f"-- Rollback: {change.change_type} {change.table_name}")
-                lines.append(change.rollback_sql)
+                lines.append(safe)
                 lines.append("")
 
         return "\n".join(lines)
@@ -275,25 +284,26 @@ class MigrationGeneratorService:
         lines.append("")
         lines.append("def upgrade():")
 
-        if not diff_result.changes:
+        upgrade_emitted = False
+        for change in diff_result.changes:
+            source = alembic_execute_source(change.migration_sql or "")
+            if source:
+                lines.append(source)
+                upgrade_emitted = True
+        if not upgrade_emitted:
             lines.append("    pass")
-        else:
-            for change in diff_result.changes:
-                if change.migration_sql:
-                    # Convert SQL to Alembic op.execute
-                    sql = change.migration_sql.replace("'", "\\'")
-                    lines.append(f"    op.execute('{sql}')")
 
         lines.append("")
         lines.append("")
         lines.append("def downgrade():")
 
-        if not diff_result.changes:
+        downgrade_emitted = False
+        for change in reversed(diff_result.changes):
+            source = alembic_execute_source(change.rollback_sql or "")
+            if source:
+                lines.append(source)
+                downgrade_emitted = True
+        if not downgrade_emitted:
             lines.append("    pass")
-        else:
-            for change in reversed(diff_result.changes):
-                if change.rollback_sql:
-                    sql = change.rollback_sql.replace("'", "\\'")
-                    lines.append(f"    op.execute('{sql}')")
 
         return "\n".join(lines)

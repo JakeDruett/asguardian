@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
-| Medium   | 36   | 23    | 0             |
+| Medium   | 35   | 24    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -683,7 +683,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0042 — Language analyzers `rglob` and ignore advertised exclude/size limits
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 25aefeb
 - **Fixed at:** 2026-08-16T13:50:00Z
 - **Implementation note:** Shared _confined_walk (no symlink follow); apply exclude/max_file_lines/max_findings; line cap 4096; extension allowlist.
 - **Severity:** Medium
@@ -1060,7 +1060,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0065 — SQL `DEFAULT` interpolated unsanitized into migrations/Alembic
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T13:51:00Z
+- **Implementation note:** Restrict defaults to literals; quote identifiers; Alembic op.execute(repr(sql)); reject 1;DROP / comments / newlines.
 - **Severity:** Medium
 - **Confidence:** Medium
 - **CWE / class:** CWE-89 / CWE-94
@@ -1903,12 +1906,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 67
-- Fixed: 47
+- Open: 66
+- Fixed: 48
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0065
-- Last commit: pending
+- Next: CH-0008, CH-0014, CH-0028, CH-0034
+- Last commit: 25aefeb
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

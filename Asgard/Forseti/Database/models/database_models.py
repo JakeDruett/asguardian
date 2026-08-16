@@ -18,6 +18,7 @@ from Asgard.Forseti.Database.models._database_base_models import (
     ForeignKeyDefinition,
     IndexDefinition,
 )
+from Asgard.Forseti.Database.utilities.database_utils import quote_identifier
 
 
 class TableDefinition(BaseModel):
@@ -59,7 +60,7 @@ class TableDefinition(BaseModel):
 
     def to_sql(self, dialect: str = "mysql") -> str:
         """Generate CREATE TABLE statement."""
-        lines = [f"CREATE TABLE {self.name} ("]
+        lines = [f"CREATE TABLE {quote_identifier(self.name, dialect)} ("]
 
         col_defs = []
         for col in self.columns:
@@ -67,7 +68,7 @@ class TableDefinition(BaseModel):
             col_defs.append(col_def)
 
         if self.primary_key and len(self.primary_key) > 1:
-            pk_cols = ", ".join(self.primary_key)
+            pk_cols = ", ".join(quote_identifier(c, dialect) for c in self.primary_key)
             col_defs.append(f"  PRIMARY KEY ({pk_cols})")
 
         for fk in self.foreign_keys:

@@ -22,6 +22,7 @@ from Asgard.Forseti.Database.services._schema_diff_helpers import (
     generate_markdown_report,
     generate_text_report,
 )
+from Asgard.Forseti.Database.utilities.database_utils import quote_identifier
 
 
 class SchemaDiffService:
@@ -107,22 +108,24 @@ class SchemaDiffService:
         for table_name, table in target_tables.items():
             if table_name not in source_tables:
                 added_tables.append(table.name)
+                qtable = quote_identifier(table.name, self.config.dialect)
                 changes.append(SchemaChange(
                     change_type=ChangeType.ADD_TABLE,
                     table_name=table.name,
                     new_definition=table.to_sql(self.config.dialect),
                     migration_sql=table.to_sql(self.config.dialect) + ";",
-                    rollback_sql=f"DROP TABLE {table.name};",
+                    rollback_sql=f"DROP TABLE {qtable};",
                 ))
 
         for table_name, table in source_tables.items():
             if table_name not in target_tables:
                 dropped_tables.append(table.name)
+                qtable = quote_identifier(table.name, self.config.dialect)
                 changes.append(SchemaChange(
                     change_type=ChangeType.DROP_TABLE,
                     table_name=table.name,
                     old_definition=table.to_sql(self.config.dialect),
-                    migration_sql=f"DROP TABLE {table.name};",
+                    migration_sql=f"DROP TABLE {qtable};",
                     rollback_sql=table.to_sql(self.config.dialect) + ";",
                 ))
 

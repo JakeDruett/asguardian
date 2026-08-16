@@ -187,8 +187,8 @@ CREATE TABLE posts (
         migration_sql = migration_service.generate(diff_result)
         rollback_sql = migration_service.generate_rollback(diff_result)
 
-        assert "create table posts" in migration_sql.lower()
-        assert "drop table posts" in rollback_sql.lower()
+        assert "create table" in migration_sql.lower() and "posts" in migration_sql.lower()
+        assert "drop table" in rollback_sql.lower() and "posts" in rollback_sql.lower()
 
     def test_workflow_save_migration_files(self, tmp_path, database_versions):
         """Test saving migration to files."""
