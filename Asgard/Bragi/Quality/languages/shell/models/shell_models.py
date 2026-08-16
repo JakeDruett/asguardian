@@ -104,6 +104,8 @@ class ShellAnalysisConfig(BaseModel):
         default_factory=list,
         description="Rule IDs to skip",
     )
+    max_file_lines: int = Field(10000, description="Maximum lines read per file")
+    max_findings: int = Field(1000, description="Stop adding findings after this many")
 
     class Config:
         use_enum_values = True

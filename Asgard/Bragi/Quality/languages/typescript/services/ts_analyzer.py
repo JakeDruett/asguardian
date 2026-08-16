@@ -11,6 +11,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
 
+from Asgard.Bragi.Quality.languages._confined_walk import read_capped_source
 from Asgard.Bragi.Quality.languages.javascript.models.js_models import (
     JSAnalysisConfig,
     JSFinding,
@@ -71,14 +72,21 @@ class TSAnalyzer:
         report = self._js_analyzer.analyze(scan_path=str(root))
         report.language = "typescript"
 
-        # Run TS-specific rules per file
+        # Run TS-specific rules per file (same confined/capped read as JS)
         files = self._js_analyzer._discover_files(root)
+        max_findings = self._config.max_findings
         for file_path in files:
-            try:
-                source_lines = Path(file_path).read_text(encoding="utf-8", errors="replace").splitlines()
-            except OSError:
+            if max_findings is not None and report.total_findings >= max_findings:
+                break
+            source = read_capped_source(
+                Path(file_path),
+                max_file_lines=self._config.max_file_lines,
+            )
+            if source is None:
                 continue
-            for finding in self._analyze_ts_file(str(file_path), source_lines):
+            for finding in self._analyze_ts_file(str(file_path), source.lines):
+                if max_findings is not None and report.total_findings >= max_findings:
+                    break
                 report.add_finding(finding)
 
         report.scan_duration_seconds = (datetime.now() - start).total_seconds()

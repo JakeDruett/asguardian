@@ -6,11 +6,17 @@ Because Python's ast module cannot parse JS/TS, all rules are implemented
 using line-by-line regular expression matching.
 """
 
-import fnmatch
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
 
+from Asgard.Bragi.Quality.languages._confined_walk import (
+    JS_EXTENSIONS,
+    TS_EXTENSIONS,
+    iter_language_files,
+    matches_exclude,
+    read_capped_source,
+)
 from Asgard.Bragi.Quality.languages.javascript.models.js_models import (
     JSAnalysisConfig,
     JSFinding,
@@ -65,36 +71,44 @@ class JSAnalyzer:
 
         files = self._discover_files(root)
         report.files_analyzed = len(files)
+        max_findings = self._config.max_findings
 
         for file_path in files:
-            try:
-                source_lines = Path(file_path).read_text(encoding="utf-8", errors="replace").splitlines()
-            except OSError:
+            if max_findings is not None and report.total_findings >= max_findings:
+                break
+            source = read_capped_source(
+                Path(file_path),
+                max_file_lines=self._config.max_file_lines,
+            )
+            if source is None:
                 continue
 
-            for finding in self._analyze_file(str(file_path), source_lines):
+            for finding in self._analyze_file(
+                str(file_path),
+                source.lines,
+                source.exceeded_line_limit,
+            ):
+                if max_findings is not None and report.total_findings >= max_findings:
+                    break
                 report.add_finding(finding)
 
         report.scan_duration_seconds = (datetime.now() - start).total_seconds()
         return report
 
     def _discover_files(self, root: Path) -> List[Path]:
-        """Return all files matching the configured extensions, excluding patterns."""
-        results: List[Path] = []
-        for ext in self._config.include_extensions:
-            for candidate in root.rglob(f"*{ext}"):
-                if not self._is_excluded(candidate):
-                    results.append(candidate)
-        return sorted(set(results))
+        """Return confined files matching the configured extensions."""
+        return sorted(
+            iter_language_files(
+                root,
+                include_extensions=self._config.include_extensions,
+                exclude_patterns=self._config.exclude_patterns,
+                allowed_extensions=JS_EXTENSIONS | TS_EXTENSIONS,
+            )
+        )
 
     def _is_excluded(self, path: Path) -> bool:
         """Return True if the path matches any exclusion pattern."""
-        parts = path.parts
-        for pattern in self._config.exclude_patterns:
-            for part in parts:
-                if fnmatch.fnmatch(part, pattern):
-                    return True
-        return False
+        return matches_exclude(path, self._config.exclude_patterns)
 
     def _is_rule_enabled(self, rule_id: str) -> bool:
         """Return True when the rule should be executed."""
@@ -104,7 +118,12 @@ class JSAnalyzer:
             return rule_id in self._config.enabled_rules
         return True
 
-    def _analyze_file(self, file_path: str, lines: List[str]) -> List[JSFinding]:
+    def _analyze_file(
+        self,
+        file_path: str,
+        lines: List[str],
+        exceeded_line_limit: bool = False,
+    ) -> List[JSFinding]:
         """Run all enabled rules against a single file's source lines."""
         findings: List[JSFinding] = []
         findings.extend(check_no_eval(file_path, lines, self._is_rule_enabled("js.no-eval")))
@@ -115,7 +134,15 @@ class JSAnalyzer:
         findings.extend(check_no_var(file_path, lines, self._is_rule_enabled("js.no-var")))
         findings.extend(check_no_empty_block(file_path, lines, self._is_rule_enabled("js.no-empty-block")))
         findings.extend(check_no_console(file_path, lines, self._is_rule_enabled("js.no-console")))
-        findings.extend(check_max_file_lines(file_path, lines, self._is_rule_enabled("js.max-file-lines"), self._config.max_file_lines))
+        style_lines = list(lines)
+        if exceeded_line_limit:
+            style_lines.append("")
+        findings.extend(check_max_file_lines(
+            file_path,
+            style_lines,
+            self._is_rule_enabled("js.max-file-lines"),
+            self._config.max_file_lines,
+        ))
         findings.extend(check_complexity(file_path, lines, self._is_rule_enabled("js.complexity"), self._config.max_complexity))
         findings.extend(check_no_trailing_spaces(file_path, lines, self._is_rule_enabled("js.no-trailing-spaces")))
         findings.extend(check_max_line_length(file_path, lines, self._is_rule_enabled("js.max-line-length")))

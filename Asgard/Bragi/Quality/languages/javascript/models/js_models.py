@@ -110,6 +110,7 @@ class JSAnalysisConfig(BaseModel):
     max_complexity: int = Field(10, description="Cyclomatic complexity threshold per function")
     max_function_lines: int = Field(50, description="Maximum lines per function")
     max_file_lines: int = Field(500, description="Maximum lines per file")
+    max_findings: int = Field(1000, description="Stop adding findings after this many")
 
     class Config:
         use_enum_values = True

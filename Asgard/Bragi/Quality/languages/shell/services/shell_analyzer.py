@@ -6,11 +6,19 @@ Files are discovered by extension (.sh, .bash) and optionally by shebang
 line (#!/bin/bash, #!/bin/sh, #!/usr/bin/env bash).
 """
 
-import fnmatch
 from datetime import datetime
 from pathlib import Path
 from typing import List, Optional
 
+from Asgard.Bragi.Quality.languages._confined_walk import (
+    DEFAULT_MAX_LINE_CHARS,
+    SHELL_EXTENSIONS,
+    iter_confined_regular_files,
+    iter_language_files,
+    matches_exclude,
+    normalize_extensions,
+    read_capped_source,
+)
 from Asgard.Bragi.Quality.languages.shell.models.shell_models import (
     ShellAnalysisConfig,
     ShellFinding,
@@ -63,53 +71,64 @@ class ShellAnalyzer:
 
         files = self._discover_files(root)
         report.files_analyzed = len(files)
+        max_findings = self._config.max_findings
 
         for file_path in files:
-            try:
-                source_lines = Path(file_path).read_text(encoding="utf-8", errors="replace").splitlines()
-            except OSError:
+            if max_findings is not None and report.total_findings >= max_findings:
+                break
+            source = read_capped_source(
+                Path(file_path),
+                max_file_lines=self._config.max_file_lines,
+            )
+            if source is None:
                 continue
 
-            for finding in self._analyze_file(str(file_path), source_lines):
+            for finding in self._analyze_file(str(file_path), source.lines):
+                if max_findings is not None and report.total_findings >= max_findings:
+                    break
                 report.add_finding(finding)
 
         report.scan_duration_seconds = (datetime.now() - start).total_seconds()
         return report
 
     def _discover_files(self, root: Path) -> List[Path]:
-        """Return all shell script files matching extensions or shebang."""
-        results: set = set()
-
-        for ext in self._config.include_extensions:
-            for candidate in root.rglob(f"*{ext}"):
-                if not self._is_excluded(candidate):
-                    results.add(candidate)
+        """Return confined shell scripts matching extensions or shebang."""
+        results = set(
+            iter_language_files(
+                root,
+                include_extensions=self._config.include_extensions,
+                exclude_patterns=self._config.exclude_patterns,
+                allowed_extensions=SHELL_EXTENSIONS,
+            )
+        )
 
         if self._config.also_check_shebangs:
-            for candidate in root.rglob("*"):
-                if candidate.is_file() and not self._is_excluded(candidate):
-                    if candidate.suffix not in self._config.include_extensions:
-                        if self._has_shell_shebang(candidate):
-                            results.add(candidate)
+            allowed = normalize_extensions(
+                self._config.include_extensions,
+                SHELL_EXTENSIONS,
+            )
+            for candidate in iter_confined_regular_files(
+                root,
+                exclude_patterns=self._config.exclude_patterns,
+            ):
+                if candidate.suffix.lower() in allowed:
+                    continue
+                if self._has_shell_shebang(candidate):
+                    results.add(candidate)
 
         return sorted(results)
 
     def _has_shell_shebang(self, path: Path) -> bool:
         """Return True if the first line of the file is a recognized shell shebang."""
-        try:
-            first_line = path.read_text(encoding="utf-8", errors="replace").splitlines()[0]
-            return any(first_line.startswith(shebang) for shebang in _SHELL_SHEBANGS)
-        except (OSError, IndexError):
+        source = read_capped_source(path, max_file_lines=1, max_line_chars=DEFAULT_MAX_LINE_CHARS)
+        if source is None or not source.lines:
             return False
+        first_line = source.lines[0]
+        return any(first_line.startswith(shebang) for shebang in _SHELL_SHEBANGS)
 
     def _is_excluded(self, path: Path) -> bool:
         """Return True if the path matches any exclusion pattern."""
-        parts = path.parts
-        for pattern in self._config.exclude_patterns:
-            for part in parts:
-                if fnmatch.fnmatch(part, pattern):
-                    return True
-        return False
+        return matches_exclude(path, self._config.exclude_patterns)
 
     def _is_rule_enabled(self, rule_id: str) -> bool:
         """Return True when the rule should be executed."""

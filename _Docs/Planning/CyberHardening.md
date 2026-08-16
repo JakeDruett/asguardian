@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
-| Medium   | 37   | 22    | 0             |
+| Medium   | 36   | 23    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -682,7 +682,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0042 — Language analyzers `rglob` and ignore advertised exclude/size limits
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T13:50:00Z
+- **Implementation note:** Shared _confined_walk (no symlink follow); apply exclude/max_file_lines/max_findings; line cap 4096; extension allowlist.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-59 / CWE-400
@@ -1900,11 +1903,11 @@ None yet.
 
 ## Implementation progress
 
-- Open: 68
-- Fixed: 46
+- Open: 67
+- Fixed: 47
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0042, CH-0065
+- Next: CH-0065
 - Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 

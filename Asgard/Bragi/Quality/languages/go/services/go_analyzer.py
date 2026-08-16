@@ -3,6 +3,11 @@
 from pathlib import Path
 from typing import List, Optional
 
+from Asgard.Bragi.Quality.languages._confined_walk import (
+    GO_EXTENSIONS,
+    collect_regex_findings,
+    read_capped_source,
+)
 from Asgard.Bragi.Quality.languages.go.models.go_models import (
     GoFinding,
     GoReport,
@@ -39,35 +44,32 @@ class GoAnalyzer:
         """Analyze all Go files under scan_path and return a GoReport."""
         path = Path(scan_path) if scan_path else self._config.scan_path
         report = GoReport(scan_path=str(path))
-        for src_file in path.rglob("*.go"):
-            try:
-                source = src_file.read_text(encoding="utf-8", errors="replace")
-            except OSError:
-                continue
-            lines = source.splitlines()
-            for rule_fn in _RULES:
-                rule_id = rule_fn.__doc__.split(":")[0].strip() if rule_fn.__doc__ else ""
-                enabled = self._config.rules.get(rule_id, True)
-                report.findings.extend(rule_fn(str(src_file), lines, enabled=enabled))
+        report.findings.extend(self._scan(path, self._config))
         return report
 
     def analyze_file(self, file_path: Path) -> List[GoFinding]:
-        if file_path.suffix.lower() not in {".go"}:
+        if file_path.suffix.lower() not in GO_EXTENSIONS:
             return []
-        try:
-            source = file_path.read_text(encoding="utf-8", errors="replace")
-        except OSError:
+        source = read_capped_source(file_path, max_file_lines=self._config.max_file_lines)
+        if source is None:
             return []
-        lines = source.splitlines()
         findings: List[GoFinding] = []
         for rule in _RULES:
-            findings.extend(rule(str(file_path), lines, enabled=True))
+            findings.extend(rule(str(file_path), source.lines, enabled=True))
         return findings
 
     def analyze_directory(self, scan_path: Path, config: Optional[GoScanConfig] = None) -> List[GoFinding]:
         cfg = config or GoScanConfig(scan_path=scan_path)
-        findings: List[GoFinding] = []
-        for ext in cfg.include_extensions:
-            for src_file in scan_path.rglob(f"*{ext}"):
-                findings.extend(self.analyze_file(src_file))
-        return findings
+        return self._scan(scan_path, cfg)
+
+    def _scan(self, scan_path: Path, cfg: GoScanConfig) -> List[GoFinding]:
+        return collect_regex_findings(
+            scan_path,
+            include_extensions=cfg.include_extensions,
+            exclude_patterns=cfg.exclude_patterns,
+            allowed_extensions=GO_EXTENSIONS,
+            max_file_lines=cfg.max_file_lines,
+            max_findings=cfg.max_findings,
+            rules=_RULES,
+            enabled_for=lambda rule_id: cfg.rules.get(rule_id, True),
+        )
