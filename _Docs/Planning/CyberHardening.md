@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
 | Medium   | 2    | 57    | 0             |
-| Low      | 2    | 20    | 0             |
+| Low      | 1    | 21    | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -694,7 +694,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0039 — Unsigned dep-graph JSON cache can crash the scan
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** e2841e7
+- **Fixed at:** 2026-08-16T13:42:00Z
+- **Implementation note:** HMAC + schema on dep-graph cache; hydrate errors are a miss; atomic replace; derived reused only if signed.
 - **Severity:** Low
 - **Confidence:** High
 - **CWE / class:** CWE-20 / CWE-345
@@ -2074,12 +2077,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 10
-- Fixed: 104
+- Open: 9
+- Fixed: 105
 - Accepted risk: 0
-- Current wave: W4
-- Next: CH-0039
-- Last commit: 10d6429
+- Current wave: W5
+- Next: CH-0055, CH-0067, CH-0046
+- Last commit: e2841e7
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

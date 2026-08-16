@@ -102,3 +102,4 @@
 {"id":"CH-0101","at":"2026-08-16T13:36:00Z","commit":"e18ab61","wave":"W4","summary":"Critical-path walks break on cyclic parent spans"}
 {"id":"CH-0025","at":"2026-08-16T13:40:00Z","commit":"d7e275c","wave":"W4","summary":"Cap SZZ hunks and blame calls"}
 {"id":"CH-0031","at":"2026-08-16T13:41:00Z","commit":"10d6429","wave":"W4","summary":"Catch profile YAML ValidationError; fall back"}
+{"id":"CH-0039","at":"2026-08-16T13:42:00Z","commit":"e2841e7","wave":"W4","summary":"HMAC+schema dep-graph cache; atomic write"}
