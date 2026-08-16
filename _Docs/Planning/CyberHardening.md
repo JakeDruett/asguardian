@@ -1784,7 +1784,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0113 — DNS checker passes unsanitized domain to `dig`
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** baae354
 - **Fixed at:** 2026-08-16T11:38:00Z
 - **Implementation note:** RFC1123/IDNA hostname validation; reject leading -/ @; pass dig -- domain type.
 - **Severity:** Medium
@@ -1848,7 +1848,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0071, CH-0097, CH-0105, CH-0108
-- Last commit: PENDING
+- Last commit: baae354
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
