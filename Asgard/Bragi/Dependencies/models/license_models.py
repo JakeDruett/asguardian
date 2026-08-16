@@ -112,7 +112,7 @@ class PackageLicense:
     source: str = ""  # Where license info came from (pypi, installed, etc.)
     homepage: Optional[str] = None
     author: Optional[str] = None
-    is_allowed: bool = True
+    is_allowed: bool = False
     is_prohibited: bool = False
     is_warning: bool = False
     # SPDX expression support (Plan 03): arms of an OR/AND expression and,
@@ -120,14 +120,19 @@ class PackageLicense:
     license_expression_arms: List[str] = field(default_factory=list)
     chosen_expression_arm: Optional[str] = None
     # Policy verdict ("allowed" / "warn" / "prohibited" / "unknown"). The
-    # legacy booleans above keep their historical semantics (WARN packages
-    # remain is_allowed=True); this field carries the stricter signal.
+    # legacy booleans keep historical semantics after classify (WARN
+    # packages remain is_allowed=True). Unclassified defaults fail-closed.
     verdict: str = "unknown"
 
     @property
     def display_license(self) -> str:
         """Get display-friendly license name."""
         return self.license_name or self.license_classifier or "Unknown"
+
+    @property
+    def is_policy_allowed(self) -> bool:
+        """Gate helper: only an explicit allowed verdict is a pass."""
+        return self.verdict == "allowed"
 
 
 @dataclass

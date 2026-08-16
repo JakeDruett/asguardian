@@ -153,6 +153,12 @@ class TestCheckerDelegation:
         assert classified.severity == LicenseSeverity.MODERATE
         assert classified.category == LicenseCategory.UNKNOWN
 
+    def test_unclassified_package_is_not_allowed(self):
+        pkg = PackageLicense(package_name="x")
+        assert pkg.is_allowed is False
+        assert pkg.verdict == "unknown"
+        assert pkg.is_policy_allowed is False
+
     def test_or_expression_emits_multiple_issue(self):
         checker = _checker()
         pkg = PackageLicense(package_name="dual", license_name="MIT OR GPL-3.0")

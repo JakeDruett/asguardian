@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 34   | 25    | 0             |
+| Medium   | 33   | 26    | 0             |
 | Low      | 13   | 9     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -640,7 +640,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0038 — `PackageLicense.is_allowed` defaults True (fail-open)
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T15:38:00Z
+- **Implementation note:** Default `is_allowed=False`; gates use `is_policy_allowed` (`verdict == "allowed"`). Classifier still sets WARN True.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-696 / fail-open
@@ -1945,12 +1948,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 53
-- Fixed: 61
+- Open: 52
+- Fixed: 62
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0013, CH-0027, CH-0032
-- Last commit: c6bb9c4
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
