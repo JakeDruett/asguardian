@@ -917,7 +917,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0057 — Alignment config `file:` paths are not confined to `base_dir`
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** fc911d0
 - **Fixed at:** 2026-08-16T13:42:00Z
 - **Implementation note:** confine_source_path rejects abs/`..`; dest must be_relative_to(base_dir) before read_text.
 - **Severity:** Medium
