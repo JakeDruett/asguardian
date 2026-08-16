@@ -27,6 +27,8 @@ from Asgard.Volundr.CICD.models.cicd_models import (
 )
 from Asgard.Volundr.CICD.services.action_pins import (
     annotate_pinned_uses,
+    harden_service_map,
+    pin_container_image,
     pinned,
     resolve_action_ref,
 )
@@ -34,6 +36,23 @@ from Asgard.Volundr.CICD.services.context_hardening import harden_steps
 
 DEFAULT_JOB_PERMISSIONS: Dict[str, str] = {"contents": "read"}
 DEFAULT_TIMEOUT_MINUTES = 30
+
+_GHA_RUNNER_TO_IMAGE = {
+    "ubuntu-latest": "ubuntu:24.04",
+    "ubuntu-24.04": "ubuntu:24.04",
+    "ubuntu-22.04": "ubuntu:22.04",
+    "ubuntu-20.04": "ubuntu:20.04",
+}
+
+
+def _gitlab_job_image(runs_on: str) -> str:
+    """Map a runner label or image ref to a digest-pinned GitLab job image."""
+    mapped = _GHA_RUNNER_TO_IMAGE.get(runs_on)
+    if mapped is not None:
+        return pin_container_image(mapped)
+    if ":" in runs_on or "/" in runs_on or "@" in runs_on:
+        return pin_container_image(runs_on)
+    return pin_container_image("ubuntu:24.04")
 
 
 def _job_id(name: str) -> str:
@@ -136,7 +155,7 @@ def _render_github_job(
     if stage.environment:
         job["environment"] = stage.environment
     if stage.services:
-        job["services"] = stage.services
+        job["services"] = harden_service_map(stage.services)
     if stage.strategy:
         job["strategy"] = stage.strategy
 
@@ -224,9 +243,8 @@ def _self_audit_job(config: PipelineConfig) -> Dict[str, Any]:
 
     Runs zizmor (GitHub Actions security auditor) and actionlint over the
     repository's own workflow files. Tool versions are pinned exactly:
-    zizmor via a pinned PyPI version, actionlint via a version-tagged
-    docker image (``resolve_action_ref`` passes ``docker://`` refs
-    through; there is no SHA pin-map entry to fake).
+    zizmor via a pinned PyPI version, actionlint via a digest-pinned
+    ``docker://`` image.
     """
     job: Dict[str, Any] = {
         "runs-on": "ubuntu-latest",
@@ -240,7 +258,7 @@ def _self_audit_job(config: PipelineConfig) -> Dict[str, Any]:
             },
             {
                 "name": "actionlint (workflow syntax/shellcheck)",
-                "uses": "docker://rhysd/actionlint:1.7.7",
+                "uses": resolve_action_ref("docker://rhysd/actionlint:1.7.7")[0],
                 "with": {"args": "-color"},
             },
             {
@@ -405,7 +423,7 @@ def generate_gitlab_ci(config: PipelineConfig) -> str:
         job_name = _job_id(stage.name)
         job: Dict[str, Any] = {
             "stage": job_name,
-            "image": stage.runs_on if ":" in stage.runs_on else f"ubuntu:{stage.runs_on.split('-')[-1] if '-' in stage.runs_on else 'latest'}",
+            "image": _gitlab_job_image(stage.runs_on),
         }
 
         job["timeout"] = f"{stage.timeout_minutes or DEFAULT_TIMEOUT_MINUTES} minutes"
@@ -633,7 +651,7 @@ def generate_circleci(config: PipelineConfig) -> str:
             if step.run:
                 steps.append({"run": {"name": step.name, "command": step.run}})
         job: Dict[str, Any] = {
-            "docker": [{"image": "cimg/base:current"}],
+            "docker": [{"image": pin_container_image("cimg/base:current")}],
             "steps": steps,
         }
         if stage.env:

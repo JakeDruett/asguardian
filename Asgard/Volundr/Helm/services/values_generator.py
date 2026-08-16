@@ -73,7 +73,7 @@ class ValuesGenerator:
         self,
         image_repository: str,
         environment: str = "development",
-        image_tag: str = "latest",
+        image_tag: str = "",
         service_port: int = 8080,
         ingress_enabled: bool = False,
         ingress_host: Optional[str] = None,

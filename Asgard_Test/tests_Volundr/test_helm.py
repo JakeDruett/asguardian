@@ -33,6 +33,24 @@ class TestChartNameAllowlist:
             HelmChart(name="foo}}.evil")
 
 
+class TestImageTagDefault:
+    def test_default_tag_is_not_latest(self):
+        values = HelmValues(image_repository="nginx")
+        assert values.image_tag != "latest"
+        assert values.image_tag == ""
+
+    def test_explicit_latest_is_rejected(self):
+        with pytest.raises(ValueError, match="floating"):
+            HelmValues(image_repository="nginx", image_tag="latest")
+
+    def test_generated_values_do_not_emit_latest(self, generator, basic_config):
+        result = generator.generate(basic_config)
+        parsed = __import__("yaml").safe_load(result.chart_files["values.yaml"])
+        tag = parsed["image"]["tag"]
+        assert tag != "latest"
+        assert tag in ("", None)
+
+
 class TestValuesSchema:
     def test_values_schema_json_is_generated(self, generator, basic_config):
         result = generator.generate(basic_config)

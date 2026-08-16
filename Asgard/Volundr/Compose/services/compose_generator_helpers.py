@@ -140,7 +140,7 @@ def build_service_dict(
     if service.tty:
         svc["tty"] = True
     if service.privileged:
-        svc["privileged"] = True
+        raise ValueError(f"Service {service.name} uses privileged mode")
     if service.read_only:
         svc["read_only"] = True
     if service.security_opt:

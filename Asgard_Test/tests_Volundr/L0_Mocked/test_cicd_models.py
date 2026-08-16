@@ -17,6 +17,8 @@ from Asgard.Volundr.CICD.models.cicd_models import (
     TriggerConfig,
     PipelineConfig,
     GeneratedPipeline,
+    OIDCConfig,
+    OIDCProvider,
 )
 
 
@@ -267,6 +269,35 @@ class TestPipelineStage:
         )
 
         assert stage.timeout_minutes == 180
+
+    def test_pipeline_stage_rejects_privileged_service(self):
+        with pytest.raises(ValidationError, match="privileged"):
+            PipelineStage(
+                name="test",
+                services={"db": {"image": "postgres:15", "privileged": True}},
+            )
+
+
+@pytest.mark.L0
+@pytest.mark.volundr
+@pytest.mark.unit
+@pytest.mark.fast
+class TestOIDCConfig:
+    def test_https_vault_url_accepted(self):
+        oidc = OIDCConfig(
+            provider=OIDCProvider.VAULT,
+            role="ci",
+            vault_url="https://vault.example.com:8200",
+        )
+        assert oidc.vault_url == "https://vault.example.com:8200"
+
+    def test_http_vault_url_rejected(self):
+        with pytest.raises(ValidationError, match="https"):
+            OIDCConfig(
+                provider=OIDCProvider.VAULT,
+                role="ci",
+                vault_url="http://vault",
+            )
 
 
 @pytest.mark.L0

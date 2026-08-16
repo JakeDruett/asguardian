@@ -54,10 +54,125 @@ KNOWN_ACTION_PINS: Dict[str, Tuple[str, str]] = {
 }
 
 _SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+_DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
+_FLOATING_IMAGE_TAGS = frozenset({"latest", "current"})
+_PRIVILEGED_TRUE = frozenset({"true", "yes", "1", "on"})
+_PRIVILEGED_OPT_RE = re.compile(r"(?:^|\s)--privileged(?:\s|=|$)")
+
+# image ref -> (canonical name:tag, digest). Refreshed at release time.
+KNOWN_IMAGE_PINS: Dict[str, Tuple[str, str]] = {
+    "ubuntu:24.04": (
+        "ubuntu:24.04",
+        "sha256:561618e2c15bf2397621dd04f96926663a3b5616c189cf7e38db7e82f5c538ea",
+    ),
+    "ubuntu:latest": (
+        "ubuntu:24.04",
+        "sha256:561618e2c15bf2397621dd04f96926663a3b5616c189cf7e38db7e82f5c538ea",
+    ),
+    "ubuntu:22.04": (
+        "ubuntu:22.04",
+        "sha256:3b06811b2afd352be909dd088a004166d665dc76d38b13eada33522a9d915c6f",
+    ),
+    "ubuntu:20.04": (
+        "ubuntu:20.04",
+        "sha256:8feb4d8ca5354def3d8fce243717141ce31e2c428701f6682bd2fafe15388214",
+    ),
+    "cimg/base:current": (
+        "cimg/base:current",
+        "sha256:e8f07526f593ac5dee29362b7f98c6fec94c412722d6bbece731e4cc885abccb",
+    ),
+    "rhysd/actionlint:1.7.7": (
+        "rhysd/actionlint:1.7.7",
+        "sha256:887a259a5a534f3c4f36cb02dca341673c6089431057242cdc931e9f133147e9",
+    ),
+}
+
+
+def is_digest_pinned(image: str) -> bool:
+    """True if the container image is pinned to a sha256 digest."""
+    if "@" not in image:
+        return False
+    return bool(_DIGEST_RE.match(image.rsplit("@", 1)[1].lower()))
+
+
+def is_floating_image_tag(image: str) -> bool:
+    """True for untagged images or mutable ``:latest`` / ``:current`` tags."""
+    if is_digest_pinned(image):
+        return False
+    name = image.split("@", 1)[0].rsplit("/", 1)[-1]
+    if ":" not in name:
+        return True
+    return name.rsplit(":", 1)[1].lower() in _FLOATING_IMAGE_TAGS
+
+
+def pin_container_image(image: str, *, require_digest: bool = False) -> str:
+    """Rewrite a known image to ``name:tag@sha256:…``; reject floating tags.
+
+    Versioned tags that are not in the pin map pass through unless
+    ``require_digest`` is set (used for ``docker://`` action refs).
+    """
+    text = (image or "").strip()
+    if not text:
+        raise ValueError("image reference must not be empty")
+    if is_digest_pinned(text):
+        return text
+    pin = KNOWN_IMAGE_PINS.get(text)
+    if pin is not None:
+        name, digest = pin
+        return f"{name}@{digest}"
+    if is_floating_image_tag(text):
+        raise ValueError(f"Refusing floating image tag: {image}")
+    if require_digest:
+        raise ValueError(f"Refusing image not pinned by digest: {image}")
+    return text
+
+
+def _is_privileged_flag(value: object) -> bool:
+    if value is True:
+        return True
+    if isinstance(value, str) and value.strip().lower() in _PRIVILEGED_TRUE:
+        return True
+    return False
+
+
+def service_requests_privileged(spec: object) -> bool:
+    """True if a GHA/GitLab service spec enables privileged mode."""
+    if not isinstance(spec, dict):
+        return False
+    if _is_privileged_flag(spec.get("privileged")):
+        return True
+    options = spec.get("options")
+    if isinstance(options, str) and _PRIVILEGED_OPT_RE.search(options):
+        return True
+    if isinstance(options, dict) and _is_privileged_flag(options.get("privileged")):
+        return True
+    return False
+
+
+def harden_service_map(services: Dict[str, object]) -> Dict[str, object]:
+    """Reject privileged service containers and pin/reject floating images."""
+    if not services:
+        return services
+    hardened: Dict[str, object] = {}
+    for name, spec in services.items():
+        if service_requests_privileged(spec):
+            raise ValueError(f"Refusing privileged service '{name}'")
+        if isinstance(spec, str):
+            hardened[name] = pin_container_image(spec)
+            continue
+        if isinstance(spec, dict) and spec.get("image"):
+            pinned_spec = dict(spec)
+            pinned_spec["image"] = pin_container_image(str(spec["image"]))
+            hardened[name] = pinned_spec
+            continue
+        hardened[name] = spec
+    return hardened
 
 
 def is_sha_pinned(uses: str) -> bool:
-    """True if the ``uses:`` reference is pinned to a full commit SHA."""
+    """True if the ``uses:`` ref is a 40-char commit SHA or a docker digest."""
+    if uses.startswith("docker://"):
+        return is_digest_pinned(uses[len("docker://"):])
     if "@" not in uses:
         return False
     ref = uses.rsplit("@", 1)[1]
@@ -67,14 +182,21 @@ def is_sha_pinned(uses: str) -> bool:
 def resolve_action_ref(uses: str) -> Tuple[str, Optional[str]]:
     """Resolve a ``uses:`` reference against the curated pin map.
 
-    Returns ``(pinned_ref, version_comment)``. Local actions (``./...``),
-    docker refs, and already-SHA-pinned refs pass through unchanged
-    (comment ``None``). Known mutable tags are rewritten to their SHA with
-    the tag returned as the version comment. Unknown mutable tags pass
-    through unchanged (the validation engine flags them as VOL-CICD-0002).
+    Returns ``(pinned_ref, version_comment)``. Local actions (``./...``)
+    pass through. ``docker://`` refs are digest-pinned from
+    ``KNOWN_IMAGE_PINS`` (unknown unpinned docker refs raise). Already
+    SHA-pinned refs pass through unchanged (comment ``None``). Known
+    mutable tags are rewritten to their SHA with the tag returned as the
+    version comment. Unknown mutable tags pass through unchanged (the
+    validation engine flags them as VOL-CICD-0002).
     """
-    if uses.startswith("./") or uses.startswith("docker://"):
+    if uses.startswith("./"):
         return uses, None
+    if uses.startswith("docker://"):
+        pinned_image = pin_container_image(
+            uses[len("docker://"):], require_digest=True
+        )
+        return f"docker://{pinned_image}", None
     if is_sha_pinned(uses):
         return uses, None
     pin = KNOWN_ACTION_PINS.get(uses)

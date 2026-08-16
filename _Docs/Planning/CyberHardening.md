@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 13   | 15    | 0             |
-| Medium   | 49   | 10    | 0             |
+| Medium   | 48   | 11    | 0             |
 | Low      | 21   | 1     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1660,7 +1660,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0105 — Generators emit floating tags, HTTP Vault, and privileged-capable services
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T12:00:00Z
+- **Implementation note:** HTTPS-only vault_url; reject privileged GHA/Compose services; digest-pin known images (GitLab/CircleCI/actionlint); Helm image_tag default empty, reject latest/current.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-829 / CWE-250
@@ -1843,12 +1846,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 87
-- Fixed: 27
+- Open: 86
+- Fixed: 28
 - Accepted risk: 0
 - Current wave: W1
-- Next: CH-0105, CH-0108, CH-0112, CH-0082
-- Last commit: baae354
+- Next: CH-0108, CH-0112, CH-0082
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

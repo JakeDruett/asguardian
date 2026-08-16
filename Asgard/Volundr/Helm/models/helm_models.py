@@ -131,7 +131,10 @@ class HelmValues(BaseModel):
     """Helm values.yaml configuration."""
     replica_count: int = Field(default=1, description="Number of replicas")
     image_repository: str = Field(description="Container image repository")
-    image_tag: str = Field(default="latest", description="Container image tag")
+    image_tag: str = Field(
+        default="",
+        description="Container image tag (empty uses Chart.appVersion; never latest)",
+    )
     image_pull_policy: str = Field(default="IfNotPresent", description="Image pull policy")
     image_pull_secrets: List[str] = Field(default_factory=list, description="Image pull secrets")
     name_override: str = Field(default="", description="Name override")
@@ -161,6 +164,14 @@ class HelmValues(BaseModel):
     volumes: List[Dict[str, Any]] = Field(default_factory=list, description="Volumes")
     volume_mounts: List[Dict[str, Any]] = Field(default_factory=list, description="Volume mounts")
     extra_config: Dict[str, Any] = Field(default_factory=dict, description="Extra configuration values")
+
+    @field_validator("image_tag")
+    @classmethod
+    def _image_tag_not_floating(cls, value: str) -> str:
+        text = (value or "").strip()
+        if text.lower() in {"latest", "current"}:
+            raise ValueError("image_tag must not be a floating tag (latest/current)")
+        return text
 
 
 class HelmConfig(BaseModel):

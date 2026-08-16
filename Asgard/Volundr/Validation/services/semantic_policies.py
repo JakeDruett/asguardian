@@ -244,6 +244,19 @@ class PolicyEngine:
         r"(AWS_ACCESS|AWS_SECRET|GCP_|GOOGLE_CREDENTIALS|AZURE_CREDENTIALS|"
         r"SERVICE_ACCOUNT_KEY)[A-Za-z0-9_]*\s*\}\}"
     )
+    _ACTION_SHA_RE = re.compile(r"^[0-9a-f]{40}$")
+    _IMAGE_DIGEST_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
+
+    @classmethod
+    def _uses_is_pinned(cls, uses: str) -> bool:
+        if uses.startswith("docker://"):
+            image = uses[len("docker://"):]
+            return "@" in image and bool(
+                cls._IMAGE_DIGEST_RE.match(image.rsplit("@", 1)[1].lower())
+            )
+        if "@" not in uses:
+            return False
+        return bool(cls._ACTION_SHA_RE.match(uses.rsplit("@", 1)[1].lower()))
 
     def check_pipeline_workflow(
         self,
@@ -295,10 +308,7 @@ class PolicyEngine:
         for step in job.steps:
             uses = step.uses
             if isinstance(uses, str) and not uses.startswith("./"):
-                ref = uses.split("@", 1)[1] if "@" in uses else ""
-                is_sha = len(ref) == 40 and all(
-                    c in "0123456789abcdef" for c in ref.lower()
-                )
+                is_sha = self._uses_is_pinned(uses)
                 if not is_sha:
                     add(self._finding(
                         "VOL-CICD-0002",

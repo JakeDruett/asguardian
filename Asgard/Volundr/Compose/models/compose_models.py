@@ -9,7 +9,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class RestartPolicy(str, Enum):
@@ -158,7 +158,7 @@ class ComposeService(BaseModel):
     working_dir: Optional[str] = Field(default=None, description="Working directory")
     stdin_open: bool = Field(default=False, description="Keep stdin open")
     tty: bool = Field(default=False, description="Allocate TTY")
-    privileged: bool = Field(default=False, description="Privileged mode")
+    privileged: bool = Field(default=False, description="Privileged mode (rejected if true)")
     read_only: bool = Field(default=False, description="Read-only root filesystem")
     security_opt: List[str] = Field(default_factory=list, description="Security options")
     cap_add: List[str] = Field(default_factory=list, description="Capabilities to add")
@@ -168,6 +168,13 @@ class ComposeService(BaseModel):
     extra_hosts: List[str] = Field(default_factory=list, description="Extra /etc/hosts entries")
     secrets: List[str] = Field(default_factory=list, description="Secrets to inject")
     configs: List[str] = Field(default_factory=list, description="Configs to inject")
+
+    @field_validator("privileged")
+    @classmethod
+    def _reject_privileged(cls, value: bool) -> bool:
+        if value:
+            raise ValueError("privileged mode is not allowed")
+        return value
 
 
 class IpamConfig(BaseModel):

@@ -875,6 +875,13 @@ class TestFloatingTagsVaultAndPrivileged:
                 services={"db": {"image": "postgres:15", "options": "--privileged"}},
             )
 
+    def test_privileged_equals_true_option_is_rejected(self):
+        with pytest.raises(ValueError, match="privileged"):
+            PipelineStage(
+                name="test",
+                services={"db": {"image": "postgres:15", "options": "--privileged=true"}},
+            )
+
     def test_floating_service_image_is_rejected(self):
         with pytest.raises(ValueError, match="floating"):
             PipelineStage(

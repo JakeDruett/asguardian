@@ -331,6 +331,10 @@ class TestComposeEngine:
         parsed = yaml.safe_load(result.compose_content)
         assert parsed["services"]["api"]["restart"] == "unless-stopped"
 
+    def test_privileged_service_is_rejected(self):
+        with pytest.raises(ValueError, match="privileged"):
+            ComposeService(name="db", image="postgres:16", privileged=True)
+
 
 @pytest.mark.skipif(
     shutil.which("hadolint") is None, reason="hadolint not installed"

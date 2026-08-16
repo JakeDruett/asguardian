@@ -8,8 +8,9 @@ across multiple platforms with deployment strategies and best practices.
 from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from urllib.parse import urlparse
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from Asgard.Volundr.Validation.models.suppression_models import Suppression
 
@@ -32,6 +33,19 @@ class OIDCConfig(BaseModel):
         default=None, description="Service account to impersonate (GCP)"
     )
     vault_url: Optional[str] = Field(default=None, description="Vault server URL (vault)")
+
+    @field_validator("vault_url")
+    @classmethod
+    def _vault_url_https(cls, value: Optional[str]) -> Optional[str]:
+        if value is None:
+            return None
+        text = value.strip()
+        if not text:
+            return None
+        parsed = urlparse(text)
+        if parsed.scheme.lower() != "https" or not parsed.netloc:
+            raise ValueError("vault_url must be an https:// URL")
+        return text
 
 
 class CICDPlatform(str, Enum):
@@ -94,6 +108,12 @@ class PipelineStage(BaseModel):
             "generator default of {'contents': 'read'}"
         ),
     )
+
+    @field_validator("services")
+    @classmethod
+    def _harden_services(cls, value: Dict[str, Any]) -> Dict[str, Any]:
+        from Asgard.Volundr.CICD.services.action_pins import harden_service_map
+        return harden_service_map(value)
 
 
 class TriggerConfig(BaseModel):

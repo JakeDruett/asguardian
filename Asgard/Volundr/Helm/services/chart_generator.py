@@ -207,7 +207,7 @@ class ChartGenerator:
             "image": {
                 "repository": values.image_repository,
                 "pullPolicy": values.image_pull_policy,
-                "tag": values.image_tag if values.image_tag != "latest" else '""',
+                "tag": values.image_tag,
             },
             "imagePullSecrets": [{"name": s} for s in values.image_pull_secrets] if values.image_pull_secrets else [],
             "nameOverride": values.name_override,
