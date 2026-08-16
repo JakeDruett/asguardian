@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 0    | 28    | 0             |
 | Medium   | 0    | 59    | 0             |
-| Low      | 1    | 21    | 0             |
+| Low      | 0    | 22    | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -357,7 +357,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0019 — Markdown reporters interpolate scan-controlled strings unescaped
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 5733100
+- **Fixed at:** 2026-08-16T14:15:00Z
+- **Implementation note:** Shared md_cell() escapes pipes, backticks, control chars, and HTML in Bragi Markdown table cells.
 - **Severity:** Low
 - **Confidence:** High
 - **CWE / class:** CWE-116
@@ -2089,12 +2092,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 5
-- Fixed: 109
+- Open: 4
+- Fixed: 110
 - Accepted risk: 0
 - Current wave: W5
-- Next: CH-0019, CH-0009, CH-0020
-- Last commit: de56e96
+- Next: CH-0009, CH-0020, CH-0030
+- Last commit: 5733100
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
