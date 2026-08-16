@@ -18,7 +18,6 @@ from Asgard.Heimdall.Security.models.security_models import (
 )
 from Asgard.Heimdall.Security.utilities.security_utils import (
     extract_code_snippet,
-    find_line_column,
     is_in_comment_or_docstring,
     is_parameterized_sql,
     scan_directory_for_security,
@@ -30,6 +29,10 @@ from Asgard.Heimdall.Security.services._injection_patterns import (
     COMMAND_INJECTION_PATTERNS,
     PATH_TRAVERSAL_PATTERNS,
 )
+
+# Skip whole-file regex on huge sources; skip individual overlong lines (CH-0084).
+MAX_INJECTION_FILE_BYTES = 1_048_576
+MAX_INJECTION_LINE_CHARS = 4096
 from Asgard.Heimdall.treesitter import ast_engine
 from Asgard.Heimdall.treesitter.file_context import FileParseContext
 
@@ -143,9 +146,14 @@ class InjectionDetectionService:
         findings: List[VulnerabilityFinding] = []
 
         try:
+            if file_path.stat().st_size > MAX_INJECTION_FILE_BYTES:
+                return findings
             with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
                 content = f.read()
         except (IOError, OSError):
+            return findings
+
+        if len(content) > MAX_INJECTION_FILE_BYTES:
             return findings
 
         lines = content.split("\n")
@@ -155,43 +163,51 @@ class InjectionDetectionService:
             if pattern.file_types and file_ext not in pattern.file_types:
                 continue
 
-            for match in pattern.pattern.finditer(content):
-                line_number, column = find_line_column(content, match.start())
+            file_offset = 0
+            for line_number, line in enumerate(lines, start=1):
+                line_len = len(line)
+                if line_len <= MAX_INJECTION_LINE_CHARS:
+                    for match in pattern.pattern.finditer(line):
+                        match_start = file_offset + match.start()
+                        column = match.start() + 1
 
-                if is_in_comment_or_docstring(content, lines, line_number, match.start(), file_ext):
-                    continue
+                        if is_in_comment_or_docstring(
+                            content, lines, line_number, match_start, file_ext
+                        ):
+                            continue
 
-                if pattern.vuln_type == VulnerabilityType.SQL_INJECTION:
-                    context_start = max(0, match.start() - 50)
-                    context_end = min(len(content), match.end() + 200)
-                    context = content[context_start:context_end]
+                        if pattern.vuln_type == VulnerabilityType.SQL_INJECTION:
+                            context_start = max(0, match_start - 50)
+                            context_end = min(len(content), match_start + len(match.group(0)) + 200)
+                            context = content[context_start:context_end]
 
-                    if is_parameterized_sql(match.group(0), context):
-                        continue
+                            if is_parameterized_sql(match.group(0), context):
+                                continue
 
-                code_snippet = extract_code_snippet(lines, line_number)
+                        code_snippet = extract_code_snippet(lines, line_number)
 
-                finding = VulnerabilityFinding(
-                    file_path=str(file_path.relative_to(root_path)),
-                    line_number=line_number,
-                    column_start=column,
-                    column_end=column + len(match.group(0)),
-                    vulnerability_type=pattern.vuln_type,
-                    severity=pattern.severity,
-                    title=pattern.title,
-                    description=pattern.description,
-                    code_snippet=code_snippet,
-                    cwe_id=pattern.cwe_id,
-                    owasp_category=pattern.owasp_category,
-                    confidence=pattern.confidence,
-                    remediation=pattern.remediation,
-                    references=[
-                        f"https://cwe.mitre.org/data/definitions/{pattern.cwe_id.replace('CWE-', '')}.html",
-                        f"https://owasp.org/Top10/{pattern.owasp_category}/",
-                    ],
-                )
+                        finding = VulnerabilityFinding(
+                            file_path=str(file_path.relative_to(root_path)),
+                            line_number=line_number,
+                            column_start=column,
+                            column_end=column + len(match.group(0)),
+                            vulnerability_type=pattern.vuln_type,
+                            severity=pattern.severity,
+                            title=pattern.title,
+                            description=pattern.description,
+                            code_snippet=code_snippet,
+                            cwe_id=pattern.cwe_id,
+                            owasp_category=pattern.owasp_category,
+                            confidence=pattern.confidence,
+                            remediation=pattern.remediation,
+                            references=[
+                                f"https://cwe.mitre.org/data/definitions/{pattern.cwe_id.replace('CWE-', '')}.html",
+                                f"https://owasp.org/Top10/{pattern.owasp_category}/",
+                            ],
+                        )
 
-                findings.append(finding)
+                        findings.append(finding)
+                file_offset += line_len + 1
 
         findings.extend(self._scan_file_ast(file_path, root_path, lines, findings))
 

@@ -47,10 +47,19 @@ class InjectionPattern:
         self.confidence = confidence
 
 
+# Quantifier caps keep nested SQL/XSS regexes linear on a hostile long line (CH-0084).
+_SQL_SPAN = 400
+_INNER_SPAN = 200
+_IDENT_SPAN = 120
+_CALL_SPAN = 400
+
 SQL_INJECTION_PATTERNS: List[InjectionPattern] = [
     InjectionPattern(
         name="sql_string_format",
-        pattern=r"""(?:execute|query|cursor\.execute|raw|rawsql|RawSQL)\s*\(\s*[f"'].*(?:\{|\%s|\%\().*["']\s*(?:%|\.format)""",
+        pattern=(
+            r"""(?:execute|query|cursor\.execute|raw|rawsql|RawSQL)\s*\(\s*[f"']"""
+            rf"""[^\n]{{0,{_SQL_SPAN}}}(?:\{{|\%s|\%\()[^\n]{{0,{_INNER_SPAN}}}["']\s*(?:%|\.format)"""
+        ),
         vuln_type=VulnerabilityType.SQL_INJECTION,
         severity=SecuritySeverity.CRITICAL,
         title="SQL Injection via String Formatting",
@@ -62,7 +71,10 @@ SQL_INJECTION_PATTERNS: List[InjectionPattern] = [
     ),
     InjectionPattern(
         name="sql_string_concat",
-        pattern=r"""(?:SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|AND|OR)\s*.*['"]\s*\+\s*(?:request|input|params|data|user)""",
+        pattern=(
+            r"""(?:SELECT|INSERT|UPDATE|DELETE|FROM|WHERE|AND|OR)\s+"""
+            rf"""[^\n]{{0,{_SQL_SPAN}}}['"]\s*\+\s*(?:request|input|params|data|user)"""
+        ),
         vuln_type=VulnerabilityType.SQL_INJECTION,
         severity=SecuritySeverity.CRITICAL,
         title="SQL Injection via String Concatenation",
@@ -74,7 +86,11 @@ SQL_INJECTION_PATTERNS: List[InjectionPattern] = [
     ),
     InjectionPattern(
         name="sql_fstring",
-        pattern=r"""(?:execute|query|cursor\.execute)\s*\(\s*f['"]{1,3}.*(?:SELECT|INSERT|UPDATE|DELETE).*\{.*\}""",
+        pattern=(
+            r"""(?:execute|query|cursor\.execute)\s*\(\s*f['"]{1,3}"""
+            rf"""[^\n]{{0,{_SQL_SPAN}}}(?:SELECT|INSERT|UPDATE|DELETE)"""
+            rf"""[^\n]{{0,{_INNER_SPAN}}}\{{[^\n]{{0,{_IDENT_SPAN}}}\}}"""
+        ),
         vuln_type=VulnerabilityType.SQL_INJECTION,
         severity=SecuritySeverity.CRITICAL,
         title="SQL Injection via f-string",
@@ -87,7 +103,11 @@ SQL_INJECTION_PATTERNS: List[InjectionPattern] = [
     ),
     InjectionPattern(
         name="sql_percent_format",
-        pattern=r"""(?:execute|query|cursor\.execute)\s*\([^)]*["'].*(?:SELECT|INSERT|UPDATE|DELETE).*%[sd].*["']\s*%\s*""",
+        pattern=(
+            rf"""(?:execute|query|cursor\.execute)\s*\([^)\n]{{0,{_CALL_SPAN}}}["']"""
+            rf"""[^\n]{{0,{_SQL_SPAN}}}(?:SELECT|INSERT|UPDATE|DELETE)"""
+            rf"""[^\n]{{0,{_INNER_SPAN}}}%[sd][^\n]{{0,{_IDENT_SPAN}}}["']\s*%\s*"""
+        ),
         vuln_type=VulnerabilityType.SQL_INJECTION,
         severity=SecuritySeverity.CRITICAL,
         title="SQL Injection via Percent Formatting",
@@ -100,7 +120,7 @@ SQL_INJECTION_PATTERNS: List[InjectionPattern] = [
     ),
     InjectionPattern(
         name="django_raw_sql",
-        pattern=r"""(?:\.raw|\.extra)\s*\([^)]*(?:\{|%|\.format)""",
+        pattern=rf"""(?:\.raw|\.extra)\s*\([^)\n]{{0,{_CALL_SPAN}}}(?:\{{|%|\.format)""",
         vuln_type=VulnerabilityType.SQL_INJECTION,
         severity=SecuritySeverity.HIGH,
         title="Django Raw SQL with User Input",
@@ -113,7 +133,11 @@ SQL_INJECTION_PATTERNS: List[InjectionPattern] = [
     ),
     InjectionPattern(
         name="sqlalchemy_text_format",
-        pattern=r"""text\s*\(\s*f?['"]{1,3}.*(?:SELECT|INSERT|UPDATE|DELETE).*(?:\{|%|\.format)""",
+        pattern=(
+            r"""text\s*\(\s*f?['"]{1,3}"""
+            rf"""[^\n]{{0,{_SQL_SPAN}}}(?:SELECT|INSERT|UPDATE|DELETE)"""
+            rf"""[^\n]{{0,{_INNER_SPAN}}}(?:\{{|%|\.format)"""
+        ),
         vuln_type=VulnerabilityType.SQL_INJECTION,
         severity=SecuritySeverity.CRITICAL,
         title="SQLAlchemy text() with String Formatting",
@@ -129,7 +153,10 @@ SQL_INJECTION_PATTERNS: List[InjectionPattern] = [
 XSS_PATTERNS: List[InjectionPattern] = [
     InjectionPattern(
         name="xss_innerhtml",
-        pattern=r"""\.innerHTML\s*=\s*(?:(?!['"`]<).)*(?:request|params|input|data|user|query)""",
+        pattern=(
+            r"""\.innerHTML\s*=\s*"""
+            rf"""(?:(?!['"`]<)[^\n]){{0,{_SQL_SPAN}}}(?:request|params|input|data|user|query)"""
+        ),
         vuln_type=VulnerabilityType.XSS,
         severity=SecuritySeverity.HIGH,
         title="XSS via innerHTML",
@@ -142,7 +169,10 @@ XSS_PATTERNS: List[InjectionPattern] = [
     ),
     InjectionPattern(
         name="xss_document_write",
-        pattern=r"""document\.write\s*\([^)]*(?:request|params|input|data|user|query|location|url)""",
+        pattern=(
+            rf"""document\.write\s*\([^)\n]{{0,{_CALL_SPAN}}}"""
+            r"""(?:request|params|input|data|user|query|location|url)"""
+        ),
         vuln_type=VulnerabilityType.XSS,
         severity=SecuritySeverity.HIGH,
         title="XSS via document.write",
@@ -155,7 +185,10 @@ XSS_PATTERNS: List[InjectionPattern] = [
     ),
     InjectionPattern(
         name="xss_eval",
-        pattern=r"""eval\s*\([^)]*(?:request|params|input|data|user|query|location)""",
+        pattern=(
+            rf"""eval\s*\([^)\n]{{0,{_CALL_SPAN}}}"""
+            r"""(?:request|params|input|data|user|query|location)"""
+        ),
         vuln_type=VulnerabilityType.XSS,
         severity=SecuritySeverity.CRITICAL,
         title="Code Injection via eval",
@@ -181,7 +214,7 @@ XSS_PATTERNS: List[InjectionPattern] = [
     ),
     InjectionPattern(
         name="xss_template_unescaped",
-        pattern=r"""\{\{\{\s*.*(?:request|params|input|data|user|body)\.""",
+        pattern=rf"""\{{{{\{{\s*[^\n}}]{{0,{_IDENT_SPAN}}}(?:request|params|input|data|user|body)\.""",
         vuln_type=VulnerabilityType.XSS,
         severity=SecuritySeverity.HIGH,
         title="Unescaped Template Variable",
@@ -194,7 +227,7 @@ XSS_PATTERNS: List[InjectionPattern] = [
     ),
     InjectionPattern(
         name="xss_jinja_safe",
-        pattern=r"""\{\{.*\|\s*safe\s*\}\}""",
+        pattern=rf"""\{{\{{[^\n]{{0,{_INNER_SPAN}}}\|\s*safe\s*\}}\}}""",
         vuln_type=VulnerabilityType.XSS,
         severity=SecuritySeverity.MEDIUM,
         title="Jinja2 safe Filter Usage",
@@ -207,7 +240,10 @@ XSS_PATTERNS: List[InjectionPattern] = [
     ),
     InjectionPattern(
         name="xss_jquery_html",
-        pattern=r"""\$\([^)]+\)\.html\s*\([^)]*(?:request|params|input|data|user|query)""",
+        pattern=(
+            rf"""\$\([^)\n]{{1,{_CALL_SPAN}}}\)\.html\s*\([^)\n]{{0,{_CALL_SPAN}}}"""
+            r"""(?:request|params|input|data|user|query)"""
+        ),
         vuln_type=VulnerabilityType.XSS,
         severity=SecuritySeverity.HIGH,
         title="XSS via jQuery .html()",
@@ -223,7 +259,10 @@ XSS_PATTERNS: List[InjectionPattern] = [
 COMMAND_INJECTION_PATTERNS: List[InjectionPattern] = [
     InjectionPattern(
         name="cmd_os_system",
-        pattern=r"""os\.system\s*\([^)]*(?:\{|%|\.format|\+\s*(?:request|input|params|data|user))""",
+        pattern=(
+            rf"""os\.system\s*\([^)\n]{{0,{_CALL_SPAN}}}"""
+            r"""(?:\{|%|\.format|\+\s*(?:request|input|params|data|user))"""
+        ),
         vuln_type=VulnerabilityType.COMMAND_INJECTION,
         severity=SecuritySeverity.CRITICAL,
         title="Command Injection via os.system",
@@ -236,7 +275,10 @@ COMMAND_INJECTION_PATTERNS: List[InjectionPattern] = [
     ),
     InjectionPattern(
         name="cmd_subprocess_shell",
-        pattern=r"""subprocess\.(?:call|run|Popen)\s*\([^)]*shell\s*=\s*True[^)]*(?:\{|%|\.format|\+\s*(?:request|input|params|data|user))""",
+        pattern=(
+            rf"""subprocess\.(?:call|run|Popen)\s*\([^)\n]{{0,{_CALL_SPAN}}}shell\s*=\s*True"""
+            rf"""[^)\n]{{0,{_CALL_SPAN}}}(?:\{{|%|\.format|\+\s*(?:request|input|params|data|user))"""
+        ),
         vuln_type=VulnerabilityType.COMMAND_INJECTION,
         severity=SecuritySeverity.CRITICAL,
         title="Command Injection via subprocess with shell=True",
@@ -249,7 +291,7 @@ COMMAND_INJECTION_PATTERNS: List[InjectionPattern] = [
     ),
     InjectionPattern(
         name="cmd_exec",
-        pattern=r"""(?:exec|eval)\s*\([^)]*(?:request|input|params|data|user|args)""",
+        pattern=rf"""(?:exec|eval)\s*\([^)\n]{{0,{_CALL_SPAN}}}(?:request|input|params|data|user|args)""",
         vuln_type=VulnerabilityType.COMMAND_INJECTION,
         severity=SecuritySeverity.CRITICAL,
         title="Code Execution via exec/eval",
@@ -262,7 +304,10 @@ COMMAND_INJECTION_PATTERNS: List[InjectionPattern] = [
     ),
     InjectionPattern(
         name="cmd_shell_exec",
-        pattern=r"""(?:shell_exec|system|passthru|exec|popen)\s*\([^)]*\$_(?:GET|POST|REQUEST)""",
+        pattern=(
+            rf"""(?:shell_exec|system|passthru|exec|popen)\s*\([^)\n]{{0,{_CALL_SPAN}}}"""
+            r"""\$_(?:GET|POST|REQUEST)"""
+        ),
         vuln_type=VulnerabilityType.COMMAND_INJECTION,
         severity=SecuritySeverity.CRITICAL,
         title="PHP Command Injection",
@@ -278,7 +323,10 @@ COMMAND_INJECTION_PATTERNS: List[InjectionPattern] = [
 PATH_TRAVERSAL_PATTERNS: List[InjectionPattern] = [
     InjectionPattern(
         name="path_traversal_open",
-        pattern=r"""open\s*\([^)]*(?:\{|%|\.format|\+)\s*[^)]*(?:request|input|params|data|user|filename|path)""",
+        pattern=(
+            rf"""open\s*\([^)\n]{{0,{_CALL_SPAN}}}(?:\{{|%|\.format|\+)\s*"""
+            rf"""[^)\n]{{0,{_CALL_SPAN}}}(?:request|input|params|data|user|filename|path)"""
+        ),
         vuln_type=VulnerabilityType.PATH_TRAVERSAL,
         severity=SecuritySeverity.HIGH,
         title="Path Traversal via open()",
@@ -291,7 +339,10 @@ PATH_TRAVERSAL_PATTERNS: List[InjectionPattern] = [
     ),
     InjectionPattern(
         name="path_traversal_send_file",
-        pattern=r"""send_file\s*\([^)]*(?:\{|%|\.format|\+)\s*[^)]*(?:request|input|params|data|user|filename|path)""",
+        pattern=(
+            rf"""send_file\s*\([^)\n]{{0,{_CALL_SPAN}}}(?:\{{|%|\.format|\+)\s*"""
+            rf"""[^)\n]{{0,{_CALL_SPAN}}}(?:request|input|params|data|user|filename|path)"""
+        ),
         vuln_type=VulnerabilityType.PATH_TRAVERSAL,
         severity=SecuritySeverity.HIGH,
         title="Path Traversal in File Download",

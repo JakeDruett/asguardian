@@ -4,9 +4,11 @@ Tests for Heimdall Injection Detection Service
 Unit tests for the injection vulnerability detection service.
 """
 
-import pytest
+import time
 import tempfile
 from pathlib import Path
+
+import pytest
 
 from Asgard.Heimdall.Security.services.injection_detection_service import (
     InjectionPattern,
@@ -15,6 +17,7 @@ from Asgard.Heimdall.Security.services.injection_detection_service import (
     XSS_PATTERNS,
     COMMAND_INJECTION_PATTERNS,
     PATH_TRAVERSAL_PATTERNS,
+    MAX_INJECTION_FILE_BYTES,
 )
 from Asgard.Heimdall.Security.models.security_models import (
     VulnerabilityType,
@@ -407,3 +410,53 @@ path = open(user_path, 'r')
                     curr_idx = severity_order.index(severities[i])
                     next_idx = severity_order.index(severities[i + 1])
                     assert curr_idx <= next_idx
+
+    def test_ch0084_still_detects_fstring_sql(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmpdir_path = Path(tmpdir)
+            (tmpdir_path / "db.py").write_text(
+                'cursor.execute(f"SELECT * FROM users WHERE name = \'{name}\'")\n'
+            )
+            report = InjectionDetectionService().scan(tmpdir_path)
+            assert report.vulnerabilities_found > 0
+            assert any(f.vulnerability_type == "sql_injection" for f in report.findings)
+
+    def test_ch0084_still_detects_jinja_safe(self):
+        pat = next(p for p in XSS_PATTERNS if p.name == "xss_jinja_safe")
+        match = pat.pattern.search("{{ user_html | safe }}")
+        assert match is not None
+
+    def test_ch0084_long_non_matching_line_finishes_quickly(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmpdir_path = Path(tmpdir)
+            (tmpdir_path / "hostile.py").write_text(
+                'cursor.execute("' + ("A" * 50_000) + "\n"
+            )
+            start = time.perf_counter()
+            report = InjectionDetectionService().scan(tmpdir_path)
+            elapsed = time.perf_counter() - start
+            assert elapsed < 1.0
+            assert report.total_files_scanned >= 1
+
+    def test_ch0084_bounded_regex_on_50k_non_match(self):
+        blob = 'cursor.execute("' + ("A" * 50_000)
+        for name in ("sql_string_format", "sql_fstring"):
+            pat = next(p for p in SQL_INJECTION_PATTERNS if p.name == name)
+            start = time.perf_counter()
+            list(pat.pattern.finditer(blob))
+            assert time.perf_counter() - start < 0.25
+        jinja = "{{ " + ("x" * 50_000)
+        pat = next(p for p in XSS_PATTERNS if p.name == "xss_jinja_safe")
+        start = time.perf_counter()
+        list(pat.pattern.finditer(jinja))
+        assert time.perf_counter() - start < 0.25
+
+    def test_ch0084_oversized_file_skipped(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmpdir_path = Path(tmpdir)
+            (tmpdir_path / "huge.py").write_bytes(
+                b'cursor.execute(f"SELECT * FROM t WHERE id={x}")\n'
+                + b"x" * (MAX_INJECTION_FILE_BYTES + 1)
+            )
+            report = InjectionDetectionService().scan(tmpdir_path)
+            assert report.vulnerabilities_found == 0

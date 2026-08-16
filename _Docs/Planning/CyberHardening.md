@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 5    | 54    | 0             |
+| Medium   | 4    | 55    | 0             |
 | Low      | 10   | 12    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1471,7 +1471,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0084 — Injection-pattern regexes are ReDoS-prone on hostile source
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 820a9f9
+- **Fixed at:** 2026-08-16T13:00:00Z
+- **Implementation note:** Bounded nested `.*` / `[^)]*` to `{0,N}`; `_scan_file` is line-bounded with 1 MiB / 4096-char caps; 50k-char non-match test. Also bounded the other greedy patterns in the same file.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-1333
@@ -2041,12 +2044,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 21
-- Fixed: 93
+- Open: 20
+- Fixed: 94
 - Accepted risk: 0
 - Current wave: W4
-- Next: CH-0084, CH-0085, CH-0099
-- Last commit: ee4351c
+- Next: CH-0085, CH-0099
+- Last commit: 820a9f9
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
