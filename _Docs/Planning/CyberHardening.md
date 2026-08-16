@@ -524,7 +524,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0033 — License checker performs default-on HTTP to PyPI
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 7945612
 - **Fixed at:** 2026-08-16T10:56:00Z
 - **Implementation note:** PyPI fallback gated behind LicenseConfig.enable_network (default False).
 - **Severity:** Medium
@@ -1818,7 +1818,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0066, CH-0004, CH-0005, CH-0033
-- Last commit: PENDING
+- Last commit: 7945612
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
