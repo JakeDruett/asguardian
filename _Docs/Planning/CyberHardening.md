@@ -337,7 +337,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0018 — `fnmatch` on attacker-controlled architecture.yml patterns
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 9ee99f1
 - **Fixed at:** 2026-08-16T18:08:00Z
 - **Implementation note:** Sanitize path_patterns (max length 200, max 8 `*`, strings only). Matchers skip oversized globs.
 - **Severity:** Low
@@ -2037,7 +2037,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W4
 - Next: CH-0070, CH-0074, CH-0083
-- Last commit: pending
+- Last commit: 9ee99f1
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
