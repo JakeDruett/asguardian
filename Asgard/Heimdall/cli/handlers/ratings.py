@@ -18,6 +18,68 @@ from Asgard.Reporting.History.services.history_store import HistoryStore
 from Asgard.Reporting.History.models.history_models import AnalysisSnapshot, MetricSnapshot
 
 
+_FAILING_LETTERS = frozenset({"D", "E", "N/A", "NA"})
+_GATE_FAIL_STATUSES = frozenset({"failed", "not_evaluated"})
+_GATE_PASS_STATUSES = frozenset({"passed", "warning"})
+
+
+def _enum_text(value) -> str:
+    if value is None:
+        return ""
+    text = getattr(value, "value", value)
+    return str(text).strip()
+
+
+def _has_domain_errors(report) -> bool:
+    return bool(getattr(report, "domain_errors", None))
+
+
+def _is_not_measured(confidence) -> bool:
+    token = _enum_text(confidence).lower()
+    return "not_measured" in token
+
+
+def _is_failing_letter(rating) -> bool:
+    return _enum_text(rating).upper() in _FAILING_LETTERS
+
+
+def _ratings_exit_code(ratings, security_report=None) -> int:
+    """Fail closed on D/E, unmeasured (N/A / NOT_MEASURED), or domain_errors."""
+    if ratings is None or _has_domain_errors(security_report):
+        return 1
+    letters = (
+        getattr(ratings, "overall_rating", None),
+        getattr(getattr(ratings, "maintainability", None), "rating", None),
+        getattr(getattr(ratings, "reliability", None), "rating", None),
+        getattr(getattr(ratings, "security", None), "rating", None),
+    )
+    if any(_is_failing_letter(letter) for letter in letters):
+        return 1
+    dimensions = (
+        getattr(ratings, "maintainability", None),
+        getattr(ratings, "reliability", None),
+        getattr(ratings, "security", None),
+    )
+    if any(_is_not_measured(getattr(dim, "confidence", None)) for dim in dimensions if dim is not None):
+        return 1
+    overall_confidence = getattr(getattr(ratings, "confidence", None), "overall", None)
+    if _is_not_measured(overall_confidence):
+        return 1
+    return 0
+
+
+def _gate_exit_code(status, baseline_available: bool = True) -> int:
+    """Fail closed on FAILED, NOT_EVALUATED, missing baseline, or unknown status."""
+    if not baseline_available:
+        return 1
+    token = _enum_text(status).lower()
+    if token in _GATE_FAIL_STATUSES:
+        return 1
+    if token in _GATE_PASS_STATUSES:
+        return 0
+    return 1
+
+
 def _save_ratings_to_history(project_path: str, ratings) -> None:
     store = HistoryStore()
     metrics = [
@@ -147,7 +209,7 @@ def run_ratings_analysis(args: argparse.Namespace, verbose: bool = False) -> int
             ]
             print("\n".join(lines))
 
-        return 0
+        return _ratings_exit_code(ratings, security_report)
 
     except Exception as e:
         print(f"Error: {e}")
@@ -242,7 +304,7 @@ def _run_differential_gate(args, scan_path: Path, security_report) -> int:
             )
         lines.append("")
         print("\n".join(lines))
-    return 1 if status == "failed" else 0
+    return _gate_exit_code(status, baseline_available=bool(result.baseline_available))
 
 
 def run_gate_evaluation(args: argparse.Namespace, verbose: bool = False) -> int:
@@ -337,17 +399,16 @@ def run_gate_evaluation(args: argparse.Namespace, verbose: bool = False) -> int:
             except Exception as hist_err:
                 print(f"Warning: could not save to history: {hist_err}")
 
-        exit_code = 1 if str(result.status).lower() == "failed" else 0
+        exit_code = _gate_exit_code(result.status)
+        if _has_domain_errors(security_report):
+            exit_code = 1
 
         # Differential ("clean as you code") gate: opt-in via --diff/--tier.
         if getattr(args, "diff", False) or getattr(args, "tier", None):
-            try:
-                exit_code = max(
-                    exit_code,
-                    _run_differential_gate(args, scan_path, security_report),
-                )
-            except Exception as diff_err:
-                print(f"Warning: differential gate failed to evaluate: {diff_err}")
+            exit_code = max(
+                exit_code,
+                _run_differential_gate(args, scan_path, security_report),
+            )
 
         return exit_code
 

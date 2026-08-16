@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 23   | 36    | 0             |
+| Medium   | 22   | 37    | 0             |
 | Low      | 12   | 10    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1492,7 +1492,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0088 — Ratings/gate/compliance CLIs fail-open on exit status
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T16:40:00Z
+- **Implementation note:** Ratings exit 1 on D/E/N/A/NOT_MEASURED; gate NOT_EVALUATED and compliance findings fail; diff-gate exceptions no longer swallowed.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-693
@@ -1981,12 +1984,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 41
-- Fixed: 73
+- Open: 40
+- Fixed: 74
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0036, CH-0043, CH-0047
-- Last commit: 7b60b9c
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

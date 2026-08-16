@@ -62,6 +62,27 @@ _BUCKET_TO_CONFIDENCE = {
 }
 
 
+def _has_domain_errors(report) -> bool:
+    return bool(getattr(report, "domain_errors", None))
+
+
+def _compliance_exit_code(owasp=None, cwe=None, security_report=None) -> int:
+    """Fail closed on domain_errors or any mapped compliance findings."""
+    if _has_domain_errors(security_report):
+        return 1
+    if owasp is not None:
+        if int(getattr(owasp, "total_findings_mapped", 0) or 0) > 0:
+            return 1
+        categories = getattr(owasp, "categories", None) or {}
+        if any(int(getattr(cat, "findings_count", 0) or 0) > 0 for cat in categories.values()):
+            return 1
+    if cwe is not None:
+        coverage = getattr(cwe, "top_25_coverage", None) or {}
+        if any(int(getattr(entry, "findings_count", 0) or 0) > 0 for entry in coverage.values()):
+            return 1
+    return 0
+
+
 def _dispatch_entry_to_finding(entry: dict) -> VulnerabilityFinding:
     """Convert a run_dispatch_scan() display entry into a real finding so
     it flows through VulnerabilityReport.calculate_totals() -- the single
@@ -335,11 +356,18 @@ def run_compliance_analysis(args: argparse.Namespace, verbose: bool = False) -> 
         hotspot_report = hotspot_detector.scan(scan_path)
 
         reporter = ComplianceReporter(config)
+        owasp = (
+            reporter.generate_owasp_report(security_report, hotspot_report, str(scan_path))
+            if include_owasp else None
+        )
+        cwe = (
+            reporter.generate_cwe_report(security_report, hotspot_report, str(scan_path))
+            if include_cwe else None
+        )
 
         if args.format == "json":
             output = {}
-            if include_owasp:
-                owasp = reporter.generate_owasp_report(security_report, hotspot_report, str(scan_path))
+            if owasp is not None:
                 output["owasp"] = {
                     "version": owasp.owasp_version,
                     "overall_grade": owasp.overall_grade,
@@ -357,8 +385,7 @@ def run_compliance_analysis(args: argparse.Namespace, verbose: bool = False) -> 
                         for cat_id, cat in sorted(owasp.categories.items())
                     },
                 }
-            if include_cwe:
-                cwe = reporter.generate_cwe_report(security_report, hotspot_report, str(scan_path))
+            if cwe is not None:
                 output["cwe"] = {
                     "version": cwe.cwe_version,
                     "overall_grade": cwe.overall_grade,
@@ -384,8 +411,7 @@ def run_compliance_analysis(args: argparse.Namespace, verbose: bool = False) -> 
                 "",
             ]
 
-            if include_owasp:
-                owasp = reporter.generate_owasp_report(security_report, hotspot_report, str(scan_path))
+            if owasp is not None:
                 lines.extend([
                     f"  OWASP Top 10 (2021) - Overall Grade: {owasp.overall_grade}",
                     "-" * 70,
@@ -398,8 +424,7 @@ def run_compliance_analysis(args: argparse.Namespace, verbose: bool = False) -> 
                     )
                 lines.append("")
 
-            if include_cwe:
-                cwe = reporter.generate_cwe_report(security_report, hotspot_report, str(scan_path))
+            if cwe is not None:
                 lines.extend([
                     f"  CWE Top 25 (2024) - Overall Grade: {cwe.overall_grade}",
                     "-" * 70,
@@ -422,7 +447,9 @@ def run_compliance_analysis(args: argparse.Namespace, verbose: bool = False) -> 
             lines.append("=" * 70)
             print("\n".join(lines))
 
-        return 0
+        return _compliance_exit_code(
+            owasp=owasp, cwe=cwe, security_report=security_report
+        )
 
     except Exception as e:
         print(f"Error: {e}")
