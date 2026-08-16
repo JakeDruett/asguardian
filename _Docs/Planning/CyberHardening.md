@@ -1328,7 +1328,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0086 — MCP HTTP server has no authentication and runs tools on any path
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 353cd90
 - **Fixed at:** 2026-08-16T10:50:00Z
 - **Implementation note:** Bearer token required; refuse 0.0.0.0 without --expose; jail tool paths; cap body size; no traceback leak.
 - **Severity:** High
@@ -1809,7 +1809,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0066, CH-0004, CH-0005, CH-0033
-- Last commit: PENDING
+- Last commit: 353cd90
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
