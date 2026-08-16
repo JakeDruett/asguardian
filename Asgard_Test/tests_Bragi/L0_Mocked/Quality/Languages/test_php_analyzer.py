@@ -211,3 +211,33 @@ class TestPhpAnalyzerReport:
             (Path(d) / "x.php").write_text(code)
             report = PhpAnalyzer(config).analyze(scan_path=d)
         assert not any(f.rule_id == "php.no-eval" for f in report.findings)
+
+
+class TestPhpRuleBoundsCH0045:
+    def test_sql_build_concat_still_flagged(self):
+        from Asgard.Bragi.Quality.languages.php.services._php_rules import check_sql_injection
+
+        lines = ['$query = "SELECT * FROM t WHERE id=" . $_GET["id"];']
+        findings = check_sql_injection("q.php", lines)
+        assert findings and findings[0].rule_id == "php.sql-injection"
+
+    def test_xss_html_concat_still_flagged(self):
+        from Asgard.Bragi.Quality.languages.php.services._php_rules import check_xss
+
+        lines = ["$html .= '<div>' . $_GET['name'];"]
+        findings = check_xss("x.php", lines)
+        assert findings and findings[0].rule_id == "php.xss"
+
+    def test_long_non_match_finishes_quickly(self):
+        import time
+
+        from Asgard.Bragi.Quality.languages.php.services._php_rules import (
+            check_sql_injection,
+            check_xss,
+        )
+
+        blob = '$query = "' + ("A" * 50_000)
+        start = time.perf_counter()
+        check_sql_injection("h.php", [blob])
+        check_xss("h.php", ["$html .= " + ("A" * 50_000)])
+        assert time.perf_counter() - start < 0.25

@@ -23,13 +23,15 @@ def check_sql_injection(file_path: str, lines: List[str], enabled: bool = True) 
     # User input directly in query call
     direct = re.compile(r'(?:mysql_query|mysqli_query|->query)\s*\([^)]*\$_(?:GET|POST|REQUEST|COOKIE)')
     # $query/$sql built with string concat from user input: $query = "..." . $_GET
-    build = re.compile(r'\$(?:query|sql|qry)\s*=\s*["\'].*["\']\s*\.\s*\$_(?:GET|POST|REQUEST|COOKIE)')
+    build = re.compile(r'\$(?:query|sql|qry)\s*=\s*["\'].{0,200}["\']\s*\.\s*\$_(?:GET|POST|REQUEST|COOKIE)')
     # $query built with interpolation: $query = "...{$_GET['id']}..."
     interp = re.compile(r'\$(?:query|sql|qry)\s*=\s*"[^"]*\$_(?:GET|POST|REQUEST|COOKIE)')
     # $query with any PHP variable interpolated in SQL context (two-hop: $id = $_GET; $query = "...$id...")
     var_interp = re.compile(r"\$(?:query|sql|qry)\s*=\s*\"[^\"]*(?:SELECT|INSERT|UPDATE|DELETE|WHERE)[^\"]*'\$\w+", re.IGNORECASE)
     findings = []
     for i, line in enumerate(lines):
+        if len(line) > 4096:
+            continue
         if direct.search(line) or build.search(line) or interp.search(line) or var_interp.search(line):
             findings.append(_finding(
                 file_path, i + 1, "php.sql-injection", PhpRuleCategory.SECURITY, PhpSeverity.ERROR,
@@ -46,9 +48,11 @@ def check_xss(file_path: str, lines: List[str], enabled: bool = True) -> List[Ph
     # Direct echo of superglobal
     direct = re.compile(r'echo\s+\$_(?:GET|POST|REQUEST|COOKIE)')
     # HTML string concat with superglobal: $html .= '...' . $_GET['x']
-    concat = re.compile(r'(?:\$html|\$output|\$page\[)\s*\.?=.*\.\s*\$_(?:GET|POST|REQUEST|COOKIE)')
+    concat = re.compile(r'(?:\$html|\$output|\$page\[)\s*\.?=.{0,200}\.\s*\$_(?:GET|POST|REQUEST|COOKIE)')
     findings = []
     for i, line in enumerate(lines):
+        if len(line) > 4096:
+            continue
         if direct.search(line) or concat.search(line):
             findings.append(_finding(
                 file_path, i + 1, "php.xss", PhpRuleCategory.SECURITY, PhpSeverity.ERROR,
