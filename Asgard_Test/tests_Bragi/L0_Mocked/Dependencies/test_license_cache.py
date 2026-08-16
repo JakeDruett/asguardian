@@ -92,7 +92,7 @@ class TestCheckerUsesLocalMetadataAndCache:
     def test_unknown_package_falls_back_to_pypi_parallel(self, tmp_path, monkeypatch):
         (tmp_path / "requirements.txt").write_text(
             "no-such-pkg-a==1.0\nno-such-pkg-b==1.0\n")
-        checker = LicenseChecker(LicenseConfig(scan_path=tmp_path))
+        checker = LicenseChecker(LicenseConfig(scan_path=tmp_path, enable_network=True))
         calls = []
 
         def fake_pypi(name):
@@ -102,6 +102,16 @@ class TestCheckerUsesLocalMetadataAndCache:
         result = checker.analyze()
         assert sorted(calls) == ["no-such-pkg-a", "no-such-pkg-b"]
         assert all(p.source == "not_found" for p in result.packages)
+
+    def test_pypi_not_called_when_network_disabled(self, tmp_path, monkeypatch):
+        (tmp_path / "requirements.txt").write_text("no-such-pkg-offline==1.0\n")
+        checker = LicenseChecker(LicenseConfig(scan_path=tmp_path))
+
+        def boom(*a, **k):
+            raise AssertionError("PyPI must stay gated behind enable_network")
+        monkeypatch.setattr(checker, "_get_license_from_pypi", boom)
+        result = checker.analyze()
+        assert result.packages[0].source == "network_disabled"
         # Deterministic ordering: sorted by name.
         assert [p.package_name for p in result.packages] == sorted(
             p.package_name for p in result.packages)

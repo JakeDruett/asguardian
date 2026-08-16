@@ -142,7 +142,7 @@ class LicenseChecker:
             else:
                 needs_network.append(pkg_name)
 
-        if needs_network:
+        if needs_network and self.config.enable_network:
             from concurrent.futures import ThreadPoolExecutor
             workers = min(self.MAX_FETCH_WORKERS, len(needs_network))
             with ThreadPoolExecutor(max_workers=workers) as pool:
@@ -156,6 +156,15 @@ class LicenseChecker:
                         severity=LicenseSeverity.MODERATE,
                         source="not_found",
                     )
+                resolved[pkg_name] = self._finish_resolution(pkg_name, lic_info)
+        elif needs_network:
+            for pkg_name in needs_network:
+                lic_info = PackageLicense(
+                    package_name=pkg_name,
+                    category=LicenseCategory.UNKNOWN,
+                    severity=LicenseSeverity.MODERATE,
+                    source="network_disabled",
+                )
                 resolved[pkg_name] = self._finish_resolution(pkg_name, lic_info)
 
         return [resolved[name] for name in package_names]
@@ -212,7 +221,11 @@ class LicenseChecker:
         local = self._get_package_license_local(package_name)
         if local is not None:
             return local
-        lic_info = self._get_license_from_pypi(package_name)
+        lic_info = (
+            self._get_license_from_pypi(package_name)
+            if self.config.enable_network
+            else None
+        )
         if lic_info is None:
             lic_info = PackageLicense(
                 package_name=package_name,

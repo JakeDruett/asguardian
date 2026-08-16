@@ -93,6 +93,7 @@ class LicenseConfig:
     cache_expiry_days: int = 7
     output_format: str = "text"
     verbose: bool = False
+    enable_network: bool = False
 
     def __post_init__(self):
         if isinstance(self.scan_path, str):
