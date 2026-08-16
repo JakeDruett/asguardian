@@ -32,6 +32,7 @@ output_format: text     # text | json | html | junit
 #   concurrency: 4              # bounded worker concurrency for the test phase
 #   concurrency_discovery: 2    # bounded sibling-fetch concurrency during discovery
 #   min_request_interval_ms: 500  # per-host politeness interval
+#   allow_internal: false       # allow loopback/RFC1918/link-local crawl targets
 
 categories:
   - accessibility

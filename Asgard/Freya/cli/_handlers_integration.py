@@ -284,6 +284,8 @@ async def run_crawl(args: argparse.Namespace, verbose: bool = False) -> int:
         config_kwargs["concurrency_discovery"] = args.concurrency_discovery
     if isinstance(getattr(args, "min_request_interval_ms", None), int):
         config_kwargs["min_request_interval_ms"] = args.min_request_interval_ms
+    if isinstance(getattr(args, "allow_internal", None), bool):
+        config_kwargs["allow_internal"] = args.allow_internal
 
     config = CrawlConfig(**config_kwargs)
 
@@ -297,7 +299,11 @@ async def run_crawl(args: argparse.Namespace, verbose: bool = False) -> int:
 
     crawler.set_progress_callback(progress_callback)
 
-    report = await crawler.crawl_and_test()
+    try:
+        report = await crawler.crawl_and_test()
+    except ValueError as exc:
+        print(f"Refusing to crawl: {exc}")
+        return 1
 
     print("")
     print("=" * 70)

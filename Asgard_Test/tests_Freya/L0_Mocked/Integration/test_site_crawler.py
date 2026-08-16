@@ -17,6 +17,7 @@ from unittest.mock import AsyncMock, MagicMock, Mock, patch, call
 
 from Asgard.Freya.Integration.services.site_crawler import SiteCrawler
 from Asgard.Freya.Integration.services._crawler_discovery import (
+    crawl_site,
     normalize_url,
     should_crawl,
     extract_links,
@@ -130,6 +131,12 @@ class TestURLNormalization:
     def test_normalize_url_empty_returns_none(self):
         assert normalize_url("", "https://example.com") is None
 
+    def test_normalize_url_file_scheme_returns_none(self):
+        assert normalize_url("file:///tmp/rejected", "https://example.com") is None
+
+    def test_normalize_url_data_scheme_returns_none(self):
+        assert normalize_url("data:text/html,hi", "https://example.com") is None
+
 
 class TestShouldCrawl:
     """Test URL crawl decision logic."""
@@ -151,6 +158,97 @@ class TestShouldCrawl:
     def test_should_not_crawl_without_included_pattern(self):
         includes = [re.compile(r".*\/blog\/.*")]
         assert should_crawl("https://example.com/about", "example.com", False, [], includes) is False
+
+    def test_should_not_crawl_file_scheme(self):
+        assert should_crawl("file:///tmp/rejected", "example.com", False, [], []) is False
+
+    def test_should_not_crawl_javascript_or_mailto(self):
+        assert should_crawl("javascript:void(0)", "example.com", False, [], []) is False
+        assert should_crawl("mailto:test@example.com", "example.com", False, [], []) is False
+
+    def test_should_not_crawl_loopback_unless_allow_internal(self):
+        assert should_crawl("http://127.0.0.1/admin", "127.0.0.1", True, [], []) is False
+        assert should_crawl(
+            "http://127.0.0.1/admin",
+            "127.0.0.1",
+            True,
+            [],
+            [],
+            allow_internal=True,
+        ) is True
+
+
+class TestSpaEnqueuePolicy:
+    """SPA-discovered URLs must pass should_crawl plus scheme/host policy."""
+
+    @pytest.mark.asyncio
+    async def test_off_policy_spa_urls_are_not_enqueued(self):
+        config = CrawlConfig(
+            start_url="https://example.com",
+            discover_items=True,
+            max_pages=10,
+            delay_between_requests=0,
+        )
+        discovered = {
+            "https://example.com": CrawledPage(
+                url="https://example.com",
+                depth=0,
+                status=PageStatus.TESTED,
+            )
+        }
+
+        async def fake_discover(*_args, **_kwargs):
+            return [
+                "file:///tmp/rejected",
+                "http://127.0.0.1/admin",
+                "javascript:void(0)",
+                "mailto:test@example.com",
+                "https://example.com/item/1",
+            ]
+
+        with patch(
+            "Asgard.Freya.Integration.services._crawler_discovery.discover_spa_items",
+            new=fake_discover,
+        ):
+            await crawl_site(
+                AsyncMock(),
+                config,
+                discovered,
+                "example.com",
+                [],
+                [],
+                None,
+                lambda *_a: None,
+            )
+
+        assert "file:///tmp/rejected" not in discovered
+        assert "http://127.0.0.1/admin" not in discovered
+        assert "javascript:void(0)" not in discovered
+        assert "mailto:test@example.com" not in discovered
+        assert "https://example.com/item/1" in discovered
+        assert discovered["https://example.com/item/1"].status == PageStatus.TESTED
+
+
+class TestCrawlStartUrlPolicy:
+    """Operator start_url is rejected before Playwright launches."""
+
+    @pytest.mark.asyncio
+    async def test_file_start_url_rejected(self, tmp_path):
+        crawler = SiteCrawler(CrawlConfig(
+            start_url="file:///tmp/rejected",
+            output_directory=str(tmp_path),
+        ))
+        with pytest.raises(ValueError, match="http or https"):
+            await crawler.crawl_and_test()
+
+    @pytest.mark.asyncio
+    async def test_loopback_start_url_rejected_unless_opted_in(self, tmp_path):
+        crawler = SiteCrawler(CrawlConfig(
+            start_url="http://127.0.0.1/",
+            output_directory=str(tmp_path),
+        ))
+        with pytest.raises(ValueError, match="internal or metadata"):
+            await crawler.crawl_and_test()
 
 
 class TestAddPage:
@@ -199,6 +297,18 @@ class TestExtractLinks:
         assert "https://example.com/relative/page" in links
 
     @pytest.mark.asyncio
+    async def test_extract_links_drops_non_http_schemes(self):
+        mock_page = AsyncMock()
+        mock_page.evaluate = AsyncMock(return_value=[
+            "https://example.com/ok",
+            "file:///tmp/rejected",
+            "javascript:void(0)",
+            "mailto:test@example.com",
+        ])
+        links = await extract_links(mock_page, "https://example.com")
+        assert links == ["https://example.com/ok"]
+
+    @pytest.mark.asyncio
     async def test_extract_links_removes_duplicates(self):
         mock_page = AsyncMock()
         mock_page.evaluate = AsyncMock(return_value=[
@@ -230,6 +340,7 @@ class TestAuthentication:
         crawler = SiteCrawler(config)
         mock_page = AsyncMock()
         mock_page.goto = AsyncMock()
+        mock_page.url = "https://example.com/login"
         mock_page.fill = AsyncMock()
         mock_page.click = AsyncMock()
         mock_page.wait_for_load_state = AsyncMock()
@@ -360,6 +471,7 @@ class TestTestPage:
     async def test_test_page_success(self, tmp_path):
         mock_page = AsyncMock()
         mock_page.goto = AsyncMock()
+        mock_page.url = "https://example.com/page"
         mock_page.title = AsyncMock(return_value="Test Page")
         mock_page.evaluate = AsyncMock(return_value=[])
         mock_page.close = AsyncMock()
@@ -385,6 +497,7 @@ class TestTestPage:
     async def test_test_page_with_issues(self, tmp_path):
         mock_page = AsyncMock()
         mock_page.goto = AsyncMock()
+        mock_page.url = "https://example.com/page"
         mock_page.title = AsyncMock(return_value="Test Page")
         mock_page.evaluate = AsyncMock(return_value=[
             {"type": "missing-alt", "severity": "critical", "element": "<img>", "message": "Missing alt text", "wcag": "1.1.1"}
@@ -406,6 +519,7 @@ class TestTestPage:
     async def test_test_page_with_screenshot(self, tmp_path):
         mock_page = AsyncMock()
         mock_page.goto = AsyncMock()
+        mock_page.url = "https://example.com/page"
         mock_page.title = AsyncMock(return_value="Test Page")
         mock_page.screenshot = AsyncMock()
         mock_page.evaluate = AsyncMock(return_value=[])

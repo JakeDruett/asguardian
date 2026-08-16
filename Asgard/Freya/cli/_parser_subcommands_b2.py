@@ -207,6 +207,11 @@ def add_crawl_parser(subparsers) -> None:
         "--min-request-interval-ms", type=int, default=None,
         help="Minimum per-host interval between requests, in ms (default: 500)"
     )
+    crawl_parser.add_argument(
+        "--allow-internal",
+        action="store_true",
+        help="Allow crawl of loopback, RFC1918, and link-local URLs",
+    )
     add_performance_flags(crawl_parser)
 
 

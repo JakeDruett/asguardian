@@ -16,16 +16,25 @@ from Asgard.Freya.Integration.models.integration_models import (
     PageStatus,
 )
 from Asgard.Freya.Integration.services._crawler_spa import discover_spa_items
+from Asgard.Freya.Integration.services._url_safety import (
+    is_allowed_navigation_url,
+    safe_goto,
+)
+
+_ALLOWED_SCHEMES = frozenset({"http", "https"})
 
 
 def normalize_url(url: str, base_url: str) -> Optional[str]:
-    """Normalize a URL and check if it should be included."""
+    """Normalize a URL and drop non-http(s) schemes."""
     if not url:
         return None
-    if url.startswith("javascript:") or url.startswith("mailto:"):
+    lowered = url.strip().lower()
+    if lowered.startswith("javascript:") or lowered.startswith("mailto:"):
         return None
     full_url = urljoin(base_url, url)
     parsed = urlparse(full_url)
+    if parsed.scheme.lower() not in _ALLOWED_SCHEMES or not parsed.netloc:
+        return None
     normalized = f"{parsed.scheme}://{parsed.netloc}{parsed.path}"
     if normalized.endswith("/"):
         normalized = normalized[:-1]
@@ -56,8 +65,11 @@ def should_crawl(
     same_domain_only: bool,
     compiled_exclude: list,
     compiled_include: list,
+    allow_internal: bool = False,
 ) -> bool:
     """Check if a URL should be crawled."""
+    if not is_allowed_navigation_url(url, allow_internal=allow_internal, resolve_host=False):
+        return False
     parsed = urlparse(url)
     if same_domain_only and parsed.netloc != base_domain:
         return False
@@ -125,14 +137,27 @@ async def crawl_site(
 
         try:
             page = await context.new_page()
-            await page.goto(url, wait_until="networkidle", timeout=30000)
+            await safe_goto(
+                page,
+                url,
+                allow_internal=config.allow_internal,
+                wait_until="networkidle",
+                timeout=30000,
+            )
             page_info.title = await page.title()
             links = await extract_links(page, url)
             page_info.links_found = links
 
             for link in links:
                 if link not in discovered_pages:
-                    if should_crawl(link, base_domain, config.same_domain_only, compiled_exclude, compiled_include):
+                    if should_crawl(
+                        link,
+                        base_domain,
+                        config.same_domain_only,
+                        compiled_exclude,
+                        compiled_include,
+                        allow_internal=config.allow_internal,
+                    ):
                         add_page(link, depth=page_info.depth + 1, parent_url=url)
                         pages_to_crawl.append(link)
 
@@ -157,9 +182,24 @@ async def crawl_site(
             if crawled_count >= config.max_pages:
                 break
 
-            item_urls = await discover_spa_items(context, page_url, auth_storage, report_progress)
+            item_urls = await discover_spa_items(
+                context,
+                page_url,
+                auth_storage,
+                report_progress,
+                allow_internal=config.allow_internal,
+            )
             for item_url in item_urls:
                 if item_url not in discovered_pages and crawled_count < config.max_pages:
+                    if not should_crawl(
+                        item_url,
+                        base_domain,
+                        config.same_domain_only,
+                        compiled_exclude,
+                        compiled_include,
+                        allow_internal=config.allow_internal,
+                    ):
+                        continue
                     add_page(item_url, depth=2, parent_url=page_url)
                     crawled_count += 1
                     if item_url in discovered_pages:

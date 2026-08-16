@@ -22,6 +22,7 @@ from Asgard.Freya.Integration.services._crawler_checks import (
     run_visual_checks,
 )
 from Asgard.Freya.Integration.services._crawler_report import url_to_filename
+from Asgard.Freya.Integration.services._url_safety import safe_goto
 from Asgard.Freya.Scoring.models.scoring_models import UniversalSeverity
 from Asgard.Freya.Scoring.services.grade_calculator import GradeCalculator
 from Asgard.Freya.Scoring.services.severity_mapper import issue_dicts_to_findings
@@ -33,6 +34,7 @@ async def test_page(
     output_dir: Path,
     capture_screenshots: bool,
     test_categories: List[TestCategory],
+    allow_internal: bool = False,
 ) -> PageTestResult:
     """Run tests on a single page."""
     start_time = time.time()
@@ -42,7 +44,13 @@ async def test_page(
 
     try:
         page = await context.new_page()
-        await page.goto(page_info.url, wait_until="networkidle", timeout=30000)
+        await safe_goto(
+            page,
+            page_info.url,
+            allow_internal=allow_internal,
+            wait_until="networkidle",
+            timeout=30000,
+        )
         title = await page.title()
 
         if capture_screenshots:

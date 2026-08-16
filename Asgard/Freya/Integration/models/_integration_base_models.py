@@ -284,6 +284,10 @@ class CrawlConfig(BaseModel):
         default=True,
         description="Only crawl same domain"
     )
+    allow_internal: bool = Field(
+        default=False,
+        description="Allow crawl of loopback, RFC1918, link-local, and metadata URLs"
+    )
     respect_robots_txt: bool = Field(
         default=False,
         description="Respect robots.txt"

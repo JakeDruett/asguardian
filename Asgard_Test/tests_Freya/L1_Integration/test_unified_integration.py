@@ -8,8 +8,13 @@ report generation and baseline management.
 All tests use file:// URLs for local HTML fixtures, making them CI-friendly.
 """
 
-import pytest
+import threading
+from contextlib import contextmanager
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
+
+import pytest
 
 from Asgard.Freya.Integration.services.unified_tester import UnifiedTester
 from Asgard.Freya.Integration.services.html_reporter import HTMLReporter
@@ -372,6 +377,28 @@ class TestUnifiedIntegrationBaselineManager:
 class TestUnifiedIntegrationSiteCrawler:
     """Integration tests for Site Crawler with real HTML pages."""
 
+    class _QuietHandler(SimpleHTTPRequestHandler):
+        def log_message(self, format, *args):
+            pass
+
+    @staticmethod
+    @contextmanager
+    def _serve_dir(directory: Path):
+        handler = partial(
+            TestUnifiedIntegrationSiteCrawler._QuietHandler,
+            directory=str(directory),
+        )
+        server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            host, port = server.server_address
+            yield f"http://{host}:{port}"
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=2)
+
     @staticmethod
     def _crawl_config(start_url: str, output_dir: Path, **kwargs) -> CrawlConfig:
         return CrawlConfig(
@@ -379,6 +406,7 @@ class TestUnifiedIntegrationSiteCrawler:
             output_directory=str(output_dir),
             discover_items=False,
             delay_between_requests=0.0,
+            allow_internal=True,
             **kwargs,
         )
 
@@ -386,15 +414,16 @@ class TestUnifiedIntegrationSiteCrawler:
     @pytest.mark.integration
     async def test_site_crawler_single_page(self, sample_accessible_page, output_dir):
         """Test site crawler on single page."""
-        config = self._crawl_config(
-            file_url(sample_accessible_page),
-            output_dir / "crawl_single",
-            max_depth=0,
-            max_pages=1,
-        )
-        crawler = SiteCrawler(config)
+        with self._serve_dir(sample_accessible_page.parent) as base:
+            config = self._crawl_config(
+                f"{base}/{sample_accessible_page.name}",
+                output_dir / "crawl_single",
+                max_depth=0,
+                max_pages=1,
+            )
+            crawler = SiteCrawler(config)
 
-        report = await crawler.crawl_and_test()
+            report = await crawler.crawl_and_test()
 
         assert report is not None
         assert report.pages_discovered >= 1
@@ -427,15 +456,16 @@ class TestUnifiedIntegrationSiteCrawler:
         page1.write_text(page1_html, encoding="utf-8")
         page2.write_text(page2_html, encoding="utf-8")
 
-        config = self._crawl_config(
-            file_url(page1),
-            output_dir / "crawl_links",
-            max_depth=1,
-            max_pages=5,
-        )
-        crawler = SiteCrawler(config)
+        with self._serve_dir(html_fixtures_dir) as base:
+            config = self._crawl_config(
+                f"{base}/page1.html",
+                output_dir / "crawl_links",
+                max_depth=1,
+                max_pages=5,
+            )
+            crawler = SiteCrawler(config)
 
-        report = await crawler.crawl_and_test()
+            report = await crawler.crawl_and_test()
 
         assert report is not None
         assert report.pages_discovered >= 1
@@ -444,15 +474,16 @@ class TestUnifiedIntegrationSiteCrawler:
     @pytest.mark.integration
     async def test_site_crawler_respects_max_pages(self, sample_accessible_page, output_dir):
         """Test site crawler respects max pages limit."""
-        config = self._crawl_config(
-            file_url(sample_accessible_page),
-            output_dir / "crawl_max_pages",
-            max_depth=2,
-            max_pages=1,
-        )
-        crawler = SiteCrawler(config)
+        with self._serve_dir(sample_accessible_page.parent) as base:
+            config = self._crawl_config(
+                f"{base}/{sample_accessible_page.name}",
+                output_dir / "crawl_max_pages",
+                max_depth=2,
+                max_pages=1,
+            )
+            crawler = SiteCrawler(config)
 
-        report = await crawler.crawl_and_test()
+            report = await crawler.crawl_and_test()
 
         assert report is not None
         assert report.pages_tested <= 1
@@ -472,15 +503,16 @@ class TestUnifiedIntegrationSiteCrawler:
         page = html_fixtures_dir / "depth_test.html"
         page.write_text(page_html, encoding="utf-8")
 
-        config = self._crawl_config(
-            file_url(page),
-            output_dir / "crawl_max_depth",
-            max_depth=0,
-            max_pages=10,
-        )
-        crawler = SiteCrawler(config)
+        with self._serve_dir(html_fixtures_dir) as base:
+            config = self._crawl_config(
+                f"{base}/depth_test.html",
+                output_dir / "crawl_max_depth",
+                max_depth=0,
+                max_pages=10,
+            )
+            crawler = SiteCrawler(config)
 
-        report = await crawler.crawl_and_test()
+            report = await crawler.crawl_and_test()
 
         assert report is not None
         assert report.pages_discovered == 1

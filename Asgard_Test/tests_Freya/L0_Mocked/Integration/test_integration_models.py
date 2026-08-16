@@ -438,6 +438,7 @@ class TestCrawlConfig:
         assert config.max_depth == 3
         assert config.max_pages == 100
         assert config.same_domain_only is True
+        assert config.allow_internal is False
         assert config.respect_robots_txt is False
         assert config.delay_between_requests == 0.5
         assert config.test_categories == [TestCategory.ALL]

@@ -29,6 +29,10 @@ from Asgard.Freya.Integration.services._crawler_report import (
     generate_report,
     save_report,
 )
+from Asgard.Freya.Integration.services._url_safety import (
+    safe_goto,
+    validate_navigation_url,
+)
 
 
 class SiteCrawler:
@@ -80,6 +84,16 @@ class SiteCrawler:
         crawl_started = datetime.now().isoformat()
 
         self._report_progress("Starting crawl...")
+        validate_navigation_url(
+            self.config.start_url,
+            allow_internal=self.config.allow_internal,
+        )
+        if self.config.auth_config:
+            login_url = self.config.auth_config.get("login_url", self.config.start_url)
+            validate_navigation_url(
+                login_url,
+                allow_internal=self.config.allow_internal,
+            )
 
         async with async_playwright() as p:
             browser = await p.chromium.launch(
@@ -148,7 +162,13 @@ class SiteCrawler:
 
         try:
             login_url = auth.get("login_url", self.config.start_url)
-            await page.goto(login_url, wait_until="networkidle", timeout=30000)
+            await safe_goto(
+                page,
+                login_url,
+                allow_internal=self.config.allow_internal,
+                wait_until="networkidle",
+                timeout=30000,
+            )
 
             username_selector = auth.get("username_selector", 'input[name="username"]')
             password_selector = auth.get("password_selector", 'input[name="password"]')
@@ -169,6 +189,11 @@ class SiteCrawler:
                     await page.wait_for_selector(auth["wait_for_selector"], timeout=10000)
                 else:
                     await asyncio.sleep(2)
+                validate_navigation_url(
+                    page.url,
+                    allow_internal=self.config.allow_internal,
+                    resolve_host=False,
+                )
 
                 self._auth_storage = await page.evaluate("() => JSON.stringify(localStorage)")
                 self._report_progress("Authentication successful")
@@ -211,6 +236,7 @@ class SiteCrawler:
                     self.output_dir,
                     self.config.capture_screenshots,
                     self.config.test_categories,
+                    allow_internal=self.config.allow_internal,
                 )
             self.tested_pages[page_info.url] = result
             async with progress_lock:

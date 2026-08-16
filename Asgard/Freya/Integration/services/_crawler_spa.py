@@ -9,6 +9,12 @@ from typing import Any, Callable, List, Optional, Set
 
 from playwright.async_api import BrowserContext
 
+from Asgard.Freya.Integration.services._url_safety import (
+    is_allowed_navigation_url,
+    safe_goto,
+    validate_navigation_url,
+)
+
 
 ITEM_SELECTORS = [
     '[data-testid*="item"]',
@@ -59,6 +65,7 @@ async def discover_spa_items(
     page_url: str,
     auth_storage: Optional[str],
     report_progress: Callable,
+    allow_internal: bool = False,
 ) -> List[str]:
     """
     Discover clickable items in SPAs (notes, boards, calendar events, etc.).
@@ -73,8 +80,10 @@ async def discover_spa_items(
     page = await context.new_page()
     try:
         if auth_storage:
-            await page.goto(
+            await safe_goto(
+                page,
                 page_url.split('?')[0].split('#')[0],
+                allow_internal=allow_internal,
                 wait_until="domcontentloaded",
                 timeout=30000,
             )
@@ -87,8 +96,19 @@ async def discover_spa_items(
                 }}
             """, auth_storage)
             await page.reload(wait_until="networkidle", timeout=30000)
+            validate_navigation_url(
+                page.url,
+                allow_internal=allow_internal,
+                resolve_host=False,
+            )
         else:
-            await page.goto(page_url, wait_until="networkidle", timeout=30000)
+            await safe_goto(
+                page,
+                page_url,
+                allow_internal=allow_internal,
+                wait_until="networkidle",
+                timeout=30000,
+            )
 
         try:
             await page.wait_for_selector('main, [role="main"], .main-content', timeout=5000)
@@ -137,11 +157,31 @@ async def discover_spa_items(
                         url_after = page.url
 
                         if url_after != url_before and url_after not in discovered_urls:
+                            if not is_allowed_navigation_url(
+                                url_after,
+                                allow_internal=allow_internal,
+                                resolve_host=False,
+                            ):
+                                await safe_goto(
+                                    page,
+                                    page_url,
+                                    allow_internal=allow_internal,
+                                    wait_until="networkidle",
+                                    timeout=30000,
+                                )
+                                await asyncio.sleep(1)
+                                break
                             discovered_urls.append(url_after)
                             discovered_types.add(item_type)
                             report_progress(f"Discovered item page: {url_after}")
 
-                            await page.goto(page_url, wait_until="networkidle", timeout=30000)
+                            await safe_goto(
+                                page,
+                                page_url,
+                                allow_internal=allow_internal,
+                                wait_until="networkidle",
+                                timeout=30000,
+                            )
                             await asyncio.sleep(1)
                             break
                         else:

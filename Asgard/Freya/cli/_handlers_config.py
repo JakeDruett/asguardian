@@ -53,6 +53,7 @@ def run_config_show(args: argparse.Namespace, verbose: bool = False) -> int:
         print(f"  crawl.concurrency: {config.crawl.concurrency} ({crawl_source})")
         print(f"  crawl.concurrency_discovery: {config.crawl.concurrency_discovery} ({crawl_source})")
         print(f"  crawl.min_request_interval_ms: {config.crawl.min_request_interval_ms} ({crawl_source})")
+        print(f"  crawl.allow_internal: {config.crawl.allow_internal} ({crawl_source})")
     else:
         print("  crawl: (not configured)")
 

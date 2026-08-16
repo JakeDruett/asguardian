@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 14   | 14    | 0             |
+| High     | 13   | 15    | 0             |
 | Medium   | 53   | 6     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
@@ -1039,7 +1039,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0066 — Freya site crawler navigates unvalidated URLs (SSRF / `file:`)
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T11:12:00Z
+- **Implementation note:** http(s) only; block RFC1918/loopback unless allow_internal; re-validate page.url; SPA enqueue uses should_crawl. Other Freya page.goto (a11y/SEO/visual) still local-fixture file: paths.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-918
@@ -1822,12 +1825,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 94
-- Fixed: 20
+- Open: 93
+- Fixed: 21
 - Accepted risk: 0
 - Current wave: W1
-- Next: CH-0066, CH-0004, CH-0005, CH-0033
-- Last commit: 550912b
+- Next: CH-0071, CH-0097, CH-0105, CH-0108
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
