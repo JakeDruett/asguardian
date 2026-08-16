@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
 | Medium   | 2    | 57    | 0             |
-| Low      | 5    | 17    | 0             |
+| Low      | 4    | 18    | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -1786,7 +1786,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0101 — Service-map critical-path walk loops on cyclic parents
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** e18ab61
+- **Fixed at:** 2026-08-16T13:36:00Z
+- **Implementation note:** Visited set + 4096-span cap on service-map and tracing critical-path walks. A→B→A terminates.
 - **Severity:** Low
 - **Confidence:** High
 - **CWE / class:** CWE-835
@@ -2065,12 +2068,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 13
-- Fixed: 101
+- Open: 12
+- Fixed: 102
 - Accepted risk: 0
 - Current wave: W4
 - Next: CH-0025, CH-0031, CH-0039
-- Last commit: 11ed22f
+- Last commit: e18ab61
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
