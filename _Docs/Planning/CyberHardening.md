@@ -905,7 +905,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0054 — Unmeasured Ratings dimensions default to letter A
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 0b0e192
 - **Fixed at:** 2026-08-16T16:00:00Z
 - **Implementation note:** Unmeasured dimensions are N/A and fail overall; blocker maps to E. Lazy-import Heimdall test_context in context_classifier so Ratings can load.
 - **Severity:** Medium
@@ -1968,7 +1968,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0013, CH-0032, CH-0036
-- Last commit: pending
+- Last commit: 0b0e192
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

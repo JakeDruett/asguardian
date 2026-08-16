@@ -64,4 +64,4 @@
 {"id":"CH-0100","at":"2026-08-16T15:46:00Z","commit":"b712902","wave":"W3","summary":"Invalid anomaly baseline fail-closes as unknown, not in-bounds"}
 {"id":"CH-0027","at":"2026-08-16T15:50:00Z","commit":"20512e0","wave":"W3","summary":"Re-clamp/validate local calibration YAML on load"}
 {"id":"CH-0073","at":"2026-08-16T15:52:00Z","commit":"ef426af","wave":"W3","summary":"Empty Freya scores are N/A; unknown severity BLOCKER"}
-{"id":"CH-0054","at":"2026-08-16T16:00:00Z","commit":"pending","wave":"W3","summary":"Unmeasured Ratings dimensions are N/A; blocker maps to E"}
+{"id":"CH-0054","at":"2026-08-16T16:00:00Z","commit":"0b0e192","wave":"W3","summary":"Unmeasured Ratings dimensions are N/A; blocker maps to E"}
