@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 15   | 13    | 0             |
+| High     | 14   | 14    | 0             |
 | Medium   | 59   | 0     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
@@ -1327,7 +1327,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0086 — MCP HTTP server has no authentication and runs tools on any path
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T10:50:00Z
+- **Implementation note:** Bearer token required; refuse 0.0.0.0 without --expose; jail tool paths; cap body size; no traceback leak.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-306 / CWE-918-adjacent
@@ -1801,12 +1804,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 101
-- Fixed: 13
+- Open: 100
+- Fixed: 14
 - Accepted risk: 0
 - Current wave: W1
-- Next: CH-0024, CH-0049, CH-0060, CH-0066
-- Last commit: 35aa35c
+- Next: CH-0066, CH-0004, CH-0005, CH-0033
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

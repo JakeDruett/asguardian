@@ -25,10 +25,21 @@ from Asgard.Heimdall.Security.services.static_security_service import StaticSecu
 from Asgard.MCP.models.mcp_models import MCPServerConfig
 
 
+def resolve_tool_path(params: Dict[str, Any], config: MCPServerConfig) -> Path:
+    """Resolve a tool path and jail it under config.project_path."""
+    root = Path(config.project_path).resolve()
+    raw = params.get("path", str(root))
+    scan_path = Path(raw).resolve()
+    try:
+        scan_path.relative_to(root)
+    except ValueError as exc:
+        raise ValueError("path is outside the configured project") from exc
+    return scan_path
+
+
 def tool_quality_analyze(params: Dict[str, Any], config: MCPServerConfig) -> Dict[str, Any]:
     """Run quality analysis and return a summary."""
-    path = params.get("path", config.project_path)
-    scan_path = Path(path).resolve()
+    scan_path = resolve_tool_path(params, config)
 
     analysis_config = AnalysisConfig(scan_path=scan_path)
     analyzer = FileAnalyzer(analysis_config)
@@ -56,8 +67,7 @@ def tool_quality_analyze(params: Dict[str, Any], config: MCPServerConfig) -> Dic
 
 def tool_security_scan(params: Dict[str, Any], config: MCPServerConfig) -> Dict[str, Any]:
     """Run security scan and return a summary."""
-    path = params.get("path", config.project_path)
-    scan_path = Path(path).resolve()
+    scan_path = resolve_tool_path(params, config)
 
     scan_config = SecurityScanConfig(scan_path=scan_path)
     service = StaticSecurityService(scan_config)
@@ -101,8 +111,7 @@ def tool_security_scan(params: Dict[str, Any], config: MCPServerConfig) -> Dict[
 
 def tool_quality_gate(params: Dict[str, Any], config: MCPServerConfig) -> Dict[str, Any]:
     """Evaluate the quality gate and return gate status."""
-    path = params.get("path", config.project_path)
-    scan_path = Path(path).resolve()
+    scan_path = resolve_tool_path(params, config)
 
     debt_config = DebtConfig(scan_path=scan_path)
     debt_analyzer = TechnicalDebtAnalyzer(debt_config)
@@ -156,8 +165,7 @@ def tool_quality_gate(params: Dict[str, Any], config: MCPServerConfig) -> Dict[s
 
 def tool_ratings(params: Dict[str, Any], config: MCPServerConfig) -> Dict[str, Any]:
     """Calculate A-E ratings and return the result."""
-    path = params.get("path", config.project_path)
-    scan_path = Path(path).resolve()
+    scan_path = resolve_tool_path(params, config)
 
     debt_config = DebtConfig(scan_path=scan_path)
     debt_analyzer = TechnicalDebtAnalyzer(debt_config)
@@ -199,9 +207,8 @@ def tool_ratings(params: Dict[str, Any], config: MCPServerConfig) -> Dict[str, A
 
 def tool_sbom(params: Dict[str, Any], config: MCPServerConfig) -> Dict[str, Any]:
     """Generate an SBOM and return the document."""
-    path = params.get("path", config.project_path)
     fmt_str = params.get("format", "cyclonedx")
-    scan_path = Path(path).resolve()
+    scan_path = resolve_tool_path(params, config)
 
     fmt = SBOMFormat.CYCLONEDX if fmt_str == "cyclonedx" else SBOMFormat.SPDX
     sbom_config = SBOMConfig(scan_path=scan_path, output_format=fmt)
@@ -215,10 +222,9 @@ def tool_sbom(params: Dict[str, Any], config: MCPServerConfig) -> Dict[str, Any]
 
 def tool_list_issues(params: Dict[str, Any], config: MCPServerConfig) -> Dict[str, Any]:
     """List tracked issues for a project."""
-    path = params.get("path", config.project_path)
     status_str = params.get("status", "open")
     limit = int(params.get("limit", 20))
-    scan_path = str(Path(path).resolve())
+    scan_path = str(resolve_tool_path(params, config))
 
     try:
         status = IssueStatus(status_str)
@@ -309,9 +315,8 @@ _COMPLIANCE_EXTRACTORS: Dict[str, Callable[[Any], Optional[Dict[str, Any]]]] = {
 
 def tool_compliance_report(params: Dict[str, Any], config: MCPServerConfig) -> Dict[str, Any]:
     """Generate a compliance report for a registered standard (e.g. owasp, cwe)."""
-    path = params.get("path", config.project_path)
     standard = params.get("standard", "owasp")
-    scan_path = Path(path).resolve()
+    scan_path = resolve_tool_path(params, config)
 
     scan_config = SecurityScanConfig(scan_path=scan_path)
     service = StaticSecurityService(scan_config)

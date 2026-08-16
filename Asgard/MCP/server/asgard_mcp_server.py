@@ -160,11 +160,38 @@ class AsgardMCPServer:
 
     def run(self) -> None:
         """Start the HTTP/JSON-RPC server and block until interrupted."""
+        host = (self._config.host or "localhost").strip()
+        if host in {"0.0.0.0", "::", "[::]"} and not self._config.expose:
+            raise ValueError("refusing to bind all interfaces without expose=True")
+        if not self._config.auth_token:
+            raise ValueError("auth_token is required to start the MCP HTTP server")
         server_instance = self
+        max_body = max(1, int(self._config.max_body_bytes))
+        expected_token = self._config.auth_token
 
         class _Handler(BaseHTTPRequestHandler):
             def do_POST(self) -> None:
-                content_length = int(self.headers.get("Content-Length", 0))
+                auth = self.headers.get("Authorization", "")
+                if auth != f"Bearer {expected_token}":
+                    self.send_response(401)
+                    self.send_header("Content-Type", "application/json")
+                    body_bytes = b'{"error":{"code":-32001,"message":"unauthorized"}}'
+                    self.send_header("Content-Length", str(len(body_bytes)))
+                    self.end_headers()
+                    self.wfile.write(body_bytes)
+                    return
+                try:
+                    content_length = int(self.headers.get("Content-Length", 0))
+                except ValueError:
+                    content_length = 0
+                if content_length > max_body:
+                    self.send_response(413)
+                    self.send_header("Content-Type", "application/json")
+                    body_bytes = b'{"error":{"code":-32600,"message":"request too large"}}'
+                    self.send_header("Content-Length", str(len(body_bytes)))
+                    self.end_headers()
+                    self.wfile.write(body_bytes)
+                    return
                 raw_body = self.rfile.read(content_length) if content_length > 0 else b""
 
                 try:
@@ -272,5 +299,5 @@ class AsgardMCPServer:
         except Exception as exc:
             return {
                 "isError": True,
-                "content": [{"type": "text", "text": f"Tool error: {exc}\n{traceback.format_exc()}"}],
+                "content": [{"type": "text", "text": f"Tool error: {exc}"}],
             }

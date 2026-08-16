@@ -63,12 +63,12 @@ class TestToolQualityAnalyze:
         result = tool_quality_analyze({}, config)
         assert result["scan_path"] == str(fixture_project.resolve())
 
-    def test_params_path_overrides_config(self, config, tmp_path):
-        other = tmp_path / "other"
-        other.mkdir()
-        (other / "m.py").write_text("x = 1\n", encoding="utf-8")
-        result = tool_quality_analyze({"path": str(other)}, config)
-        assert result["scan_path"] == str(other.resolve())
+    def test_params_path_overrides_config(self, config, fixture_project):
+        nested = fixture_project / "nested"
+        nested.mkdir()
+        (nested / "m.py").write_text("x = 1\n", encoding="utf-8")
+        result = tool_quality_analyze({"path": str(nested)}, config)
+        assert result["scan_path"] == str(nested.resolve())
 
     def test_reports_analyzed_files(self, config):
         result = tool_quality_analyze({}, config)

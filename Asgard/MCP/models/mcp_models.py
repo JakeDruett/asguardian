@@ -63,6 +63,9 @@ class MCPServerConfig(BaseModel):
     enable_sbom: bool = True
     enable_gate: bool = True
     enable_ratings: bool = True
+    auth_token: Optional[str] = Field(default=None, description="Required bearer token for HTTP access")
+    expose: bool = Field(default=False, description="Allow binding 0.0.0.0 / ::")
+    max_body_bytes: int = Field(default=1_048_576, description="Max JSON-RPC request body")
 
     class Config:
         use_enum_values = True

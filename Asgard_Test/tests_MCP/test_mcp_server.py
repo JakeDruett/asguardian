@@ -26,25 +26,34 @@ def _get_free_port() -> int:
         return s.getsockname()[1]
 
 
-def _post_json(url: str, payload: dict) -> dict:
+_TEST_TOKEN = "test-mcp-token"
+
+
+def _post_json(url: str, payload: dict, token: str = _TEST_TOKEN) -> dict:
     """POST a JSON payload to url and return the parsed response dict."""
     body = json.dumps(payload).encode("utf-8")
+    headers = {"Content-Type": "application/json"}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
     req = urllib.request.Request(
         url,
         data=body,
-        headers={"Content-Type": "application/json"},
+        headers=headers,
         method="POST",
     )
     with urllib.request.urlopen(req, timeout=5) as resp:
         return json.loads(resp.read().decode("utf-8"))
 
 
-def _post_raw(url: str, raw_body: bytes) -> dict:
+def _post_raw(url: str, raw_body: bytes, token: str = _TEST_TOKEN) -> dict:
     """POST raw bytes to url and return the parsed response dict."""
+    headers = {"Content-Type": "application/json"}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
     req = urllib.request.Request(
         url,
         data=raw_body,
-        headers={"Content-Type": "application/json"},
+        headers=headers,
         method="POST",
     )
     try:
@@ -230,7 +239,9 @@ class TestAsgardMCPServerHTTP:
     def start_server(self):
         """Start the MCP server on a free port before each test and stop after."""
         port = _get_free_port()
-        config = MCPServerConfig(host="127.0.0.1", port=port, project_path=".")
+        config = MCPServerConfig(
+            host="127.0.0.1", port=port, project_path=".", auth_token=_TEST_TOKEN
+        )
         self._server = AsgardMCPServer(config)
         self._base_url = f"http://127.0.0.1:{port}"
 
@@ -315,3 +326,25 @@ class TestAsgardMCPServerHTTP:
         response = _post_json(self._base_url, payload)
 
         assert response["id"] == 999
+
+    def test_unauthenticated_request_is_rejected(self):
+        payload = {"jsonrpc": "2.0", "id": 1, "method": "tools/list"}
+        with pytest.raises(urllib.error.HTTPError) as exc:
+            _post_json(self._base_url, payload, token="")
+        assert exc.value.code == 401
+
+
+class TestMCPPathJail:
+    def test_path_outside_project_is_rejected(self, tmp_path):
+        from Asgard.MCP.server._mcp_tools import resolve_tool_path
+
+        project = tmp_path / "proj"
+        project.mkdir()
+        config = MCPServerConfig(project_path=str(project))
+        with pytest.raises(ValueError, match="outside"):
+            resolve_tool_path({"path": str(tmp_path / "other")}, config)
+
+    def test_refuses_wildcard_bind_without_expose(self):
+        config = MCPServerConfig(host="0.0.0.0", auth_token="t", expose=False)
+        with pytest.raises(ValueError, match="expose"):
+            AsgardMCPServer(config).run()

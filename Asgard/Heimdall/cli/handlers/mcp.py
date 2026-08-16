@@ -12,11 +12,15 @@ def run_mcp_server(args: argparse.Namespace, verbose: bool = False) -> int:
     host = getattr(args, "host", "localhost")
     port = int(getattr(args, "port", 8765))
     project_path = getattr(args, "project_path", ".")
+    expose = bool(getattr(args, "expose", False))
+    token = getattr(args, "token", None)
 
     config = MCPServerConfig(
         host=host,
         port=port,
         project_path=str(Path(project_path).resolve()),
+        auth_token=token,
+        expose=expose,
     )
 
     try:

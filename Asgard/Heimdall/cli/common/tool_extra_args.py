@@ -154,6 +154,15 @@ def add_mcp_server_args(parser: argparse.ArgumentParser) -> None:
         dest="project_path",
         help="Default project path for analysis tools (default: current directory)",
     )
+    parser.add_argument(
+        "--token",
+        help="Bearer token required for all HTTP requests",
+    )
+    parser.add_argument(
+        "--expose",
+        action="store_true",
+        help="Allow binding 0.0.0.0 / :: (default is localhost only)",
+    )
 
 
 def add_dashboard_args(parser: argparse.ArgumentParser) -> None:
