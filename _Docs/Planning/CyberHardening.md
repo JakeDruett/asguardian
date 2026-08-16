@@ -1889,7 +1889,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0115 — SecurityAPI `-o` writes the operator path with no jail
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** b66dd42
 - **Fixed at:** 2026-08-16T14:18:00Z
 - **Implementation note:** Jail -o under CWD; refuse abs/`..` unless --allow-abs; only .json/.sarif.
 - **Severity:** Low
@@ -1923,7 +1923,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W2
 - Next: CH-0014, CH-0028, CH-0034
-- Last commit: pending
+- Last commit: b66dd42
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

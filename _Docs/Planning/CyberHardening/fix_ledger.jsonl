@@ -47,3 +47,6 @@
 {"id":"CH-0042","at":"2026-08-16T13:50:00Z","commit":"25aefeb","wave":"W2","summary":"Confined language-analyzer walk; honor exclude/size/finding caps"}
 {"id":"CH-0065","at":"2026-08-16T13:51:00Z","commit":"112dd47","wave":"W2","summary":"Restrict SQL DEFAULT to literals; harden Alembic execute"}
 {"id":"CH-0008","at":"2026-08-16T14:10:00Z","commit":"5e36f15","wave":"W2","summary":"Refuse BackendInit writes through symlink .gitignore"}
+{"id":"CH-0037","at":"2026-08-16T14:15:00Z","commit":"0bef19b","wave":"W2","summary":"Allowlist/hash vuln cache keys; jail under cache_dir"}
+{"id":"CH-0041","at":"2026-08-16T14:16:00Z","commit":"b1d1f15","wave":"W2","summary":"BugDetector walk skips dir/file symlinks"}
+{"id":"CH-0115","at":"2026-08-16T14:18:00Z","commit":"b66dd42","wave":"W2","summary":"Jail SecurityAPI -o under CWD; .json/.sarif only"}
