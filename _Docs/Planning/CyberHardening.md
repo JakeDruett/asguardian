@@ -1040,7 +1040,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0066 — Freya site crawler navigates unvalidated URLs (SSRF / `file:`)
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** ce4f14e
 - **Fixed at:** 2026-08-16T11:12:00Z
 - **Implementation note:** http(s) only; block RFC1918/loopback unless allow_internal; re-validate page.url; SPA enqueue uses should_crawl. Other Freya page.goto (a11y/SEO/visual) still local-fixture file: paths.
 - **Severity:** High
@@ -1830,7 +1830,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0071, CH-0097, CH-0105, CH-0108
-- Last commit: PENDING
+- Last commit: ce4f14e
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
