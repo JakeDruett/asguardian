@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
 | Medium   | 2    | 57    | 0             |
-| Low      | 9    | 13    | 0             |
+| Low      | 8    | 14    | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -387,7 +387,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0021 — Regex SOLID fallback ReDoS on large source lines
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 1a4faba
+- **Fixed at:** 2026-08-16T13:22:00Z
+- **Implementation note:** JS/TS method patterns bound to .{0,200}; all regex SOLID checks skip lines over 4096 chars.
 - **Severity:** Low
 - **Confidence:** Medium
 - **CWE / class:** CWE-1333
@@ -2053,12 +2056,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 17
-- Fixed: 97
+- Open: 16
+- Fixed: 98
 - Accepted risk: 0
 - Current wave: W4
-- Next: CH-0021, CH-0025, CH-0031
-- Last commit: 0dc1de5
+- Next: CH-0025, CH-0031, CH-0039
+- Last commit: 1a4faba
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

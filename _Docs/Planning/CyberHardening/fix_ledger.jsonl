@@ -95,3 +95,4 @@
 {"id":"CH-0085","at":"2026-08-16T13:05:00Z","commit":"3d1bbf0","wave":"W4","summary":"Placeholder-only secret FP; testhost/ContestWinner1 report"}
 {"id":"CH-0099","at":"2026-08-16T13:15:00Z","commit":"c055fdc","wave":"W4","summary":"Cap sketch from_dict centroids/weights/indexes"}
 {"id":"CH-0016","at":"2026-08-16T13:18:00Z","commit":"0dc1de5","wave":"W4","summary":"Cap CIR parse/walk and LCOM4 method count"}
+{"id":"CH-0021","at":"2026-08-16T13:22:00Z","commit":"1a4faba","wave":"W4","summary":"Bound JS/TS SOLID fallback regexes; skip overlong lines"}
