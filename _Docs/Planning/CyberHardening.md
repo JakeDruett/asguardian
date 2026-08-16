@@ -1670,7 +1670,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0100 — Invalid anomaly baseline is treated as in-bounds
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** b712902
 - **Fixed at:** 2026-08-16T15:46:00Z
 - **Implementation note:** Invalid baseline is not in-bounds; deviation 1.0; compare status `unknown` + significant. Empty current is unknown, not normal.
 - **Severity:** Medium
@@ -1959,7 +1959,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0013, CH-0027, CH-0032
-- Last commit: pending
+- Last commit: b712902
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
