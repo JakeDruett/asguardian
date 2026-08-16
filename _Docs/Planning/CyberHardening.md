@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 10   | 18    | 0             |
-| Medium   | 45   | 14    | 0             |
+| Medium   | 44   | 15    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -192,7 +192,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0010 — Unconfined `baseline_path` join
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T12:46:00Z
+- **Implementation note:** Reject absolute/`..` baseline_file; resolved path must be_relative_to(project_path) before load/save.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-22
@@ -1867,12 +1870,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 79
-- Fixed: 35
+- Open: 78
+- Fixed: 36
 - Accepted risk: 0
 - Current wave: W2
 - Next: CH-0058, CH-0059, CH-0068
-- Last commit: eea933c
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

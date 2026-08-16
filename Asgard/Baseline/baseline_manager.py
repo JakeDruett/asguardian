@@ -48,10 +48,20 @@ class BaselineManager:
         project_path: Optional[Path] = None,
         baseline_file: Optional[str] = None,
     ):
-        self.project_path = project_path or Path.cwd()
+        self.project_path = Path(project_path or Path.cwd()).resolve()
         self.baseline_file = baseline_file or self.DEFAULT_BASELINE_FILE
-        self.baseline_path = self.project_path / self.baseline_file
+        self.baseline_path = self._confined_baseline_path(self.project_path, self.baseline_file)
         self._baseline: Optional[BaselineFile] = None
+
+    @staticmethod
+    def _confined_baseline_path(project_path: Path, baseline_file: str) -> Path:
+        raw = Path(baseline_file)
+        if raw.is_absolute() or ".." in raw.parts:
+            raise ValueError("baseline_file must stay under the project path")
+        dest = (project_path / raw).resolve()
+        if not dest.is_relative_to(project_path.resolve()):
+            raise ValueError("baseline_file must stay under the project path")
+        return dest
 
     def load(self) -> BaselineFile:
         """Load the baseline file."""

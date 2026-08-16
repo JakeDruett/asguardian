@@ -190,6 +190,14 @@ class TestBaselineManagerInstantiation:
         manager = BaselineManager(project_path=tmp_path)
         assert manager is not None
 
+    def test_absolute_baseline_file_is_rejected(self, tmp_path):
+        with pytest.raises(ValueError, match="project path"):
+            BaselineManager(project_path=tmp_path, baseline_file="/tmp/x")
+
+    def test_parent_baseline_file_is_rejected(self, tmp_path):
+        with pytest.raises(ValueError, match="project path"):
+            BaselineManager(project_path=tmp_path, baseline_file="../x")
+
 
 class TestBaselineManagerCleanPath:
     def test_load_returns_baseline_file_when_no_file_exists(self, tmp_path):
