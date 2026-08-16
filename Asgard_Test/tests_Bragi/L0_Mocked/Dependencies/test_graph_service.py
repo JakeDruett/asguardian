@@ -8,6 +8,8 @@ interface-hash cache property (body edit retains derived cache; export
 change invalidates it).
 """
 
+import json
+import os
 import time
 from pathlib import Path
 
@@ -20,6 +22,9 @@ from Asgard.Bragi.Dependencies.models.dependency_models import (
 from Asgard.Bragi.Dependencies.services.cycle_detector import CycleDetector
 from Asgard.Bragi.Dependencies.services.dependency_analyzer import DependencyAnalyzer
 from Asgard.Bragi.Dependencies.services.graph_service import (
+    CACHE_RELATIVE_PATH,
+    CACHE_VERSION,
+    HMAC_ENV,
     DependencyGraphService,
     interface_hash,
 )
@@ -224,3 +229,128 @@ class TestImportFrequencies:
         assert freq["a"] == 2
         assert freq["b"] == 1
         assert list(freq) == sorted(freq)  # deterministic ordering
+
+
+class TestCacheHardening:
+    @pytest.fixture
+    def graph_hmac(self, monkeypatch):
+        monkeypatch.setenv(HMAC_ENV, "test-dep-graph-key")
+        monkeypatch.delenv("ASGARD_NO_CACHE", raising=False)
+
+    def _cache_path(self, root: Path) -> Path:
+        return root / CACHE_RELATIVE_PATH
+
+    def test_nondict_files_is_a_miss(self, tmp_path, graph_hmac):
+        make_cycle_repo(tmp_path)
+        service = DependencyGraphService(DependencyConfig(scan_path=tmp_path))
+        body = {"version": CACHE_VERSION, "files": ["not", "a", "dict"], "derived": {}}
+        key = service._hmac_key(tmp_path, create=True)
+        payload = dict(body)
+        payload["hmac"] = service._sign(body, key)
+        path = self._cache_path(tmp_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(payload))
+
+        graph = service.build(tmp_path)
+        assert graph.graph["a"] == {"b"}
+        assert service.last_file_cache_hits == 0
+        assert service.derived_cache_hit is False
+
+    def test_unsigned_planted_cache_is_a_miss(self, tmp_path, graph_hmac):
+        make_cycle_repo(tmp_path)
+        path = self._cache_path(tmp_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({
+            "version": CACHE_VERSION,
+            "files": {"a.py": {"content_hash": "00" * 32}},
+            "derived": {"graph_key": "00" * 32},
+        }))
+        service = DependencyGraphService(DependencyConfig(scan_path=tmp_path))
+        service.build(tmp_path)
+        assert service.last_file_cache_hits == 0
+        assert service.derived_cache_hit is False
+
+    def test_derived_list_is_a_miss(self, tmp_path, graph_hmac):
+        make_cycle_repo(tmp_path)
+        service = DependencyGraphService(DependencyConfig(scan_path=tmp_path))
+        body = {"version": CACHE_VERSION, "files": {}, "derived": ["not-a-dict"]}
+        key = service._hmac_key(tmp_path, create=True)
+        payload = dict(body)
+        payload["hmac"] = service._sign(body, key)
+        path = self._cache_path(tmp_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(payload))
+
+        service.build(tmp_path)
+        assert service.derived_cache_hit is False
+
+    def test_rewritten_payload_without_valid_hmac_is_ignored(
+        self, tmp_path, graph_hmac,
+    ):
+        make_cycle_repo(tmp_path)
+        DependencyGraphService(DependencyConfig(scan_path=tmp_path)).build(tmp_path)
+        path = self._cache_path(tmp_path)
+        data = json.loads(path.read_text())
+        data["files"] = "poison"
+        path.write_text(json.dumps(data))
+
+        service = DependencyGraphService(DependencyConfig(scan_path=tmp_path))
+        graph = service.build(tmp_path)
+        assert graph.graph["a"] == {"b"}
+        assert service.last_file_cache_hits == 0
+        assert service.derived_cache_hit is False
+
+    def test_atomic_write_uses_replace_and_leaves_hmac(
+        self, tmp_path, graph_hmac, monkeypatch,
+    ):
+        make_cycle_repo(tmp_path)
+        seen = []
+        real_replace = os.replace
+
+        def spy(src, dst):
+            seen.append((Path(src).name, Path(dst).name))
+            return real_replace(src, dst)
+
+        monkeypatch.setattr(os, "replace", spy)
+        DependencyGraphService(DependencyConfig(scan_path=tmp_path)).build(tmp_path)
+        assert seen
+        assert seen[0][0] == "bragi_dep_graph.json.tmp"
+        assert seen[0][1] == "bragi_dep_graph.json"
+        path = self._cache_path(tmp_path)
+        payload = json.loads(path.read_text())
+        assert payload.get("hmac")
+        assert payload.get("version") == CACHE_VERSION
+        assert isinstance(payload.get("files"), dict)
+        assert not path.with_name(path.name + ".tmp").exists()
+
+    def test_atomic_write_failure_keeps_prior_cache(
+        self, tmp_path, graph_hmac, monkeypatch,
+    ):
+        make_cycle_repo(tmp_path)
+        DependencyGraphService(DependencyConfig(scan_path=tmp_path)).build(tmp_path)
+        path = self._cache_path(tmp_path)
+        original = path.read_bytes()
+
+        def boom(src, dst):
+            raise OSError("replace failed")
+
+        monkeypatch.setattr(os, "replace", boom)
+        write(tmp_path, "e.py", "import a\n")
+        service = DependencyGraphService(DependencyConfig(scan_path=tmp_path))
+        graph = service.build(tmp_path)
+        assert graph.graph["e"] == {"a"}
+        assert path.read_bytes() == original
+        assert not path.with_name(path.name + ".tmp").exists()
+
+    def test_oversized_cache_is_a_miss(self, tmp_path, graph_hmac, monkeypatch):
+        import Asgard.Bragi.Dependencies.services.graph_service as gs
+
+        make_cycle_repo(tmp_path)
+        DependencyGraphService(DependencyConfig(scan_path=tmp_path)).build(tmp_path)
+        path = self._cache_path(tmp_path)
+        path.write_bytes(b"{" + b"a" * 200)
+        monkeypatch.setattr(gs, "_MAX_CACHE_BYTES", 32)
+        service = DependencyGraphService(DependencyConfig(scan_path=tmp_path))
+        service.build(tmp_path)
+        assert service.last_file_cache_hits == 0
+        assert service.derived_cache_hit is False

@@ -6,7 +6,7 @@ cycles (SCC condensation), centrality (Ca/Ce/instability/pagerank/percentile),
 and weighted break suggestions to every other Bragi consumer — replacing the
 three-full-scans-per-report pattern (DEEPTHINK_09, RESEARCH_15, RESEARCH_02).
 
-Caching (RESEARCH_15):
+Caching (RESEARCH_15 / CH-0039):
     - Per-file entries under `.asgard_cache/bragi_dep_graph.json` keyed by
       CONTENT hash (skip re-parsing unchanged files) and carrying an
       INTERFACE hash (sorted export names + import targets).
@@ -14,6 +14,10 @@ Caching (RESEARCH_15):
       hash of all files: a body-only edit re-parses one file but leaves every
       interface hash unchanged, so dependents' cached edges and the derived
       results survive; changing an export list invalidates them.
+    - The file is HMAC-SHA256 signed (`ASGARD_DEP_GRAPH_HMAC_KEY` or a
+      sibling ``.key``), schema-validated, size-capped, and written via
+      atomic replace. Unsigned, corrupt, or schema-invalid records are a
+      miss. Derived payloads are never reused unless the envelope verifies.
 
 All outputs are deterministic: modules and results are sorted, and pagerank
 uses networkx's deterministic power iteration.
@@ -21,8 +25,10 @@ uses networkx's deterministic power iteration.
 
 import ast
 import hashlib
+import hmac
 import json
 import os
+import re
 from pathlib import Path
 from typing import Callable, Dict, List, Optional, Set, Tuple
 
@@ -40,6 +46,19 @@ from Asgard.Bragi.Dependencies.services.import_analyzer import ImportAnalyzer
 
 CACHE_RELATIVE_PATH = Path(".asgard_cache") / "bragi_dep_graph.json"
 CACHE_VERSION = "1.0.0"
+HMAC_ENV = "ASGARD_DEP_GRAPH_HMAC_KEY"
+
+_HASH_RE = re.compile(r"^[0-9a-f]{64}$")
+_MAX_CACHE_BYTES = 8 * 1024 * 1024
+_MAX_FILES = 20_000
+_MAX_PATH_LEN = 4096
+_MAX_MODULE_LEN = 512
+_MAX_NAME_LEN = 256
+_MAX_NAMES_PER_FILE = 2_000
+_MAX_SCCS = 10_000
+_MAX_SCC_MEMBERS = 10_000
+_MAX_CENTRALITY = 20_000
+_SEVERITY_VALUES = frozenset(item.value for item in DependencySeverity)
 
 #: SCCs at or below this size get their simple cycles enumerated for display;
 #: larger SCCs are reported as one component with break suggestions instead
@@ -63,6 +82,181 @@ def no_cache_env() -> bool:
 
 def _sha256(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _read_limited(path: Path, max_bytes: int) -> Optional[bytes]:
+    if path.is_symlink():
+        return None
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        fd = os.open(path, flags)
+    except OSError:
+        return None
+    try:
+        data = os.read(fd, max_bytes + 1)
+    finally:
+        os.close(fd)
+    if not data or len(data) > max_bytes:
+        return None
+    return data
+
+
+def _sign_cache(payload: dict, key: bytes) -> str:
+    body = {
+        "version": payload.get("version"),
+        "files": payload.get("files"),
+        "derived": payload.get("derived"),
+    }
+    canonical = json.dumps(body, sort_keys=True, separators=(",", ":"), default=str)
+    return hmac.new(key, canonical.encode("utf-8"), hashlib.sha256).hexdigest()
+
+
+def _nonneg_int(value: object) -> Optional[int]:
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        return None
+    return value
+
+
+def _finite_float(value: object) -> Optional[float]:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        return None
+    number = float(value)
+    if number != number or number in (float("inf"), float("-inf")):
+        return None
+    return number
+
+
+def _str_list(value: object, *, max_items: int, max_len: int) -> Optional[List[str]]:
+    if not isinstance(value, list) or len(value) > max_items:
+        return None
+    out: List[str] = []
+    for item in value:
+        if not isinstance(item, str) or len(item) > max_len:
+            return None
+        out.append(item)
+    return out
+
+
+def _sanitize_file_entry(entry: object) -> Optional[dict]:
+    if not isinstance(entry, dict):
+        return None
+    content_hash = entry.get("content_hash")
+    interface_hash_value = entry.get("interface_hash")
+    module = entry.get("module")
+    if not isinstance(content_hash, str) or not _HASH_RE.fullmatch(content_hash):
+        return None
+    if not isinstance(interface_hash_value, str) or not _HASH_RE.fullmatch(
+        interface_hash_value
+    ):
+        return None
+    if not isinstance(module, str) or not module or len(module) > _MAX_MODULE_LEN:
+        return None
+    imports = _str_list(
+        entry.get("imports"), max_items=_MAX_NAMES_PER_FILE, max_len=_MAX_NAME_LEN,
+    )
+    exports = _str_list(
+        entry.get("exports"), max_items=_MAX_NAMES_PER_FILE, max_len=_MAX_NAME_LEN,
+    )
+    if imports is None or exports is None:
+        return None
+    return {
+        "content_hash": content_hash,
+        "interface_hash": interface_hash_value,
+        "module": module,
+        "imports": imports,
+        "exports": exports,
+    }
+
+
+def _sanitize_files(raw: object) -> Dict[str, dict]:
+    if not isinstance(raw, dict) or len(raw) > _MAX_FILES:
+        return {}
+    out: Dict[str, dict] = {}
+    for rel, entry in raw.items():
+        if not isinstance(rel, str) or not rel or len(rel) > _MAX_PATH_LEN:
+            continue
+        clean = _sanitize_file_entry(entry)
+        if clean is None:
+            continue
+        out[rel] = clean
+    return out
+
+
+def _sanitize_scc(raw: object) -> Optional[dict]:
+    if not isinstance(raw, dict):
+        return None
+    members = _str_list(
+        raw.get("members"), max_items=_MAX_SCC_MEMBERS, max_len=_MAX_MODULE_LEN,
+    )
+    member_loc = _nonneg_int(raw.get("member_loc"))
+    external_afferent = _nonneg_int(raw.get("external_afferent"))
+    internal_edges = _nonneg_int(raw.get("internal_edges"))
+    severity = raw.get("severity")
+    if members is None or member_loc is None or external_afferent is None:
+        return None
+    if internal_edges is None or not isinstance(severity, str):
+        return None
+    if severity not in _SEVERITY_VALUES:
+        return None
+    return {
+        "members": members,
+        "member_loc": member_loc,
+        "external_afferent": external_afferent,
+        "internal_edges": internal_edges,
+        "severity": severity,
+    }
+
+
+def _sanitize_centrality_entry(raw: object) -> Optional[dict]:
+    if not isinstance(raw, dict):
+        return None
+    module = raw.get("module")
+    if not isinstance(module, str) or not module or len(module) > _MAX_MODULE_LEN:
+        return None
+    afferent = _nonneg_int(raw.get("afferent"))
+    efferent = _nonneg_int(raw.get("efferent"))
+    instability = _finite_float(raw.get("instability"))
+    pagerank = _finite_float(raw.get("pagerank"))
+    percentile = _finite_float(raw.get("afferent_percentile"))
+    if None in (afferent, efferent, instability, pagerank, percentile):
+        return None
+    return {
+        "module": module,
+        "afferent": afferent,
+        "efferent": efferent,
+        "instability": instability,
+        "pagerank": pagerank,
+        "afferent_percentile": percentile,
+    }
+
+
+def _sanitize_derived(raw: object) -> dict:
+    if not isinstance(raw, dict):
+        return {}
+    graph_key = raw.get("graph_key")
+    if not isinstance(graph_key, str) or not _HASH_RE.fullmatch(graph_key):
+        return {}
+    sccs_raw = raw.get("sccs")
+    centrality_raw = raw.get("centrality")
+    if not isinstance(sccs_raw, list) or len(sccs_raw) > _MAX_SCCS:
+        return {}
+    if not isinstance(centrality_raw, dict) or len(centrality_raw) > _MAX_CENTRALITY:
+        return {}
+    sccs: List[dict] = []
+    for item in sccs_raw:
+        clean = _sanitize_scc(item)
+        if clean is None:
+            return {}
+        sccs.append(clean)
+    centrality: Dict[str, dict] = {}
+    for name, entry in centrality_raw.items():
+        if not isinstance(name, str) or not name or len(name) > _MAX_MODULE_LEN:
+            return {}
+        clean_entry = _sanitize_centrality_entry(entry)
+        if clean_entry is None:
+            return {}
+        centrality[name] = clean_entry
+    return {"graph_key": graph_key, "sccs": sccs, "centrality": centrality}
 
 
 def _extract_exports(source: str) -> List[str]:
@@ -180,8 +374,14 @@ class DependencyGraphService:
         if key in self._graphs:
             return self._graphs[key]
 
-        cache = self._load_cache(path)
-        cached_files: Dict[str, dict] = cache.get("files", {})
+        try:
+            cache = self._load_cache(path)
+            cached_files = cache.get("files", {})
+            if not isinstance(cached_files, dict):
+                raise TypeError("files")
+        except (TypeError, AttributeError, KeyError, ValueError):
+            cache = {}
+            cached_files = {}
 
         modules = self.import_analyzer.analyze(path)
         self.last_parse_count = len(modules)
@@ -195,11 +395,14 @@ class DependencyGraphService:
             except OSError:
                 source = ""
             content_hash = _sha256(source)
-            entry = cached_files.get(m.relative_path)
-            if entry is not None and entry.get("content_hash") == content_hash:
-                self.last_file_cache_hits += 1
-                new_files[m.relative_path] = entry
-                continue
+            try:
+                entry = cached_files.get(m.relative_path)
+                if isinstance(entry, dict) and entry.get("content_hash") == content_hash:
+                    self.last_file_cache_hits += 1
+                    new_files[m.relative_path] = entry
+                    continue
+            except (TypeError, AttributeError):
+                pass
             exports = _extract_exports(source)
             targets = sorted({d.target for d in m.dependency_list})
             new_files[m.relative_path] = {
@@ -214,8 +417,18 @@ class DependencyGraphService:
         self._graphs[key] = graph
 
         graph_key = self._graph_key(new_files)
-        derived = cache.get("derived", {})
-        self.derived_cache_hit = derived.get("graph_key") == graph_key
+        try:
+            derived = cache.get("derived", {})
+            if not isinstance(derived, dict):
+                raise TypeError("derived")
+            self.derived_cache_hit = (
+                bool(derived) and derived.get("graph_key") == graph_key
+            )
+            if self.derived_cache_hit and not _sanitize_derived(derived):
+                raise ValueError("derived")
+        except (TypeError, AttributeError, KeyError, ValueError):
+            self.derived_cache_hit = False
+            derived = {}
         if not self.derived_cache_hit:
             derived = {
                 "graph_key": graph_key,
@@ -255,29 +468,110 @@ class DependencyGraphService:
     def _cache_path(self, scan_path: Path) -> Path:
         return scan_path / CACHE_RELATIVE_PATH
 
+    def _key_path(self, scan_path: Path) -> Path:
+        cache_file = self._cache_path(scan_path)
+        return cache_file.with_name(cache_file.name + ".key")
+
+    def _hmac_key(self, scan_path: Path, *, create: bool = False) -> Optional[bytes]:
+        env = os.environ.get(HMAC_ENV, "").strip()
+        if env:
+            return env.encode("utf-8")
+        key_path = self._key_path(scan_path)
+        if key_path.is_symlink():
+            return None
+        if key_path.exists():
+            data = _read_limited(key_path, max_bytes=64)
+            if not data:
+                return None
+            return data
+        if not create:
+            return None
+        try:
+            key_path.parent.mkdir(parents=True, exist_ok=True)
+        except OSError:
+            return None
+        key = os.urandom(32)
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+        try:
+            fd = os.open(key_path, flags, 0o600)
+            try:
+                os.write(fd, key)
+            finally:
+                os.close(fd)
+            os.chmod(key_path, 0o600)
+        except OSError:
+            return None
+        return key
+
+    def _sign(self, payload: dict, key: bytes) -> str:
+        return _sign_cache(payload, key)
+
     def _load_cache(self, scan_path: Path) -> dict:
         if not self.use_disk_cache:
             return {}
         cache_file = self._cache_path(scan_path)
-        if not cache_file.exists():
+        if not cache_file.exists() or cache_file.is_symlink():
+            return {}
+        key = self._hmac_key(scan_path, create=False)
+        if key is None:
+            return {}
+        raw = _read_limited(cache_file, _MAX_CACHE_BYTES)
+        if raw is None:
             return {}
         try:
-            with open(cache_file, "r", encoding="utf-8") as f:
-                data = json.load(f)
-            if data.get("version") != CACHE_VERSION:
+            data = json.loads(raw.decode("utf-8"))
+            if not isinstance(data, dict) or data.get("version") != CACHE_VERSION:
                 return {}
-            return data
-        except (json.JSONDecodeError, OSError):
+            expected = data.get("hmac")
+            unsigned = {
+                "version": data.get("version"),
+                "files": data.get("files"),
+                "derived": data.get("derived"),
+            }
+            if not isinstance(expected, str) or not hmac.compare_digest(
+                expected, self._sign(unsigned, key)
+            ):
+                return {}
+            files = _sanitize_files(unsigned["files"])
+            derived = _sanitize_derived(unsigned["derived"])
+            return {"version": CACHE_VERSION, "files": files, "derived": derived}
+        except (json.JSONDecodeError, UnicodeDecodeError, TypeError, ValueError):
             return {}
 
     def _save_cache(self, scan_path: Path, payload: dict) -> None:
+        cache_file = self._cache_path(scan_path)
+        tmp_path = cache_file.with_name(cache_file.name + ".tmp")
         try:
-            cache_file = self._cache_path(scan_path)
+            if cache_file.is_symlink() or tmp_path.is_symlink():
+                return
             cache_file.parent.mkdir(parents=True, exist_ok=True)
-            with open(cache_file, "w", encoding="utf-8") as f:
-                json.dump(payload, f, indent=1, sort_keys=True)
+            key = self._hmac_key(scan_path, create=True)
+            if key is None:
+                return
+            body = {
+                "version": payload.get("version", CACHE_VERSION),
+                "files": payload.get("files", {}),
+                "derived": payload.get("derived", {}),
+            }
+            envelope = dict(body)
+            envelope["hmac"] = self._sign(body, key)
+            raw = json.dumps(envelope, indent=1, sort_keys=True).encode("utf-8")
+            flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, "O_NOFOLLOW", 0)
+            fd = os.open(tmp_path, flags, 0o600)
+            try:
+                os.write(fd, raw)
+            finally:
+                os.close(fd)
+            os.chmod(tmp_path, 0o600)
+            if cache_file.is_symlink():
+                tmp_path.unlink(missing_ok=True)
+                return
+            os.replace(tmp_path, cache_file)
         except OSError:
-            pass  # caching is best-effort, never fatal
+            try:
+                tmp_path.unlink(missing_ok=True)
+            except OSError:
+                pass
 
     # ------------------------------------------------------------------- SCCs
 
