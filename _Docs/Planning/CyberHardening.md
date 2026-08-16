@@ -385,7 +385,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0023 — Local `CLAUDE.md` is documented as credential-bearing and is gitignored
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** bfdd668
 - **Fixed at:** 2026-08-16T11:26:00Z
 - **Implementation note:** Keep CLAUDE.md gitignored and untracked; test asserts the ignore. Rotation and GitHub secret scanning remain Jake-todo human items.
 - **Severity:** Info
@@ -1839,7 +1839,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0071, CH-0097, CH-0105, CH-0108
-- Last commit: PENDING
+- Last commit: bfdd668
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
