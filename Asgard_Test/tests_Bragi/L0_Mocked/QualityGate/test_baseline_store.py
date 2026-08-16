@@ -144,7 +144,10 @@ class TestSignedBaseline:
             confidence=0.9,
             snippet="db.execute(q)",
         )
-        fp = compute_fingerprint(finding.rule_id, finding.file_path, snippet=finding.snippet)
+        fp = compute_fingerprint(
+            finding.rule_id, finding.file_path,
+            line=finding.line, snippet=finding.snippet,
+        )
         cache = tmp_path / ".asgard_cache"
         cache.mkdir()
         (cache / "bragi_fingerprint_baseline.json").write_text(json.dumps({

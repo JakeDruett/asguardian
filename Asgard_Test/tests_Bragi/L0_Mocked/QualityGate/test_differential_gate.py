@@ -12,7 +12,10 @@ from Asgard.Bragi.QualityGate.baseline_store import (
     BranchBaseline,
     FingerprintBaselineStore,
 )
-from Asgard.Bragi.QualityGate.fingerprint import compute_fingerprint
+from Asgard.Bragi.QualityGate.fingerprint import (
+    compute_fingerprint,
+    fingerprint_finding,
+)
 from Asgard.Bragi.QualityGate.models.quality_gate_models import (
     BreakGlassRecord,
     GateFinding,
@@ -40,10 +43,7 @@ def finding(rule="SQLI", path="src/app.py", line=3, severity="critical",
 
 
 def baseline_of(*findings_):
-    fps = [
-        compute_fingerprint(f.rule_id, f.file_path, snippet=f.snippet or None)
-        for f in findings_
-    ]
+    fps = [fingerprint_finding(f) for f in findings_]
     return BranchBaseline(branch="main", commit="base123", fingerprints=fps)
 
 
@@ -216,6 +216,44 @@ class TestBreakGlass:
         assert result.status == GateStatus.PASSED or result.status == "passed"
 
 
+class TestFindingIdentity:
+    def test_two_findings_in_one_file_are_not_collapsed(self):
+        first = finding(line=3, snippet="")
+        second = finding(line=10, snippet="")
+        engine = DifferentialGateEngine(today=TODAY)
+        result = engine.evaluate(
+            [first, second],
+            BranchBaseline(branch="main", commit="c", fingerprints=[]),
+        )
+        assert first.fingerprint != second.fingerprint
+        assert len(result.new_findings) == 2
+
+    def test_one_baseline_entry_does_not_hide_sibling_finding(self):
+        first = finding(line=3, snippet="")
+        second = finding(line=10, snippet="")
+        engine = DifferentialGateEngine(today=TODAY)
+        result = engine.evaluate(
+            [first, second],
+            BranchBaseline(
+                branch="main", commit="c",
+                fingerprints=[fingerprint_finding(first)],
+            ),
+        )
+        assert result.preexisting_count == 1
+        assert len(result.new_findings) == 1
+        assert result.new_findings[0].line == 10
+
+    def test_planted_unsigned_fingerprint_does_not_match_baseline(self):
+        legacy = finding(line=3)
+        planted = finding(line=10, snippet="other()")
+        planted.fingerprint = fingerprint_finding(legacy)
+        engine = DifferentialGateEngine(today=TODAY)
+        result = engine.evaluate([planted], baseline_of(legacy))
+        assert result.preexisting_count == 0
+        assert len(result.new_findings) == 1
+        assert planted.fingerprint == fingerprint_finding(planted)
+
+
 class TestCoercion:
     def test_coerce_from_dict(self):
         f = coerce_finding({
@@ -249,10 +287,7 @@ class TestEvaluatorIntegration:
     def test_evaluate_differential_via_store(self, tmp_path):
         legacy = finding(rule="OLD", severity="critical", snippet="legacy()")
         store = FingerprintBaselineStore(tmp_path)
-        store.capture("main", "sha1", [
-            compute_fingerprint(legacy.rule_id, legacy.file_path,
-                                snippet=legacy.snippet),
-        ])
+        store.capture("main", "sha1", [fingerprint_finding(legacy)])
 
         evaluator = QualityGateEvaluator()
         result = evaluator.evaluate_differential(

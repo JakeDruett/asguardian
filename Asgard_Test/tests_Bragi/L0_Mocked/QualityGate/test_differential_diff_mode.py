@@ -10,6 +10,7 @@ from pathlib import Path
 import pytest
 
 from Asgard.Bragi.QualityGate.baseline_store import BranchBaseline
+from Asgard.Bragi.QualityGate.fingerprint import fingerprint_finding
 from Asgard.Bragi.QualityGate.models.quality_gate_models import (
     GateFinding,
     GateStatus,
@@ -71,7 +72,7 @@ new file mode 100644
 
 
 def finding(rule="R1", path="pkg/mod.py", line=12, severity="high",
-            fingerprint="fp-1"):
+            fingerprint=""):
     return GateFinding(rule_id=rule, file_path=path, line=line,
                        severity=severity, fingerprint=fingerprint)
 
@@ -155,8 +156,10 @@ class TestSmallChangeWiring:
 class TestLegacyTouched:
     def test_preexisting_on_modified_line_warns(self):
         engine = DifferentialGateEngine()
-        baseline = BranchBaseline(branch="main", fingerprints=["fp-legacy"])
-        legacy = finding(line=12, fingerprint="fp-legacy")
+        legacy = finding(line=12)
+        baseline = BranchBaseline(
+            branch="main", fingerprints=[fingerprint_finding(legacy)],
+        )
         result = engine.evaluate(
             [legacy], baseline,
             changed_files={"pkg/mod.py": [LineRange(11, 3)]},
@@ -168,9 +171,12 @@ class TestLegacyTouched:
 
     def test_untouched_legacy_stays_invisible(self):
         engine = DifferentialGateEngine()
-        baseline = BranchBaseline(branch="main", fingerprints=["fp-legacy"])
+        legacy = finding(line=99)
+        baseline = BranchBaseline(
+            branch="main", fingerprints=[fingerprint_finding(legacy)],
+        )
         result = engine.evaluate(
-            [finding(line=99, fingerprint="fp-legacy")], baseline,
+            [legacy], baseline,
             changed_files={"pkg/mod.py": [LineRange(11, 3)]},
         )
         assert result.legacy_touched_findings == []

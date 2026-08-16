@@ -26,7 +26,10 @@ from Asgard.Bragi.QualityGate.services._git_diff import (
 )
 
 from Asgard.Bragi.QualityGate.baseline_store import BranchBaseline
-from Asgard.Bragi.QualityGate.fingerprint import compute_fingerprint
+from Asgard.Bragi.QualityGate.fingerprint import (
+    fingerprint_finding,
+    unsigned_fingerprint,
+)
 from Asgard.Bragi.QualityGate.models.quality_gate_models import (
     BreakGlassRecord,
     DifferentialGateResult,
@@ -100,17 +103,13 @@ def ensure_fingerprint(
     finding: GateFinding,
     sources: Optional[Dict[str, str]] = None,
 ) -> GateFinding:
-    """Fill in the finding's fingerprint if empty (AST anchor when source given)."""
-    if finding.fingerprint:
+    """Recompute the finding fingerprint unless a valid signed digest is present."""
+    trusted = unsigned_fingerprint(finding.fingerprint)
+    if trusted is not None:
+        finding.fingerprint = trusted
         return finding
     source = (sources or {}).get(finding.file_path)
-    finding.fingerprint = compute_fingerprint(
-        finding.rule_id,
-        finding.file_path,
-        source=source,
-        line=finding.line,
-        snippet=finding.snippet or (finding.message or None),
-    )
+    finding.fingerprint = fingerprint_finding(finding, source)
     return finding
 
 

@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 16   | 43    | 0             |
+| Medium   | 15   | 44    | 0             |
 | Low      | 11   | 11    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -895,7 +895,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0052 — Gate fingerprints collapse to rule+path when snippet is empty
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T17:20:00Z
+- **Implementation note:** Fingerprint includes line+message; `ensure_fingerprint` recomputes unless a signed `qg1.` mac is present.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-345
@@ -2005,12 +2008,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 33
-- Fixed: 81
+- Open: 32
+- Fixed: 82
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0052, CH-0092, CH-0107
-- Last commit: adca2bc
+- Next: CH-0092, CH-0107, CH-0109
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

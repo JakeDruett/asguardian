@@ -261,7 +261,11 @@ class GateFinding(BaseModel):
     message: str = Field("", description="Human-readable finding message")
     snippet: str = Field("", description="Source snippet at the finding site, if available")
     fingerprint: str = Field(
-        "", description="Stable fingerprint (computed if empty)"
+        "",
+        description=(
+            "Stable fingerprint. Unsigned caller values are recomputed; "
+            "HMAC-signed values (qg1.<digest>.<mac>) are trusted."
+        ),
     )
 
     class Config:

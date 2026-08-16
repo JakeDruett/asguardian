@@ -7,9 +7,17 @@ and deterministic across repeat computation.
 
 from Asgard.Bragi.QualityGate.fingerprint import (
     compute_fingerprint,
+    fingerprint_finding,
     fingerprint_with_anchor,
+    is_signed_fingerprint,
     normalize_path,
     normalize_snippet,
+    sign_fingerprint,
+    unsigned_fingerprint,
+)
+from Asgard.Bragi.QualityGate.models.quality_gate_models import GateFinding
+from Asgard.Bragi.QualityGate.services._differential_engine import (
+    ensure_fingerprint,
 )
 
 
@@ -87,7 +95,7 @@ class TestFallbackAnchors:
             "EVAL", "src/app.js", source=js, line=1, snippet="eval(userInput);"
         )
         fp2, anchor2 = fingerprint_with_anchor(
-            "EVAL", "src/app.js", snippet="  eval(userInput);  "
+            "EVAL", "src/app.js", line=1, snippet="  eval(userInput);  "
         )
         assert anchor1 == "snippet"
         assert anchor2 == "snippet"
@@ -102,3 +110,69 @@ class TestFallbackAnchors:
         fp1 = compute_fingerprint("R", "src\\mod.py", snippet="x = 1")
         fp2 = compute_fingerprint("R", "src/mod.py", snippet="x = 1")
         assert fp1 == fp2
+
+    def test_two_findings_in_one_file_get_distinct_fingerprints(self):
+        fp1 = compute_fingerprint("SQLI", "src/app.py", line=3)
+        fp2 = compute_fingerprint("SQLI", "src/app.py", line=10)
+        assert fp1 != fp2
+
+    def test_two_findings_same_line_differ_by_message(self):
+        fp1 = compute_fingerprint("SQLI", "src/app.py", line=3, message="concat")
+        fp2 = compute_fingerprint("SQLI", "src/app.py", line=3, message="format")
+        assert fp1 != fp2
+
+    def test_empty_snippet_still_uses_line_and_message(self):
+        fp_file = compute_fingerprint("SQLI", "src/app.py")
+        fp_line = compute_fingerprint("SQLI", "src/app.py", line=3)
+        fp_msg = compute_fingerprint("SQLI", "src/app.py", message="sqli")
+        assert fp_file != fp_line
+        assert fp_file != fp_msg
+        assert fp_line != fp_msg
+
+
+class TestCallerFingerprintTrust:
+    def test_unsigned_fingerprint_is_recomputed(self):
+        planted = "ab" * 32
+        finding = GateFinding(
+            rule_id="SQLI", file_path="src/app.py", line=3,
+            snippet="db.execute(q)", fingerprint=planted,
+        )
+        out = ensure_fingerprint(finding)
+        assert out.fingerprint != planted
+        assert out.fingerprint == fingerprint_finding(finding)
+
+    def test_forged_signed_fingerprint_is_recomputed(self, monkeypatch):
+        monkeypatch.setenv("ASGARD_QG_HMAC_KEY", "test-qg-key")
+        planted = f"qg1.{'ab' * 32}.{'00' * 32}"
+        finding = GateFinding(
+            rule_id="SQLI", file_path="src/app.py", line=3,
+            snippet="db.execute(q)", fingerprint=planted,
+        )
+        out = ensure_fingerprint(finding)
+        assert out.fingerprint != "ab" * 32
+        assert out.fingerprint == fingerprint_finding(finding)
+
+    def test_signed_fingerprint_is_kept(self, monkeypatch):
+        monkeypatch.setenv("ASGARD_QG_HMAC_KEY", "test-qg-key")
+        digest = compute_fingerprint("SQLI", "src/app.py", line=99, message="kept")
+        signed = sign_fingerprint(digest)
+        finding = GateFinding(
+            rule_id="SQLI", file_path="src/app.py", line=3,
+            message="other", fingerprint=signed,
+        )
+        out = ensure_fingerprint(finding)
+        assert is_signed_fingerprint(signed)
+        assert unsigned_fingerprint(signed) == digest
+        assert out.fingerprint == digest
+
+    def test_signed_fingerprint_without_key_is_recomputed(self, monkeypatch):
+        monkeypatch.setenv("ASGARD_QG_HMAC_KEY", "test-qg-key")
+        digest = compute_fingerprint("SQLI", "src/app.py", line=99)
+        signed = sign_fingerprint(digest)
+        monkeypatch.delenv("ASGARD_QG_HMAC_KEY", raising=False)
+        finding = GateFinding(
+            rule_id="SQLI", file_path="src/app.py", line=3, fingerprint=signed,
+        )
+        out = ensure_fingerprint(finding)
+        assert out.fingerprint == fingerprint_finding(finding)
+        assert out.fingerprint != digest

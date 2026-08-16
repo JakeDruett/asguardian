@@ -55,7 +55,11 @@ from Asgard.Bragi.QualityGate.baseline_store import (
 )
 from Asgard.Bragi.QualityGate.fingerprint import (
     compute_fingerprint,
+    fingerprint_finding,
     fingerprint_with_anchor,
+    is_signed_fingerprint,
+    sign_fingerprint,
+    unsigned_fingerprint,
 )
 from Asgard.Bragi.QualityGate.suppressions import (
     SuppressionDirective,
@@ -128,7 +132,11 @@ __all__ = [
     "build_asgard_way_gate",
     "coerce_finding",
     "compute_fingerprint",
+    "fingerprint_finding",
     "fingerprint_with_anchor",
+    "is_signed_fingerprint",
+    "sign_fingerprint",
+    "unsigned_fingerprint",
     "git_changed_lines",
     "git_churn",
     "lint_suppressions",
