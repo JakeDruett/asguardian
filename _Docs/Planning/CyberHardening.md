@@ -824,7 +824,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0048 — Incremental file-hash cache is unsigned and mtime-skips
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** adca2bc
 - **Fixed at:** 2026-08-16T17:18:00Z
 - **Implementation note:** Always re-hash; HMAC schema v2; confine cache_path; honor TTL. `enabled` still defaults False.
 - **Severity:** Medium
@@ -2010,7 +2010,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0052, CH-0092, CH-0107
-- Last commit: pending
+- Last commit: adca2bc
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
