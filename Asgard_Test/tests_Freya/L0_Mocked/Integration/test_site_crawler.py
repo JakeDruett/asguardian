@@ -9,6 +9,7 @@ url_to_filename, generate_report, generate_html_report, save_report, test_page) 
 module-level functions in helper modules. Tests call them directly.
 """
 
+import json
 import re
 import pytest
 from datetime import datetime
@@ -623,6 +624,36 @@ class TestGenerateReport:
         assert report.pages_tested == 0
         assert report.average_overall_score == 0.0
 
+    def test_generate_report_redacts_auth_config_password(self):
+        config = CrawlConfig(
+            start_url="https://example.com",
+            auth_config={
+                "login_url": "https://example.com/login",
+                "username": "testuser",
+                "password": "supersecret",
+                "token": "tok_value_xyz",
+                "cookie": "session=abc123",
+                "password_selector": 'input[name="password"]',
+            },
+        )
+        report = generate_report(
+            config, {}, {},
+            datetime.now().isoformat(), datetime.now().isoformat(), 500,
+        )
+        dumped = report.model_dump_json()
+        assert "supersecret" not in dumped
+        assert "tok_value_xyz" not in dumped
+        assert "session=abc123" not in dumped
+        auth = report.config.auth_config
+        assert "password" in auth
+        assert "token" in auth
+        assert "cookie" in auth
+        assert auth["password"] != "supersecret"
+        assert auth["username"] == "testuser"
+        assert auth["login_url"] == "https://example.com/login"
+        assert auth["password_selector"] == 'input[name="password"]'
+        assert config.auth_config["password"] == "supersecret"
+
 
 class TestHTMLReportGeneration:
     """Test HTML report generation."""
@@ -697,3 +728,41 @@ class TestSaveReport:
         assert "https://example.com" in json_content
         html_content = html_path.read_text()
         assert "<!DOCTYPE html>" in html_content
+
+    @pytest.mark.asyncio
+    async def test_save_report_does_not_persist_auth_password(self, tmp_path):
+        config = CrawlConfig(
+            start_url="https://example.com",
+            output_directory=str(tmp_path),
+            auth_config={
+                "login_url": "https://example.com/login",
+                "username": "testuser",
+                "password": "supersecret",
+                "token": "tok_value_xyz",
+                "cookie": "session=abc123",
+            },
+        )
+        report = SiteCrawlReport(
+            start_url="https://example.com",
+            crawl_started=datetime.now().isoformat(),
+            crawl_completed=datetime.now().isoformat(),
+            total_duration_ms=1000,
+            pages_discovered=0, pages_tested=0, pages_skipped=0, pages_errored=0,
+            average_accessibility_score=0.0, average_visual_score=0.0,
+            average_responsive_score=0.0, average_overall_score=0.0,
+            total_critical=0, total_serious=0, total_moderate=0, total_minor=0,
+            page_results=[], worst_pages=[], common_issues=[], config=config,
+        )
+        await save_report(report, tmp_path)
+        json_content = (tmp_path / "crawl_report.json").read_text()
+        assert "supersecret" not in json_content
+        assert "tok_value_xyz" not in json_content
+        assert "session=abc123" not in json_content
+        data = json.loads(json_content)
+        auth = data["config"]["auth_config"]
+        assert "password" in auth
+        assert "token" in auth
+        assert "cookie" in auth
+        assert auth["password"] != "supersecret"
+        assert auth["username"] == "testuser"
+        assert config.auth_config["password"] == "supersecret"

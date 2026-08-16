@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 6    | 22    | 0             |
+| High     | 5    | 23    | 0             |
 | Medium   | 35   | 24    | 0             |
 | Low      | 13   | 9     | 0             |
 | Info     | 4    | 1     | 0             |
@@ -1147,7 +1147,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0069 — Crawl reports persist `auth_config` (passwords) on disk
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T15:20:00Z
+- **Implementation note:** `generate_report`/`save_report` copy config and replace secret `auth_config` values with `****`; keys kept. Deviation: length-only mask, not prefix/suffix.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-312
@@ -1930,12 +1933,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 58
-- Fixed: 56
+- Open: 57
+- Fixed: 57
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0012, CH-0051, CH-0069, CH-0077
-- Last commit: 68fac38
+- Next: CH-0012, CH-0051, CH-0077
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

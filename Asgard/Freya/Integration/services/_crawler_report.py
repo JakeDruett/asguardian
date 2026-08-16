@@ -7,7 +7,7 @@ Report building and HTML generation extracted from site_crawler.py.
 import json
 from collections import Counter
 from pathlib import Path
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from Asgard.Freya.Integration.models.integration_models import (
     PageStatus,
@@ -17,6 +17,67 @@ from Asgard.Freya.Integration.models.integration_models import (
 from Asgard.Freya.Scoring.services.epistemics import TREND_INDICATOR_NOTE
 
 _GRADE_RANK = {"F": 0, "D": 1, "C": 2, "B": 3, "A": 4}
+
+# Navigation / selector metadata is safe to persist. Everything else in
+# auth_config is treated as secret (CWE-312: reports land on disk / CI).
+_SAFE_AUTH_KEYS = frozenset({
+    "login_url",
+    "username",
+    "username_selector",
+    "password_selector",
+    "submit_selector",
+    "wait_for_url",
+    "wait_for_selector",
+})
+
+
+def _is_secret_auth_key(key: str) -> bool:
+    normalized = str(key).lower().replace("-", "_")
+    if normalized in _SAFE_AUTH_KEYS:
+        return False
+    if normalized.endswith("_selector") or normalized.endswith("_url"):
+        return False
+    return True
+
+
+def _mask_auth_value(value: Any) -> Any:
+    if not isinstance(value, str) or value == "":
+        return value
+    # Never persist password characters (CWE-312). Length-only, not prefix/suffix.
+    return "****"
+
+
+def _redact_auth_config(auth_config: Any) -> Any:
+    """Keep auth_config keys; mask secret values. Does not mutate the input."""
+    if not isinstance(auth_config, dict):
+        return auth_config
+    redacted: Dict[str, Any] = {}
+    for key, value in auth_config.items():
+        if isinstance(value, dict):
+            redacted[key] = _redact_auth_config(value)
+        elif isinstance(value, list):
+            redacted[key] = [
+                _redact_auth_config(item) if isinstance(item, dict)
+                else (_mask_auth_value(item) if _is_secret_auth_key(key) else item)
+                for item in value
+            ]
+        elif _is_secret_auth_key(key):
+            redacted[key] = _mask_auth_value(value)
+        else:
+            redacted[key] = value
+    return redacted
+
+
+def _config_for_report(config):
+    """Copy crawl config with auth secrets redacted. Live config is unchanged."""
+    auth = getattr(config, "auth_config", None)
+    if not auth:
+        return config
+    redacted = _redact_auth_config(auth)
+    copier = getattr(config, "model_copy", None)
+    if callable(copier):
+        return copier(update={"auth_config": redacted})
+    return config
 
 
 def _site_grade(page_results: List[PageTestResult]) -> tuple:
@@ -108,15 +169,19 @@ def generate_report(
         page_results=page_results,
         worst_pages=worst_page_urls,
         common_issues=common_issues,
-        config=config,
+        config=_config_for_report(config),
     )
 
 
 async def save_report(report: SiteCrawlReport, output_dir: Path) -> None:
     """Save the crawl report to files."""
+    payload = report.model_dump(mode="json")
+    cfg = payload.get("config")
+    if isinstance(cfg, dict) and cfg.get("auth_config"):
+        cfg["auth_config"] = _redact_auth_config(cfg["auth_config"])
     json_path = output_dir / "crawl_report.json"
     with open(json_path, "w") as f:
-        f.write(report.model_dump_json(indent=2))
+        json.dump(payload, f, indent=2)
 
     html_path = output_dir / "crawl_report.html"
     html_content = generate_html_report(report)
