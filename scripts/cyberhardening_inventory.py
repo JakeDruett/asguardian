@@ -611,7 +611,12 @@ def cmd_done(
     finding_ids: list[str],
 ) -> int:
     data = load_todo(paths["todo"], root, paths)
-    norm = target.replace("\\", "/").lstrip("./")
+    norm = target.replace("\\", "/")
+    while norm.startswith("./"):
+        norm = norm[2:]
+    if norm.startswith("/"):
+        print(f"error: path must be repo-relative: {target}", file=sys.stderr)
+        return 1
     remaining = data.get("remaining", [])
     match_idx = None
     for i, item in enumerate(remaining):

@@ -1,0 +1,64 @@
+{"path":".github/workflows/ci.yml","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0001","CH-0002","CH-0004"],"summary":"Unpinned actions; PR code on self-hosted ARC; no timeouts"}
+{"path":".github/workflows/l8-perf-budgets.yml","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0001","CH-0005"],"summary":"Draft disabled workflow; latent default token + unpinned actions"}
+{"path":".github/workflows/publish.yml","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0001","CH-0003","CH-0004"],"summary":"OIDC PyPI publish without environment/split-trust; unpinned publisher"}
+{"path":".pre-commit-config.yaml","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0006"],"summary":"Movable hook tags; no secret-scan hook"}
+{"path":"Asgard/BackendInit/__init__.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export only; no I/O"}
+{"path":"Asgard/BackendInit/_templates_base.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Static boilerplate strings; no interpolation of caller input"}
+{"path":"Asgard/BackendInit/service.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0007","CH-0008"],"summary":"Unvalidated folder_name write; symlink-following gitignore merge"}
+{"path":"Asgard/BackendInit/templates.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0009"],"summary":"GITIGNORE_FULL ignores lib/lib64/env"}
+{"path":"Asgard/Baseline/__init__.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export only"}
+{"path":"Asgard/Baseline/_baseline_helpers.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0012","CH-0015"],"summary":"Empty message extraction; truncated SHA-256 IDs"}
+{"path":"Asgard/Baseline/_baseline_operations.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0012"],"summary":"Fuzzy match with empty message suppresses file+type"}
+{"path":"Asgard/Baseline/_baseline_report.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Text/md reports omit message; no eval; stdout only"}
+{"path":"Asgard/Baseline/baseline_manager.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0010","CH-0013","CH-0014"],"summary":"Unconfined baseline path; raw message persist; non-atomic symlink write"}
+{"path":"Asgard/Baseline/models.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0011"],"summary":"Exact match ignores payload; unsigned suppression file"}
+{"path":"Asgard/Bragi/Architecture/__init__.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export facade; no I/O"}
+{"path":"Asgard/Bragi/Architecture/cir/__init__.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Empty package marker"}
+{"path":"Asgard/Bragi/Architecture/cir/builder.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0016"],"summary":"Unbounded tree-sitter parse/walk of untrusted source"}
+{"path":"Asgard/Bragi/Architecture/cir/models.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"In-memory dataclasses; no deser surface"}
+{"path":"Asgard/Bragi/Architecture/evaluators/__init__.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Fan-out evaluate_file only"}
+{"path":"Asgard/Bragi/Architecture/evaluators/_lcom4.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0016"],"summary":"O(n^2) LCOM4 on untrusted class method sets"}
+{"path":"Asgard/Bragi/Architecture/evaluators/dip.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Suffix regex on extracted names; no ReDoS"}
+{"path":"Asgard/Bragi/Architecture/evaluators/isp.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Arithmetic on CIR flags"}
+{"path":"Asgard/Bragi/Architecture/evaluators/lsp.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Boolean flags to SOLIDViolation"}
+{"path":"Asgard/Bragi/Architecture/evaluators/ocp.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Set intersection on identifiers"}
+{"path":"Asgard/Bragi/Architecture/evaluators/srp.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0016"],"summary":"Calls LCOM4; concatenates method names in evidence"}
+{"path":"Asgard/Bragi/Architecture/graph/__init__.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Package docstring only"}
+{"path":"Asgard/Bragi/Architecture/graph/drift.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Pure comparison; message not executed"}
+{"path":"Asgard/Bragi/Architecture/graph/module_cycles.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"NetworkX SCC on in-memory graph"}
+{"path":"Asgard/Bragi/Architecture/graph/nodes.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"In-memory LevelBounds dataclass"}
+{"path":"Asgard/Bragi/Architecture/graph/propagation.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0018"],"summary":"fnmatch on config path_patterns"}
+{"path":"Asgard/Bragi/Architecture/graph/reflexion.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0018"],"summary":"Same fnmatch classification path"}
+{"path":"Asgard/Bragi/Architecture/graph/service.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0017"],"summary":"Unsigned/unvalidated bounds JSON cache"}
+{"path":"Asgard/Bragi/Architecture/models/__init__.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export facade"}
+{"path":"Asgard/Bragi/Architecture/models/_layer_models.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Dataclass report types; no deser"}
+{"path":"Asgard/Bragi/Architecture/models/_pattern_models.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Dataclass report types; no deser"}
+{"path":"Asgard/Bragi/Architecture/models/_solid_models.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Dataclass report types; no deser"}
+{"path":"Asgard/Bragi/Architecture/models/architecture_models.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Dataclass config/report; no secrets/deser"}
+{"path":"Asgard/Bragi/Architecture/services/__init__.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export analyzers"}
+{"path":"Asgard/Bragi/Architecture/services/_arch_reporter.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Pass-through facade"}
+{"path":"Asgard/Bragi/Architecture/services/_arch_reporter_json.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"json.dumps only"}
+{"path":"Asgard/Bragi/Architecture/services/_arch_reporter_markdown.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0019"],"summary":"Unescaped MD interpolation of scan strings"}
+{"path":"Asgard/Bragi/Architecture/services/_arch_reporter_text.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Counts/labels; no per-finding messages"}
+{"path":"Asgard/Bragi/Architecture/services/_architecture_config.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0020"],"summary":"yaml.safe_load without schema/path checks"}
+{"path":"Asgard/Bragi/Architecture/services/_generic_hexagonal_checks.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0019"],"summary":"Import strings copied into report messages"}
+{"path":"Asgard/Bragi/Architecture/services/_generic_solid_checks.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0021"],"summary":"JS/TS greedy regex fallback"}
+{"path":"Asgard/Bragi/Architecture/services/_hexagonal_anti_patterns.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"AST detectors; source parsed not executed"}
+{"path":"Asgard/Bragi/Architecture/services/_hexagonal_detectors.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"AST port/adapter detect; relative_to confinement"}
+{"path":"Asgard/Bragi/Architecture/services/_hexagonal_reporter.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Stdout text/json/md; json.dumps safe"}
+{"path":"Asgard/Bragi/Architecture/services/_hexagonal_rule_checks.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"AST import/zone compare; no dynamic import"}
+{"path":"Asgard/Bragi/Architecture/services/_hexagonal_validators.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export shim"}
+{"path":"Asgard/Bragi/Architecture/services/_layer_checks.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"AST import-rule check; relative_to"}
+{"path":"Asgard/Bragi/Architecture/services/_layer_reporter.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Stdout renderer; no I/O"}
+{"path":"Asgard/Bragi/Architecture/services/_pattern_detectors.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export shim"}
+{"path":"Asgard/Bragi/Architecture/services/_pattern_detectors_behavioral.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"AST name heuristics only"}
+{"path":"Asgard/Bragi/Architecture/services/_pattern_detectors_creational.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"AST walk; no eval"}
+{"path":"Asgard/Bragi/Architecture/services/_pattern_detectors_structural.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"AST wrap/delegate heuristics"}
+{"path":"Asgard/Bragi/Architecture/services/_pattern_reporter.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0019"],"summary":"Unescaped MD interpolation"}
+{"path":"Asgard/Bragi/Architecture/services/_solid_checks.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"AST SOLID checks; no eval"}
+{"path":"Asgard/Bragi/Architecture/services/_solid_detectors.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"False-positive heuristics; ast.walk"}
+{"path":"Asgard/Bragi/Architecture/services/_solid_reporter.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0019"],"summary":"Unescaped MD interpolation"}
+{"path":"Asgard/Bragi/Architecture/services/_suggester_ast_helpers.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"AST metrics; iterative walk"}
+{"path":"Asgard/Bragi/Architecture/services/_suggester_helpers.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Builds suggestions from AST; rendering elsewhere"}
+{"path":"Asgard/Bragi/Architecture/services/_suggester_reporter.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0019"],"summary":"Unescaped MD interpolation"}
+{"path":"Asgard/Bragi/Architecture/services/_treesitter_solid_checks.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0022","CH-0021"],"summary":"Unbounded TS recursion; regex fallback hop"}
