@@ -24,6 +24,12 @@ from Asgard.Heimdall.treesitter._query_runner import _query_captures, node_text
 
 from Asgard.Bragi.Architecture.cir.models import ClassInfo, FileInfo, MethodInfo
 
+# Hostile/minified sources must not parse or recurse unbounded (CH-0016).
+MAX_CIR_SOURCE_BYTES = 1_048_576
+MAX_CIR_SOURCE_LINES = 50_000
+MAX_CIR_WALK_DEPTH = 2048
+MAX_CIR_WALK_NODES = 250_000
+
 _UNIMPLEMENTED_MARKERS = {
     "NotImplementedError", "NotImplemented", "NotSupportedException",
     "UnsupportedOperationException", "panic",
@@ -41,7 +47,12 @@ def build_file_cir(file_path: str, source: str, language: str) -> Optional[FileI
     if handler is None or not is_available(language):
         return None
 
+    if len(source) > MAX_CIR_SOURCE_BYTES or source.count("\n") >= MAX_CIR_SOURCE_LINES:
+        return None
+
     source_bytes = source.encode("utf-8")
+    if len(source_bytes) > MAX_CIR_SOURCE_BYTES:
+        return None
     root = parse_source(source_bytes, language)
     if root is None:
         return None
@@ -168,15 +179,30 @@ _PY_RAISE_BARE_Q = "(raise_statement (identifier) @exc.name) @raise"
 
 
 def _walk(node, type_name: str, out: list, stop_types: Optional[Set[str]] = None) -> None:
-    """Collect all descendants of *type_name*, not descending past nested
-    class/function bodies of the same kind (used to keep per-class method
-    lists from bleeding into nested classes)."""
-    for child in node.children:
+    """Collect descendants of *type_name* without Python recursion.
+
+    Does not descend past nested class/function bodies of the same kind
+    (keeps per-class method lists from bleeding into nested classes).
+    Depth and node budgets stop a hostile CST from hanging the scan.
+    """
+    stack = [(child, 1) for child in reversed(list(getattr(node, "children", ()) or ()))]
+    seen = 0
+    while stack:
+        child, depth = stack.pop()
+        seen += 1
+        if seen > MAX_CIR_WALK_NODES:
+            return
         if child.type == type_name and getattr(child, "is_named", True):
             out.append(child)
         if stop_types and child.type in stop_types and child.type != type_name:
             continue
-        _walk(child, type_name, out, stop_types)
+        if depth >= MAX_CIR_WALK_DEPTH:
+            continue
+        kids = getattr(child, "children", None)
+        if not kids:
+            continue
+        for grandchild in reversed(kids):
+            stack.append((grandchild, depth + 1))
 
 
 def _build_python(root, source_bytes, lang_obj, file_path: str) -> List[ClassInfo]:

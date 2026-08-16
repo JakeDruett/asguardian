@@ -8,6 +8,19 @@ from typing import Dict, List, Set
 
 from Asgard.Bragi.Architecture.cir.models import ClassInfo
 
+# Pairwise LCOM4 is O(n²); skip/flag classes above this (CH-0016).
+MAX_LCOM4_METHODS = 128
+_CTOR_NAMES = {"__init__", "<init>", "constructor"}
+
+
+def _instance_methods(cls: ClassInfo):
+    return [m for m in cls.methods if m.name not in _CTOR_NAMES]
+
+
+def lcom4_oversized(cls: ClassInfo) -> bool:
+    """True when pairwise LCOM4 would exceed the method budget."""
+    return len(_instance_methods(cls)) > MAX_LCOM4_METHODS
+
 
 def lcom4_components(cls: ClassInfo) -> List[Set[str]]:
     """Return the connected components (as sets of method names) of *cls*.
@@ -17,8 +30,9 @@ def lcom4_components(cls: ClassInfo) -> List[Set[str]]:
     ``__init__``/``<init>``/``constructor`` are excluded (constructor-only
     coupling is not a cohesion signal).
     """
-    ctor_names = {"__init__", "<init>", "constructor"}
-    methods = [m for m in cls.methods if m.name not in ctor_names]
+    methods = _instance_methods(cls)
+    if len(methods) > MAX_LCOM4_METHODS:
+        return []
     if len(methods) < 2:
         return [{m.name for m in methods}] if methods else []
 

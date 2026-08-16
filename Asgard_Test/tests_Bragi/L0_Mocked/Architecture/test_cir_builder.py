@@ -411,3 +411,42 @@ class TestTypeSwitchCounting:
         fi = build_file_cir("shapes.py", src, "python")
         violations = [v for v in evaluate_file(fi) if v.principle == SOLIDPrinciple.OCP]
         assert violations and violations[0].confidence == Confidence.HIGH
+
+
+class TestCIRHardeningCH0016:
+    def test_oversized_source_returns_none(self):
+        from Asgard.Bragi.Architecture.cir.builder import MAX_CIR_SOURCE_BYTES
+
+        src = "class Foo:\n    def bar(self):\n        pass\n" + ("x" * (MAX_CIR_SOURCE_BYTES + 1))
+        assert build_file_cir("huge.py", src, "python") is None
+
+    def test_lcom4_skips_oversized_class(self):
+        from Asgard.Bragi.Architecture.cir.models import ClassInfo, MethodInfo
+        from Asgard.Bragi.Architecture.evaluators._lcom4 import (
+            MAX_LCOM4_METHODS,
+            lcom4_components,
+            lcom4_oversized,
+        )
+
+        methods = [
+            MethodInfo(name=f"m{i}", start_line=1, end_line=1)
+            for i in range(MAX_LCOM4_METHODS + 1)
+        ]
+        cls = ClassInfo(name="Huge", filepath="h.py", start_line=1, end_line=1, methods=methods)
+        assert lcom4_oversized(cls)
+        assert lcom4_components(cls) == []
+
+    def test_srp_flags_oversized_without_pairwise(self):
+        from Asgard.Bragi.Architecture.cir.models import ClassInfo, FileInfo, MethodInfo
+        from Asgard.Bragi.Architecture.evaluators._lcom4 import MAX_LCOM4_METHODS
+        from Asgard.Bragi.Architecture.evaluators.srp import evaluate
+
+        methods = [
+            MethodInfo(name=f"m{i}", start_line=1, end_line=1)
+            for i in range(MAX_LCOM4_METHODS + 1)
+        ]
+        cls = ClassInfo(name="Huge", filepath="h.py", start_line=1, end_line=1, methods=methods)
+        fi = FileInfo(filepath="h.py", language="python", classes=[cls])
+        violations = evaluate(fi, cls)
+        assert violations
+        assert "LCOM4 skipped" in violations[0].evidence
