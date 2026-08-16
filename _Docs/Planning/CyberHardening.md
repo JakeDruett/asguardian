@@ -1430,7 +1430,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0093 — PR decorator `urlopen` follows redirects to a caller-controlled API base
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** fc58544
 - **Fixed at:** 2026-08-16T10:40:00Z
 - **Implementation note:** https-only API bases; quote owner/repo; same-origin redirects; refuse token to non-allowlisted hosts.
 - **Severity:** High
@@ -1803,7 +1803,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0066
-- Last commit: PENDING
+- Last commit: fc58544
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
