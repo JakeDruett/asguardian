@@ -1520,7 +1520,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0097 — Issue get/mutate is UUID-global (no project check)
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 117770b
 - **Fixed at:** 2026-08-16T11:20:00Z
 - **Implementation note:** get/update/assign/comment require project_path and filter SQL by it; TrackedIssue stores project_path.
 - **Severity:** Medium
@@ -1833,7 +1833,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0071, CH-0097, CH-0105, CH-0108
-- Last commit: PENDING
+- Last commit: 117770b
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

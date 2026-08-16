@@ -19,4 +19,4 @@
 {"id":"CH-0104","at":"2026-08-16T10:16:53Z","commit":"7f92539","wave":"W1","summary":"Allowlist Helm chart names to block template breakout"}
 {"id":"CH-0096","at":"2026-08-16T10:17:58Z","commit":"550912b","wave":"W1","summary":"Restrict init-linter project_name to a safe identifier"}
 {"id":"CH-0066","at":"2026-08-16T10:20:09Z","commit":"ce4f14e","wave":"W1","summary":"Freya crawler http(s) allowlist, internal block, SPA should_crawl"}
-{"id":"CH-0097","at":"2026-08-16T11:20:00Z","commit":"PENDING","wave":"W1","summary":"Scope issue get/mutate to project_path"}
+{"id":"CH-0097","at":"2026-08-16T10:23:35Z","commit":"117770b","wave":"W1","summary":"Scope issue get/mutate to project_path"}
