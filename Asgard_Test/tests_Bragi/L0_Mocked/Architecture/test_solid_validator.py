@@ -1,8 +1,18 @@
 """Expanded tests for SOLID principle validator."""
 import pytest
 from pathlib import Path
+from Asgard.Bragi.Architecture.services import solid_validator as solid_mod
 from Asgard.Bragi.Architecture.services.solid_validator import SOLIDValidator
-from Asgard.Bragi.Architecture.models.architecture_models import ArchitectureConfig, SOLIDReport
+from Asgard.Bragi.Architecture.models.architecture_models import (
+    ArchitectureConfig,
+    SOLIDPrinciple,
+    SOLIDReport,
+    SOLIDViolation,
+    ViolationSeverity,
+)
+from Asgard.Bragi.Architecture.services._treesitter_solid_checks import (
+    _source_too_large,
+)
 
 
 class TestSOLIDValidatorInstantiation:
@@ -156,3 +166,82 @@ class TestSOLIDValidatorDIPViolation:
         report: SOLIDReport = validator.validate(scan_path=tmp_path)
         dip_violations = [v for v in report.violations if "DIP" in str(v.principle)]
         assert len(dip_violations) > 0
+
+
+def _ok_violation(path: Path) -> SOLIDViolation:
+    return SOLIDViolation(
+        principle=SOLIDPrinciple.SRP,
+        class_name="<file>",
+        file_path=str(path),
+        line_number=1,
+        message="ok",
+        severity=ViolationSeverity.LOW,
+        suggestion="",
+    )
+
+
+class TestAnalyzeFileGenericCaps:
+    def test_skips_file_over_byte_cap(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(solid_mod, "_MAX_SOURCE_BYTES", 32)
+        path = tmp_path / "Huge.java"
+        path.write_text("class Huge {}\n" + ("// x\n" * 20))
+        assert path.stat().st_size > 32
+        assert SOLIDValidator().analyze_file_generic(path, "java") == []
+
+    def test_skips_file_over_line_cap(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(
+            "Asgard.Bragi.Architecture.services._treesitter_solid_checks._MAX_SOURCE_LINES",
+            4,
+        )
+        path = tmp_path / "Lines.java"
+        path.write_text("class Lines {\n" + ("    int x;\n" * 20) + "}\n")
+        assert _source_too_large(path.read_text()) is True
+        assert SOLIDValidator().analyze_file_generic(path, "java") == []
+
+    def test_recursion_error_returns_empty(self, tmp_path, monkeypatch):
+        path = tmp_path / "A.java"
+        path.write_text("class A {}\n")
+
+        def boom(*_a, **_k):
+            raise RecursionError("nested")
+
+        monkeypatch.setattr(solid_mod, "build_file_cir", boom)
+        assert SOLIDValidator().analyze_file_generic(path, "java") == []
+
+    def test_memory_error_returns_empty(self, tmp_path, monkeypatch):
+        path = tmp_path / "A.java"
+        path.write_text("class A {}\n")
+
+        def boom(*_a, **_k):
+            raise MemoryError
+
+        monkeypatch.setattr(solid_mod, "build_file_cir", boom)
+        assert SOLIDValidator().analyze_file_generic(path, "java") == []
+
+
+class TestAnalyzeMultilangSurvivesBadFile:
+    def test_nested_file_does_not_abort_run(self, tmp_path, monkeypatch):
+        bad = tmp_path / "bad.java"
+        good = tmp_path / "good.java"
+        bad.write_text("class Bad {}\n")
+        good.write_text("class Good {}\n")
+
+        def fake(self, file_path, language):
+            if file_path.name == "bad.java":
+                raise RecursionError("nested")
+            return [_ok_violation(file_path)]
+
+        monkeypatch.setattr(SOLIDValidator, "analyze_file_generic", fake)
+        report = SOLIDValidator().analyze_multilang(tmp_path, extensions=[".java"])
+        assert any(v.file_path.endswith("good.java") for v in report.violations)
+        assert not any(v.file_path.endswith("bad.java") for v in report.violations)
+
+    def test_huge_source_does_not_abort_run(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(solid_mod, "_MAX_SOURCE_BYTES", 32)
+        huge = tmp_path / "huge.java"
+        ok = tmp_path / "ok.java"
+        huge.write_text("class Huge {}\n" + ("// pad\n" * 40))
+        ok.write_text("class Ok {}\n")
+        report = SOLIDValidator().analyze_multilang(tmp_path, extensions=[".java"])
+        assert report is not None
+        assert not any("huge.java" in v.file_path for v in report.violations)

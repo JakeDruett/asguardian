@@ -3,14 +3,52 @@ Heimdall Architecture - Tree-sitter SOLID Checks
 
 Structural SOLID checks using tree-sitter AST parsing.
 Falls back to regex-based checks when tree-sitter is unavailable.
+
+Walks are iterative with a depth/node budget. Sources over the byte/line
+cap are skipped so one nested or huge file cannot abort a run (CWE-674/400).
 """
 
 import re
-from typing import List, Dict, Any
+from typing import Any, Dict, Iterator, List, Optional, Set
 
 from Asgard.Heimdall.treesitter._language_loader import is_available
 from Asgard.Heimdall.treesitter._parser_pool import parse_source
 from Asgard.Heimdall.treesitter._query_runner import run_query_all, _query_captures
+
+_MAX_SOURCE_BYTES = 1_048_576
+_MAX_SOURCE_LINES = 50_000
+_MAX_WALK_DEPTH = 2048
+_MAX_WALK_NODES = 250_000
+
+
+def _source_too_large(source: str) -> bool:
+    if not source:
+        return False
+    if len(source) > _MAX_SOURCE_BYTES:
+        return True
+    return source.count("\n") >= _MAX_SOURCE_LINES
+
+
+def _iter_nodes(root_node: Any, types: Optional[Set[str]] = None) -> Iterator[Any]:
+    """Pre-order walk with a max depth and node budget (no Python recursion)."""
+    if root_node is None:
+        return
+    stack = [(root_node, 0)]
+    seen = 0
+    while stack:
+        node, depth = stack.pop()
+        seen += 1
+        if seen > _MAX_WALK_NODES:
+            return
+        if types is None or node.type in types:
+            yield node
+        if depth >= _MAX_WALK_DEPTH:
+            continue
+        children = getattr(node, "children", None)
+        if not children:
+            continue
+        for child in reversed(children):
+            stack.append((child, depth + 1))
 
 
 # ---------------------------------------------------------------------------
@@ -56,16 +94,7 @@ def _build_lcom4_graph_python(source_bytes: bytes, root_node) -> int:
     except ImportError:
         return 0
 
-    # Walk tree manually to extract per-class method info
-    def _walk_classes(node):
-        results = []
-        if node.type == "class_definition":
-            results.append(node)
-        for child in node.children:
-            results.extend(_walk_classes(child))
-        return results
-
-    class_nodes = _walk_classes(root_node)
+    class_nodes = list(_iter_nodes(root_node, {"class_definition"}))
     if not class_nodes:
         return 0
 
@@ -216,15 +245,22 @@ def check_srp_lcom4(
 ) -> List[Dict]:
     if not rules.get("solid.srp-lcom4", True):
         return []
+    if _source_too_large(source):
+        return []
     if language != "python" or not is_available("python"):
         return _fallback_srp(file_path, source, language, rules)
 
-    source_bytes = source.encode("utf-8")
-    root = parse_source(source_bytes, "python")
-    if root is None:
-        return _fallback_srp(file_path, source, language, rules)
+    try:
+        source_bytes = source.encode("utf-8")
+        if len(source_bytes) > _MAX_SOURCE_BYTES:
+            return []
+        root = parse_source(source_bytes, "python")
+        if root is None:
+            return _fallback_srp(file_path, source, language, rules)
 
-    lcom4 = _build_lcom4_graph_python(source_bytes, root)
+        lcom4 = _build_lcom4_graph_python(source_bytes, root)
+    except (RecursionError, MemoryError):
+        return []
     if lcom4 >= 2:
         return [{
             "rule_id": "solid.srp-lcom4",
@@ -281,26 +317,28 @@ def check_isp_fat_interface(
 ) -> List[Dict]:
     if not rules.get("solid.isp-fat-interface", True):
         return []
+    if _source_too_large(source):
+        return []
     if not is_available(language):
         return _fallback_isp(file_path, source, language, rules)
 
-    source_bytes = source.encode("utf-8")
-    root = parse_source(source_bytes, language)
-    if root is None:
-        return _fallback_isp(file_path, source, language, rules)
+    try:
+        source_bytes = source.encode("utf-8")
+        if len(source_bytes) > _MAX_SOURCE_BYTES:
+            return []
+        root = parse_source(source_bytes, language)
+        if root is None:
+            return _fallback_isp(file_path, source, language, rules)
 
-    results = []
-
-    if language == "python":
-        results = _check_isp_python(root, source_bytes, file_path)
-    elif language == "java":
-        results = _check_isp_java(root, source_bytes, file_path)
-    elif language in ("typescript", "javascript"):
-        results = _check_isp_typescript(root, source_bytes, file_path, language)
-    else:
-        return _fallback_isp(file_path, source, language, rules)
-
-    return results
+        if language == "python":
+            return _check_isp_python(root, source_bytes, file_path)
+        if language == "java":
+            return _check_isp_java(root, source_bytes, file_path)
+        if language in ("typescript", "javascript"):
+            return _check_isp_typescript(root, source_bytes, file_path, language)
+    except (RecursionError, MemoryError):
+        return []
+    return _fallback_isp(file_path, source, language, rules)
 
 
 def _check_isp_python(root_node, source_bytes: bytes, file_path: str) -> List[Dict]:
@@ -313,16 +351,9 @@ def _check_isp_python(root_node, source_bytes: bytes, file_path: str) -> List[Di
     except ImportError:
         return []
 
-    # Find abstract classes (inherit from ABC or have abstractmethod decorators)
     violations = []
-
-    def _walk(node):
-        if node.type == "class_definition":
-            _check_python_abstract_class(node, source_bytes, violations)
-        for child in node.children:
-            _walk(child)
-
-    _walk(root_node)
+    for node in _iter_nodes(root_node, {"class_definition"}):
+        _check_python_abstract_class(node, source_bytes, violations)
     return violations
 
 
@@ -400,14 +431,8 @@ def _check_isp_java(root_node, source_bytes: bytes, file_path: str) -> List[Dict
         return []
 
     violations = []
-
-    def _walk(node):
-        if node.type == "interface_declaration":
-            _check_java_interface(node, source_bytes, lang_obj, violations)
-        for child in node.children:
-            _walk(child)
-
-    _walk(root_node)
+    for node in _iter_nodes(root_node, {"interface_declaration"}):
+        _check_java_interface(node, source_bytes, lang_obj, violations)
     return violations
 
 
@@ -453,14 +478,8 @@ def _check_isp_typescript(root_node, source_bytes: bytes, file_path: str, langua
         return []
 
     violations = []
-
-    def _walk(node):
-        if node.type == "interface_declaration":
-            _check_ts_interface(node, source_bytes, lang_obj, violations)
-        for child in node.children:
-            _walk(child)
-
-    _walk(root_node)
+    for node in _iter_nodes(root_node, {"interface_declaration"}):
+        _check_ts_interface(node, source_bytes, lang_obj, violations)
     return violations
 
 
@@ -537,42 +556,47 @@ def check_dip_concrete_dependency(
 ) -> List[Dict]:
     if not rules.get("solid.dip-concrete-dependency", True):
         return []
+    if _source_too_large(source):
+        return []
     if not is_available(language) or language not in _DIP_NEW_QUERIES:
         return _fallback_dip(file_path, source, language, rules)
 
-    source_bytes = source.encode("utf-8")
-    root = parse_source(source_bytes, language)
-    if root is None:
-        return _fallback_dip(file_path, source, language, rules)
+    try:
+        source_bytes = source.encode("utf-8")
+        if len(source_bytes) > _MAX_SOURCE_BYTES:
+            return []
+        root = parse_source(source_bytes, language)
+        if root is None:
+            return _fallback_dip(file_path, source, language, rules)
 
-    # Determine if file is inside a factory/builder context by checking top-level class names
-    enclosing_class = _get_top_level_class_name(root, source_bytes, language)
-    if enclosing_class and _FACTORY_RE.search(enclosing_class):
+        enclosing_class = _get_top_level_class_name(root, source_bytes, language)
+        if enclosing_class and _FACTORY_RE.search(enclosing_class):
+            return []
+
+        query_str = _DIP_NEW_QUERIES[language]
+        matches = run_query_all(root, query_str, source_bytes, language)
+
+        violations = []
+        for match in matches:
+            type_info = match.get("type.name")
+            if type_info is None:
+                continue
+            type_name = type_info["text"]
+            line = type_info["line"] + 1
+
+            if _CONCRETE_SUFFIXES.search(type_name):
+                violations.append({
+                    "rule_id": "solid.dip-concrete-dependency",
+                    "line": line,
+                    "message": (
+                        f"Concrete instantiation of '{type_name}' detected outside factory context. "
+                        "Depend on abstractions, not concretions."
+                    ),
+                    "severity": "warning",
+                })
+        return violations
+    except (RecursionError, MemoryError):
         return []
-
-    query_str = _DIP_NEW_QUERIES[language]
-    matches = run_query_all(root, query_str, source_bytes, language)
-
-    violations = []
-    for match in matches:
-        type_info = match.get("type.name")
-        if type_info is None:
-            continue
-        type_name = type_info["text"]
-        line = type_info["line"] + 1
-
-        if _CONCRETE_SUFFIXES.search(type_name):
-            violations.append({
-                "rule_id": "solid.dip-concrete-dependency",
-                "line": line,
-                "message": (
-                    f"Concrete instantiation of '{type_name}' detected outside factory context. "
-                    "Depend on abstractions, not concretions."
-                ),
-                "severity": "warning",
-            })
-
-    return violations
 
 
 def _get_top_level_class_name(root_node, source_bytes: bytes, language: str) -> str:
@@ -630,42 +654,48 @@ def check_ocp_type_dispatch(
 ) -> List[Dict]:
     if not rules.get("solid.ocp-type-dispatch", True):
         return []
+    if _source_too_large(source):
+        return []
     if not is_available(language) or language not in _OCP_QUERIES:
         return _fallback_ocp(file_path, source, language, rules)
 
-    source_bytes = source.encode("utf-8")
-    root = parse_source(source_bytes, language)
-    if root is None:
-        return _fallback_ocp(file_path, source, language, rules)
+    try:
+        source_bytes = source.encode("utf-8")
+        if len(source_bytes) > _MAX_SOURCE_BYTES:
+            return []
+        root = parse_source(source_bytes, language)
+        if root is None:
+            return _fallback_ocp(file_path, source, language, rules)
 
-    if language == "python":
-        return _check_ocp_python(root, source_bytes)
+        if language == "python":
+            return _check_ocp_python(root, source_bytes)
 
-    query_str = _OCP_QUERIES[language]
-    matches = run_query_all(root, query_str, source_bytes, language)
+        query_str = _OCP_QUERIES[language]
+        matches = run_query_all(root, query_str, source_bytes, language)
 
-    violations = []
-    seen_lines: set = set()
-    for match in matches:
-        info = match.get("instanceof") or match.get("type.name") or next(iter(match.values()), None)
-        if info is None:
-            continue
-        line = info["line"] + 1
-        if line in seen_lines:
-            continue
-        seen_lines.add(line)
-        violations.append({
-            "rule_id": "solid.ocp-type-dispatch",
-            "line": line,
-            "message": (
-                "Explicit type dispatch detected (instanceof/type check). "
-                "This requires modification when new types are added, violating OCP. "
-                "Prefer polymorphism."
-            ),
-            "severity": "warning",
-        })
-
-    return violations
+        violations = []
+        seen_lines: set = set()
+        for match in matches:
+            info = match.get("instanceof") or match.get("type.name") or next(iter(match.values()), None)
+            if info is None:
+                continue
+            line = info["line"] + 1
+            if line in seen_lines:
+                continue
+            seen_lines.add(line)
+            violations.append({
+                "rule_id": "solid.ocp-type-dispatch",
+                "line": line,
+                "message": (
+                    "Explicit type dispatch detected (instanceof/type check). "
+                    "This requires modification when new types are added, violating OCP. "
+                    "Prefer polymorphism."
+                ),
+                "severity": "warning",
+            })
+        return violations
+    except (RecursionError, MemoryError):
+        return []
 
 
 def _check_ocp_python(root_node, source_bytes: bytes) -> List[Dict]:

@@ -85,3 +85,4 @@
 {"id":"CH-0107","at":"2026-08-16T17:42:00Z","commit":"6126246","wave":"W3","summary":"Volundr suppressions reject * and unsigned CI files"}
 {"id":"CH-0114","at":"2026-08-16T17:44:00Z","commit":"bbc7e09","wave":"W3","summary":"SecurityAPI loader precedence + fail-closed scan_all"}
 {"id":"CH-0017","at":"2026-08-16T17:50:00Z","commit":"4cec2a8","wave":"W4","summary":"HMAC/schema architecture bounds cache; hydrate fail is miss"}
+{"id":"CH-0022","at":"2026-08-16T18:00:00Z","commit":"pending","wave":"W4","summary":"Iterative TS SOLID walk with depth/node/size caps"}

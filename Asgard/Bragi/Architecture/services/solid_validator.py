@@ -49,6 +49,8 @@ from Asgard.Bragi.Architecture.services._treesitter_solid_checks import (
     check_isp_fat_interface,
     check_dip_concrete_dependency,
     check_ocp_type_dispatch,
+    _MAX_SOURCE_BYTES,
+    _source_too_large,
 )
 from Asgard.Heimdall.treesitter._language_loader import is_available as _ts_available
 from Asgard.Shared.common.language_registry import EXTENSION_TO_LANGUAGE
@@ -254,42 +256,52 @@ class SOLIDValidator:
             List of SOLIDViolation found in the file.
         """
         try:
-            lines = file_path.read_text(encoding="utf-8", errors="ignore").splitlines()
-        except OSError:
+            try:
+                if file_path.stat().st_size > _MAX_SOURCE_BYTES:
+                    return []
+            except OSError:
+                return []
+            try:
+                source = file_path.read_text(encoding="utf-8", errors="ignore")
+            except OSError:
+                return []
+            if _source_too_large(source):
+                return []
+
+            path_str = str(file_path)
+            lines = source.splitlines()
+            all_rules = {
+                "solid.srp-lcom4": True,
+                "solid.isp-fat-interface": True,
+                "solid.dip-concrete-dependency": True,
+                "solid.ocp-type-dispatch": True,
+            }
+
+            # CIR pipeline (plan 02): one extraction pass -> language-agnostic
+            # ClassInfo/MethodInfo -> pure-Python evaluators with confidence
+            # grades. Falls back to the legacy tree-sitter ad-hoc-walk checks,
+            # then to regex, when CIR extraction has no handler for `language`
+            # or the parse fails.
+            file_info = build_file_cir(path_str, source, language)
+            if file_info is not None and file_info.classes:
+                return _evaluate_cir(file_info)
+
+            if _ts_available(language):
+                raw = []
+                raw.extend(check_srp_lcom4(path_str, source, language, all_rules))
+                raw.extend(check_isp_fat_interface(path_str, source, language, all_rules))
+                raw.extend(check_dip_concrete_dependency(path_str, source, language, all_rules))
+                raw.extend(check_ocp_type_dispatch(path_str, source, language, all_rules))
+                return [_dict_to_violation(d, path_str) for d in raw]
+
+            violations: List[SOLIDViolation] = []
+            violations.extend(check_srp_method_count(path_str, lines, language, threshold=self.config.max_public_methods))
+            violations.extend(check_isp_interface_size(path_str, lines, language))
+            violations.extend(check_dip_concrete_instantiation(path_str, lines, language))
+            violations.extend(check_ocp_type_checking(path_str, lines, language))
+            return violations
+        except (RecursionError, MemoryError):
             return []
-
-        path_str = str(file_path)
-        source = "\n".join(lines)
-        all_rules = {
-            "solid.srp-lcom4": True,
-            "solid.isp-fat-interface": True,
-            "solid.dip-concrete-dependency": True,
-            "solid.ocp-type-dispatch": True,
-        }
-
-        # CIR pipeline (plan 02): one extraction pass -> language-agnostic
-        # ClassInfo/MethodInfo -> pure-Python evaluators with confidence
-        # grades. Falls back to the legacy tree-sitter ad-hoc-walk checks,
-        # then to regex, when CIR extraction has no handler for `language`
-        # or the parse fails.
-        file_info = build_file_cir(path_str, source, language)
-        if file_info is not None and file_info.classes:
-            return _evaluate_cir(file_info)
-
-        if _ts_available(language):
-            raw = []
-            raw.extend(check_srp_lcom4(path_str, source, language, all_rules))
-            raw.extend(check_isp_fat_interface(path_str, source, language, all_rules))
-            raw.extend(check_dip_concrete_dependency(path_str, source, language, all_rules))
-            raw.extend(check_ocp_type_dispatch(path_str, source, language, all_rules))
-            return [_dict_to_violation(d, path_str) for d in raw]
-
-        violations: List[SOLIDViolation] = []
-        violations.extend(check_srp_method_count(path_str, lines, language, threshold=self.config.max_public_methods))
-        violations.extend(check_isp_interface_size(path_str, lines, language))
-        violations.extend(check_dip_concrete_instantiation(path_str, lines, language))
-        violations.extend(check_ocp_type_checking(path_str, lines, language))
-        return violations
 
     def analyze_multilang(
         self,
@@ -331,8 +343,11 @@ class SOLIDValidator:
             if not language or language == "python":
                 continue
 
-            for v in self.analyze_file_generic(file_path, language):
-                report.add_violation(v)
+            try:
+                for v in self.analyze_file_generic(file_path, language):
+                    report.add_violation(v)
+            except (RecursionError, MemoryError):
+                continue
 
         report.scan_duration_seconds = time.time() - start_time
         return report

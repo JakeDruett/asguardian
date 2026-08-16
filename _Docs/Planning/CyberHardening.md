@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 10   | 49    | 0             |
+| Medium   | 9    | 50    | 0             |
 | Low      | 11   | 11    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -396,7 +396,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0022 — Unbounded tree-sitter recursion can abort a multi-language SOLID run
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T18:00:00Z
+- **Implementation note:** Iterative TS walk with depth/node/byte/line caps; RecursionError/MemoryError skip the file.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-674 / CWE-400
@@ -2023,12 +2026,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 27
-- Fixed: 87
+- Open: 26
+- Fixed: 88
 - Accepted risk: 0
 - Current wave: W4
-- Next: CH-0022, CH-0053, CH-0070
-- Last commit: 4cec2a8
+- Next: CH-0053, CH-0070, CH-0074
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

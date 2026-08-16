@@ -9,11 +9,14 @@ without tree-sitter.
 import pytest
 
 from Asgard.Heimdall.treesitter._language_loader import is_available
+from Asgard.Bragi.Architecture.services import _treesitter_solid_checks as ts_solid
 from Asgard.Bragi.Architecture.services._treesitter_solid_checks import (
     check_srp_lcom4,
     check_isp_fat_interface,
     check_dip_concrete_dependency,
     check_ocp_type_dispatch,
+    _iter_nodes,
+    _source_too_large,
 )
 
 _ALL_RULES = {
@@ -277,3 +280,102 @@ def test_unsupported_language_returns_list():
 
     results = check_ocp_type_dispatch("<test>", "fn main() {}", "rust", _ALL_RULES)
     assert isinstance(results, list)
+
+
+# ---------------------------------------------------------------------------
+# CH-0022: nested / huge source must not crash
+# ---------------------------------------------------------------------------
+
+class _FakeNode:
+    def __init__(self, type, children=None):
+        self.type = type
+        self.children = children or []
+
+
+def _deep_chain(depth: int, leaf_type: str = "identifier") -> _FakeNode:
+    node = _FakeNode(leaf_type)
+    for _ in range(depth):
+        node = _FakeNode("expr", [node])
+    return node
+
+
+def _deep_nested_python(depth: int) -> str:
+    lines = [(" " * i) + f"class C{i}:" for i in range(depth)]
+    lines.append((" " * depth) + "pass")
+    return "\n".join(lines) + "\n"
+
+
+def test_iter_nodes_deep_tree_does_not_recurse():
+    root = _deep_chain(3000)
+    visited = list(_iter_nodes(root))
+    assert len(visited) == ts_solid._MAX_WALK_DEPTH + 1
+    assert all(n.type == "expr" for n in visited)
+
+
+def test_iter_nodes_honors_node_budget(monkeypatch):
+    monkeypatch.setattr(ts_solid, "_MAX_WALK_NODES", 10)
+    root = _FakeNode("module", [_FakeNode("n") for _ in range(20)])
+    visited = list(ts_solid._iter_nodes(root))
+    assert len(visited) == 10
+
+
+def test_iter_nodes_finds_class_within_budget():
+    tree = _FakeNode(
+        "module",
+        [_FakeNode("class_definition", [_FakeNode("identifier")])],
+    )
+    found = list(_iter_nodes(tree, {"class_definition"}))
+    assert len(found) == 1
+    assert found[0].type == "class_definition"
+
+
+def test_huge_source_skipped_by_byte_cap(monkeypatch):
+    monkeypatch.setattr(ts_solid, "_MAX_SOURCE_BYTES", 32)
+    huge = "a" * 64
+    assert _source_too_large(huge) is True
+    assert check_srp_lcom4("<test>", huge, "python", _ALL_RULES) == []
+    assert check_isp_fat_interface("<test>", huge, "python", _ALL_RULES) == []
+    assert check_dip_concrete_dependency("<test>", huge, "python", _ALL_RULES) == []
+    assert check_ocp_type_dispatch("<test>", huge, "python", _ALL_RULES) == []
+
+
+def test_huge_source_skipped_by_line_cap(monkeypatch):
+    monkeypatch.setattr(ts_solid, "_MAX_SOURCE_LINES", 4)
+    huge = "x = 1\n" * 20
+    assert _source_too_large(huge) is True
+    assert check_isp_fat_interface("<test>", huge, "java", _ALL_RULES) == []
+
+
+def test_recursion_error_during_ts_check_returns_empty(monkeypatch):
+    def boom(*_a, **_k):
+        raise RecursionError("nested")
+
+    monkeypatch.setattr(ts_solid, "parse_source", boom)
+    monkeypatch.setattr(ts_solid, "is_available", lambda _lang: True)
+    assert check_srp_lcom4("<test>", _COHESIVE_CLASS, "python", _ALL_RULES) == []
+    assert check_isp_fat_interface("<test>", _LEAN_ABC, "python", _ALL_RULES) == []
+    assert check_dip_concrete_dependency("<test>", _NO_CONCRETE, "python", _ALL_RULES) == []
+    assert check_ocp_type_dispatch("<test>", _POLYMORPHIC, "python", _ALL_RULES) == []
+
+
+def test_memory_error_during_ts_check_returns_empty(monkeypatch):
+    def boom(*_a, **_k):
+        raise MemoryError
+
+    monkeypatch.setattr(ts_solid, "parse_source", boom)
+    monkeypatch.setattr(ts_solid, "is_available", lambda _lang: True)
+    assert check_isp_fat_interface("<test>", _FAT_ABC, "python", _ALL_RULES) == []
+
+
+@_SKIP_NO_PYTHON
+def test_deeply_nested_source_does_not_crash():
+    source = _deep_nested_python(1200)
+    assert not _source_too_large(source)
+    for check in (
+        check_srp_lcom4,
+        check_isp_fat_interface,
+        check_dip_concrete_dependency,
+        check_ocp_type_dispatch,
+    ):
+        results = check("<test>", source, "python", _ALL_RULES)
+        assert isinstance(results, list)
