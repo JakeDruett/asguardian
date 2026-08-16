@@ -24,9 +24,9 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Planned | Accepted risk |
 |----------|------|---------|---------------|
 | Critical | 0    | 0       | 0             |
-| High     | 20   | 0       | 0             |
-| Medium   | 29   | 0       | 0             |
-| Low      | 15   | 0       | 0             |
+| High     | 25   | 0       | 0             |
+| Medium   | 49   | 0       | 0             |
+| Low      | 19   | 0       | 0             |
 | Info     | 5    | 0       | 0             |
 
 ## Findings
@@ -385,7 +385,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 - **Confidence:** High
 - **CWE / class:** CWE-78 / CWE-829 (untrusted git repo)
 - **Primary file:** `Asgard/Bragi/Calibration/services/szz.py`
-- **Also on trace:** `Asgard/Bragi/Calibration/services/rule_validator.py`, `Asgard/Bragi/Quality/services/_git_friction.py`, `Asgard/Bragi/QualityGate/services/_git_diff.py` (live `git diff` on `heimdall --diff`), `Asgard/Bragi/QualityGate/services/_hotspot_ranker.py`
+- **Also on trace:** `Asgard/Bragi/Calibration/services/rule_validator.py`, `Asgard/Bragi/Quality/services/_git_friction.py`, `Asgard/Bragi/QualityGate/services/_git_diff.py`, `Asgard/Bragi/QualityGate/services/_hotspot_ranker.py`, `Asgard/Heimdall/Security/Git/services/git_scanner.py`, `Asgard/Heimdall/cli/handlers/new_code.py`, `Asgard/Shared/common/new_code_period.py`, `Asgard/Shared/common/_new_code_git.py`, `Asgard/Shared/Issues/services/issue_tracker.py` (`get_git_blame`)
 - **Location:** `_run_git` → `_fix_commit_hunks` (`git diff`)
 - **Trace:** `compute_szz(repo_root)` / Stage 2 validity → `subprocess.run(["git", "-C", repo_root] + args)` with inherited env → `git diff` honors that repo’s `diff.external` / `GIT_EXTERNAL_DIFF` / pager/fsmonitor
 - **Impact:** Pointing Stage 2 at a hostile clone can execute a command from repo config or env. Not `shell=True` injection. **Not on Heimdall CLI today** (Stage 1 only); public API is live.
@@ -704,7 +704,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Confidence:** High
 - **CWE / class:** CWE-79
 - **Primary file:** `Asgard/Bragi/Quality/services/_code_smell_report_html.py`
-- **Also on trace:** `Asgard/Bragi/Quality/services/code_smell_detector.py`, `Asgard/Bragi/Quality/services/_code_smell_visitor.py`
+- **Also on trace:** `Asgard/Bragi/Quality/services/code_smell_detector.py`, `Asgard/Bragi/Quality/services/_code_smell_visitor.py`, `Asgard/Heimdall/cli/handlers/_base.py`, `Asgard/Heimdall/cli/handlers/quality_file_length.py`, `Asgard/Heimdall/cli/handlers/scan_html.py`, `Asgard/Reporting/_html_report_builders.py`, `Asgard/Reporting/html_generator.py`
 - **Location:** `generate_html_report` (`scan_path`, `filename`, `description`, `evidence`, `sev` class attribute)
 - **Trace:** AST names / file basenames / scan_path → f-string HTML with no `html.escape` → CLI report string (if saved/opened in a browser)
 - **Impact:** Stored XSS when the HTML report is opened. Attribute breakout if `severity` is a raw string.
@@ -854,7 +854,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Confidence:** High
 - **CWE / class:** CWE-306
 - **Primary file:** `Asgard/Dashboard/adapters/web/dashboard_handler.py`
-- **Also on trace:** `Asgard/Dashboard/server.py` (`--host`, default `localhost`)
+- **Also on trace:** `Asgard/Dashboard/server.py` (`--host`, default `localhost`), `Asgard/Heimdall/cli/handlers/mcp.py` (`run_dashboard`)
 - **Location:** `do_GET`; `HTTPServer((host, port), …)`
 - **Trace:** Any client that can reach the port reads issues/history. `--host 0.0.0.0` binds all interfaces with no warning/TLS/auth.
 - **Impact:** LAN/WAN exposure of analysis data + CH-0055 XSS if bound broadly. Default localhost limits blast radius.
@@ -1004,7 +1004,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Confidence:** High
 - **CWE / class:** CWE-918
 - **Primary file:** `Asgard/Freya/Integration/services/_crawler_discovery.py`
-- **Also on trace:** `site_crawler.py`, `_crawler_spa.py`, `_crawler_page_tester.py`, Freya Security/Accessibility `page.goto`
+- **Also on trace:** `site_crawler.py`, `_crawler_spa.py`, `_crawler_page_tester.py`, Freya Security/Accessibility `page.goto`, `Asgard/Freya/Performance/services/page_load_analyzer.py`, `resource_timing_analyzer.py`, Responsive testers, `Asgard/Freya/SEO/services/meta_tag_analyzer.py`, `robots_analyzer.py`, `Asgard/Freya/Visual/services/_screenshot_capture_helpers.py`
 - **Location:** `page.goto(url)`; `normalize_url` only drops javascript/mailto
 - **Trace:** `start_url` / SPA `page.url` / same-origin open redirect → Playwright follows to `file:` / RFC1918 / metadata
 - **Impact:** Crawling a hostile site (or operator URL) hits internal hosts or local files. Auth `login_url` also unvalidated.
@@ -1087,13 +1087,463 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Planned fix:** Only `http`/`https`; skip private ranges; re-validate Location scheme/host.
 - **Fix wave:** W1
 
+### CH-0072 — Screenshot / visual-regression writes unsanitized filenames
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-22
+- **Primary file:** `Asgard/Freya/Visual/services/_screenshot_capture_helpers.py`
+- **Also on trace:** `screenshot_capture.py`, `visual_regression.py`, `Asgard/Freya/Responsive/services/breakpoint_tester.py`
+- **Location:** `output_directory / filename`; `suite.output_directory / f"{test_case.name}_current.png"`
+- **Trace:** Caller `filename` / `test_case.name` / `config.format` / `bp.name` with `../` or absolute path → Playwright/`write_bytes` outside the intended dir
+- **Impact:** Arbitrary file write (PNG/HTML). `url_to_filename` is not applied when `filename` is provided.
+- **Evidence:** No `is_relative_to`. POSIX `Path / abs` replaces the base.
+- **Planned fix:** Sanitize names to `[A-Za-z0-9._-]`; `resolve()` and require `is_relative_to(output_directory)`. Tests for `../` and `/tmp/x`.
+- **Fix wave:** W2
+
+### CH-0073 — Freya Scoring empty/unknown findings grade as A and pass
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-693
+- **Primary file:** `Asgard/Freya/Scoring/services/grade_calculator.py`
+- **Also on trace:** `quality_gate.py`, `severity_mapper.py`
+- **Location:** `_weighted_mean` returns 100 on empty; unknown severity → MINOR (not in `fail_on`)
+- **Trace:** Scanner miss / empty findings → grade A; `QualityGate.evaluate([])` → `passed=True`. `needs_review` never gates.
+- **Impact:** Same class as CH-0054: a failed/empty scan looks clean.
+- **Evidence:** Empty `category_scores` → 100.0. Unknown severity maps to MINOR.
+- **Planned fix:** Empty scores must be N/A / fail-closed. Unknown severity must fail or be BLOCKER. Honor `needs_review`. Tests for empty findings.
+- **Fix wave:** W3
+
+### CH-0074 — Screenshot `hide_selectors` interpolated into `page.evaluate`
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** Medium
+- **CWE / class:** CWE-95
+- **Primary file:** `Asgard/Freya/Visual/services/_screenshot_capture_helpers.py`
+- **Also on trace:** none
+- **Location:** `page.evaluate(f"... {selector} ...")` for `hide_selectors`
+- **Trace:** Caller selector with quotes → JS in the Playwright page
+- **Impact:** Weaker if the same caller already controls `url`. Still a code-injection sink in the browser context.
+- **Evidence:** f-string interpolation of selector.
+- **Planned fix:** Pass selectors as evaluate arguments; JSON-encode. Tests with `");` in a selector.
+- **Fix wave:** W4
+
+### CH-0075 — DNS checker runs `dig` with an unvalidated domain
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-88
+- **Primary file:** `Asgard/Heimdall/Security/DNS/services/dns_checker.py`
+- **Also on trace:** none
+- **Location:** `_get_records` / `_check_dnssec` `subprocess.run(["dig", "+short", domain, rtype])`
+- **Trace:** Caller `domain` → argv (no `shell=True`) but `dig` honors `@server` and flag-like tokens
+- **Impact:** A hostile domain string can retarget queries or change dig behavior. Live network from a scanner.
+- **Evidence:** No domain charset allowlist.
+- **Planned fix:** Allowlist `^[A-Za-z0-9.-]+$`; reject `@`/`-`. Tests with `@evil`.
+- **Fix wave:** W2
+
+### CH-0076 — File-integrity baseline is unsigned; `has_changes` ignores adds
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-345
+- **Primary file:** `Asgard/Heimdall/Security/FileIntegrity/services/file_integrity_checker.py`
+- **Also on trace:** `.file_integrity_baseline.json`
+- **Location:** `_load_baseline` / `has_changes`
+- **Trace:** JSON baseline trusted; planted hashes hide tampering. `has_changes` is `modified or deleted` only — new files do not fail.
+- **Impact:** Integrity monitor can be gamed. File-symlink follow can hash outside the tree.
+- **Evidence:** No HMAC. `return bool(self.modified or self.deleted)`.
+- **Planned fix:** Sign baseline; treat adds as changes; `O_NOFOLLOW`; chmod 0600. Tests for planted file + rewritten hash.
+- **Fix wave:** W3
+
+### CH-0077 — `StaticSecurityService.scan` swallows domain failures (fail-open PASS)
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-390 / CWE-754
+- **Primary file:** `Asgard/Heimdall/Security/services/static_security_service.py`
+- **Also on trace:** `Asgard/Heimdall/Security/models/security_models_findings.py` (`is_passing`)
+- **Location:** `scan` — ten `except Exception: pass` blocks (approx. 113–171)
+- **Trace:** secrets/deps/injection/crypto/access/auth/headers/tls/container/infra `*.scan(path)` raises → swallowed → sub-report stays `None` → `calculate_totals` counts 0 → `is_passing` is `critical==0 and high==0`
+- **Impact:** A hostile file or scanner crash hides an entire domain. CI that keys on `is_passing` / score 100 goes green.
+- **Evidence:** Bare `except Exception: pass` around every domain. `is_passing` does not consult a `domain_errors` field.
+- **Planned fix:** Record `domain_errors`; fail `is_passing` if a requested domain did not complete; log the exception. Tests that a raising secrets scanner makes the report fail.
+- **Fix wave:** W3
+
+### CH-0078 — Heimdall security walker follows symlinks out of the scan root
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-59
+- **Primary file:** `Asgard/Heimdall/Security/utilities/_scan_utils.py`
+- **Also on trace:** `Asgard/Heimdall/Security/services/secrets_detection_service.py`, `Asgard/Heimdall/Security/services/injection_detection_service.py`, `Asgard/Heimdall/Security/services/cryptographic_validation_service.py`, `Asgard/Heimdall/Security/services/config_secrets_scanner.py`, `Asgard/Heimdall/Security/services/dependency_vulnerability_service.py`, `Asgard/Heimdall/cli/handlers/_security_dispatch.py`
+- **Location:** `scan_directory_for_security` (`iterdir` / `is_dir` / `is_file`); deps `Path.glob("**/"…)` ; dispatch `_iter_code_files` `rglob`
+- **Trace:** Untrusted tree symlink → `open`/`read_text` of host files (e.g. `~/.aws/credentials`) → findings/snippets/OSV queries
+- **Impact:** Scanner becomes a local secret-exfil / host-file reader. Same class as CH-0040/CH-0041 for a different walker.
+- **Evidence:** No `follow_symlinks=False`, no `is_symlink` skip, no `resolve().is_relative_to(root)`.
+- **Planned fix:** Shared walker: skip dir and file symlinks; require `resolved.is_relative_to(root)`. Tests for file-link to `/etc/passwd` and dir-link escape.
+- **Fix wave:** W2
+
+### CH-0079 — Secret reports leak prefix+suffix of matched values
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-312 / CWE-532
+- **Primary file:** `Asgard/Heimdall/Security/utilities/security_utils.py`
+- **Also on trace:** `Asgard/Heimdall/Security/services/secrets_detection_service.py`, `Asgard/Heimdall/Security/services/_secrets_detection_helpers.py`, `Asgard/Heimdall/Security/services/_static_security_report_json_md.py`, `Asgard/Heimdall/Security/services/_config_secrets_helpers.py`, `Asgard/Heimdall/Security/services/_config_secrets_report.py`
+- **Location:** `mask_secret` (first 4 + last 4); `mask_value` (`len//6` both ends)
+- **Trace:** Match group → `mask_secret`/`mask_value` → `SecretFinding.masked_value` / JSON+Markdown reports → CI logs
+- **Impact:** 8+ visible characters of keys/tokens/passwords in default reports.
+- **Evidence:** `secret[:4] + stars + secret[-4:]`; config helper `visible = max(2, len//6)`.
+- **Planned fix:** Default to last-2 or length-only; never print both ends; redact `line_content` by column span. Tests that a 32-char token is not reconstructible from the report.
+- **Fix wave:** W3
+
+### CH-0080 — Unpinned (`*`) dependencies are treated as not vulnerable / live-checked
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-754
+- **Primary file:** `Asgard/Heimdall/Security/services/_live_vulnerability_lookup.py`
+- **Also on trace:** `Asgard/Heimdall/Security/services/_vulnerability_database.py`, `Asgard/Heimdall/Security/services/dependency_vulnerability_service.py`, `Asgard/Heimdall/Security/services/_requirements_parser.py`
+- **Location:** `check_packages_live` skips `version == "*"` then may return `checked=True`; `_version_is_affected` returns False for `*`
+- **Trace:** Parser stores missing pins as `"*"` → local DB skip + live skip → empty vulns with `network_checked=True` if every pin is `*`
+- **Impact:** Common unpinned manifests look clean for both bundled CVEs and opt-in OSV/NVD.
+- **Evidence:** Filter at live lookup L90–100; local DB early-false for `*`.
+- **Planned fix:** Never set `checked=True` unless at least one package was queried. For `*` emit “version unresolved, CVE may apply” or query OSV by name. Tests with `requests` unpinned.
+- **Fix wave:** W3
+
+### CH-0081 — Unsigned triage cache can plant advisory verdicts
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-345
+- **Primary file:** `Asgard/Heimdall/Security/triage/services/triage_cache.py`
+- **Also on trace:** `Asgard/Heimdall/Security/triage/services/triage_service.py`
+- **Location:** `TriageCache.get` / `set` — `{cwd}/.asgard_cache/triage/{key}.json`
+- **Trace:** `enable_assist=True` → cache get → `TriageVerdict(**json)` trusted → `TriagedFinding` annotation. Same class as CH-0036 (different cache).
+- **Impact:** Planted JSON forges `likely_false_positive`. Findings are never dropped or severity-changed; ranking/display can be gamed. World-readable umask files may echo LLM rationale.
+- **Evidence:** No HMAC; `mkdir` not `0o700`; `get`/`set` join raw `key` (production uses hex fingerprint).
+- **Planned fix:** HMAC or schema+chmod 0600/0700; allowlist hex keys; `resolve`+`is_relative_to`. Tests with planted verdict.
+- **Fix wave:** W3
+
+### CH-0082 — Opt-in Claude triage sends finding text and code to a third party
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** High
+- **CWE / class:** CWE-359 / CWE-74
+- **Primary file:** `Asgard/Heimdall/Security/triage/services/triage_adapter.py`
+- **Also on trace:** `Asgard/Heimdall/Security/triage/services/triage_service.py`
+- **Location:** `ClaudeTriageAdapter.triage` prompt interpolation
+- **Trace:** `enable_assist=True` + explicit `ClaudeTriageAdapter` → title/description/`code_context` → Anthropic Messages API. Default adapter is Mock (no network).
+- **Impact:** Secrets in snippets leave the host; prompt injection can steer advisory labels only (never-drop invariant).
+- **Evidence:** f-string prompt; no size cap; no system/developer split. `ANTHROPIC_API_KEY` from env, not logged.
+- **Planned fix:** Redact secret-like spans before send; cap `code_context`; treat model JSON as untrusted (already degraded on parse fail). Document data leaving the host.
+- **Fix wave:** W1
+
+### CH-0083 — Config-secrets placeholder fragments drop real credentials
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-693
+- **Primary file:** `Asgard/Heimdall/Security/services/_config_secrets_helpers.py`
+- **Also on trace:** `Asgard/Heimdall/Security/services/config_secrets_scanner.py`
+- **Location:** `is_placeholder` / `PLACEHOLDER_FRAGMENTS` (`"<"`, `"todo"`, `"insert"`, `"example"`, …)
+- **Trace:** YAML/JSON/TOML value → `_check_value` → substring hit → no finding
+- **Impact:** Passwords containing `<` or `todo`/`example` never report. Combined with file-symlink read (CH-0078).
+- **Evidence:** Bare `"<"` in fragments; immediate return. `flatten_dict` also unbounded (DoS/skip).
+- **Planned fix:** Drop `"<"`; require placeholder-shaped tokens only; depth-cap flatten; tests for `p@ss<word` and cyclic YAML.
+- **Fix wave:** W4
+
+### CH-0084 — Injection-pattern regexes are ReDoS-prone on hostile source
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-1333
+- **Primary file:** `Asgard/Heimdall/Security/services/_injection_patterns.py`
+- **Also on trace:** `Asgard/Heimdall/Security/services/injection_detection_service.py`
+- **Location:** `sql_string_format` / `sql_fstring` / `xss_jinja_safe` (`.*` … `.*`) applied via `finditer` on whole files
+- **Trace:** Crafted long line → Python backtracking → scanner hang
+- **Impact:** DoS of `heimdall security` on an untrusted tree. No RCE.
+- **Evidence:** Nested `.*` with IGNORECASE|MULTILINE over full `content`.
+- **Planned fix:** Bound `[^'"]{0,N}`; line-bounded search; file-size cap; perf test with a 50k-char non-match.
+- **Fix wave:** W4
+
+### CH-0085 — Secret FP regex full-drops values containing `test`/`example`
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-693
+- **Primary file:** `Asgard/Heimdall/Security/services/_secret_patterns.py`
+- **Also on trace:** `Asgard/Heimdall/Security/services/_secrets_detection_helpers.py`, `Asgard/Heimdall/Security/services/secrets_detection_service.py`
+- **Location:** `FALSE_POSITIVE_PATTERNS[0]`; `is_false_positive` searches value **and** `matched_text`
+- **Trace:** Match → `is_false_positive` → unanchored `test|example|sample|dummy|fake|mock` → `continue` (deleted)
+- **Impact:** `postgres://u:p@testhost/db`, password `ContestWinner1`, or any token embedding `test` never reports.
+- **Evidence:** Full drop, not confidence floor. High-entropy types are not exempt.
+- **Planned fix:** Placeholder-only full-string match; never drop AWS/GitHub/private-key types on substring `test`. Tests for testhost URLs and `ContestWinner1`.
+- **Fix wave:** W4
+
+### CH-0086 — MCP HTTP server has no authentication and runs tools on any path
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-306 / CWE-918-adjacent
+- **Primary file:** `Asgard/Heimdall/cli/handlers/mcp.py`
+- **Also on trace:** `Asgard/MCP/server/asgard_mcp_server.py`, `Asgard/MCP/server/_mcp_tools.py`, `Asgard/MCP/server/__init__.py` (`asguardian-mcp`)
+- **Location:** `run_mcp_server` → `AsgardMCPServer.run` → `do_POST` / `tools/call`
+- **Trace:** Any client that can reach `--host/--port` (default localhost:8765; `0.0.0.0` allowed) POSTs JSON-RPC → `tools/call` with attacker `params.path` → quality/security/gate scans of any readable tree. `Content-Length` read is unbounded.
+- **Impact:** LAN/WAN exposure if bound broadly: unauthenticated host-wide analysis + traceback leak on tool errors. Default localhost limits blast radius (same model as CH-0056).
+- **Evidence:** No cookie/token/auth on `handle_request`. Path is `resolve()` only, not jailed to `config.project_path`.
+- **Planned fix:** Bind localhost by default; refuse `0.0.0.0` unless `--expose`; require a token; jail tool `path` under `project_path`; cap body size. Tests for unauth reject and path jail.
+- **Fix wave:** W1
+
+### CH-0087 — Private-index mitigation is a raw substring match
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** High
+- **CWE / class:** CWE-184
+- **Primary file:** `Asgard/Heimdall/Security/services/_supply_chain_analysis.py`
+- **Also on trace:** `Asgard/Heimdall/Security/services/dependency_vulnerability_service.py`
+- **Location:** `detect_private_index` / `_PRIVATE_INDEX_HINTS`
+- **Trace:** Manifest `read_text` → `--index-url` / `[[tool.poetry.source]]` anywhere including comments → `check_dependency_confusion` returns None
+- **Impact:** A comment `# --index-url https://pypi.org/simple` silences internal-name confusion findings.
+- **Evidence:** No uncommented-config parse; first-match `return True`.
+- **Planned fix:** Parse real pip/poetry/uv config only; ignore comments. Tests with a commented `--index-url`.
+- **Fix wave:** W4
+
+### CH-0088 — Ratings/gate/compliance CLIs fail-open on exit status
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-693
+- **Primary file:** `Asgard/Heimdall/cli/handlers/ratings.py`
+- **Also on trace:** `Asgard/Heimdall/cli/handlers/security.py` (`run_compliance_analysis` always `return 0`)
+- **Location:** `run_ratings_analysis` always `return 0`; `_run_differential_gate` swallows exceptions; compliance never fails the process
+- **Trace:** Empty/failed security (CH-0077) → letter A (CH-0054) → ratings exit 0. `NOT_EVALUATED` / `WARNING` gate → 0. Compliance prints grades then 0.
+- **Impact:** `heimdall ratings` / `heimdall security compliance` cannot be used as a CI fail gate.
+- **Evidence:** No grade→exit mapping. Diff `except Exception` keeps prior exit.
+- **Planned fix:** Exit non-zero on D/E or `NOT_MEASURED`; fail-closed on domain_errors / missing baseline / compliance findings. Tests that an E rating returns 1.
+- **Fix wave:** W3
+
+### CH-0089 — License CLI `--denied` never reaches `LicenseConfig`
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-693
+- **Primary file:** `Asgard/Heimdall/cli/handlers/syntax.py`
+- **Also on trace:** `Asgard/Heimdall/cli/common/scan_args.py`, `Asgard/Bragi/Dependencies/models/license_models.py`
+- **Location:** `run_licenses_analysis` — `prohibited_licenses=getattr(args, "prohibited", None)` and `warning_licenses=`
+- **Trace:** `--denied` dest is `denied`; handler reads `prohibited`. `warning_licenses` is not a `LicenseConfig` field (`warn_licenses` is) → `TypeError` on construct (command crash) or, if ignored later, default deny-list overwritten with `None`.
+- **Impact:** Operator cannot enforce extra denied licenses. Command is currently broken (fail-crash) or fail-open if construction is “fixed” without wiring dests.
+- **Evidence:** argparse dest `denied`; dataclass fields `prohibited_licenses` / `warn_licenses`.
+- **Planned fix:** Map `--denied` → `prohibited_licenses` (keep defaults when unset); `--warn` → `warn_licenses`. Tests that `--denied GPL-3.0` populates the config.
+- **Fix wave:** W3
+
+### CH-0090 — `heimdall scan` treats step exceptions as PASS
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-390
+- **Primary file:** `Asgard/Heimdall/cli/handlers/scan.py`
+- **Also on trace:** `Asgard/Heimdall/cli/handlers/scan_steps_1_6.py`, `Asgard/Heimdall/cli/handlers/scan_steps_7_11.py`
+- **Location:** per-step `except Exception` sets `"status": "ERROR"` but does not set `overall_exit = 1`
+- **Trace:** Analyzer crash → ERROR recorded → `overall_exit` stays 0 → JSON `"overall_status": "PASS"` / CLI `Overall: PASSING`
+- **Impact:** All-crash full scan is green. HTML can say FAILING while exit 0 — CI that keys on exit is gamed.
+- **Evidence:** `overall_exit = 1` only on successful analysis with violations, not on ERROR.
+- **Planned fix:** `overall_exit = 1` on ERROR; treat any ERROR as FAIL. Tests that a raising type-check step exits 1.
+- **Fix wave:** W3
+
+### CH-0091 — Evaluation corpus manifest paths are unjailed
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-22
+- **Primary file:** `Asgard/Heimdall/evaluation/vendored_corpus.py`
+- **Also on trace:** `Asgard/Heimdall/evaluation/corpus.py`
+- **Location:** `corpus_dir / case["file"]`; `checkout_root / repo_rel / patch["file"]`
+- **Trace:** `--corpus-dir` + `manifest.yml` `file:` / `repo_path` with `..` or absolute → `read_text` / `scan_file` outside the corpus
+- **Impact:** Hostile eval corpus reads arbitrary files the process can open (then may emit snippets in metrics/reports).
+- **Evidence:** `yaml.safe_load` (not `yaml.load`); no `resolve`/`is_relative_to`.
+- **Planned fix:** After join, require `resolved.is_relative_to(corpus_root.resolve())`; reject `..` and absolute. Tests with `../../etc/passwd`.
+- **Fix wave:** W2
+
+### CH-0092 — Calibration map write is unsigned and unconfined
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-345
+- **Primary file:** `Asgard/Heimdall/evaluation/calibration.py`
+- **Also on trace:** `Asgard/Heimdall/cli/handlers/evaluation.py` (`--save-calibration`)
+- **Location:** `IsotonicCalibrator.save_map` → `Path(path).write_text` JSON knots
+- **Trace:** CLI path → plaintext map → later `HEIMDALL_CALIBRATION_MAP` / `load_calibrator` shifts confidence buckets
+- **Impact:** Planted or overwritten map can under-rank real findings. No dest jail.
+- **Evidence:** No HMAC; no `is_relative_to`; schema/monotonicity only on load.
+- **Planned fix:** Optional HMAC; refuse writes outside CWD or an explicit dir; document that the map is a trust root.
+- **Fix wave:** W3
+
+### CH-0093 — PR decorator `urlopen` follows redirects to a caller-controlled API base
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-918
+- **Primary file:** `Asgard/Reporting/PRDecoration/services/github_decorator.py`
+- **Also on trace:** `Asgard/Reporting/PRDecoration/services/gitlab_decorator.py`, `Asgard/Reporting/PRDecoration/models/decoration_models.py`
+- **Location:** `UrllibHttpClient.post_json` / `get_json`; `api_base = config.github_api_url or …`
+- **Trace:** `github_api_url` / `gitlab_api_url` + `api_token` → `urlopen` (follows 3xx, no scheme/host allowlist) → token header to attacker origin; GitHub `repository` spliced unquoted
+- **Impact:** Forged API or token theft if URL/repo come from untrusted CI/PR config. GitLab quotes the project path; GitHub does not.
+- **Evidence:** No `https`/`api.github.com` allowlist; `Authorization: token …` / `PRIVATE-TOKEN` on every request.
+- **Planned fix:** Allowlist `https://api.github.com` (and configured GitLab origin); do not follow off-host redirects; `quote` GitHub `repository`; never send the token to a non-allowlisted host. Tests with `http://127.0.0.1`.
+- **Fix wave:** W1
+
+### CH-0094 — GitHub Actions formatter emits unsanitized workflow commands
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-74
+- **Primary file:** `Asgard/Reporting/github_formatter.py`
+- **Also on trace:** `Asgard/Reporting/_github_format_helpers.py`
+- **Location:** `to_workflow_command` — `::{level} file=…,title=…::{message}`
+- **Trace:** Scan `file_path` / smell description / import statement → helper tuple → `::error file=…::` stdout in CI
+- **Impact:** A hostile filename or finding text with `%0A` / newline / `::` can inject extra workflow commands (`set-output`, `add-mask`, extra errors).
+- **Evidence:** No percent-encoding of `%`, `\r`, `\n`, `:`.
+- **Planned fix:** Apply GitHub’s workflow-command encoding; strip C0 from all fields. Tests with a newline in `file_path` and `::` in the message.
+- **Fix wave:** W1
+
+### CH-0095 — Tree-sitter parse has no size/timeout cap
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** High
+- **CWE / class:** CWE-400
+- **Primary file:** `Asgard/Heimdall/treesitter/file_context.py`
+- **Also on trace:** `Asgard/Heimdall/treesitter/_parser_pool.py`, `Asgard/Heimdall/treesitter/_query_runner.py`
+- **Location:** `FileParseContext.parse` / `parse_file` full `read_bytes` + `parser.parse`; unbounded `_QUERY_CACHE`; recursive `_collect_error_ranges`
+- **Trace:** Huge or pathological file in an untrusted tree → memory/CPU hang of the scanner
+- **Impact:** DoS of Heimdall, not RCE. Language load is hardcoded PyPI modules (no `.so` from the scan tree).
+- **Evidence:** No max bytes, timeout, or node budget.
+- **Planned fix:** Cap file size (e.g. 2 MiB); timeout parse; bound query cache. Tests with an oversized file skipped.
+- **Fix wave:** W4
+
+### CH-0096 — `init-linter` interpolates unsanitized `project_name` into TOML/YAML/hook entry
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-77 / CWE-94
+- **Primary file:** `Asgard/Shared/Init/linter_initializer.py`
+- **Also on trace:** `Asgard/Shared/Init/_templates_python.py`, `Asgard/Heimdall/cli/handlers/init_linter.py`
+- **Location:** `_write_file` `content.replace("{project_name}", self.project_name)`
+- **Trace:** `--name` or dirname → `known-first-party = ["{name}"]` / `entry: mypy {name}/` in `.pre-commit-config.yaml` → later `pre-commit` runs the entry
+- **Impact:** Newline/quote in the name injects TOML/YAML. Unquoted hook `entry` can add argv or path-escape the mypy target.
+- **Evidence:** No identifier allowlist. TS templates have no interpolation (clean).
+- **Planned fix:** Restrict `project_name` to `^[A-Za-z_][A-Za-z0-9_-]*$`; quote YAML/TOML. Tests with `foo"]\n` and `foo; id`.
+- **Fix wave:** W1
+
+### CH-0097 — Issue get/mutate is UUID-global (no project check)
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-639
+- **Primary file:** `Asgard/Shared/Issues/services/_issue_repository.py`
+- **Also on trace:** `Asgard/Shared/Issues/services/issue_tracker.py`, `Asgard/Heimdall/cli/handlers/issues.py`, `Asgard/MCP/server/_mcp_tools.py`
+- **Location:** `get_issue` / `update_status` / `assign_issue` / `add_comment` — `WHERE issue_id = ?` only
+- **Trace:** Shared `~/.asgard/issues.db` → list prints IDs → MCP/CLI mutate by UUID without `project_path`
+- **Impact:** Any client that can reach MCP (CH-0086) or the local CLI can change another project's issues if it knows/guesses a UUID. `TrackedIssue` omits `project_path`.
+- **Evidence:** List/summary filter by project; mutate APIs do not. Parameterized SQL (no SQLi).
+- **Planned fix:** Require `project_path` on get/mutate; store it on the model. Tests that a UUID from project A cannot be updated under project B.
+- **Fix wave:** W1
+
+### CH-0098 — Empty SLA window set reports 100% compliance
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-754
+- **Primary file:** `Asgard/Verdandi/Analysis/services/sla_checker.py`
+- **Also on trace:** `Asgard/Verdandi/Analysis/models/analysis_models.py`
+- **Location:** `calculate_compliance_rate` — `if not results: return 100.0`; NaN percentile `> threshold` is False → COMPLIANT
+- **Trace:** No windows / NaN samples → 100% or COMPLIANT
+- **Impact:** Missing telemetry looks like a passing SLA (same class as CH-0054/CH-0073).
+- **Evidence:** Empty-list return is tested as intended. `availability_target=0.0` is falsy and skips the check.
+- **Planned fix:** Return `None` / raise / 0% on empty; treat non-finite samples as BREACHED. Tests for `[]` and `[NaN]`.
+- **Fix wave:** W3
+
+### CH-0099 — Sketch `from_dict` trusts unbounded attacker JSON
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-502 / CWE-400
+- **Primary file:** `Asgard/Verdandi/Analysis/services/quantile_sketch.py`
+- **Also on trace:** Verdandi CLI `sketch-merge` (when scanned)
+- **Location:** `TDigest.from_dict` / `DDSketch.from_dict`
+- **Trace:** Caller JSON → unbounded centroids/buckets, negative weights, huge `compression` / bucket index → memory/CPU / Inf
+- **Impact:** DoS of sketch-merge / analysis. Not pickle RCE.
+- **Evidence:** Type tag only; no size/isfinite/count reconciliation.
+- **Planned fix:** Cap centroid/bucket count; reject non-finite/negative weights; clamp indexes. Tests with huge maps.
+- **Fix wave:** W4
+
+### CH-0100 — Invalid anomaly baseline is treated as in-bounds
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-345 / CWE-754
+- **Primary file:** `Asgard/Verdandi/Anomaly/services/baseline_comparator.py`
+- **Also on trace:** `Asgard/Verdandi/Anomaly/models/anomaly_models.py`, `Asgard/Verdandi/Anomaly/services/_comparator_helpers.py`
+- **Location:** `is_within_baseline` returns True if `not baseline.is_valid`; `calculate_deviation_score` returns 0.0
+- **Trace:** Forged/unsigned `BaselineMetrics` or empty baseline → “normal”
+- **Impact:** Regression/anomaly gates that key on these helpers go green when they have no baseline.
+- **Evidence:** No HMAC on `BaselineMetrics`. Empty current → `overall_status="no_data"`, `is_significant` False.
+- **Planned fix:** Fail-closed on invalid/missing baseline; distinguish `unknown` from `normal`. Tests with invalid `sample_count`.
+- **Fix wave:** W3
+
+### CH-0101 — Service-map critical-path walk loops on cyclic parents
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** High
+- **CWE / class:** CWE-835
+- **Primary file:** `Asgard/Verdandi/APM/services/service_map_builder.py`
+- **Also on trace:** none
+- **Location:** `find_critical_path` — `while current_span.span_id in children` with no visited set
+- **Trace:** Cyclic `parent_span_id` in untrusted traces → infinite loop
+- **Impact:** DoS of APM map build. Identity spoof via raw env/namespace attrs is residual.
+- **Evidence:** No `visited`; last-write-wins `span_id` map.
+- **Planned fix:** Track visited span IDs; cap path length. Tests with A→B→A.
+- **Fix wave:** W4
+
 ## Planned fix waves
 
-- **W1 — CI / supply chain / secrets / network:** CH-0001–0006, CH-0023, CH-0024, CH-0033, CH-0049, CH-0056, CH-0060–0063, CH-0066, CH-0071. Isolate git/linters; lock crawler/link/probe/proxy fetches.
-- **W2 — Path confinement:** … CH-0059, CH-0065, CH-0068. Jail `$ref`, SQL/Alembic, Freya baseline paths.
-- **W3 — Baseline / cache / secrets in artifacts:** … CH-0051, CH-0052, CH-0054, CH-0069. Redact crawl auth; sign baselines.
-- **W4 — Analyzer robustness:** CH-0016, CH-0017, CH-0018, CH-0021, CH-0022, CH-0025, CH-0031, CH-0039, CH-0045, CH-0053. Size/recursion/hunk/regex caps; spawn-safe parallel workers.
-- **W5 — Output / template hygiene:** … CH-0055, CH-0064, CH-0067. Escape Freya HTML/JUnit reports.
+- **W1 — CI / supply chain / secrets / network:** CH-0001–0006, CH-0023, CH-0024, CH-0033, CH-0049, CH-0056, CH-0060–0063, CH-0066, CH-0071, CH-0082, CH-0086, CH-0093, CH-0094. Isolate git/linters; lock crawler/link/probe/proxy fetches; token-gate MCP; encode GHA commands.
+- **W2 — Path confinement:** … CH-0059, CH-0065, CH-0068, CH-0078, CH-0091. Jail `$ref`, SQL/Alembic, Freya baseline paths; skip scanner symlinks; jail eval corpus.
+- **W3 — Baseline / cache / secrets in artifacts:** … CH-0051, CH-0052, CH-0054, CH-0069, CH-0076, CH-0077, CH-0079, CH-0080, CH-0081, CH-0088–0090, CH-0092. Redact crawl auth; sign baselines/caches; fail-closed domain/scan/ratings.
+- **W4 — Analyzer robustness:** CH-0016, CH-0017, CH-0018, CH-0021, CH-0022, CH-0025, CH-0031, CH-0039, CH-0045, CH-0053, CH-0083–0085, CH-0087, CH-0095. Size/recursion/hunk/regex/parse caps; spawn-safe parallel workers.
+- **W5 — Output / template hygiene:** … CH-0055, CH-0064, CH-0067. Escape Freya/scan HTML/JUnit reports.
 
 ## Accepted risks
 
@@ -1114,8 +1564,18 @@ None yet.
   - `Asgard/Freya/Performance/__init__.py`
   - then Freya SEO/Visual/Scoring, Heimdall, Verdandi, Volundr, Asgard_Test, `_FutureItems-Security`
 - Commands: `python3 scripts/cyberhardening_inventory.py status` / `next 8`
-- Highest ID: CH-0071
+- Highest ID: CH-0074
+- Resume: remaining=3036 completed=839. Next Heimdall Auth/Backdoor/Container.
 - **Successor:** do not rebuild inventory unless todo missing. Continue `next N`. Do not implement fixes.
+- Batch 12 merged (2026-08-16): Heimdall Security/services + triage + utilities + CLI dispatch/common + handlers through quality_imports. remaining=2735 completed=1140 ledger=1140. Highest ID: CH-0087.
+- Batch 13 merged (2026-08-16): remaining Heimdall CLI handlers/subparsers/evaluation/treesitter + HooksSetup + MCP + Reporting History/PR/HTML. remaining=2655 completed=1220 ledger=1220. Highest ID: CH-0095.
+- Batch 14 merged (2026-08-16): Reporting html_generator + Shared Init/Issues/Profiles/common + Verdandi APM/Analysis/Anomaly/Cache. remaining=2575 completed=1300 ledger=1300. Highest ID: CH-0101.
+- Spot-check: html_generator no escape (CH-0046); `_new_code_git` unisolated (CH-0024); `calculate_compliance_rate([])==100` (CH-0098); profile `..` still not exploitable.
+- Next: Verdandi Database/Network then remaining Verdandi, Volundr, Asgard_Test.
+- Spot-check: licenses `--denied` dest (CH-0089); scan ERROR no overall_exit (CH-0090); scan_html unescaped scan_path (CH-0046); MCP tools path jail (CH-0086).
+- Next: `Asgard/Reporting/html_generator.py`, Shared/Init, Shared/Issues, then Verdandi/Volundr/Asgard_Test.
+- Spot-check: `_scan_utils` symlink follow (CH-0078); `StaticSecurityService` except-pass (CH-0077); `mask_secret` 4+4 (CH-0079); MCP `handle_request` no auth (CH-0086); profiles `..` escape rejected (`/` → `_`).
+- Next: remaining Heimdall CLI handlers (quality_typing / ratings / scan / security / sbom / syntax) then treesitter / Verdandi / Volundr / Asgard_Test.
 - Spot-check batch 7: `_git_friction` git -C (CH-0024); HTML smell report unescaped; mypy/pyright/pylint untrusted config; pyright writes into scan tree.
 - Batch 8 merged: remaining Quality scanners + taint + QualityGate + Ratings
 - Batch 9: Dashboard + Forseti Alignment/AsyncAPI/Avro/CodeGen

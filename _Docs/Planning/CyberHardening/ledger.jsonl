@@ -760,3 +760,541 @@
 {"path":"Asgard/Freya/cli/_parser_subcommands_b.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
 {"path":"Asgard/Freya/cli/_parser_subcommands_b1.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
 {"path":"Asgard/Freya/cli/_parser_subcommands_b2.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Performance/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Performance/models/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Performance/models/_budget_models.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Performance/models/_performance_report_models.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Performance/models/_performance_timing_models.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Performance/models/performance_models.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Performance/services/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Performance/services/_archetype_detector.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Performance/services/_page_load_helpers.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Performance/services/_resource_timing_helpers.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Performance/services/budget_evaluator.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Performance/services/page_load_analyzer.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Performance/services/performance_delta.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0072"],"summary":"Unconfined baseline_path write"}
+{"path":"Asgard/Freya/Performance/services/resource_timing_analyzer.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Responsive/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Responsive/models/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Responsive/models/responsive_models.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Responsive/services/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Responsive/services/_breakpoint_tester_checks.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Responsive/services/_mobile_compatibility_checks.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Responsive/services/breakpoint_tester.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Responsive/services/mobile_compatibility.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Responsive/services/touch_target_validator.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Responsive/services/viewport_tester.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Responsive/utilities/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/SEO/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/SEO/models/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/SEO/models/seo_models.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/SEO/services/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/SEO/services/_meta_tag_analyzers.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/SEO/services/_robots_analyzer_helpers.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/SEO/services/_structured_data_checks.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/SEO/services/meta_tag_analyzer.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/SEO/services/robots_analyzer.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/SEO/services/structured_data_validator.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Scoring/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Scoring/models/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Scoring/models/scoring_models.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Scoring/services/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Scoring/services/epistemics.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Scoring/services/grade_calculator.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0073"],"summary":"Empty/unknown findings grade A and pass"}
+{"path":"Asgard/Freya/Scoring/services/quality_gate.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0073"],"summary":"Empty/unknown findings grade A and pass"}
+{"path":"Asgard/Freya/Scoring/services/severity_mapper.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0073"],"summary":"Empty/unknown findings grade A and pass"}
+{"path":"Asgard/Freya/Visual/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Visual/models/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Visual/models/visual_models.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Visual/services/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Visual/services/_image_ops_analysis.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Visual/services/_image_ops_draw.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Visual/services/_image_ops_transform.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Visual/services/_layout_validator_checks.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Visual/services/_screenshot_capture_helpers.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066","CH-0072","CH-0074"],"summary":"goto SSRF; filename traversal; hide_selectors evaluate"}
+{"path":"Asgard/Freya/Visual/services/_style_validator_helpers.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Visual/services/_visual_regression_compare.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Visual/services/_visual_regression_report.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066","CH-0072"],"summary":"URL fetch and/or unsanitized screenshot filename write"}
+{"path":"Asgard/Freya/Visual/services/image_ops.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/Visual/services/layout_validator.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Visual/services/screenshot_capture.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Visual/services/style_validator.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright/httpx URL fetch"}
+{"path":"Asgard/Freya/Visual/services/visual_regression.py","at":"2026-08-16T08:06:06+00:00","disposition":"findings","finding_ids":["CH-0066","CH-0072"],"summary":"URL fetch and/or unsanitized screenshot filename write"}
+{"path":"Asgard/Freya/Visual/utilities/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Freya/__main__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/API/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/API/models/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/API/models/api_models.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/API/services/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/API/services/api_scanner.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/Access/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/Access/models/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/Access/models/access_models.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/Access/services/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/Access/services/access_analyzer.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/Access/services/control_analyzer.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/Access/services/permission_analyzer.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/Access/utilities/__init__.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/Access/utilities/decorator_utils.py","at":"2026-08-16T08:06:06+00:00","disposition":"clean","finding_ids":[],"summary":"Models/helpers or AST scanner; no new sink"}
+{"path":"Asgard/Heimdall/Security/Auth/__init__.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Auth/models/__init__.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Auth/models/auth_models.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Auth/services/__init__.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Auth/services/_jwt_patterns.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Auth/services/_password_patterns.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Auth/services/auth_analyzer.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Auth/services/jwt_validator.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Auth/services/password_analyzer.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Auth/services/session_analyzer.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Auth/services/timing_safe_compare.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Auth/utilities/__init__.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Auth/utilities/token_utils.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Backdoor/__init__.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Backdoor/models/__init__.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Backdoor/models/backdoor_models.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Backdoor/services/__init__.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Backdoor/services/backdoor_detector.py","at":"2026-08-16T08:07:18+00:00","disposition":"findings","finding_ids":["CH-0041"],"summary":"os.walk reads every file unbounded; file-symlink follow"}
+{"path":"Asgard/Heimdall/Security/Compliance/__init__.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Compliance/models/__init__.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Compliance/models/compliance_models.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Compliance/services/__init__.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Compliance/services/_compliance_mappers.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Compliance/services/compliance_reporter.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/__init__.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/models/__init__.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/models/container_models.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/services/__init__.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/services/_compliance_mapping.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/services/_compose_checks.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/services/_compose_checks_network.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/services/_compose_checks_runtime.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/services/_dockerfile_checks.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/services/_dockerfile_patterns.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/services/_dockerfile_structural_checks.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/services/compose_analyzer.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/services/container_analyzer.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/services/dockerfile_analyzer.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/utilities/__init__.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/utilities/_dockerfile_models.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/utilities/_dockerfile_parse_helpers.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/Container/utilities/dockerfile_parser.py","at":"2026-08-16T08:07:18+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner or yaml.safe_load; target not executed"}
+{"path":"Asgard/Heimdall/Security/DNS/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/DNS/models/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/DNS/models/dns_models.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/DNS/services/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/DNS/services/dns_checker.py","at":"2026-08-16T08:10:09+00:00","disposition":"findings","finding_ids":["CH-0075"],"summary":"dig with unvalidated domain"}
+{"path":"Asgard/Heimdall/Security/DataExfil/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/DataExfil/models/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/DataExfil/models/data_exfil_models.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/DataExfil/services/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/DataExfil/services/data_exfil_detector.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Deserialization/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Deserialization/models/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Deserialization/models/deserialization_models.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Deserialization/services/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Deserialization/services/_deserialization_ast_analysis.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Deserialization/services/deserialization_scanner.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/FileIntegrity/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/FileIntegrity/models/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/FileIntegrity/models/file_integrity_models.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/FileIntegrity/services/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/FileIntegrity/services/file_integrity_checker.py","at":"2026-08-16T08:10:09+00:00","disposition":"findings","finding_ids":["CH-0076"],"summary":"Unsigned baseline; has_changes ignores adds"}
+{"path":"Asgard/Heimdall/Security/Frontend/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Frontend/models/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Frontend/models/frontend_models.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Frontend/services/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Frontend/services/frontend_scanner.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Git/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Git/models/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Git/models/git_models.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Git/services/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Git/services/git_scanner.py","at":"2026-08-16T08:10:09+00:00","disposition":"findings","finding_ids":["CH-0024"],"summary":"git cwd=untrusted repo without isolation"}
+{"path":"Asgard/Heimdall/Security/Headers/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Headers/models/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Headers/models/header_models.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Headers/services/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Headers/services/_cors_patterns.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Headers/services/_csp_checks.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Headers/services/_header_context.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Headers/services/_header_patterns.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Headers/services/cors_analyzer.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Headers/services/csp_analyzer.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Headers/services/header_validator.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Headers/services/headers_analyzer.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Headers/utilities/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Headers/utilities/csp_parser.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Hotspots/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Hotspots/models/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Hotspots/models/hotspot_models.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Hotspots/services/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Hotspots/services/_ast_hotspot_checks.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Hotspots/services/_regex_hotspot_checks.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Hotspots/services/hotspot_detector.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Hotspots/services/hotspot_review.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Hotspots/services/pr_summary.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/InfoDisclosure/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/InfoDisclosure/models/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/InfoDisclosure/models/info_disclosure_models.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/InfoDisclosure/services/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/InfoDisclosure/services/info_disclosure_scanner.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/models/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/models/infra_models.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/services/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/services/_config_patterns.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/services/_credential_patterns.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/services/_hardening_patterns.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/services/config_validator.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/services/credential_analyzer.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/services/hardening_checker.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/services/infra_analyzer.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/utilities/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/utilities/_config_parsers.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/utilities/config_utils.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/InputValidation/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/InputValidation/models/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/InputValidation/models/input_validation_models.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/InputValidation/services/__init__.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/InputValidation/services/_validation_barrier_analysis.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/InputValidation/services/input_validation_scanner.py","at":"2026-08-16T08:10:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex scanner; yaml/json parse only; no target exec"}
+{"path":"Asgard/Heimdall/Security/LogAnalysis/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/LogAnalysis/models/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/LogAnalysis/models/log_models.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/LogAnalysis/services/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/LogAnalysis/services/log_analyzer.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/Malware/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/Malware/models/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/Malware/models/malware_models.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/Malware/services/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/Malware/services/malware_scanner.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/Misconfig/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/Misconfig/models/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/Misconfig/models/misconfig_models.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/Misconfig/services/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/Misconfig/services/misconfig_scanner.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/PathTraversal/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/PathTraversal/models/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/PathTraversal/models/path_traversal_models.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/PathTraversal/services/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/PathTraversal/services/path_traversal_scanner.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/RaceCondition/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/RaceCondition/models/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/RaceCondition/models/race_condition_models.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/RaceCondition/services/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/RaceCondition/services/_toctou_ast_analysis.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/RaceCondition/services/race_condition_detector.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/ReDoS/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/ReDoS/models/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/ReDoS/models/redos_models.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/ReDoS/services/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/ReDoS/services/_glushkov_analysis.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/ReDoS/services/redos_scanner.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/SSRF/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/SSRF/models/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/SSRF/models/ssrf_models.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/SSRF/services/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/SSRF/services/_ssrf_ast_analysis.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/SSRF/services/ssrf_scanner.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/SensitiveData/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/SensitiveData/models/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/SensitiveData/models/sensitive_data_models.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/SensitiveData/services/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/SensitiveData/services/_pii_log_sink_analysis.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/SensitiveData/services/sensitive_data_scanner.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TLS/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TLS/models/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TLS/models/tls_models.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TLS/services/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TLS/services/_certificate_patterns.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TLS/services/_cipher_patterns.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TLS/services/_protocol_patterns.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TLS/services/certificate_validator.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TLS/services/cipher_validator.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TLS/services/protocol_analyzer.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TLS/services/tls_analyzer.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TLS/services/tls_config_analyzer.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TLS/utilities/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TLS/utilities/ssl_utils.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/catalog/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/catalog/sanitizers.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/catalog/sinks.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/catalog/sources.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/engine/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/engine/cst_alias.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/engine/cst_summaries.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/engine/cst_taint_visitor.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/models/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/models/taint_models.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/services/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/services/_taint_patterns.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/services/_taint_visitor.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/services/taint_analyzer.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/stubs/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"findings","finding_ids":["CH-0026"],"summary":"framework_stubs path join unsanitized"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/stubs/django.yml","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/stubs/express.yml","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/stubs/fastapi.yml","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/stubs/flask.yml","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/stubs/spring.yml","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/stubs/sqlalchemy.yml","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/TaintAnalysis/summaries.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/context/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/context/test_context.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/engine/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/engine/dispatch.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/models/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/models/config_secrets_models.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/models/security_models.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/models/security_models_base.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/models/security_models_findings.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/normalization/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/normalization/calibration.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/normalization/equivalency.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/normalization/impact_matrix.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/normalization/priority.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/normalization/scoring.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/runtime/__init__.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/runtime/ingest.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/runtime/models.py","at":"2026-08-16T08:13:34+00:00","disposition":"clean","finding_ids":[],"summary":"AST/regex taint/scanner; no target exec"}
+{"path":"Asgard/Heimdall/Security/services/__init__.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/Security/services/_ast_python_rules.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/Security/services/_requirements_parser.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/Security/services/_secrets_semantic_context.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/Security/services/_security_scan_helpers.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/Security/services/_static_security_report.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/Security/services/_crypto_patterns.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/Security/services/_crypto_validation_helpers.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/Security/triage/__init__.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/Security/triage/models/__init__.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/Security/triage/models/triage_models.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/Security/triage/services/__init__.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/Security/utilities/__init__.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/Security/utilities/_comment_utils.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/__init__.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/__main__.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/__init__.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/_dispatch_analysis.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/_dispatch_infra.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/_dispatch_management.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/_dispatcher.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/common/__init__.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/common/_constants.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/common/analysis_args.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/common/concurrency_args.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/common/import_args.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/common/output_args.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/common/profile_args.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/common/quality_args.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/common/security_args.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/common/tool_args.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/common/tool_extra_args.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/common/typing_args.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/__init__.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/bugs.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/calibration.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/codefix.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/coverage.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/deps.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/documentation.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/evaluation.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/history.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/init_linter.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/issues.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/lang_analyzers.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/logic.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/oop_arch.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/performance.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/profiles.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/quality_async.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/quality_code.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/quality_imports.py","at":"2026-08-16T08:22:36Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/common/scan_args.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0010"],"summary":"baseline-file unconfined join already CH-0010"}
+{"path":"Asgard/Heimdall/Security/services/_config_secrets_helpers.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0083","CH-0079"],"summary":"placeholder bypass + weak mask_value"}
+{"path":"Asgard/Heimdall/Security/services/_config_secrets_report.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0079"],"summary":"emits masked_value in reports"}
+{"path":"Asgard/Heimdall/Security/services/_injection_patterns.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0084"],"summary":"nested .* ReDoS"}
+{"path":"Asgard/Heimdall/Security/services/_live_vulnerability_lookup.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0080"],"summary":"unpinned * treated as live-checked"}
+{"path":"Asgard/Heimdall/Security/services/_secret_patterns.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0085"],"summary":"FP regex full-drops test/example"}
+{"path":"Asgard/Heimdall/Security/services/_secrets_detection_helpers.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0085","CH-0079"],"summary":"is_false_positive drop + mask"}
+{"path":"Asgard/Heimdall/Security/services/_static_security_report_json_md.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0079"],"summary":"JSON/MD emit masked_value"}
+{"path":"Asgard/Heimdall/Security/services/_supply_chain_analysis.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0087"],"summary":"private-index comment bypass"}
+{"path":"Asgard/Heimdall/Security/services/_vulnerability_database.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0080"],"summary":"* version not affected"}
+{"path":"Asgard/Heimdall/Security/services/config_secrets_scanner.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0078","CH-0083"],"summary":"symlink file read + placeholder"}
+{"path":"Asgard/Heimdall/Security/services/cryptographic_validation_service.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0078"],"summary":"walker follows symlinks"}
+{"path":"Asgard/Heimdall/Security/services/dependency_vulnerability_service.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0078","CH-0080"],"summary":"glob symlink + unpinned skip"}
+{"path":"Asgard/Heimdall/Security/services/injection_detection_service.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0078","CH-0084"],"summary":"symlink walk + ReDoS"}
+{"path":"Asgard/Heimdall/Security/services/secrets_detection_service.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0078","CH-0079","CH-0085"],"summary":"symlink harvest + mask + FP drop"}
+{"path":"Asgard/Heimdall/Security/services/static_security_service.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0077"],"summary":"domain except pass fail-open"}
+{"path":"Asgard/Heimdall/Security/triage/services/triage_adapter.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0082"],"summary":"opt-in Claude prompt exfil"}
+{"path":"Asgard/Heimdall/Security/triage/services/triage_cache.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0081"],"summary":"unsigned triage JSON cache"}
+{"path":"Asgard/Heimdall/Security/triage/services/triage_service.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0081"],"summary":"default cache on assist path"}
+{"path":"Asgard/Heimdall/Security/utilities/_scan_utils.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0078"],"summary":"iterdir follows symlinks"}
+{"path":"Asgard/Heimdall/Security/utilities/security_utils.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0079"],"summary":"mask_secret 4+4"}
+{"path":"Asgard/Heimdall/cli/handlers/_base.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0046"],"summary":"HTML title/path unescaped"}
+{"path":"Asgard/Heimdall/cli/handlers/_security_dispatch.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0078"],"summary":"rglob follows dir symlinks"}
+{"path":"Asgard/Heimdall/cli/handlers/baseline.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0010","CH-0011"],"summary":"already on unconfined/unsigned baseline"}
+{"path":"Asgard/Heimdall/cli/handlers/mcp.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0086","CH-0056"],"summary":"unauth MCP + dashboard bind"}
+{"path":"Asgard/Heimdall/cli/handlers/new_code.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0024"],"summary":"git in untrusted scan cwd"}
+{"path":"Asgard/Heimdall/cli/handlers/quality_file_length.py","at":"2026-08-16T08:22:36Z","disposition":"findings","finding_ids":["CH-0046"],"summary":"HTML relative_path unescaped"}
+{"path":"Asgard/Heimdall/cli/handlers/sbom.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/main.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/scan_steps.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/subparsers/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/subparsers/_analysis.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/subparsers/_calibration.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/subparsers/_management.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/subparsers/_management_a.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/subparsers/_management_b.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/subparsers/_quality.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/subparsers/_quality_checks.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/subparsers/_quality_core.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/subparsers/_security.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/evaluation/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/evaluation/dedup.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/evaluation/gate.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/evaluation/metrics.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/evaluation/report.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/evaluation/runner.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/evaluation/spans.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/treesitter/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/treesitter/_language_loader.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/treesitter/_queries/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/treesitter/_queries/cpp_queries.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/treesitter/_queries/csharp_queries.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/treesitter/_queries/go_queries.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/treesitter/_queries/java_queries.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/treesitter/_queries/javascript_queries.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/treesitter/_queries/php_queries.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/treesitter/_queries/python_queries.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/treesitter/_queries/ruby_queries.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/treesitter/_queries/rust_queries.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/treesitter/_queries/typescript_queries.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/treesitter/ast_engine.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/HooksSetup/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/MCP/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/MCP/models/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/MCP/models/mcp_models.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/History/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/History/infrastructure/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/History/infrastructure/persistence/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/History/infrastructure/persistence/history_schema.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/History/models/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/History/models/history_models.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/History/services/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/History/services/_history_db.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/History/services/_history_repository.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/History/services/history_store.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/History/services/reporting_analyzer.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/History/services/savd_metrics.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/PRDecoration/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/PRDecoration/models/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/PRDecoration/services/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/_html_templates.py","at":"2026-08-16T08:31:21Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Heimdall/cli/handlers/quality_typing.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0049","CH-0050"],"summary":"type-check still cwd=scan tree"}
+{"path":"Asgard/Heimdall/cli/handlers/ratings.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0088","CH-0054"],"summary":"ratings/gate exit fail-open"}
+{"path":"Asgard/Heimdall/cli/handlers/syntax.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0049","CH-0089","CH-0033"],"summary":"linters + denied dest + PyPI"}
+{"path":"Asgard/Heimdall/cli/handlers/taint.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0078"],"summary":"rglob follows dir symlinks"}
+{"path":"Asgard/Heimdall/cli/handlers/scan.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0090"],"summary":"step ERROR does not fail exit"}
+{"path":"Asgard/Heimdall/cli/handlers/scan_html.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0046"],"summary":"scan_path/detail unescaped HTML"}
+{"path":"Asgard/Heimdall/cli/handlers/scan_steps_1_6.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0090","CH-0077","CH-0049"],"summary":"ERROR fail-open + domain swallow + mypy"}
+{"path":"Asgard/Heimdall/cli/handlers/scan_steps_7_11.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0090"],"summary":"ERROR fail-open"}
+{"path":"Asgard/Heimdall/cli/handlers/security.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0077","CH-0088"],"summary":"domain swallow + compliance always 0"}
+{"path":"Asgard/Heimdall/evaluation/calibration.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0092"],"summary":"unsigned unconfined save_map"}
+{"path":"Asgard/Heimdall/evaluation/corpus.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0091"],"summary":"unjailed repo_path/file join"}
+{"path":"Asgard/Heimdall/evaluation/vendored_corpus.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0091"],"summary":"manifest file: unjailed"}
+{"path":"Asgard/Heimdall/treesitter/_parser_pool.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0095"],"summary":"unbounded parse"}
+{"path":"Asgard/Heimdall/treesitter/_query_runner.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0095"],"summary":"unbounded query cache"}
+{"path":"Asgard/Heimdall/treesitter/file_context.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0095"],"summary":"unbounded parse + error walk"}
+{"path":"Asgard/HooksSetup/service.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0006"],"summary":"pre-commit install already CH-0006"}
+{"path":"Asgard/MCP/server/__init__.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0086"],"summary":"asguardian-mcp bind entry"}
+{"path":"Asgard/MCP/server/_mcp_tools.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0086"],"summary":"params.path not jailed"}
+{"path":"Asgard/MCP/server/asgard_mcp_server.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0086"],"summary":"unauth HTTP JSON-RPC + traceback"}
+{"path":"Asgard/Reporting/PRDecoration/models/decoration_models.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0093"],"summary":"unconstrained api URL + token"}
+{"path":"Asgard/Reporting/PRDecoration/services/github_decorator.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0093"],"summary":"urlopen + token to caller URL"}
+{"path":"Asgard/Reporting/PRDecoration/services/gitlab_decorator.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0093"],"summary":"urlopen + PRIVATE-TOKEN"}
+{"path":"Asgard/Reporting/_github_format_helpers.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0094"],"summary":"unencoded GHA fields"}
+{"path":"Asgard/Reporting/_html_report_builders.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0046"],"summary":"unescaped table cells"}
+{"path":"Asgard/Reporting/github_formatter.py","at":"2026-08-16T08:31:21Z","disposition":"findings","finding_ids":["CH-0094"],"summary":"workflow command injection"}
+{"path":"Asgard/Shared/Init/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Init/_linter_tool_checker.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Init/_templates_typescript.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Init/templates.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Issues/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Issues/infrastructure/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Issues/infrastructure/persistence/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Issues/infrastructure/persistence/issue_schema.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Issues/models/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Issues/models/issue_models.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Issues/services/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Issues/services/_issue_db.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Issues/services/_issue_queries.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Profiles/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Profiles/builtin/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Profiles/builtin/asgard_way_python.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Profiles/builtin/asgard_way_strict.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Profiles/models/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Profiles/models/profile_models.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/Profiles/services/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/common/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/common/_new_code_models.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Shared/common/language_registry.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/APM/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/APM/models/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/APM/models/apm_models.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/APM/services/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/APM/services/_aggregator_helpers.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/APM/services/_graph_helpers.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/APM/services/_identity_resolver.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/APM/services/_span_helpers.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/APM/services/span_analyzer.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/APM/services/trace_aggregator.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/APM/utilities/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Analysis/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Analysis/models/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Analysis/models/analysis_models.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Analysis/services/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Analysis/services/aggregation_service.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Analysis/services/apdex_calculator.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Analysis/services/coordinated_omission.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Analysis/services/percentile_calculator.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Analysis/services/trend_analyzer.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Analysis/utilities/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Anomaly/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Anomaly/models/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Anomaly/models/anomaly_models.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Anomaly/services/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Anomaly/services/_batch_detectors.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Anomaly/services/_regression_statistics.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Anomaly/services/_stat_helpers.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Anomaly/services/regression_detector.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Anomaly/services/statistical_detector.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Anomaly/utilities/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Cache/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Cache/models/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Cache/models/cache_models.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Cache/services/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Cache/services/cache_calculator.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Cache/services/eviction_analyzer.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Cache/services/segmented_slo.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Cache/services/stampede_analyzer.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Cache/services/warmup_analyzer.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Cache/utilities/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Database/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Database/models/__init__.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Reporting/html_generator.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0046"],"summary":"unescaped title/table/scan_path"}
+{"path":"Asgard/Shared/Init/_templates_python.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0096"],"summary":"project_name in TOML/YAML/entry"}
+{"path":"Asgard/Shared/Init/linter_initializer.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0096"],"summary":"unsanitized project_name replace"}
+{"path":"Asgard/Shared/Issues/services/_issue_repository.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0097"],"summary":"UUID mutate no project"}
+{"path":"Asgard/Shared/Issues/services/issue_tracker.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0097","CH-0024"],"summary":"IDOR pass-through + unisolated git blame"}
+{"path":"Asgard/Shared/Profiles/services/profile_manager.py","at":"2026-08-16T08:35:17Z","disposition":"clean","finding_ids":[],"summary":"safe_filename replaces /; leftover .. not exploitable"}
+{"path":"Asgard/Shared/common/_new_code_git.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0024"],"summary":"git in scan cwd no isolation"}
+{"path":"Asgard/Shared/common/new_code_period.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0024"],"summary":"dispatches to unisolated git"}
+{"path":"Asgard/Verdandi/APM/services/service_map_builder.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0101"],"summary":"critical path cycle hang"}
+{"path":"Asgard/Verdandi/Analysis/services/quantile_sketch.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0099"],"summary":"from_dict unbounded"}
+{"path":"Asgard/Verdandi/Analysis/services/sla_checker.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0098"],"summary":"empty results = 100%"}
+{"path":"Asgard/Verdandi/Anomaly/services/_comparator_helpers.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0100"],"summary":"invalid baseline empty anomalies"}
+{"path":"Asgard/Verdandi/Anomaly/services/baseline_comparator.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0100"],"summary":"invalid baseline treated in-bounds"}
