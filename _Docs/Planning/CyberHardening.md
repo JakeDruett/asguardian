@@ -1709,7 +1709,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0108 — Terraform module builder emits `0.0.0.0/0` egress and unsanitized HCL
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** d8f68d3
 - **Fixed at:** 2026-08-16T12:12:00Z
 - **Implementation note:** SG egress defaults to self=true; allowlist module/variable/output names; escape HCL string literals (`"`, `${`).
 - **Severity:** Medium
