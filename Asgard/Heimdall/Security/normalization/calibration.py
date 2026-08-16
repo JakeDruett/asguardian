@@ -4,19 +4,24 @@ change #3): the normalization engine loads a fitted isotonic map (produced
 by ``heimdall eval corpus --save-calibration``) and converts raw heuristic
 confidence scores into empirical probabilities BEFORE bucketing.
 
+The map is a trust root: it shifts confidence buckets for every subsequent
+scan. Writes and loads are confined to CWD or ``HEIMDALL_CALIBRATION_DIR``.
+When ``HEIMDALL_CALIBRATION_HMAC_KEY`` is set, the JSON is HMAC-SHA256
+signed on write and verified on load; unsigned or rewritten maps raise.
+
 Invariants:
 - Strictly opt-in and file-driven: with no map configured, calibration is
   the identity function -- scanner behaviour is unchanged by default.
 - Deterministic: the map is a static JSON file of (raw, calibrated) knot
   pairs; the same input always yields the same output. No network.
 - Severity is never touched -- calibration adjusts confidence only.
-- Honest labeling: an invalid or non-monotonic map file raises
+- Honest labeling: an invalid, unconfined, or HMAC-invalid map file raises
   ``ValueError`` rather than being silently ignored; a silently-dropped
   map would mislabel every confidence bucket downstream.
 
 Map file schema (shared with ``Asgard.Heimdall.evaluation.calibration``):
 
-    {"version": 1, "knots": [[raw, calibrated], ...]}
+    {"version": 1, "knots": [[raw, calibrated], ...], "hmac"?: "<hex>"}
 
 with knot x-values strictly increasing in [0, 1] and y-values
 non-decreasing in [0, 1].
@@ -24,6 +29,8 @@ non-decreasing in [0, 1].
 
 from __future__ import annotations
 
+import hashlib
+import hmac
 import json
 import os
 from dataclasses import dataclass
@@ -34,8 +41,123 @@ from typing import List, Optional, Sequence, Tuple, Union
 #: default) means identity calibration everywhere.
 CALIBRATION_MAP_ENV = "HEIMDALL_CALIBRATION_MAP"
 
+#: Optional HMAC-SHA256 key for the map (trust root). When set, save signs
+#: and load rejects unsigned or rewritten knots.
+CALIBRATION_HMAC_ENV = "HEIMDALL_CALIBRATION_HMAC_KEY"
+
+#: Optional jail root for map writes/loads. Unset = process CWD.
+CALIBRATION_DIR_ENV = "HEIMDALL_CALIBRATION_DIR"
+
 #: Schema version this loader understands.
 CALIBRATION_MAP_VERSION = 1
+
+_JAIL_ERROR = "calibration map path must stay under the calibration directory"
+_HMAC_ERROR = "calibration map HMAC is missing or invalid"
+_SYMLINK_ERROR = "calibration map path must not be a symlink"
+
+
+def calibration_jail(jail: Union[str, Path, None] = None) -> Path:
+    """Jail root: explicit *jail*, else ``HEIMDALL_CALIBRATION_DIR``, else CWD."""
+    if jail is not None:
+        return Path(jail).resolve()
+    env = os.environ.get(CALIBRATION_DIR_ENV, "").strip()
+    if env:
+        return Path(env).resolve()
+    return Path.cwd().resolve()
+
+
+def confine_calibration_path(
+    path: Union[str, Path],
+    *,
+    jail: Union[str, Path, None] = None,
+) -> Path:
+    """Resolve *path* under CWD or an explicit calibration directory.
+
+    Rejects ``..`` components and destinations that resolve outside the
+    jail. The map is a trust root; callers must not read or write it
+    outside that tree.
+    """
+    raw = Path(path)
+    if not str(raw) or ".." in raw.parts:
+        raise ValueError(_JAIL_ERROR)
+    root = calibration_jail(jail)
+    candidate = raw if raw.is_absolute() else root / raw
+    if candidate.is_symlink():
+        raise ValueError(_SYMLINK_ERROR)
+    try:
+        dest = candidate.resolve()
+    except OSError as exc:
+        raise ValueError("calibration map path could not be resolved") from exc
+    if not dest.is_relative_to(root):
+        raise ValueError(_JAIL_ERROR)
+    return dest
+
+
+def _hmac_key() -> Optional[bytes]:
+    env = os.environ.get(CALIBRATION_HMAC_ENV, "").strip()
+    if not env:
+        return None
+    return env.encode("utf-8")
+
+
+def _unsigned_payload(data: dict) -> dict:
+    return {
+        "version": data.get("version"),
+        "knots": data.get("knots"),
+    }
+
+
+def _sign_payload(data: dict, key: bytes) -> str:
+    canonical = json.dumps(
+        _unsigned_payload(data),
+        sort_keys=True,
+        separators=(",", ":"),
+    )
+    return hmac.new(key, canonical.encode("utf-8"), hashlib.sha256).hexdigest()
+
+
+def _verify_hmac(data: dict) -> None:
+    """When a key is configured, require a matching HMAC. No key = optional."""
+    key = _hmac_key()
+    expected = data.get("hmac")
+    if key is None:
+        return
+    if not isinstance(expected, str) or not hmac.compare_digest(
+        expected, _sign_payload(data, key)
+    ):
+        raise ValueError(_HMAC_ERROR)
+
+
+def write_calibration_map(
+    path: Union[str, Path],
+    payload: dict,
+    *,
+    jail: Union[str, Path, None] = None,
+) -> Path:
+    """Jail *path*, optionally HMAC-sign *payload*, and write mode ``0o600``."""
+    dest = confine_calibration_path(path, jail=jail)
+    if dest.is_symlink():
+        raise ValueError(_SYMLINK_ERROR)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    body = {
+        "version": payload.get("version"),
+        "knots": payload.get("knots"),
+    }
+    key = _hmac_key()
+    if key is not None:
+        body["hmac"] = _sign_payload(body, key)
+    raw = (json.dumps(body, indent=2, sort_keys=True) + "\n").encode("utf-8")
+    flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        fd = os.open(dest, flags, 0o600)
+        try:
+            os.write(fd, raw)
+        finally:
+            os.close(fd)
+        os.chmod(dest, 0o600)
+    except OSError as exc:
+        raise ValueError(f"calibration map could not be written: {exc}") from exc
+    return dest
 
 
 @dataclass(frozen=True)
@@ -116,18 +238,28 @@ def calibration_from_knots(
     return ConfidenceCalibration(knots_x=tuple(xs), knots_y=tuple(ys))
 
 
-def load_calibration_map(path: Union[str, Path]) -> ConfidenceCalibration:
+def load_calibration_map(
+    path: Union[str, Path],
+    *,
+    jail: Union[str, Path, None] = None,
+) -> ConfidenceCalibration:
     """Load and validate a persisted calibration map file.
 
-    Raises ``ValueError`` (bad content) or ``OSError`` (unreadable file).
+    Confines *path* to CWD or ``HEIMDALL_CALIBRATION_DIR``. When
+    ``HEIMDALL_CALIBRATION_HMAC_KEY`` is set, unsigned or rewritten maps
+    raise ``ValueError``. Also raises ``ValueError`` (bad content) or
+    ``OSError`` (unreadable file).
     """
-    file_path = Path(path)
+    file_path = confine_calibration_path(path, jail=jail)
+    if file_path.is_symlink():
+        raise ValueError(_SYMLINK_ERROR)
     try:
         data = json.loads(file_path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         raise ValueError(f"Calibration map {file_path} is not valid JSON: {exc}")
     if not isinstance(data, dict):
         raise ValueError(f"Calibration map {file_path} must be a JSON object")
+    _verify_hmac(data)
     version = data.get("version")
     if version != CALIBRATION_MAP_VERSION:
         raise ValueError(

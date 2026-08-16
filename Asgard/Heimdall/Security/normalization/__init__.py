@@ -30,9 +30,12 @@ from Asgard.Heimdall.Security.normalization.equivalency import (
     severity_of_class,
 )
 from Asgard.Heimdall.Security.normalization.calibration import (
+    CALIBRATION_DIR_ENV,
+    CALIBRATION_HMAC_ENV,
     CALIBRATION_MAP_ENV,
     ConfidenceCalibration,
     calibrate_confidence,
+    confine_calibration_path,
     default_calibration,
     load_calibration_map,
 )
@@ -54,9 +57,12 @@ __all__ = [
     "EQUIVALENCY_MATRIX",
     "finding_classes_for",
     "severity_of_class",
+    "CALIBRATION_DIR_ENV",
+    "CALIBRATION_HMAC_ENV",
     "CALIBRATION_MAP_ENV",
     "ConfidenceCalibration",
     "calibrate_confidence",
+    "confine_calibration_path",
     "default_calibration",
     "load_calibration_map",
     "legacy_security_score",

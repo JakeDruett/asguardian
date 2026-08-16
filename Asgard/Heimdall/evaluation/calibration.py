@@ -14,6 +14,11 @@ Pipeline (DEEPTHINK_03 s5):
     4. ``brier_score`` is the objective KPI: mean squared error of
        probability vs. binary outcome. A new/changed rule must not
        worsen it on the corpus (enforced by ``gate.py``).
+
+Persisted maps (``save_map`` / ``load_calibrator``) are a trust root:
+they shift scan confidence buckets. Writes and loads stay under CWD or
+``HEIMDALL_CALIBRATION_DIR`` and are HMAC-signed when
+``HEIMDALL_CALIBRATION_HMAC_KEY`` is set.
 """
 
 from __future__ import annotations
@@ -193,20 +198,22 @@ class IsotonicCalibrator:
         calibrator._knots_y = list(validated.knots_y)
         return calibrator
 
-    def save_map(self, path) -> None:
+    def save_map(self, path, *, jail=None) -> None:
         """Persist the fitted map as the shared JSON schema
         (``{"version": 1, "knots": [[raw, calibrated], ...]}``) consumed by
         ``Asgard.Heimdall.Security.normalization.calibration``.
+
+        The map is a trust root. *path* must stay under CWD or
+        ``HEIMDALL_CALIBRATION_DIR`` (or *jail*). When
+        ``HEIMDALL_CALIBRATION_HMAC_KEY`` is set, the file is HMAC-signed.
 
         Refuses to persist an unfitted (empty) calibrator -- an empty map
         would fail loading anyway, and silently writing one would look
         like a successful calibration run.
         """
-        import json
-        from pathlib import Path
-
         from Asgard.Heimdall.Security.normalization.calibration import (
             CALIBRATION_MAP_VERSION,
+            write_calibration_map,
         )
         if not self._knots_x:
             raise ValueError("Cannot save an unfitted calibrator (no knots)")
@@ -214,15 +221,17 @@ class IsotonicCalibrator:
             "version": CALIBRATION_MAP_VERSION,
             "knots": [[x, y] for x, y in zip(self._knots_x, self._knots_y)],
         }
-        Path(path).write_text(
-            json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-        )
+        write_calibration_map(path, payload, jail=jail)
 
 
-def load_calibrator(path) -> IsotonicCalibrator:
-    """Load a persisted calibration-map file back into a calibrator."""
+def load_calibrator(path, *, jail=None) -> IsotonicCalibrator:
+    """Load a persisted calibration-map file back into a calibrator.
+
+    Same jail and HMAC rules as ``load_calibration_map``: the map is a
+    trust root.
+    """
     from Asgard.Heimdall.Security.normalization.calibration import (
         load_calibration_map,
     )
-    loaded = load_calibration_map(path)
+    loaded = load_calibration_map(path, jail=jail)
     return IsotonicCalibrator.from_map(list(zip(loaded.knots_x, loaded.knots_y)))

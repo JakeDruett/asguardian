@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 14   | 45    | 0             |
+| Medium   | 13   | 46    | 0             |
 | Low      | 11   | 11    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1585,7 +1585,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0092 — Calibration map write is unsigned and unconfined
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T17:40:00Z
+- **Implementation note:** Jail save/load under CWD or HEIMDALL_CALIBRATION_DIR; HMAC when HEIMDALL_CALIBRATION_HMAC_KEY is set.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-345
@@ -2011,12 +2014,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 31
-- Fixed: 83
+- Open: 30
+- Fixed: 84
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0092, CH-0107, CH-0114
-- Last commit: 384037a
+- Next: CH-0107, CH-0114
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

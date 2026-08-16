@@ -178,7 +178,11 @@ def run_eval_corpus(args: argparse.Namespace, verbose: bool = False) -> int:
     saved_calibration_path = None
     if save_calibration:
         if calibrator.to_map():
-            calibrator.save_map(save_calibration)
+            try:
+                calibrator.save_map(save_calibration)
+            except ValueError as exc:
+                print(f"Error: could not write calibration map: {exc}")
+                return 1
             saved_calibration_path = str(save_calibration)
         else:
             print(

@@ -139,7 +139,10 @@ def setup_eval_command(subparsers) -> None:
         "--save-calibration", type=str, default=None, metavar="PATH",
         help=(
             "Persist the fitted isotonic calibration map as JSON at PATH. "
-            "Point HEIMDALL_CALIBRATION_MAP at that file to have the "
+            "The map is a trust root: PATH must stay under CWD or "
+            "HEIMDALL_CALIBRATION_DIR, and is HMAC-signed when "
+            "HEIMDALL_CALIBRATION_HMAC_KEY is set. Point "
+            "HEIMDALL_CALIBRATION_MAP at that file to have the "
             "normalization engine convert raw confidence to calibrated "
             "probabilities before bucketing (identity when unset)."
         ),

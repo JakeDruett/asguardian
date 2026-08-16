@@ -1,6 +1,7 @@
 """
-Plan 10 s4 residual: persisted calibration map — save/load round-trip,
-validation, and application by the normalization engine before bucketing.
+Plan 10 s4 residual / CH-0092: persisted calibration map — save/load
+round-trip, jail, HMAC, validation, and application by the normalization
+engine before bucketing.
 """
 
 import json
@@ -12,6 +13,8 @@ from Asgard.Heimdall.evaluation.calibration import (
     load_calibrator,
 )
 from Asgard.Heimdall.Security.normalization.calibration import (
+    CALIBRATION_DIR_ENV,
+    CALIBRATION_HMAC_ENV,
     CALIBRATION_MAP_ENV,
     CALIBRATION_MAP_VERSION,
     ConfidenceCalibration,
@@ -24,8 +27,10 @@ from Asgard.Heimdall.Security.normalization.priority import confidence_bucket
 
 
 @pytest.fixture(autouse=True)
-def _clear_env_and_cache(monkeypatch):
+def _clear_env_and_cache(monkeypatch, tmp_path):
     monkeypatch.delenv(CALIBRATION_MAP_ENV, raising=False)
+    monkeypatch.delenv(CALIBRATION_HMAC_ENV, raising=False)
+    monkeypatch.setenv(CALIBRATION_DIR_ENV, str(tmp_path))
     from Asgard.Heimdall.Security.normalization import calibration as mod
     mod._default_cache.clear()
     yield
@@ -180,3 +185,62 @@ class TestDispatchWiring:
             context_tag="production", modifier=1.0,
         )
         assert entry["confidence"].lower().startswith("certain")
+
+
+class TestJailAndHmac:
+    def test_parent_escape_is_refused(self, tmp_path):
+        cal = IsotonicCalibrator.from_map([(0.2, 0.1), (0.9, 0.5)])
+        escaped = tmp_path / ".." / "escape.json"
+        with pytest.raises(ValueError, match="calibration directory"):
+            cal.save_map(escaped)
+        with pytest.raises(ValueError, match="calibration directory"):
+            cal.save_map("../escape.json")
+        assert not escaped.resolve().exists()
+        assert not (tmp_path.parent / "escape.json").exists()
+
+    def test_load_parent_escape_is_refused(self, tmp_path):
+        with pytest.raises(ValueError, match="calibration directory"):
+            load_calibration_map(tmp_path / ".." / "escape.json")
+        with pytest.raises(ValueError, match="calibration directory"):
+            load_calibrator("../escape.json")
+
+    def test_cwd_parent_escape_is_refused(self, tmp_path, monkeypatch):
+        monkeypatch.delenv(CALIBRATION_DIR_ENV, raising=False)
+        monkeypatch.chdir(tmp_path)
+        cal = IsotonicCalibrator.from_map([(0.2, 0.1), (0.9, 0.5)])
+        with pytest.raises(ValueError, match="calibration directory"):
+            cal.save_map("../escape.json")
+        assert not (tmp_path.parent / "escape.json").exists()
+
+    def test_unsigned_planted_map_is_rejected(self, tmp_path, monkeypatch):
+        monkeypatch.setenv(CALIBRATION_HMAC_ENV, "test-calibration-hmac-key")
+        path = tmp_path / "planted.json"
+        path.write_text(json.dumps({
+            "version": 1,
+            "knots": [[0.0, 0.0], [1.0, 0.1]],
+        }))
+        with pytest.raises(ValueError, match="HMAC"):
+            load_calibration_map(path)
+        with pytest.raises(ValueError, match="HMAC"):
+            load_calibrator(path)
+        monkeypatch.setenv(CALIBRATION_MAP_ENV, str(path))
+        with pytest.raises(ValueError, match="HMAC"):
+            calibrate_confidence(0.95)
+
+    def test_signed_roundtrip_and_rewrite_rejected(self, tmp_path, monkeypatch):
+        monkeypatch.setenv(CALIBRATION_HMAC_ENV, "test-calibration-hmac-key")
+        records = _overconfident_records()
+        cal = IsotonicCalibrator().fit(
+            [r[0] for r in records], [r[1] for r in records]
+        )
+        path = tmp_path / "signed.json"
+        cal.save_map(path)
+        data = json.loads(path.read_text())
+        assert data.get("hmac")
+        loaded = load_calibrator(path)
+        assert loaded.predict(0.9) == pytest.approx(cal.predict(0.9))
+
+        data["knots"] = [[0.0, 0.0], [1.0, 0.05]]
+        path.write_text(json.dumps(data))
+        with pytest.raises(ValueError, match="HMAC"):
+            load_calibration_map(path)
