@@ -42,8 +42,19 @@ class TestBaselineEntryCleanPath:
             line_number=10,
             violation_type="lazy_import",
             violation_id="abc123",
+            message="import os",
         )
-        assert entry.matches("src/foo.py", 10, "lazy_import") is True
+        assert entry.matches("src/foo.py", 10, "lazy_import", message="import os") is True
+
+    def test_entry_matches_without_identity_is_false(self):
+        entry = BaselineEntry(
+            file_path="src/foo.py",
+            line_number=10,
+            violation_type="lazy_import",
+            violation_id="abc123",
+            message="import os",
+        )
+        assert entry.matches("src/foo.py", 10, "lazy_import") is False
 
     def test_entry_not_expired_by_default(self):
         entry = BaselineEntry(
@@ -169,7 +180,7 @@ class TestBaselineFileCleanPath:
             violation_id="xyz",
         )
         bf.add_entry(entry)
-        found = bf.find_match("src/foo.py", 5, "complexity")
+        found = bf.find_match("src/foo.py", 5, "complexity", violation_id="xyz")
         assert found is not None
 
     def test_clean_expired_removes_expired_entries(self):
@@ -593,3 +604,82 @@ class TestFuzzyEmptyMessageSuppression:
             [first, later], "heimdall_secret", use_fuzzy_matching=True
         )
         assert remaining == [later]
+
+
+class TestBaselineIdentityAndHmac:
+    def test_same_locus_different_message_is_not_suppressed(self, tmp_path):
+        class FakeViolation:
+            def __init__(self, message):
+                self.file_path = str(tmp_path / "a.py")
+                self.line_number = 10
+                self.message = message
+
+        manager = BaselineManager(project_path=tmp_path)
+        manager.create_from_violations([FakeViolation("old issue")], "lint")
+        remaining = manager.filter_violations([FakeViolation("new issue")], "lint")
+        assert len(remaining) == 1
+        assert remaining[0].message == "new issue"
+
+    def test_unsigned_planted_baseline_does_not_suppress(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("ASGARD_BASELINE_HMAC_KEY", "test-baseline-key")
+        planted = {
+            "version": "1.0.0",
+            "created_at": "2020-01-01T00:00:00",
+            "updated_at": "2020-01-01T00:00:00",
+            "project_path": str(tmp_path),
+            "entries": [{
+                "file_path": "a.py",
+                "line_number": 1,
+                "violation_type": "lint",
+                "violation_id": "planted",
+                "message": "issue",
+                "reason": "plant",
+                "created_at": "2020-01-01T00:00:00",
+                "created_by": "attacker",
+                "expires_at": None,
+            }],
+            "metadata": {},
+        }
+        (tmp_path / ".asgard-baseline.json").write_text(json.dumps(planted))
+
+        class FakeViolation:
+            file_path = "a.py"
+            line_number = 1
+            message = "issue"
+
+        manager = BaselineManager(project_path=tmp_path)
+        remaining = manager.filter_violations([FakeViolation()], "lint")
+        assert len(remaining) == 1
+
+    def test_rewritten_entries_without_hmac_do_not_suppress(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("ASGARD_BASELINE_HMAC_KEY", "test-baseline-key")
+
+        class FakeViolation:
+            def __init__(self):
+                self.file_path = str(tmp_path / "a.py")
+                self.line_number = 1
+                self.message = "issue"
+
+        manager = BaselineManager(project_path=tmp_path)
+        manager.create_from_violations([FakeViolation()], "lint")
+        data = json.loads(manager.baseline_path.read_text())
+        data["entries"].append({
+            "file_path": "b.py",
+            "line_number": 2,
+            "violation_type": "lint",
+            "violation_id": "planted",
+            "message": "other",
+            "reason": "plant",
+            "created_at": "2020-01-01T00:00:00",
+            "created_by": "attacker",
+            "expires_at": None,
+        })
+        manager.baseline_path.write_text(json.dumps(data))
+        other = type("V", (), {
+            "file_path": str(tmp_path / "b.py"),
+            "line_number": 2,
+            "message": "other",
+        })()
+        fresh = BaselineManager(project_path=tmp_path)
+        remaining = fresh.filter_violations([other], "lint")
+        assert remaining == [other]

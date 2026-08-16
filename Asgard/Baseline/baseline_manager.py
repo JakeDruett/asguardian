@@ -4,12 +4,16 @@ Baseline Manager
 Manages creating, loading, and filtering violations against baseline.
 """
 
+import hashlib
+import hmac
 import json
 import os
 import tempfile
 from datetime import datetime
 from pathlib import Path
 from typing import Any, List, Optional, TypeVar, cast
+
+_HMAC_ENV = "ASGARD_BASELINE_HMAC_KEY"
 
 from Asgard.Baseline._baseline_helpers import (
     generate_violation_id,
@@ -71,8 +75,34 @@ class BaselineManager:
         # Unfollowed dest so load/save can refuse a planted dest symlink.
         return dest
 
+    def _key_path(self) -> Path:
+        return self.baseline_path.with_name(self.baseline_path.name + ".key")
+
+    def _hmac_key(self) -> bytes:
+        env = os.environ.get(_HMAC_ENV, "").strip()
+        if env:
+            return env.encode("utf-8")
+        key_path = self._key_path()
+        if key_path.is_symlink():
+            raise ValueError("baseline key path must not be a symlink")
+        if key_path.exists():
+            return key_path.read_bytes()
+        key = os.urandom(32)
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+        fd = os.open(key_path, flags, 0o600)
+        try:
+            os.write(fd, key)
+        finally:
+            os.close(fd)
+        os.chmod(key_path, 0o600)
+        return key
+
+    def _sign_payload(self, payload: dict) -> str:
+        canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str)
+        return hmac.new(self._hmac_key(), canonical.encode("utf-8"), hashlib.sha256).hexdigest()
+
     def load(self) -> BaselineFile:
-        """Load the baseline file."""
+        """Load the baseline file. HMAC mismatch fail-closes to an empty baseline."""
         if self._baseline is not None:
             return self._baseline
 
@@ -82,14 +112,25 @@ class BaselineManager:
         try:
             with open(self.baseline_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
+            if not isinstance(data, dict):
+                self._baseline = BaselineFile(project_path=str(self.project_path))
+                return self._baseline
+            expected = data.pop("hmac", None)
+            if not isinstance(expected, str) or not hmac.compare_digest(
+                expected, self._sign_payload(data)
+            ):
+                self._baseline = BaselineFile(project_path=str(self.project_path))
+                return self._baseline
             self._baseline = BaselineFile(**data)
         except FileNotFoundError:
+            self._baseline = BaselineFile(project_path=str(self.project_path))
+        except (json.JSONDecodeError, TypeError, ValueError, OSError):
             self._baseline = BaselineFile(project_path=str(self.project_path))
 
         return self._baseline
 
     def save(self) -> None:
-        """Save the baseline file to disk."""
+        """Save the baseline file to disk with an HMAC sidecar field."""
         if self._baseline is None:
             return
 
@@ -98,6 +139,8 @@ class BaselineManager:
             raise ValueError("baseline path must not be a symlink")
 
         self._baseline.updated_at = datetime.now()
+        payload = self._baseline.model_dump(mode='json')
+        payload["hmac"] = self._sign_payload(payload)
 
         fd, tmp_name = tempfile.mkstemp(
             prefix=f".{dest.name}.",
@@ -106,12 +149,7 @@ class BaselineManager:
         )
         try:
             with os.fdopen(fd, 'w', encoding='utf-8') as f:
-                json.dump(
-                    self._baseline.model_dump(mode='json'),
-                    f,
-                    indent=2,
-                    default=str,
-                )
+                json.dump(payload, f, indent=2, default=str)
             os.replace(tmp_name, dest)
         except Exception:
             try:
@@ -181,11 +219,10 @@ class BaselineManager:
         baseline = self.load()
 
         rel_path = relative_path(self.project_path, file_path)
-        if baseline.find_match(rel_path, line_number, violation_type):
-            return False
-
         violation_id = generate_violation_id(rel_path, line_number, violation_type, message)
         message = persistable_violation_message(message, violation_id)
+        if baseline.find_match(rel_path, line_number, violation_type, message, violation_id):
+            return False
 
         entry = BaselineEntry(
             file_path=rel_path,

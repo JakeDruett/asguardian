@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 35   | 24    | 0             |
+| Medium   | 34   | 25    | 0             |
 | Low      | 13   | 9     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -213,7 +213,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0011 — Unsigned baseline is a suppression oracle
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T15:35:00Z
+- **Implementation note:** `matches` requires message or violation_id; unsigned/rewritten `.asgard-baseline.json` HMAC-fails to empty (no suppressions).
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-345
@@ -1942,12 +1945,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 54
-- Fixed: 60
+- Open: 53
+- Fixed: 61
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0011, CH-0013, CH-0027
-- Last commit: 02016ca
+- Next: CH-0013, CH-0027, CH-0032
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

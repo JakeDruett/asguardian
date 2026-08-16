@@ -33,24 +33,35 @@ class BaselineEntry(BaseModel):
             return False
         return datetime.now() > self.expires_at
 
-    def matches(self, file_path: str, line_number: int, violation_type: str) -> bool:
+    def matches(
+        self,
+        file_path: str,
+        line_number: int,
+        violation_type: str,
+        message: str = "",
+        violation_id: str = "",
+    ) -> bool:
         """
         Check if this entry matches a violation.
 
-        Args:
-            file_path: File path to check
-            line_number: Line number to check
-            violation_type: Type of violation
-
-        Returns:
-            True if this entry matches the violation
+        Path+line+type alone is not an identity (that is a suppression
+        oracle). Require a matching message or violation_id.
         """
-        return (
-            self.file_path == file_path
-            and self.line_number == line_number
-            and self.violation_type == violation_type
-            and not self.is_expired
-        )
+        if (
+            self.file_path != file_path
+            or self.line_number != line_number
+            or self.violation_type != violation_type
+            or self.is_expired
+        ):
+            return False
+        query = (message or "").strip()
+        stored = (self.message or "").strip()
+        if query and stored and stored == query:
+            return True
+        vid = (violation_id or "").strip()
+        if vid and vid == self.violation_id:
+            return True
+        return False
 
     def matches_fuzzy(self, file_path: str, violation_type: str, message: str) -> bool:
         """
@@ -134,20 +145,14 @@ class BaselineFile(BaseModel):
         file_path: str,
         line_number: int,
         violation_type: str,
+        message: str = "",
+        violation_id: str = "",
     ) -> Optional[BaselineEntry]:
-        """
-        Find a matching baseline entry.
-
-        Args:
-            file_path: File path to match
-            line_number: Line number to match
-            violation_type: Type of violation
-
-        Returns:
-            Matching BaselineEntry or None
-        """
+        """Find a matching baseline entry (message or violation_id required)."""
         for entry in self.entries:
-            if entry.matches(file_path, line_number, violation_type):
+            if entry.matches(
+                file_path, line_number, violation_type, message, violation_id
+            ):
                 return entry
         return None
 

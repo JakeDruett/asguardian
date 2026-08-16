@@ -53,7 +53,7 @@ def create_from_violations(
         violation_id = generate_violation_id(file_path, line_number, violation_type, message)
         message = persistable_violation_message(message, violation_id)
 
-        if baseline.find_match(file_path, line_number, violation_type):
+        if baseline.find_match(file_path, line_number, violation_type, message, violation_id):
             continue
 
         entry = BaselineEntry(
@@ -108,7 +108,7 @@ def filter_violations(
                     file_path, violation_type, message
                 )
         else:
-            match = baseline.find_match(file_path, line_number, violation_type)
+            match = baseline.find_match(file_path, line_number, violation_type, message)
 
         if match is None:
             new_violations.append(v)
