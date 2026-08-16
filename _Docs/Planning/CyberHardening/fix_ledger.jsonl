@@ -50,3 +50,6 @@
 {"id":"CH-0037","at":"2026-08-16T14:15:00Z","commit":"0bef19b","wave":"W2","summary":"Allowlist/hash vuln cache keys; jail under cache_dir"}
 {"id":"CH-0041","at":"2026-08-16T14:16:00Z","commit":"b1d1f15","wave":"W2","summary":"BugDetector walk skips dir/file symlinks"}
 {"id":"CH-0115","at":"2026-08-16T14:18:00Z","commit":"b66dd42","wave":"W2","summary":"Jail SecurityAPI -o under CWD; .json/.sarif only"}
+{"id":"CH-0014","at":"2026-08-16T14:25:00Z","commit":"4841f17","wave":"W2","summary":"Atomic baseline save; refuse dest symlink"}
+{"id":"CH-0028","at":"2026-08-16T14:26:00Z","commit":"af33d04","wave":"W2","summary":"Jail write_local_profile under cwd"}
+{"id":"CH-0034","at":"2026-08-16T14:27:00Z","commit":"c8be38a","wave":"W2","summary":"Normalize/quote PyPI names; block off-host redirects"}

@@ -566,7 +566,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0034 — Unquoted package name interpolated into the PyPI URL
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** c8be38a
 - **Fixed at:** 2026-08-16T14:27:00Z
 - **Implementation note:** PEP 503 normalize + quote; reject path-like names; refuse off-host PyPI redirects.
 - **Severity:** Low
