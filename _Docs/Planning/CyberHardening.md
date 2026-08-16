@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
 | Medium   | 2    | 57    | 0             |
-| Low      | 8    | 14    | 0             |
+| Low      | 7    | 15    | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -790,7 +790,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0045 — PHP rule regexes are quadratic on long lines
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** a12949d
+- **Fixed at:** 2026-08-16T13:25:00Z
+- **Implementation note:** SQL-build and XSS-concat patterns bound to .{0,200}; those checks skip lines over 4096 chars.
 - **Severity:** Low
 - **Confidence:** Medium
 - **CWE / class:** CWE-1333
@@ -2056,12 +2059,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 16
-- Fixed: 98
+- Open: 15
+- Fixed: 99
 - Accepted risk: 0
 - Current wave: W4
 - Next: CH-0025, CH-0031, CH-0039
-- Last commit: 1a4faba
+- Last commit: a12949d
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
