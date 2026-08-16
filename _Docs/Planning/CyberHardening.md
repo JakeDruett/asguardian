@@ -55,7 +55,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0002 — Public `pull_request` jobs execute untrusted code on self-hosted `arc-x86`
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** ca95bf4
 - **Fixed at:** 2026-08-16T09:55:00Z
 - **Implementation note:** PR jobs run on ubuntu-latest with persist-credentials false; editable install is push-only; concurrency + 30m timeouts added.
 - **Severity:** High
@@ -1773,7 +1773,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0003, CH-0024, CH-0049, CH-0060
-- Last commit: PENDING
+- Last commit: ca95bf4
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
