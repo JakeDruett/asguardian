@@ -1661,7 +1661,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0105 — Generators emit floating tags, HTTP Vault, and privileged-capable services
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 405ffdf
 - **Fixed at:** 2026-08-16T12:00:00Z
 - **Implementation note:** HTTPS-only vault_url; reject privileged GHA/Compose services; digest-pin known images (GitLab/CircleCI/actionlint); Helm image_tag default empty, reject latest/current.
 - **Severity:** Medium
@@ -1851,7 +1851,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0108, CH-0112, CH-0082
-- Last commit: pending
+- Last commit: 405ffdf
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

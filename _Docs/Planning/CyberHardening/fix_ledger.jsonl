@@ -25,3 +25,4 @@
 {"id":"CH-0071","at":"2026-08-16T10:28:55Z","commit":"2c99bab","wave":"W1","summary":"Link validator http(s) only; skip private; re-validate redirects"}
 {"id":"CH-0110","at":"2026-08-16T10:30:33Z","commit":"5021986","wave":"W1","summary":"FutureItems scan fail-closed; drop missing security-tools cd"}
 {"id":"CH-0113","at":"2026-08-16T10:31:30Z","commit":"baae354","wave":"W1","summary":"Validate DNS names and pass dig -- before the domain"}
+{"id":"CH-0105","at":"2026-08-16T12:00:00Z","commit":"405ffdf","wave":"W1","summary":"HTTPS Vault; reject privileged services; digest-pin generator images; Helm no latest"}
