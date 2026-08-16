@@ -37,7 +37,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0001 — GitHub Actions pinned to mutable tags
 
 - **Status:** Fixed
-- **Fixed in:** 0e541c0
+- **Fixed in:** 8e27674
 - **Fixed at:** 2026-08-16T09:47:50Z
 - **Implementation note:** SHA-pinned every live `uses:` (KNOWN_ACTION_PINS + pypa/codeql); added Dependabot and Renovate pin updaters.
 - **Severity:** High
@@ -1770,7 +1770,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0002, CH-0003, CH-0024, CH-0049
-- Last commit: 0e541c0
+- Last commit: 8e27674
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
