@@ -54,8 +54,12 @@ class IncrementalScannerMixin:
     _file_cache: Optional[FileHashCache] = None
 
     def _init_cache(self, project_path: Path) -> None:
-        """Initialize the file hash cache."""
-        self._file_cache = FileHashCache(project_path, self.incremental_config)
+        """Initialize the file hash cache. Jail failures disable the cache."""
+        try:
+            self._file_cache = FileHashCache(Path(project_path), self.incremental_config)
+        except (ValueError, OSError):
+            self._file_cache = None
+            return
         if self.incremental_config.enabled:
             self._file_cache.load()
 

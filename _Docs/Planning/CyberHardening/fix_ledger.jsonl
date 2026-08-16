@@ -78,3 +78,4 @@
 {"id":"CH-0090","at":"2026-08-16T17:05:00Z","commit":"a61951b","wave":"W3","summary":"heimdall scan ERROR steps set overall_exit=1"}
 {"id":"CH-0015","at":"2026-08-16T17:08:00Z","commit":"bbd32e6","wave":"W3","summary":"Full SHA-256 violation IDs; unique remove_entry only"}
 {"id":"CH-0081","at":"2026-08-16T17:12:00Z","commit":"ffe5977","wave":"W3","summary":"HMAC/jail triage cache; planted verdicts miss"}
+{"id":"CH-0048","at":"2026-08-16T17:18:00Z","commit":"pending","wave":"W3","summary":"Incremental FileHashCache always re-hashes; HMAC+jail+TTL"}
