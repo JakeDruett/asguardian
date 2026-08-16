@@ -1298,3 +1298,147 @@
 {"path":"Asgard/Verdandi/Analysis/services/sla_checker.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0098"],"summary":"empty results = 100%"}
 {"path":"Asgard/Verdandi/Anomaly/services/_comparator_helpers.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0100"],"summary":"invalid baseline empty anomalies"}
 {"path":"Asgard/Verdandi/Anomaly/services/baseline_comparator.py","at":"2026-08-16T08:35:17Z","disposition":"findings","finding_ids":["CH-0100"],"summary":"invalid baseline treated in-bounds"}
+{"path":"Asgard/Verdandi/Database/models/database_models.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Database/services/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Database/services/connection_analyzer.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Database/services/pool_signature_detector.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Database/services/query_budget.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Database/services/query_metrics.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Database/services/throughput_calculator.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Database/utilities/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Network/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Network/models/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Network/models/network_models.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Network/services/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Network/services/bandwidth_calculator.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Network/services/dns_calculator.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Network/services/latency_calculator.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Network/services/phase_analyzer.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Network/services/signature_classifier.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Network/services/use_analyzer.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Network/utilities/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/SLO/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/SLO/models/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/SLO/models/slo_models.py","at":"2026-08-16T08:39:25Z","disposition":"findings","finding_ids":["CH-0098"],"summary":"empty SLI/SLO = 100%"}
+{"path":"Asgard/Verdandi/SLO/services/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/SLO/services/_burn_rate_helpers.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/SLO/services/_sli_aggregation.py","at":"2026-08-16T08:39:25Z","disposition":"findings","finding_ids":["CH-0098"],"summary":"period total 0 = success 1.0"}
+{"path":"Asgard/Verdandi/SLO/services/budget_policy.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/SLO/services/burn_rate_analyzer.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/SLO/services/dynamic_budget.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/SLO/services/error_budget_calculator.py","at":"2026-08-16T08:39:25Z","disposition":"findings","finding_ids":["CH-0098"],"summary":"empty windows COMPLIANT"}
+{"path":"Asgard/Verdandi/SLO/services/portfolio_scorer.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/SLO/services/sli_tracker.py","at":"2026-08-16T08:39:25Z","disposition":"findings","finding_ids":["CH-0098"],"summary":"no metrics success_rate 1.0"}
+{"path":"Asgard/Verdandi/SLO/services/tool_slo.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/SLO/utilities/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/System/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/System/models/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/System/models/system_models.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/System/services/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/System/services/cgroup_analyzer.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/System/services/cpu_calculator.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/System/services/io_calculator.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/System/services/memory_calculator.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/System/services/psi_analyzer.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/System/services/use_red_correlator.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/System/utilities/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Tracing/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Tracing/models/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Tracing/models/tracing_models.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Tracing/services/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Tracing/services/_path_helpers.py","at":"2026-08-16T08:39:25Z","disposition":"findings","finding_ids":["CH-0101"],"summary":"critical path/credit no visited"}
+{"path":"Asgard/Verdandi/Tracing/services/_span_parsers.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Tracing/services/causal_normalizer.py","at":"2026-08-16T08:39:25Z","disposition":"findings","finding_ids":["CH-0101"],"summary":"subtree/truncate cycle hang"}
+{"path":"Asgard/Verdandi/Tracing/services/critical_path_analyzer.py","at":"2026-08-16T08:39:25Z","disposition":"findings","finding_ids":["CH-0101"],"summary":"calls unguarded path walk"}
+{"path":"Asgard/Verdandi/Tracing/services/trace_parser.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Tracing/utilities/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Trend/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Trend/models/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Trend/models/trend_models.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Trend/services/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Trend/services/_forecast_methods.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Trend/services/_trend_helpers.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Trend/services/forecast_calculator.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Trend/services/seasonal_decomposer.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Trend/services/trend_analyzer.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Trend/utilities/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Web/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Web/models/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Web/models/web_models.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Web/services/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Web/services/_vitals_recommendations.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Web/services/navigation_timing.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Web/services/resource_timing.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Web/services/vitals_calculator.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/Web/utilities/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/__main__.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/cli/__init__.py","at":"2026-08-16T08:39:25Z","disposition":"findings","finding_ids":["CH-0099"],"summary":"dispatches sketch-merge"}
+{"path":"Asgard/Verdandi/cli/_parser.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/cli/_parser_flags.py","at":"2026-08-16T08:39:25Z","disposition":"findings","finding_ids":["CH-0099"],"summary":"unbounded sketch files + output"}
+{"path":"Asgard/Verdandi/cli/_parser_subcommands.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/cli/handlers_analysis.py","at":"2026-08-16T08:39:25Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/cli/handlers_anomaly_trend.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/cli/handlers_apm_slo.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/cli/handlers_network.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/cli/handlers_new_apis.py","at":"2026-08-16T08:44:15Z","disposition":"findings","finding_ids":["CH-0099"],"summary":"sketch-merge from_dict + unconfined -o"}
+{"path":"Asgard/Verdandi/cli/handlers_slo_extras.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/cli/handlers_system.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Verdandi/cli/handlers_tracing.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/CICD/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/CICD/models/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/CICD/models/cicd_models.py","at":"2026-08-16T08:44:15Z","disposition":"findings","finding_ids":["CH-0105","CH-0001"],"summary":"latest default + unconstrained uses/vault/services"}
+{"path":"Asgard/Volundr/CICD/services/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/CICD/services/action_pins.py","at":"2026-08-16T08:44:15Z","disposition":"findings","finding_ids":["CH-0001","CH-0105"],"summary":"docker:// pass-through; map gaps"}
+{"path":"Asgard/Volundr/CICD/services/context_hardening.py","at":"2026-08-16T08:44:15Z","disposition":"findings","finding_ids":["CH-0103"],"summary":"Jenkins skips harden_steps"}
+{"path":"Asgard/Volundr/CICD/services/pipeline_generator.py","at":"2026-08-16T08:44:15Z","disposition":"findings","finding_ids":["CH-0106"],"summary":"name path join write"}
+{"path":"Asgard/Volundr/CICD/services/pipeline_generator_helpers.py","at":"2026-08-16T08:44:15Z","disposition":"findings","finding_ids":["CH-0103","CH-0105","CH-0001"],"summary":"Jenkins interp + latest + docker uses"}
+{"path":"Asgard/Volundr/Compose/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Compose/models/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Compose/models/compose_models.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Compose/services/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Compose/services/compose_generator.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Compose/services/compose_generator_helpers.py","at":"2026-08-16T08:44:15Z","disposition":"findings","finding_ids":["CH-0105"],"summary":"privileged/image passthrough"}
+{"path":"Asgard/Volundr/Compose/services/compose_validator.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Compose/services/compose_validator_helpers.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Docker/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Docker/models/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Docker/models/docker_models.py","at":"2026-08-16T08:44:15Z","disposition":"findings","finding_ids":["CH-0102"],"summary":"raw stage fields"}
+{"path":"Asgard/Volundr/Docker/services/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Docker/services/_package_manager_pass.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Docker/services/compose_generator.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Docker/services/dockerfile_generator.py","at":"2026-08-16T08:44:15Z","disposition":"findings","finding_ids":["CH-0102","CH-0105"],"summary":"newline instruction inject + trivy:latest"}
+{"path":"Asgard/Volundr/GitOps/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/GitOps/models/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/GitOps/models/gitops_models.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/GitOps/services/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/GitOps/services/argocd_generator.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/GitOps/services/argocd_generator_helpers.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/GitOps/services/flux_generator.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/GitOps/services/flux_generator_helpers.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Helm/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Helm/models/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Helm/models/helm_models.py","at":"2026-08-16T08:44:15Z","disposition":"findings","finding_ids":["CH-0105","CH-0104"],"summary":"latest tag + unconstrained name"}
+{"path":"Asgard/Volundr/Helm/services/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Helm/services/_chart_generator_extras.py","at":"2026-08-16T08:44:15Z","disposition":"findings","finding_ids":["CH-0104"],"summary":"name into include/define"}
+{"path":"Asgard/Volundr/Helm/services/_chart_generator_extras_part2.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Helm/services/_chart_generator_templates.py","at":"2026-08-16T08:44:15Z","disposition":"findings","finding_ids":["CH-0104"],"summary":"Helm SSTI via chart name"}
+{"path":"Asgard/Volundr/Helm/services/chart_generator.py","at":"2026-08-16T08:44:15Z","disposition":"findings","finding_ids":["CH-0104"],"summary":"name flows into templates"}
+{"path":"Asgard/Volundr/Helm/services/chart_generator_helpers.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Helm/services/values_generator.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kubernetes/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kubernetes/models/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kubernetes/models/kubernetes_models.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kubernetes/services/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kubernetes/services/manifest_generator.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kubernetes/services/manifest_generator_helpers.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kustomize/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kustomize/models/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kustomize/models/kustomize_models.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kustomize/services/__init__.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kustomize/services/base_generator.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kustomize/services/base_generator_helpers.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kustomize/services/component_generator.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kustomize/services/overlay_generator.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kustomize/services/overlay_generator_helpers.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}
+{"path":"Asgard/Volundr/Kustomize/services/patch_generator.py","at":"2026-08-16T08:44:15Z","disposition":"clean","finding_ids":[],"summary":"traced; no new finding"}

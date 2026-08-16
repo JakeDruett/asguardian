@@ -24,8 +24,8 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Planned | Accepted risk |
 |----------|------|---------|---------------|
 | Critical | 0    | 0       | 0             |
-| High     | 25   | 0       | 0             |
-| Medium   | 49   | 0       | 0             |
+| High     | 27   | 0       | 0             |
+| Medium   | 52   | 0       | 0             |
 | Low      | 19   | 0       | 0             |
 | Info     | 5    | 0       | 0             |
 
@@ -1484,7 +1484,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Confidence:** High
 - **CWE / class:** CWE-754
 - **Primary file:** `Asgard/Verdandi/Analysis/services/sla_checker.py`
-- **Also on trace:** `Asgard/Verdandi/Analysis/models/analysis_models.py`
+- **Also on trace:** `Asgard/Verdandi/Analysis/models/analysis_models.py`, `Asgard/Verdandi/SLO/models/slo_models.py`, `Asgard/Verdandi/SLO/services/error_budget_calculator.py`, `Asgard/Verdandi/SLO/services/sli_tracker.py`, `Asgard/Verdandi/SLO/services/_sli_aggregation.py`
 - **Location:** `calculate_compliance_rate` — `if not results: return 100.0`; NaN percentile `> threshold` is False → COMPLIANT
 - **Trace:** No windows / NaN samples → 100% or COMPLIANT
 - **Impact:** Missing telemetry looks like a passing SLA (same class as CH-0054/CH-0073).
@@ -1499,7 +1499,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Confidence:** High
 - **CWE / class:** CWE-502 / CWE-400
 - **Primary file:** `Asgard/Verdandi/Analysis/services/quantile_sketch.py`
-- **Also on trace:** Verdandi CLI `sketch-merge` (when scanned)
+- **Also on trace:** `Asgard/Verdandi/cli/_parser_flags.py`, `Asgard/Verdandi/cli/__init__.py` (dispatch `sketch-merge`), `Asgard/Verdandi/cli/handlers_new_apis.py`
 - **Location:** `TDigest.from_dict` / `DDSketch.from_dict`
 - **Trace:** Caller JSON → unbounded centroids/buckets, negative weights, huge `compression` / bucket index → memory/CPU / Inf
 - **Impact:** DoS of sketch-merge / analysis. Not pickle RCE.
@@ -1529,7 +1529,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Confidence:** High
 - **CWE / class:** CWE-835
 - **Primary file:** `Asgard/Verdandi/APM/services/service_map_builder.py`
-- **Also on trace:** none
+- **Also on trace:** `Asgard/Verdandi/Tracing/services/_path_helpers.py`, `Asgard/Verdandi/Tracing/services/causal_normalizer.py`, `Asgard/Verdandi/Tracing/services/critical_path_analyzer.py`
 - **Location:** `find_critical_path` — `while current_span.span_id in children` with no visited set
 - **Trace:** Cyclic `parent_span_id` in untrusted traces → infinite loop
 - **Impact:** DoS of APM map build. Identity spoof via raw env/namespace attrs is residual.
@@ -1537,9 +1537,84 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Planned fix:** Track visited span IDs; cap path length. Tests with A→B→A.
 - **Fix wave:** W4
 
+### CH-0102 — Dockerfile generator concatenates untrusted fields as instructions
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-94
+- **Primary file:** `Asgard/Volundr/Docker/services/dockerfile_generator.py`
+- **Also on trace:** `Asgard/Volundr/Docker/models/docker_models.py`
+- **Location:** f-string emit of `base_image`, `workdir`, `run_commands`, `user`, `COPY` src/dst, `HEALTHCHECK`
+- **Trace:** Caller/`BuildStage` string with a newline → extra Dockerfile instruction (e.g. `FROM ubuntu\nUSER root`)
+- **Impact:** Generated images can run as root, add `ADD`/`RUN`, or leak secrets. Scan workflow also uses `trivy:latest` and mounts docker.sock.
+- **Evidence:** No newline/instruction allowlist. Secret-named ENV is refused; other fields are not.
+- **Planned fix:** Reject `\n`/`\r` and `#` in interpolated fields; quote HEALTHCHECK; pin trivy by digest; drop docker.sock unless `--privileged-scan`. Tests with a newline in `base_image`.
+- **Fix wave:** W1
+
+### CH-0103 — Jenkins emitter interpolates `run`/`env` without hardening
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-94 / CWE-78
+- **Primary file:** `Asgard/Volundr/CICD/services/pipeline_generator_helpers.py`
+- **Also on trace:** `Asgard/Volundr/CICD/services/context_hardening.py`
+- **Location:** `generate_jenkins` — `sh '''{step.run}'''` and `f"{key} = '{value}'"`; `harden_steps` is not called
+- **Trace:** `StepConfig.run` / `env` with `'''` or `'` → Groovy/shell breakout in the Jenkinsfile
+- **Impact:** Generated CI executes attacker-controlled Groovy/shell on the Jenkins agent.
+- **Evidence:** GHA/GitLab/Azure call `harden_steps`; Jenkins skips it.
+- **Planned fix:** Harden or refuse `run` for Jenkins; escape quotes; never wrap untrusted text in `'''`. Tests with `'''; sh 'id`.
+- **Fix wave:** W1
+
+### CH-0104 — Helm chart name is interpolated into `{{ define }}` / `include`
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-94 / SSTI
+- **Primary file:** `Asgard/Volundr/Helm/services/_chart_generator_templates.py`
+- **Also on trace:** `Asgard/Volundr/Helm/services/_chart_generator_extras.py`, `Asgard/Volundr/Helm/services/chart_generator.py`
+- **Location:** `include "{name}.fullname"` / `define "{name}.name"`
+- **Trace:** `HelmChart.name` with `"` / `}}` → Helm action breakout in generated templates
+- **Impact:** Generated charts can execute unexpected Helm functions at `helm template`/`install` time.
+- **Evidence:** No charset validator on `HelmChart.name`.
+- **Planned fix:** Allowlist `^[a-z0-9-]+$`; quote/escape template names. Tests with `foo}}.evil`.
+- **Fix wave:** W1
+
+### CH-0105 — Generators emit floating tags, HTTP Vault, and privileged-capable services
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-829 / CWE-250
+- **Primary file:** `Asgard/Volundr/CICD/models/cicd_models.py`
+- **Also on trace:** `Asgard/Volundr/CICD/services/pipeline_generator_helpers.py`, `Asgard/Volundr/CICD/services/action_pins.py`, `Asgard/Volundr/Compose/services/compose_generator_helpers.py`, `Asgard/Volundr/Helm/models/helm_models.py`
+- **Location:** `runs_on` default `ubuntu-latest`; GitLab `ubuntu:latest`; CircleCI `cimg/base:current`; `OIDCConfig.vault_url` no scheme check; `stage.services` dumped as-is; Helm `image_tag="latest"`
+- **Trace:** Defaults / caller `services` / `vault_url=http://…` → generated YAML
+- **Impact:** Mutable images; HTTP Vault leaks OIDC JWT; GHA services can set `privileged: true`.
+- **Evidence:** `resolve_action_ref` skips `docker://`; validator warns `:latest` but still emits.
+- **Planned fix:** Pin images by digest; require `https` Vault; reject `privileged` in services; default Helm tag away from `latest`. Tests for `http://vault` and `privileged: true`.
+- **Fix wave:** W1
+
+### CH-0106 — Pipeline `save_to_file` joins unsanitized `config.name`
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-22
+- **Primary file:** `Asgard/Volundr/CICD/services/pipeline_generator.py`
+- **Also on trace:** `Asgard/Volundr/CICD/services/pipeline_generator_helpers.py`
+- **Location:** `save_to_file` — `os.path.join(target_dir, rel_path)` where path includes `config.name`
+- **Trace:** `--name ../../tmp/x` → write outside output dir
+- **Impact:** Arbitrary write of generated YAML if the operator (or a wrapper) passes a hostile name.
+- **Evidence:** Only spaces→hyphens; no `is_relative_to`.
+- **Planned fix:** Allowlist name `[a-z0-9-]+`; resolve and require under `target_dir`. Tests with `../x`.
+- **Fix wave:** W2
+
 ## Planned fix waves
 
-- **W1 — CI / supply chain / secrets / network:** CH-0001–0006, CH-0023, CH-0024, CH-0033, CH-0049, CH-0056, CH-0060–0063, CH-0066, CH-0071, CH-0082, CH-0086, CH-0093, CH-0094. Isolate git/linters; lock crawler/link/probe/proxy fetches; token-gate MCP; encode GHA commands.
+- **W1 — CI / supply chain / secrets / network:** CH-0001–0006, CH-0023, CH-0024, CH-0033, CH-0049, CH-0056, CH-0060–0063, CH-0066, CH-0071, CH-0082, CH-0086, CH-0093, CH-0094, CH-0102–0105. Isolate git/linters; lock crawler/link/probe/proxy fetches; token-gate MCP; encode GHA commands; sanitize generators.
 - **W2 — Path confinement:** … CH-0059, CH-0065, CH-0068, CH-0078, CH-0091. Jail `$ref`, SQL/Alembic, Freya baseline paths; skip scanner symlinks; jail eval corpus.
 - **W3 — Baseline / cache / secrets in artifacts:** … CH-0051, CH-0052, CH-0054, CH-0069, CH-0076, CH-0077, CH-0079, CH-0080, CH-0081, CH-0088–0090, CH-0092. Redact crawl auth; sign baselines/caches; fail-closed domain/scan/ratings.
 - **W4 — Analyzer robustness:** CH-0016, CH-0017, CH-0018, CH-0021, CH-0022, CH-0025, CH-0031, CH-0039, CH-0045, CH-0053, CH-0083–0085, CH-0087, CH-0095. Size/recursion/hunk/regex/parse caps; spawn-safe parallel workers.
@@ -1570,6 +1645,9 @@ None yet.
 - Batch 12 merged (2026-08-16): Heimdall Security/services + triage + utilities + CLI dispatch/common + handlers through quality_imports. remaining=2735 completed=1140 ledger=1140. Highest ID: CH-0087.
 - Batch 13 merged (2026-08-16): remaining Heimdall CLI handlers/subparsers/evaluation/treesitter + HooksSetup + MCP + Reporting History/PR/HTML. remaining=2655 completed=1220 ledger=1220. Highest ID: CH-0095.
 - Batch 14 merged (2026-08-16): Reporting html_generator + Shared Init/Issues/Profiles/common + Verdandi APM/Analysis/Anomaly/Cache. remaining=2575 completed=1300 ledger=1300. Highest ID: CH-0101.
+- Batch 15 merged (2026-08-16): Verdandi Database/Network/SLO/System/Tracing/Trend/Web + CLI parsers. remaining=2495 completed=1380 ledger=1380. Highest ID: CH-0101.
+- Spot-check: dns_calculator offline (no dig); cgroup_analyzer no /proc I/O; SLO empty=healthy extended CH-0098; tracing cycle walks extended CH-0101.
+- Next: Verdandi cli/handlers_* then Volundr CICD (action_pins / CH-0001) then rest of Volundr / Asgard_Test.
 - Spot-check: html_generator no escape (CH-0046); `_new_code_git` unisolated (CH-0024); `calculate_compliance_rate([])==100` (CH-0098); profile `..` still not exploitable.
 - Next: Verdandi Database/Network then remaining Verdandi, Volundr, Asgard_Test.
 - Spot-check: licenses `--denied` dest (CH-0089); scan ERROR no overall_exit (CH-0090); scan_html unescaped scan_path (CH-0046); MCP tools path jail (CH-0086).

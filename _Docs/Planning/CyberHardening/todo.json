@@ -2,875 +2,11 @@
   "version": 1,
   "repo_root": ".",
   "generated_at": "2026-08-16T07:04:47+00:00",
-  "updated_at": "2026-08-16T08:35:21+00:00",
+  "updated_at": "2026-08-16T08:44:18+00:00",
   "planning_dir": "_Docs/Planning",
   "plan_path": "_Docs/Planning/CyberHardening.md",
   "total_discovered": 3875,
   "remaining": [
-    {
-      "path": "Asgard/Verdandi/Database/models/database_models.py",
-      "bytes": 9134,
-      "sha256": "166febdffdab1b69ceb78b8445b5c3d68cc5d96b9710a77f6c7d3e7a15edea43",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Database/services/__init__.py",
-      "bytes": 382,
-      "sha256": "10496fc74c2b363e17c096375a17042fd661af5f621f38ec7b93a7ccb68010b6",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Database/services/connection_analyzer.py",
-      "bytes": 9280,
-      "sha256": "1e04d8a8d4def588b928416bbdca204b2ead3e1c62f1deb6c476fc59c30ea249",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Database/services/pool_signature_detector.py",
-      "bytes": 6734,
-      "sha256": "338ccc982bcb740ee9bd358ca35a4d98dbacbeab26be80058a73a8ca8f3dd00a",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Database/services/query_budget.py",
-      "bytes": 5818,
-      "sha256": "0a13169a1a309e36f4789949b6e3496a85325f196363ad4c54ccf9aec3a4c941",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Database/services/query_metrics.py",
-      "bytes": 9379,
-      "sha256": "425bcad3c2be97eb889df702aa722aed376fd00df50bdca7866fd69d703a3362",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Database/services/throughput_calculator.py",
-      "bytes": 4852,
-      "sha256": "22ce8cbe1c4d664fb606658fecdd93eecc90b492c74d817661a011c6e6de0455",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Database/utilities/__init__.py",
-      "bytes": 26,
-      "sha256": "26e3756d53c24e14ce2b84f15826823c051cd263cdc6c7ae9876e310f3e6a529",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Network/__init__.py",
-      "bytes": 2174,
-      "sha256": "6dde419bc1f9f047bc2410ed6b7484bb9a2859a8356579cecffeacb0a0d26eee",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Network/models/__init__.py",
-      "bytes": 856,
-      "sha256": "fc33cfaa89645b4cd1cb3d5816c0f00e735617fd97202699689e5882b044b4cf",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Network/models/network_models.py",
-      "bytes": 12599,
-      "sha256": "5fae102d2ec7c61cd732361ac919a3439459697a9aee3b043119f266fe9fd636",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Network/services/__init__.py",
-      "bytes": 652,
-      "sha256": "f23f7f546848396fc95491f1badde0374ca03344415d245db93b972148560ccc",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Network/services/bandwidth_calculator.py",
-      "bytes": 3912,
-      "sha256": "d75994ffa05dc8ebee06470775cb3c15759c929298febe2228c781c806ad136a",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Network/services/dns_calculator.py",
-      "bytes": 7281,
-      "sha256": "772dcc960cb9230dcfaea12686e980eb8f848bdaf05cdfaf01026838bb371be9",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Network/services/latency_calculator.py",
-      "bytes": 9423,
-      "sha256": "7e9e219f4476a0aafe865906de718312cd092a67989e738d463410951998544c",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Network/services/phase_analyzer.py",
-      "bytes": 5819,
-      "sha256": "27ddcfb78b80dcc9c4fe048f1eb9729f34c706d772b8f06aa4e4a21b60607232",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Network/services/signature_classifier.py",
-      "bytes": 9409,
-      "sha256": "b5e6b00a69152036a4b8985ad09396ecb65966839adfa87448a9bf5d2e2990a6",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Network/services/use_analyzer.py",
-      "bytes": 9341,
-      "sha256": "15f9cdb1bbab0b63eda38f73a9ffe82e7b7dd4071c14c3308765a647effe2538",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Network/utilities/__init__.py",
-      "bytes": 25,
-      "sha256": "53461ca0449c7cae819eeca2e125f3a6b1323af603aea3014066bb576352faa1",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/SLO/__init__.py",
-      "bytes": 2445,
-      "sha256": "17168750331454c0845196b0e94e782f5206a33560985df62ebfbe73113b8920",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/SLO/models/__init__.py",
-      "bytes": 338,
-      "sha256": "2a6e59b1425b6c0f01ddf39e5df4984f28f608d70b65d2c88de88470ffa0b4f2",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/SLO/models/slo_models.py",
-      "bytes": 12845,
-      "sha256": "00ebe2b88f71506104f37cf33ca82e6f60417a6be735a4ff0f81f4994d335e45",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/SLO/services/__init__.py",
-      "bytes": 335,
-      "sha256": "b6231eaefbbced2a30c13f946144b1002e0eb8fd9fa3812faa956c76c11f1cae",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/SLO/services/_burn_rate_helpers.py",
-      "bytes": 4938,
-      "sha256": "508920b3e05ed0bdfa6f19105910410f64b7f2b635f74f01cf1faba6a535c8e8",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/SLO/services/_sli_aggregation.py",
-      "bytes": 1578,
-      "sha256": "dee3884571b20059ddccf7e2542bb9d80b55ecd89d6b5c598bc042d6fccc70af",
-      "mtime": "2026-03-20T02:42:55+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/SLO/services/budget_policy.py",
-      "bytes": 8979,
-      "sha256": "f57af0a6bf8682e7096a3a9bc837f7c80f2e674c7e0209261a2a3e2da64e1051",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/SLO/services/burn_rate_analyzer.py",
-      "bytes": 17312,
-      "sha256": "7ff9dee9c8e4feacda627f07a17a37403ae98dda8473f55338a66e4694938ea7",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/SLO/services/dynamic_budget.py",
-      "bytes": 4091,
-      "sha256": "e435c872f85374eb840903afbec3a6e55569736bbfed42bb98c5f732d94a1ebc",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/SLO/services/error_budget_calculator.py",
-      "bytes": 9015,
-      "sha256": "9e3eb97fa69f66f643a60bbda571abe07c97f74b430ee7aea99f0b56eef71f1e",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/SLO/services/portfolio_scorer.py",
-      "bytes": 10570,
-      "sha256": "60fdce60f2b1bb540b6e536668e375a89bde3490d1aa5143a2634f557f58dd63",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/SLO/services/sli_tracker.py",
-      "bytes": 9052,
-      "sha256": "8fc09dc376ac23501cd84b8d72ee7978012cbf57ce404099901a103d54c776ac",
-      "mtime": "2026-03-20T02:43:21+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/SLO/services/tool_slo.py",
-      "bytes": 10440,
-      "sha256": "430649a8bad31eb6880c18fc2f0bbdc66d101f14d5dfe948de33eb0ddc3dc6a4",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/SLO/utilities/__init__.py",
-      "bytes": 21,
-      "sha256": "6eeb8378140a2f0e1cbdae9cba57ab361039fbf4d396b600abe47536c41d08f0",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/System/__init__.py",
-      "bytes": 1607,
-      "sha256": "e5a0ed9a57b7cd3925fb44ca9cdd6ddbc3b1bb451858654719a2fcaca3af151e",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/System/models/__init__.py",
-      "bytes": 255,
-      "sha256": "32c2e3dcc9a3161b96d4f7d34c4f42f09bf9212cf311e094b8e777b1ce5fa0f4",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/System/models/system_models.py",
-      "bytes": 10116,
-      "sha256": "10ff8d82d223618f73380077d2997ce009900fbdb199aeee306357dfa4fafcec",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/System/services/__init__.py",
-      "bytes": 369,
-      "sha256": "94158a605590e8639dfe5b90b4a723abd43b5d096a73830c9df2d1c5e6f8d53f",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/System/services/cgroup_analyzer.py",
-      "bytes": 4003,
-      "sha256": "dbb0f7a0716ef64b7df409c24c631ed6dfbb77c4ffc630a33a24b229b4ab953f",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/System/services/cpu_calculator.py",
-      "bytes": 9051,
-      "sha256": "14b7ecf797a25159959a9befe9ae3c495444dc11463199333e8a9c4a8094050a",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/System/services/io_calculator.py",
-      "bytes": 12525,
-      "sha256": "7b02f0dd8ad68f8e0e31ac6b8aad567d7271f7492043a056c22f65c0034f2761",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/System/services/memory_calculator.py",
-      "bytes": 10640,
-      "sha256": "1c7ffff8f4547f9aaf039d4e282d01f3b8954a5c0692e1b16bd4167c24386da6",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/System/services/psi_analyzer.py",
-      "bytes": 6925,
-      "sha256": "82bebb2f1bc040e77b1be7c73efe07979df1e01b9332426f786f674e2092cf30",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/System/services/use_red_correlator.py",
-      "bytes": 6700,
-      "sha256": "724be15b551395113ec4841c9f5bbe316c702e7e824f14e0f9bf45e455d05497",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/System/utilities/__init__.py",
-      "bytes": 24,
-      "sha256": "9a0cd93c543e828278785630ff7b540ffe44321c506adfe7d24eb800b16d96bf",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Tracing/__init__.py",
-      "bytes": 1071,
-      "sha256": "1e3fccf5b60160672a9026a84e104f04386006c2162a9997af5d3bfae86e074c",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Tracing/models/__init__.py",
-      "bytes": 298,
-      "sha256": "f3acdbbeedfd180873e877796684913e6e70315ed4e860809970c8fdbcb9d8b9",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Tracing/models/tracing_models.py",
-      "bytes": 9748,
-      "sha256": "ea212986a8d3dddf916c6bf5bc90e316885ce6a8646369226fc52d89b81caac6",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Tracing/services/__init__.py",
-      "bytes": 246,
-      "sha256": "5ec78bf951c1ce37dd2864dfa34900599a22636e2e35f16007d4e5af2c77ba2c",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Tracing/services/_path_helpers.py",
-      "bytes": 7380,
-      "sha256": "9c0582b8c4773e2b4ab433e25c38cc992d5a8827058c2a1051aa9c9f41fd8ee0",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Tracing/services/_span_parsers.py",
-      "bytes": 9722,
-      "sha256": "9cf9e1834d1cc913927826a1f5fc05b09af13734d30f4905d00e9a6fcfa51604",
-      "mtime": "2026-03-22T07:23:26+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Tracing/services/causal_normalizer.py",
-      "bytes": 9971,
-      "sha256": "206e77c18c4de645a7d4158009b4aa6786f7b8af6cfa5937ae534e49b3fb9dfd",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Tracing/services/critical_path_analyzer.py",
-      "bytes": 16260,
-      "sha256": "388d7beaf8373b5d7f37342724481363a233d7f68a52c6b0a118ab480d8a8d57",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Tracing/services/trace_parser.py",
-      "bytes": 7733,
-      "sha256": "f5615450409b5cbaa2bce077f10e28d241f6f7e4326abb1ef62b727d1e564877",
-      "mtime": "2026-04-16T04:47:47+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Tracing/utilities/__init__.py",
-      "bytes": 25,
-      "sha256": "3fac67d88f95d69c35bda2136c98594a6835f1cf1041b0f6b5f2b460f647af7a",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Trend/__init__.py",
-      "bytes": 1382,
-      "sha256": "b5c5e01ccaeeda0134fda1065b8c4ca9d7e38ac080707aef744141c54f9f073f",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Trend/models/__init__.py",
-      "bytes": 444,
-      "sha256": "d80ee9e54b2a3a1e29cbce2c5d49863e8440b0fa51a5befea0b0e02c70edd19a",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Trend/models/trend_models.py",
-      "bytes": 8238,
-      "sha256": "2370060024ef615b233ba7540a63ab467977c129fd1858abd15d224b87e15725",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Trend/services/__init__.py",
-      "bytes": 347,
-      "sha256": "9a0f2b71f7b6d59496956174be3d1f8a4b9f6aa71b79ae1a44a05a12333ba732",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Trend/services/_forecast_methods.py",
-      "bytes": 7749,
-      "sha256": "33a472584aca461045c7f99f9a274222d4fb08046b6234fe864c09d8631d6c81",
-      "mtime": "2026-03-20T02:36:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Trend/services/_trend_helpers.py",
-      "bytes": 5478,
-      "sha256": "15a01c3ed3b003335d69ef4ceae7eb04e9607d0890c183a71e4249c2f8c5f89a",
-      "mtime": "2026-03-20T02:47:03+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Trend/services/forecast_calculator.py",
-      "bytes": 6875,
-      "sha256": "183a5a929beca1379f86f0fbcb2895050d91853085f44f782f4a80d554448c64",
-      "mtime": "2026-03-20T02:37:09+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Trend/services/seasonal_decomposer.py",
-      "bytes": 9997,
-      "sha256": "cc6ecb825b26ff6197a465cd01f5a2013c9483478e30ee2904bcb2fb1c8a2097",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Trend/services/trend_analyzer.py",
-      "bytes": 11414,
-      "sha256": "d1e5be2be77fb7e010a9ed327a7eb3ec7a219bb028924b48bb784a8e4055033e",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Trend/utilities/__init__.py",
-      "bytes": 23,
-      "sha256": "f5fd4f37e5bca105d2990436f0314b44fb192188a872456e02f429902a863e9e",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Web/__init__.py",
-      "bytes": 1445,
-      "sha256": "ade0e250f013ba4c2181f5457dbd9f672ed69888c795663a68cb887af67609bc",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Web/models/__init__.py",
-      "bytes": 440,
-      "sha256": "e21e63846ba88f3f330fe945f58bc7e232b6fbb5afc1ae93e7840c203829191d",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Web/models/web_models.py",
-      "bytes": 9623,
-      "sha256": "79de0a223720c7e811df7b82bd1519a6c1e899733a26fdb4b37aa66057eef456",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Web/services/__init__.py",
-      "bytes": 384,
-      "sha256": "72847710abd186b63d0e99e5ba99d13e543dc5d6b77b372c9d76101fbcc3690f",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Web/services/_vitals_recommendations.py",
-      "bytes": 2810,
-      "sha256": "c763f44a78d98728365bc840ac0a437941e03d9d607180f5e04a9641a67f1522",
-      "mtime": "2026-03-20T02:44:15+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Web/services/navigation_timing.py",
-      "bytes": 7360,
-      "sha256": "cd603351773b79fdb111b05f452c9699a511190e4c6381b42f053186ee88a165",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Web/services/resource_timing.py",
-      "bytes": 7235,
-      "sha256": "94c33f82d53dbb965f796ffba0fd64df702f8db4080a6c1d1596036d0744d12b",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Web/services/vitals_calculator.py",
-      "bytes": 14858,
-      "sha256": "1464aec0f1739cd18e2f7f945893e4a6474b6cb174e25a19e5d4176f2906b976",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/Web/utilities/__init__.py",
-      "bytes": 21,
-      "sha256": "ce0a6321573869cd873f81b080a86fae9e39bab198e9a1b0b52bddd49409339f",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/__init__.py",
-      "bytes": 4792,
-      "sha256": "d77106b79004c1de279b7a13fac4d6fd6d9c47e4772e15a9b6ebd13b82c0e5a8",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/__main__.py",
-      "bytes": 169,
-      "sha256": "86b9898950ca5d9f0c1271d4167d858397e841938b2be9e763a6c94114f4d089",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/cli/__init__.py",
-      "bytes": 9902,
-      "sha256": "ada0f3c94d1d8015191ba8863bebc98c9061005701421b8ae3b9a3ca265395b0",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/cli/_parser.py",
-      "bytes": 1664,
-      "sha256": "4eb8d09231b4eeee9c04be209149ab9e0e2d47110592bb8f894fb8216559c8ca",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/cli/_parser_flags.py",
-      "bytes": 10679,
-      "sha256": "52eb3eb2aa5d8a6f6da2658dcd6ef1350be26725024389fb7d09e3ca8135682c",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/cli/_parser_subcommands.py",
-      "bytes": 14368,
-      "sha256": "35dde1845ef87f650a37ae900216ad7d12cbae92f71a448569564c45b580c512",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/cli/handlers_analysis.py",
-      "bytes": 9397,
-      "sha256": "34f27a8f970676de5742f2510d05fe806c62fd2c19c175a2d2ec9bc921df505b",
-      "mtime": "2026-08-13T11:26:19+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/cli/handlers_anomaly_trend.py",
-      "bytes": 8062,
-      "sha256": "7ac69e33cb279da2f018cec2c679ce6e6089abc26f3cd7786da43436a6d0a6b8",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/cli/handlers_apm_slo.py",
-      "bytes": 6118,
-      "sha256": "456a3d9adb4cda2b2a56f3c1e8bfc83dff51da7e67459645a55b77e4c9c667d1",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/cli/handlers_network.py",
-      "bytes": 6413,
-      "sha256": "f5e52f87863a9775c799907b5608dfae66b3284ac29057468cab72585ddcfbb7",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/cli/handlers_new_apis.py",
-      "bytes": 23164,
-      "sha256": "90e8ebeead9f96b61b909eb195d3c4951c5bd1e721644349452049ba40bfa574",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/cli/handlers_slo_extras.py",
-      "bytes": 7956,
-      "sha256": "90cbf0d4e1d69004a5a7f20eb2fdfaff769c056ec595d89d95e49d6c462f904d",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/cli/handlers_system.py",
-      "bytes": 6483,
-      "sha256": "8b728bd15fb8081a99b49edb457e3f021482bf4959ab057e38f1ce10709196ab",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/cli/handlers_tracing.py",
-      "bytes": 1736,
-      "sha256": "1eb3f325311b8a9c964fe4e51c3443c1fea46434faf1c6328c8b9407e4f226c9",
-      "mtime": "2026-03-20T01:44:52+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/CICD/__init__.py",
-      "bytes": 833,
-      "sha256": "b80cf7fc014172c8aef29aeb60020ffad9b34564f4c3310566cef49e3af6d91e",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/CICD/models/__init__.py",
-      "bytes": 332,
-      "sha256": "77d47df6c1696552f1ae0048c6bddf8b0eaff1c0c01a10c698a2f3e4a22328c1",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/CICD/models/cicd_models.py",
-      "bytes": 8187,
-      "sha256": "a2995ace128f60a9ea7db0dde15e3b01db3cb73cfa0376c59f9c9f5c6783b102",
-      "mtime": "2026-08-13T11:26:19+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/CICD/services/__init__.py",
-      "bytes": 164,
-      "sha256": "cd57c534b824af1e384881dab78a5afdd0d5294501f8d0727d54af4ed6a0f9cc",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/CICD/services/action_pins.py",
-      "bytes": 5487,
-      "sha256": "4f53cb94905f08d770021181a4016fdd3a848cd23512b79a52e4a2b5d0c0a73a",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/CICD/services/context_hardening.py",
-      "bytes": 2970,
-      "sha256": "46f32929e46e8cb7a889f03164b29f4d59cd1f3d49daa19cb96c63c201513ceb",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/CICD/services/pipeline_generator.py",
-      "bytes": 6634,
-      "sha256": "5e10fbdb8895c264f51fc95980ba6887f000c9941a90c0b70f62d88208407c19",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/CICD/services/pipeline_generator_helpers.py",
-      "bytes": 26518,
-      "sha256": "0f75a4e3cab64266f742615fc74ff21f3449baaf5ea83b9c94910ae2f48e9e2b",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Compose/__init__.py",
-      "bytes": 908,
-      "sha256": "2de391d522e274a909dc0ea785568ee945066040320565dff8dd944175d69f58",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Compose/models/__init__.py",
-      "bytes": 503,
-      "sha256": "01a29eb3bd440da613b6ffa87d2a4e213a38f2f9c590f4b1ab4a0b6cba1d3069",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Compose/models/compose_models.py",
-      "bytes": 13034,
-      "sha256": "6e6cbbb9eeaac854016dd8b60d9a0f47aa65956c81dc9f42af3fc4f2b4f52eca",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Compose/services/__init__.py",
-      "bytes": 314,
-      "sha256": "349bb9e3eef03ab6fe04e537c030419f43730aa1cb91af8e012b226256ef3c76",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Compose/services/compose_generator.py",
-      "bytes": 11377,
-      "sha256": "5d632c57b8aa5185e715b44029f6790ec873b8bf47b05be3c17dc8e76ef64199",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Compose/services/compose_generator_helpers.py",
-      "bytes": 12152,
-      "sha256": "84f84914b0f75ad3033ca03bb2f2b99127277d0a572fa2cf862d6bf369065252",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Compose/services/compose_validator.py",
-      "bytes": 4619,
-      "sha256": "31633a91ecb5c02934339be4c6e82e8a9df1fa92595bb3237d3d5a749161ec7a",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Compose/services/compose_validator_helpers.py",
-      "bytes": 9054,
-      "sha256": "1d5d7e520b25bd8971eafce174559622de9ae59fd80268bbaa7e354e4ceac636",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Docker/__init__.py",
-      "bytes": 822,
-      "sha256": "5c98eb52d9cc0421ee86ce43f99ea6dbe831aafed89526313386d99abfce0689",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Docker/models/__init__.py",
-      "bytes": 387,
-      "sha256": "751f2c7999c8cefbfba25459ad6438cdb0f8cfce2df537a498cc836e417f4fc9",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Docker/models/docker_models.py",
-      "bytes": 10020,
-      "sha256": "50ce44b7098bcbb73d553a8830092367d3640f775e3fd0481e81722b8b86ed57",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Docker/services/__init__.py",
-      "bytes": 281,
-      "sha256": "9ba18478d6842939704f0e3c0681966814ea8d0eedc7eed58e9fc2f41f625887",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Docker/services/_package_manager_pass.py",
-      "bytes": 5249,
-      "sha256": "690585faad7d9c13babc9e0836023954738182d72d0aa831beec093d5e470564",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Docker/services/compose_generator.py",
-      "bytes": 6293,
-      "sha256": "1291f824afcfcd22b0153fa006b26010c6f45b08a21b32bbfa1bd0e63facf3ef",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Docker/services/dockerfile_generator.py",
-      "bytes": 17540,
-      "sha256": "62b43be59ca259da99b5f754303d70d3d3dbc81bc480935612039ff116f15b8b",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/GitOps/__init__.py",
-      "bytes": 950,
-      "sha256": "1036c110ef2d3930e8acc05b8b30a553217055b826dbe5d4c37324d968045193",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/GitOps/models/__init__.py",
-      "bytes": 455,
-      "sha256": "e43106157cd1fde25a482c2abba44a5954f44f34a18595c8bf6eadd8c0e62bcd",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/GitOps/models/gitops_models.py",
-      "bytes": 12657,
-      "sha256": "7c8bb7bd81e37bc1b4740c70311ad2cd41570777ac9e9a2c1a683887e55210e3",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/GitOps/services/__init__.py",
-      "bytes": 284,
-      "sha256": "082507539564ba6990e98996662b02cd09c19be65e1a08211ba44167dc40c567",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/GitOps/services/argocd_generator.py",
-      "bytes": 8319,
-      "sha256": "d07421ac12b128edadf5c0beb14aa32cb53937d765d863ee5dab6d3a37354121",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/GitOps/services/argocd_generator_helpers.py",
-      "bytes": 9733,
-      "sha256": "86fc539171c535e029b1778f48151ad3ded40b31aa0f7dab12237ae01c98790c",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/GitOps/services/flux_generator.py",
-      "bytes": 8414,
-      "sha256": "fb6e673b010f7f7466fe46df2e9198456b58f703fd8184f6ef9c0114d8f6fb1f",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/GitOps/services/flux_generator_helpers.py",
-      "bytes": 6019,
-      "sha256": "c858b2854c9b8adbd0e474bc8401b3e76dd534d5199971b16c463d1b1d72fb3e",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Helm/__init__.py",
-      "bytes": 701,
-      "sha256": "d73ad88ae94d8e1e6c6dd9302aaf7070c6afe823d66b944b4dafb87e18a378ac",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Helm/models/__init__.py",
-      "bytes": 375,
-      "sha256": "358c9bdb47b4993649855a30f62f8e5f2d2b89d11cbb09a6b03587c733403e1d",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Helm/models/helm_models.py",
-      "bytes": 10601,
-      "sha256": "c11e6c0b5dfad039dfb9c8264b28994302d73f4756167996a8e8af2ad4b4b8c0",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Helm/services/__init__.py",
-      "bytes": 279,
-      "sha256": "a28a4d04ba8cd65dfd3be1237709fa2a7958c3e1c87018e9de01e51ce6bbaef4",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Helm/services/_chart_generator_extras.py",
-      "bytes": 7986,
-      "sha256": "198f71ce3919c81c8edd6fde514295c2629207ca5494fa56ebc8a47b5fe67157",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Helm/services/_chart_generator_extras_part2.py",
-      "bytes": 2207,
-      "sha256": "69c8a7cdef09cb9f7851356d8c9684b38f767a363fe7f4830e939788d12d89bf",
-      "mtime": "2026-03-22T07:53:59+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Helm/services/_chart_generator_templates.py",
-      "bytes": 5755,
-      "sha256": "eef02c17f955dc6e2fab834fa5ed63674acd28933b97fd98639b784428e5b651",
-      "mtime": "2026-03-21T02:08:06+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Helm/services/chart_generator.py",
-      "bytes": 14207,
-      "sha256": "df20e8cb5c077e4eff03fcb816daf6cf90d2311bd394d73bec68ab7459a59646",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Helm/services/chart_generator_helpers.py",
-      "bytes": 787,
-      "sha256": "f4e3957d1df4948d4476052ec96b3a490d7e54860873fd73dda3a32ee5132742",
-      "mtime": "2026-03-22T07:54:37+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Helm/services/values_generator.py",
-      "bytes": 10951,
-      "sha256": "03cbc63f05a6999ba12f19b4616cef60f9270f244fdaf087b4e571bb9a49e7b0",
-      "mtime": "2026-03-19T07:06:04+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kubernetes/__init__.py",
-      "bytes": 952,
-      "sha256": "adc5cdee91e1a2941fe52f08b3ad883c856e9d91d764c7286717e5efe6d3e19c",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kubernetes/models/__init__.py",
-      "bytes": 482,
-      "sha256": "0753e1adbd6d88ce15615dfac78d1e44e82d91287447ea6b50af6c4a8c687c32",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kubernetes/models/kubernetes_models.py",
-      "bytes": 11669,
-      "sha256": "df10cff5a7fb81d2ccb84cbe8edab6d7894956abf70314ed552553c9d9b25f5c",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kubernetes/services/__init__.py",
-      "bytes": 176,
-      "sha256": "c3e60de3b593b43b36a890223413ab7bcf189001e04da86056a9db8c31da6191",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kubernetes/services/manifest_generator.py",
-      "bytes": 20334,
-      "sha256": "8d26f0aef58377e00a0a65b334d10ac50a682962d0f0031cab11e0b105f47b61",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kubernetes/services/manifest_generator_helpers.py",
-      "bytes": 10585,
-      "sha256": "b9882d42ea08ed431d9fbd514296674cb65684ba5b401fb3068642eff5da7959",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kustomize/__init__.py",
-      "bytes": 1178,
-      "sha256": "5a7ab59478929e3370811a2d7b932c735eb38753ea05f02bfbdcc08bd38888e2",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kustomize/models/__init__.py",
-      "bytes": 441,
-      "sha256": "ff99a9e225ea629462337be47fc0f53dd957386fa7f107ef729ef32c03d07805",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kustomize/models/kustomize_models.py",
-      "bytes": 11405,
-      "sha256": "267f75d3194d27f3c5738fa65a6efc58a0048efcf6af53291e8cf03bcb3d39f5",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kustomize/services/__init__.py",
-      "bytes": 398,
-      "sha256": "da91afe0712316c17a979d5b4a558f247285eb20697be05477a869e8c068c810",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kustomize/services/base_generator.py",
-      "bytes": 3353,
-      "sha256": "9497d8c3f35b6903eecfbad78c9f70ba5608efb8e240d41f751c18f067fd03e0",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kustomize/services/base_generator_helpers.py",
-      "bytes": 13879,
-      "sha256": "5f2b0e0b6556e886a070e8ec7e89ce4d7c47cca99a874f89ac3d427df5274ec2",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kustomize/services/component_generator.py",
-      "bytes": 3466,
-      "sha256": "36972975952bc181bba671751e63c55a1e934408c0e02edde57dd637a8f92a20",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kustomize/services/overlay_generator.py",
-      "bytes": 5076,
-      "sha256": "bcd14a2f51fad7b958c667aed96d03c63ac3a4d72e83aa6df6a9cb91be5b0572",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kustomize/services/overlay_generator_helpers.py",
-      "bytes": 7758,
-      "sha256": "0afe8009413216024ba320a601d415827832b6ddeefba3d588be69f1c06ef32e",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Kustomize/services/patch_generator.py",
-      "bytes": 5823,
-      "sha256": "ced79e27959229a9aeb5e5ca21eb66f22727700d2a4750c8dd3fdd1786667981",
-      "mtime": "2026-03-20T02:49:33+00:00"
-    },
     {
       "path": "Asgard/Volundr/Kustomize/services/patch_generator_helpers.py",
       "bytes": 8163,
@@ -26382,6 +25518,1208 @@
       "disposition": "findings",
       "bytes": 15959,
       "sha256": "f23e6ac781b9ae851aaa3dfaf247706ccdb929aa91102e585cef0b751338cffd"
+    },
+    {
+      "path": "Asgard/Verdandi/Database/models/database_models.py",
+      "completed_at": "2026-08-16T08:39:25+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9134,
+      "sha256": "166febdffdab1b69ceb78b8445b5c3d68cc5d96b9710a77f6c7d3e7a15edea43"
+    },
+    {
+      "path": "Asgard/Verdandi/Database/services/__init__.py",
+      "completed_at": "2026-08-16T08:39:25+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 382,
+      "sha256": "10496fc74c2b363e17c096375a17042fd661af5f621f38ec7b93a7ccb68010b6"
+    },
+    {
+      "path": "Asgard/Verdandi/Database/services/connection_analyzer.py",
+      "completed_at": "2026-08-16T08:39:25+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9280,
+      "sha256": "1e04d8a8d4def588b928416bbdca204b2ead3e1c62f1deb6c476fc59c30ea249"
+    },
+    {
+      "path": "Asgard/Verdandi/Database/services/pool_signature_detector.py",
+      "completed_at": "2026-08-16T08:39:25+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6734,
+      "sha256": "338ccc982bcb740ee9bd358ca35a4d98dbacbeab26be80058a73a8ca8f3dd00a"
+    },
+    {
+      "path": "Asgard/Verdandi/Database/services/query_budget.py",
+      "completed_at": "2026-08-16T08:39:25+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5818,
+      "sha256": "0a13169a1a309e36f4789949b6e3496a85325f196363ad4c54ccf9aec3a4c941"
+    },
+    {
+      "path": "Asgard/Verdandi/Database/services/query_metrics.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9379,
+      "sha256": "425bcad3c2be97eb889df702aa722aed376fd00df50bdca7866fd69d703a3362"
+    },
+    {
+      "path": "Asgard/Verdandi/Database/services/throughput_calculator.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4852,
+      "sha256": "22ce8cbe1c4d664fb606658fecdd93eecc90b492c74d817661a011c6e6de0455"
+    },
+    {
+      "path": "Asgard/Verdandi/Database/utilities/__init__.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 26,
+      "sha256": "26e3756d53c24e14ce2b84f15826823c051cd263cdc6c7ae9876e310f3e6a529"
+    },
+    {
+      "path": "Asgard/Verdandi/Network/__init__.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2174,
+      "sha256": "6dde419bc1f9f047bc2410ed6b7484bb9a2859a8356579cecffeacb0a0d26eee"
+    },
+    {
+      "path": "Asgard/Verdandi/Network/models/__init__.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 856,
+      "sha256": "fc33cfaa89645b4cd1cb3d5816c0f00e735617fd97202699689e5882b044b4cf"
+    },
+    {
+      "path": "Asgard/Verdandi/Network/models/network_models.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 12599,
+      "sha256": "5fae102d2ec7c61cd732361ac919a3439459697a9aee3b043119f266fe9fd636"
+    },
+    {
+      "path": "Asgard/Verdandi/Network/services/__init__.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 652,
+      "sha256": "f23f7f546848396fc95491f1badde0374ca03344415d245db93b972148560ccc"
+    },
+    {
+      "path": "Asgard/Verdandi/Network/services/bandwidth_calculator.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3912,
+      "sha256": "d75994ffa05dc8ebee06470775cb3c15759c929298febe2228c781c806ad136a"
+    },
+    {
+      "path": "Asgard/Verdandi/Network/services/dns_calculator.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7281,
+      "sha256": "772dcc960cb9230dcfaea12686e980eb8f848bdaf05cdfaf01026838bb371be9"
+    },
+    {
+      "path": "Asgard/Verdandi/Network/services/latency_calculator.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9423,
+      "sha256": "7e9e219f4476a0aafe865906de718312cd092a67989e738d463410951998544c"
+    },
+    {
+      "path": "Asgard/Verdandi/Network/services/phase_analyzer.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5819,
+      "sha256": "27ddcfb78b80dcc9c4fe048f1eb9729f34c706d772b8f06aa4e4a21b60607232"
+    },
+    {
+      "path": "Asgard/Verdandi/Network/services/signature_classifier.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9409,
+      "sha256": "b5e6b00a69152036a4b8985ad09396ecb65966839adfa87448a9bf5d2e2990a6"
+    },
+    {
+      "path": "Asgard/Verdandi/Network/services/use_analyzer.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9341,
+      "sha256": "15f9cdb1bbab0b63eda38f73a9ffe82e7b7dd4071c14c3308765a647effe2538"
+    },
+    {
+      "path": "Asgard/Verdandi/Network/utilities/__init__.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 25,
+      "sha256": "53461ca0449c7cae819eeca2e125f3a6b1323af603aea3014066bb576352faa1"
+    },
+    {
+      "path": "Asgard/Verdandi/SLO/__init__.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2445,
+      "sha256": "17168750331454c0845196b0e94e782f5206a33560985df62ebfbe73113b8920"
+    },
+    {
+      "path": "Asgard/Verdandi/SLO/models/__init__.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 338,
+      "sha256": "2a6e59b1425b6c0f01ddf39e5df4984f28f608d70b65d2c88de88470ffa0b4f2"
+    },
+    {
+      "path": "Asgard/Verdandi/SLO/models/slo_models.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [
+        "CH-0098"
+      ],
+      "disposition": "findings",
+      "bytes": 12845,
+      "sha256": "00ebe2b88f71506104f37cf33ca82e6f60417a6be735a4ff0f81f4994d335e45"
+    },
+    {
+      "path": "Asgard/Verdandi/SLO/services/__init__.py",
+      "completed_at": "2026-08-16T08:39:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 335,
+      "sha256": "b6231eaefbbced2a30c13f946144b1002e0eb8fd9fa3812faa956c76c11f1cae"
+    },
+    {
+      "path": "Asgard/Verdandi/SLO/services/_burn_rate_helpers.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4938,
+      "sha256": "508920b3e05ed0bdfa6f19105910410f64b7f2b635f74f01cf1faba6a535c8e8"
+    },
+    {
+      "path": "Asgard/Verdandi/SLO/services/_sli_aggregation.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [
+        "CH-0098"
+      ],
+      "disposition": "findings",
+      "bytes": 1578,
+      "sha256": "dee3884571b20059ddccf7e2542bb9d80b55ecd89d6b5c598bc042d6fccc70af"
+    },
+    {
+      "path": "Asgard/Verdandi/SLO/services/budget_policy.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8979,
+      "sha256": "f57af0a6bf8682e7096a3a9bc837f7c80f2e674c7e0209261a2a3e2da64e1051"
+    },
+    {
+      "path": "Asgard/Verdandi/SLO/services/burn_rate_analyzer.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 17312,
+      "sha256": "7ff9dee9c8e4feacda627f07a17a37403ae98dda8473f55338a66e4694938ea7"
+    },
+    {
+      "path": "Asgard/Verdandi/SLO/services/dynamic_budget.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4091,
+      "sha256": "e435c872f85374eb840903afbec3a6e55569736bbfed42bb98c5f732d94a1ebc"
+    },
+    {
+      "path": "Asgard/Verdandi/SLO/services/error_budget_calculator.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [
+        "CH-0098"
+      ],
+      "disposition": "findings",
+      "bytes": 9015,
+      "sha256": "9e3eb97fa69f66f643a60bbda571abe07c97f74b430ee7aea99f0b56eef71f1e"
+    },
+    {
+      "path": "Asgard/Verdandi/SLO/services/portfolio_scorer.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10570,
+      "sha256": "60fdce60f2b1bb540b6e536668e375a89bde3490d1aa5143a2634f557f58dd63"
+    },
+    {
+      "path": "Asgard/Verdandi/SLO/services/sli_tracker.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [
+        "CH-0098"
+      ],
+      "disposition": "findings",
+      "bytes": 9052,
+      "sha256": "8fc09dc376ac23501cd84b8d72ee7978012cbf57ce404099901a103d54c776ac"
+    },
+    {
+      "path": "Asgard/Verdandi/SLO/services/tool_slo.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10440,
+      "sha256": "430649a8bad31eb6880c18fc2f0bbdc66d101f14d5dfe948de33eb0ddc3dc6a4"
+    },
+    {
+      "path": "Asgard/Verdandi/SLO/utilities/__init__.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 21,
+      "sha256": "6eeb8378140a2f0e1cbdae9cba57ab361039fbf4d396b600abe47536c41d08f0"
+    },
+    {
+      "path": "Asgard/Verdandi/System/__init__.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1607,
+      "sha256": "e5a0ed9a57b7cd3925fb44ca9cdd6ddbc3b1bb451858654719a2fcaca3af151e"
+    },
+    {
+      "path": "Asgard/Verdandi/System/models/__init__.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 255,
+      "sha256": "32c2e3dcc9a3161b96d4f7d34c4f42f09bf9212cf311e094b8e777b1ce5fa0f4"
+    },
+    {
+      "path": "Asgard/Verdandi/System/models/system_models.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10116,
+      "sha256": "10ff8d82d223618f73380077d2997ce009900fbdb199aeee306357dfa4fafcec"
+    },
+    {
+      "path": "Asgard/Verdandi/System/services/__init__.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 369,
+      "sha256": "94158a605590e8639dfe5b90b4a723abd43b5d096a73830c9df2d1c5e6f8d53f"
+    },
+    {
+      "path": "Asgard/Verdandi/System/services/cgroup_analyzer.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4003,
+      "sha256": "dbb0f7a0716ef64b7df409c24c631ed6dfbb77c4ffc630a33a24b229b4ab953f"
+    },
+    {
+      "path": "Asgard/Verdandi/System/services/cpu_calculator.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9051,
+      "sha256": "14b7ecf797a25159959a9befe9ae3c495444dc11463199333e8a9c4a8094050a"
+    },
+    {
+      "path": "Asgard/Verdandi/System/services/io_calculator.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 12525,
+      "sha256": "7b02f0dd8ad68f8e0e31ac6b8aad567d7271f7492043a056c22f65c0034f2761"
+    },
+    {
+      "path": "Asgard/Verdandi/System/services/memory_calculator.py",
+      "completed_at": "2026-08-16T08:39:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10640,
+      "sha256": "1c7ffff8f4547f9aaf039d4e282d01f3b8954a5c0692e1b16bd4167c24386da6"
+    },
+    {
+      "path": "Asgard/Verdandi/System/services/psi_analyzer.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6925,
+      "sha256": "82bebb2f1bc040e77b1be7c73efe07979df1e01b9332426f786f674e2092cf30"
+    },
+    {
+      "path": "Asgard/Verdandi/System/services/use_red_correlator.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6700,
+      "sha256": "724be15b551395113ec4841c9f5bbe316c702e7e824f14e0f9bf45e455d05497"
+    },
+    {
+      "path": "Asgard/Verdandi/System/utilities/__init__.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 24,
+      "sha256": "9a0cd93c543e828278785630ff7b540ffe44321c506adfe7d24eb800b16d96bf"
+    },
+    {
+      "path": "Asgard/Verdandi/Tracing/__init__.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1071,
+      "sha256": "1e3fccf5b60160672a9026a84e104f04386006c2162a9997af5d3bfae86e074c"
+    },
+    {
+      "path": "Asgard/Verdandi/Tracing/models/__init__.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 298,
+      "sha256": "f3acdbbeedfd180873e877796684913e6e70315ed4e860809970c8fdbcb9d8b9"
+    },
+    {
+      "path": "Asgard/Verdandi/Tracing/models/tracing_models.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9748,
+      "sha256": "ea212986a8d3dddf916c6bf5bc90e316885ce6a8646369226fc52d89b81caac6"
+    },
+    {
+      "path": "Asgard/Verdandi/Tracing/services/__init__.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 246,
+      "sha256": "5ec78bf951c1ce37dd2864dfa34900599a22636e2e35f16007d4e5af2c77ba2c"
+    },
+    {
+      "path": "Asgard/Verdandi/Tracing/services/_path_helpers.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [
+        "CH-0101"
+      ],
+      "disposition": "findings",
+      "bytes": 7380,
+      "sha256": "9c0582b8c4773e2b4ab433e25c38cc992d5a8827058c2a1051aa9c9f41fd8ee0"
+    },
+    {
+      "path": "Asgard/Verdandi/Tracing/services/_span_parsers.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9722,
+      "sha256": "9cf9e1834d1cc913927826a1f5fc05b09af13734d30f4905d00e9a6fcfa51604"
+    },
+    {
+      "path": "Asgard/Verdandi/Tracing/services/causal_normalizer.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [
+        "CH-0101"
+      ],
+      "disposition": "findings",
+      "bytes": 9971,
+      "sha256": "206e77c18c4de645a7d4158009b4aa6786f7b8af6cfa5937ae534e49b3fb9dfd"
+    },
+    {
+      "path": "Asgard/Verdandi/Tracing/services/critical_path_analyzer.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [
+        "CH-0101"
+      ],
+      "disposition": "findings",
+      "bytes": 16260,
+      "sha256": "388d7beaf8373b5d7f37342724481363a233d7f68a52c6b0a118ab480d8a8d57"
+    },
+    {
+      "path": "Asgard/Verdandi/Tracing/services/trace_parser.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7733,
+      "sha256": "f5615450409b5cbaa2bce077f10e28d241f6f7e4326abb1ef62b727d1e564877"
+    },
+    {
+      "path": "Asgard/Verdandi/Tracing/utilities/__init__.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 25,
+      "sha256": "3fac67d88f95d69c35bda2136c98594a6835f1cf1041b0f6b5f2b460f647af7a"
+    },
+    {
+      "path": "Asgard/Verdandi/Trend/__init__.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1382,
+      "sha256": "b5c5e01ccaeeda0134fda1065b8c4ca9d7e38ac080707aef744141c54f9f073f"
+    },
+    {
+      "path": "Asgard/Verdandi/Trend/models/__init__.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 444,
+      "sha256": "d80ee9e54b2a3a1e29cbce2c5d49863e8440b0fa51a5befea0b0e02c70edd19a"
+    },
+    {
+      "path": "Asgard/Verdandi/Trend/models/trend_models.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8238,
+      "sha256": "2370060024ef615b233ba7540a63ab467977c129fd1858abd15d224b87e15725"
+    },
+    {
+      "path": "Asgard/Verdandi/Trend/services/__init__.py",
+      "completed_at": "2026-08-16T08:39:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 347,
+      "sha256": "9a0f2b71f7b6d59496956174be3d1f8a4b9f6aa71b79ae1a44a05a12333ba732"
+    },
+    {
+      "path": "Asgard/Verdandi/Trend/services/_forecast_methods.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7749,
+      "sha256": "33a472584aca461045c7f99f9a274222d4fb08046b6234fe864c09d8631d6c81"
+    },
+    {
+      "path": "Asgard/Verdandi/Trend/services/_trend_helpers.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5478,
+      "sha256": "15a01c3ed3b003335d69ef4ceae7eb04e9607d0890c183a71e4249c2f8c5f89a"
+    },
+    {
+      "path": "Asgard/Verdandi/Trend/services/forecast_calculator.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6875,
+      "sha256": "183a5a929beca1379f86f0fbcb2895050d91853085f44f782f4a80d554448c64"
+    },
+    {
+      "path": "Asgard/Verdandi/Trend/services/seasonal_decomposer.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9997,
+      "sha256": "cc6ecb825b26ff6197a465cd01f5a2013c9483478e30ee2904bcb2fb1c8a2097"
+    },
+    {
+      "path": "Asgard/Verdandi/Trend/services/trend_analyzer.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11414,
+      "sha256": "d1e5be2be77fb7e010a9ed327a7eb3ec7a219bb028924b48bb784a8e4055033e"
+    },
+    {
+      "path": "Asgard/Verdandi/Trend/utilities/__init__.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 23,
+      "sha256": "f5fd4f37e5bca105d2990436f0314b44fb192188a872456e02f429902a863e9e"
+    },
+    {
+      "path": "Asgard/Verdandi/Web/__init__.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1445,
+      "sha256": "ade0e250f013ba4c2181f5457dbd9f672ed69888c795663a68cb887af67609bc"
+    },
+    {
+      "path": "Asgard/Verdandi/Web/models/__init__.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 440,
+      "sha256": "e21e63846ba88f3f330fe945f58bc7e232b6fbb5afc1ae93e7840c203829191d"
+    },
+    {
+      "path": "Asgard/Verdandi/Web/models/web_models.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9623,
+      "sha256": "79de0a223720c7e811df7b82bd1519a6c1e899733a26fdb4b37aa66057eef456"
+    },
+    {
+      "path": "Asgard/Verdandi/Web/services/__init__.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 384,
+      "sha256": "72847710abd186b63d0e99e5ba99d13e543dc5d6b77b372c9d76101fbcc3690f"
+    },
+    {
+      "path": "Asgard/Verdandi/Web/services/_vitals_recommendations.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2810,
+      "sha256": "c763f44a78d98728365bc840ac0a437941e03d9d607180f5e04a9641a67f1522"
+    },
+    {
+      "path": "Asgard/Verdandi/Web/services/navigation_timing.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7360,
+      "sha256": "cd603351773b79fdb111b05f452c9699a511190e4c6381b42f053186ee88a165"
+    },
+    {
+      "path": "Asgard/Verdandi/Web/services/resource_timing.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7235,
+      "sha256": "94c33f82d53dbb965f796ffba0fd64df702f8db4080a6c1d1596036d0744d12b"
+    },
+    {
+      "path": "Asgard/Verdandi/Web/services/vitals_calculator.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 14858,
+      "sha256": "1464aec0f1739cd18e2f7f945893e4a6474b6cb174e25a19e5d4176f2906b976"
+    },
+    {
+      "path": "Asgard/Verdandi/Web/utilities/__init__.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 21,
+      "sha256": "ce0a6321573869cd873f81b080a86fae9e39bab198e9a1b0b52bddd49409339f"
+    },
+    {
+      "path": "Asgard/Verdandi/__init__.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4792,
+      "sha256": "d77106b79004c1de279b7a13fac4d6fd6d9c47e4772e15a9b6ebd13b82c0e5a8"
+    },
+    {
+      "path": "Asgard/Verdandi/__main__.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 169,
+      "sha256": "86b9898950ca5d9f0c1271d4167d858397e841938b2be9e763a6c94114f4d089"
+    },
+    {
+      "path": "Asgard/Verdandi/cli/__init__.py",
+      "completed_at": "2026-08-16T08:39:29+00:00",
+      "finding_ids": [
+        "CH-0099"
+      ],
+      "disposition": "findings",
+      "bytes": 9902,
+      "sha256": "ada0f3c94d1d8015191ba8863bebc98c9061005701421b8ae3b9a3ca265395b0"
+    },
+    {
+      "path": "Asgard/Verdandi/cli/_parser.py",
+      "completed_at": "2026-08-16T08:39:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1664,
+      "sha256": "4eb8d09231b4eeee9c04be209149ab9e0e2d47110592bb8f894fb8216559c8ca"
+    },
+    {
+      "path": "Asgard/Verdandi/cli/_parser_flags.py",
+      "completed_at": "2026-08-16T08:39:30+00:00",
+      "finding_ids": [
+        "CH-0099"
+      ],
+      "disposition": "findings",
+      "bytes": 10679,
+      "sha256": "52eb3eb2aa5d8a6f6da2658dcd6ef1350be26725024389fb7d09e3ca8135682c"
+    },
+    {
+      "path": "Asgard/Verdandi/cli/_parser_subcommands.py",
+      "completed_at": "2026-08-16T08:39:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 14368,
+      "sha256": "35dde1845ef87f650a37ae900216ad7d12cbae92f71a448569564c45b580c512"
+    },
+    {
+      "path": "Asgard/Verdandi/cli/handlers_analysis.py",
+      "completed_at": "2026-08-16T08:39:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9397,
+      "sha256": "34f27a8f970676de5742f2510d05fe806c62fd2c19c175a2d2ec9bc921df505b"
+    },
+    {
+      "path": "Asgard/Verdandi/cli/handlers_anomaly_trend.py",
+      "completed_at": "2026-08-16T08:44:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8062,
+      "sha256": "7ac69e33cb279da2f018cec2c679ce6e6089abc26f3cd7786da43436a6d0a6b8"
+    },
+    {
+      "path": "Asgard/Verdandi/cli/handlers_apm_slo.py",
+      "completed_at": "2026-08-16T08:44:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6118,
+      "sha256": "456a3d9adb4cda2b2a56f3c1e8bfc83dff51da7e67459645a55b77e4c9c667d1"
+    },
+    {
+      "path": "Asgard/Verdandi/cli/handlers_network.py",
+      "completed_at": "2026-08-16T08:44:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6413,
+      "sha256": "f5e52f87863a9775c799907b5608dfae66b3284ac29057468cab72585ddcfbb7"
+    },
+    {
+      "path": "Asgard/Verdandi/cli/handlers_new_apis.py",
+      "completed_at": "2026-08-16T08:44:15+00:00",
+      "finding_ids": [
+        "CH-0099"
+      ],
+      "disposition": "findings",
+      "bytes": 23164,
+      "sha256": "90e8ebeead9f96b61b909eb195d3c4951c5bd1e721644349452049ba40bfa574"
+    },
+    {
+      "path": "Asgard/Verdandi/cli/handlers_slo_extras.py",
+      "completed_at": "2026-08-16T08:44:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7956,
+      "sha256": "90cbf0d4e1d69004a5a7f20eb2fdfaff769c056ec595d89d95e49d6c462f904d"
+    },
+    {
+      "path": "Asgard/Verdandi/cli/handlers_system.py",
+      "completed_at": "2026-08-16T08:44:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6483,
+      "sha256": "8b728bd15fb8081a99b49edb457e3f021482bf4959ab057e38f1ce10709196ab"
+    },
+    {
+      "path": "Asgard/Verdandi/cli/handlers_tracing.py",
+      "completed_at": "2026-08-16T08:44:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1736,
+      "sha256": "1eb3f325311b8a9c964fe4e51c3443c1fea46434faf1c6328c8b9407e4f226c9"
+    },
+    {
+      "path": "Asgard/Volundr/CICD/__init__.py",
+      "completed_at": "2026-08-16T08:44:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 833,
+      "sha256": "b80cf7fc014172c8aef29aeb60020ffad9b34564f4c3310566cef49e3af6d91e"
+    },
+    {
+      "path": "Asgard/Volundr/CICD/models/__init__.py",
+      "completed_at": "2026-08-16T08:44:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 332,
+      "sha256": "77d47df6c1696552f1ae0048c6bddf8b0eaff1c0c01a10c698a2f3e4a22328c1"
+    },
+    {
+      "path": "Asgard/Volundr/CICD/models/cicd_models.py",
+      "completed_at": "2026-08-16T08:44:15+00:00",
+      "finding_ids": [
+        "CH-0105",
+        "CH-0001"
+      ],
+      "disposition": "findings",
+      "bytes": 8187,
+      "sha256": "a2995ace128f60a9ea7db0dde15e3b01db3cb73cfa0376c59f9c9f5c6783b102"
+    },
+    {
+      "path": "Asgard/Volundr/CICD/services/__init__.py",
+      "completed_at": "2026-08-16T08:44:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 164,
+      "sha256": "cd57c534b824af1e384881dab78a5afdd0d5294501f8d0727d54af4ed6a0f9cc"
+    },
+    {
+      "path": "Asgard/Volundr/CICD/services/action_pins.py",
+      "completed_at": "2026-08-16T08:44:15+00:00",
+      "finding_ids": [
+        "CH-0001",
+        "CH-0105"
+      ],
+      "disposition": "findings",
+      "bytes": 5487,
+      "sha256": "4f53cb94905f08d770021181a4016fdd3a848cd23512b79a52e4a2b5d0c0a73a"
+    },
+    {
+      "path": "Asgard/Volundr/CICD/services/context_hardening.py",
+      "completed_at": "2026-08-16T08:44:15+00:00",
+      "finding_ids": [
+        "CH-0103"
+      ],
+      "disposition": "findings",
+      "bytes": 2970,
+      "sha256": "46f32929e46e8cb7a889f03164b29f4d59cd1f3d49daa19cb96c63c201513ceb"
+    },
+    {
+      "path": "Asgard/Volundr/CICD/services/pipeline_generator.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [
+        "CH-0106"
+      ],
+      "disposition": "findings",
+      "bytes": 6634,
+      "sha256": "5e10fbdb8895c264f51fc95980ba6887f000c9941a90c0b70f62d88208407c19"
+    },
+    {
+      "path": "Asgard/Volundr/CICD/services/pipeline_generator_helpers.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [
+        "CH-0103",
+        "CH-0105",
+        "CH-0001"
+      ],
+      "disposition": "findings",
+      "bytes": 26518,
+      "sha256": "0f75a4e3cab64266f742615fc74ff21f3449baaf5ea83b9c94910ae2f48e9e2b"
+    },
+    {
+      "path": "Asgard/Volundr/Compose/__init__.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 908,
+      "sha256": "2de391d522e274a909dc0ea785568ee945066040320565dff8dd944175d69f58"
+    },
+    {
+      "path": "Asgard/Volundr/Compose/models/__init__.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 503,
+      "sha256": "01a29eb3bd440da613b6ffa87d2a4e213a38f2f9c590f4b1ab4a0b6cba1d3069"
+    },
+    {
+      "path": "Asgard/Volundr/Compose/models/compose_models.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 13034,
+      "sha256": "6e6cbbb9eeaac854016dd8b60d9a0f47aa65956c81dc9f42af3fc4f2b4f52eca"
+    },
+    {
+      "path": "Asgard/Volundr/Compose/services/__init__.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 314,
+      "sha256": "349bb9e3eef03ab6fe04e537c030419f43730aa1cb91af8e012b226256ef3c76"
+    },
+    {
+      "path": "Asgard/Volundr/Compose/services/compose_generator.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11377,
+      "sha256": "5d632c57b8aa5185e715b44029f6790ec873b8bf47b05be3c17dc8e76ef64199"
+    },
+    {
+      "path": "Asgard/Volundr/Compose/services/compose_generator_helpers.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [
+        "CH-0105"
+      ],
+      "disposition": "findings",
+      "bytes": 12152,
+      "sha256": "84f84914b0f75ad3033ca03bb2f2b99127277d0a572fa2cf862d6bf369065252"
+    },
+    {
+      "path": "Asgard/Volundr/Compose/services/compose_validator.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4619,
+      "sha256": "31633a91ecb5c02934339be4c6e82e8a9df1fa92595bb3237d3d5a749161ec7a"
+    },
+    {
+      "path": "Asgard/Volundr/Compose/services/compose_validator_helpers.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9054,
+      "sha256": "1d5d7e520b25bd8971eafce174559622de9ae59fd80268bbaa7e354e4ceac636"
+    },
+    {
+      "path": "Asgard/Volundr/Docker/__init__.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 822,
+      "sha256": "5c98eb52d9cc0421ee86ce43f99ea6dbe831aafed89526313386d99abfce0689"
+    },
+    {
+      "path": "Asgard/Volundr/Docker/models/__init__.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 387,
+      "sha256": "751f2c7999c8cefbfba25459ad6438cdb0f8cfce2df537a498cc836e417f4fc9"
+    },
+    {
+      "path": "Asgard/Volundr/Docker/models/docker_models.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [
+        "CH-0102"
+      ],
+      "disposition": "findings",
+      "bytes": 10020,
+      "sha256": "50ce44b7098bcbb73d553a8830092367d3640f775e3fd0481e81722b8b86ed57"
+    },
+    {
+      "path": "Asgard/Volundr/Docker/services/__init__.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 281,
+      "sha256": "9ba18478d6842939704f0e3c0681966814ea8d0eedc7eed58e9fc2f41f625887"
+    },
+    {
+      "path": "Asgard/Volundr/Docker/services/_package_manager_pass.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5249,
+      "sha256": "690585faad7d9c13babc9e0836023954738182d72d0aa831beec093d5e470564"
+    },
+    {
+      "path": "Asgard/Volundr/Docker/services/compose_generator.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6293,
+      "sha256": "1291f824afcfcd22b0153fa006b26010c6f45b08a21b32bbfa1bd0e63facf3ef"
+    },
+    {
+      "path": "Asgard/Volundr/Docker/services/dockerfile_generator.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [
+        "CH-0102",
+        "CH-0105"
+      ],
+      "disposition": "findings",
+      "bytes": 17540,
+      "sha256": "62b43be59ca259da99b5f754303d70d3d3dbc81bc480935612039ff116f15b8b"
+    },
+    {
+      "path": "Asgard/Volundr/GitOps/__init__.py",
+      "completed_at": "2026-08-16T08:44:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 950,
+      "sha256": "1036c110ef2d3930e8acc05b8b30a553217055b826dbe5d4c37324d968045193"
+    },
+    {
+      "path": "Asgard/Volundr/GitOps/models/__init__.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 455,
+      "sha256": "e43106157cd1fde25a482c2abba44a5954f44f34a18595c8bf6eadd8c0e62bcd"
+    },
+    {
+      "path": "Asgard/Volundr/GitOps/models/gitops_models.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 12657,
+      "sha256": "7c8bb7bd81e37bc1b4740c70311ad2cd41570777ac9e9a2c1a683887e55210e3"
+    },
+    {
+      "path": "Asgard/Volundr/GitOps/services/__init__.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 284,
+      "sha256": "082507539564ba6990e98996662b02cd09c19be65e1a08211ba44167dc40c567"
+    },
+    {
+      "path": "Asgard/Volundr/GitOps/services/argocd_generator.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8319,
+      "sha256": "d07421ac12b128edadf5c0beb14aa32cb53937d765d863ee5dab6d3a37354121"
+    },
+    {
+      "path": "Asgard/Volundr/GitOps/services/argocd_generator_helpers.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9733,
+      "sha256": "86fc539171c535e029b1778f48151ad3ded40b31aa0f7dab12237ae01c98790c"
+    },
+    {
+      "path": "Asgard/Volundr/GitOps/services/flux_generator.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8414,
+      "sha256": "fb6e673b010f7f7466fe46df2e9198456b58f703fd8184f6ef9c0114d8f6fb1f"
+    },
+    {
+      "path": "Asgard/Volundr/GitOps/services/flux_generator_helpers.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6019,
+      "sha256": "c858b2854c9b8adbd0e474bc8401b3e76dd534d5199971b16c463d1b1d72fb3e"
+    },
+    {
+      "path": "Asgard/Volundr/Helm/__init__.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 701,
+      "sha256": "d73ad88ae94d8e1e6c6dd9302aaf7070c6afe823d66b944b4dafb87e18a378ac"
+    },
+    {
+      "path": "Asgard/Volundr/Helm/models/__init__.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 375,
+      "sha256": "358c9bdb47b4993649855a30f62f8e5f2d2b89d11cbb09a6b03587c733403e1d"
+    },
+    {
+      "path": "Asgard/Volundr/Helm/models/helm_models.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [
+        "CH-0105",
+        "CH-0104"
+      ],
+      "disposition": "findings",
+      "bytes": 10601,
+      "sha256": "c11e6c0b5dfad039dfb9c8264b28994302d73f4756167996a8e8af2ad4b4b8c0"
+    },
+    {
+      "path": "Asgard/Volundr/Helm/services/__init__.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 279,
+      "sha256": "a28a4d04ba8cd65dfd3be1237709fa2a7958c3e1c87018e9de01e51ce6bbaef4"
+    },
+    {
+      "path": "Asgard/Volundr/Helm/services/_chart_generator_extras.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [
+        "CH-0104"
+      ],
+      "disposition": "findings",
+      "bytes": 7986,
+      "sha256": "198f71ce3919c81c8edd6fde514295c2629207ca5494fa56ebc8a47b5fe67157"
+    },
+    {
+      "path": "Asgard/Volundr/Helm/services/_chart_generator_extras_part2.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2207,
+      "sha256": "69c8a7cdef09cb9f7851356d8c9684b38f767a363fe7f4830e939788d12d89bf"
+    },
+    {
+      "path": "Asgard/Volundr/Helm/services/_chart_generator_templates.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [
+        "CH-0104"
+      ],
+      "disposition": "findings",
+      "bytes": 5755,
+      "sha256": "eef02c17f955dc6e2fab834fa5ed63674acd28933b97fd98639b784428e5b651"
+    },
+    {
+      "path": "Asgard/Volundr/Helm/services/chart_generator.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [
+        "CH-0104"
+      ],
+      "disposition": "findings",
+      "bytes": 14207,
+      "sha256": "df20e8cb5c077e4eff03fcb816daf6cf90d2311bd394d73bec68ab7459a59646"
+    },
+    {
+      "path": "Asgard/Volundr/Helm/services/chart_generator_helpers.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 787,
+      "sha256": "f4e3957d1df4948d4476052ec96b3a490d7e54860873fd73dda3a32ee5132742"
+    },
+    {
+      "path": "Asgard/Volundr/Helm/services/values_generator.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10951,
+      "sha256": "03cbc63f05a6999ba12f19b4616cef60f9270f244fdaf087b4e571bb9a49e7b0"
+    },
+    {
+      "path": "Asgard/Volundr/Kubernetes/__init__.py",
+      "completed_at": "2026-08-16T08:44:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 952,
+      "sha256": "adc5cdee91e1a2941fe52f08b3ad883c856e9d91d764c7286717e5efe6d3e19c"
+    },
+    {
+      "path": "Asgard/Volundr/Kubernetes/models/__init__.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 482,
+      "sha256": "0753e1adbd6d88ce15615dfac78d1e44e82d91287447ea6b50af6c4a8c687c32"
+    },
+    {
+      "path": "Asgard/Volundr/Kubernetes/models/kubernetes_models.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11669,
+      "sha256": "df10cff5a7fb81d2ccb84cbe8edab6d7894956abf70314ed552553c9d9b25f5c"
+    },
+    {
+      "path": "Asgard/Volundr/Kubernetes/services/__init__.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 176,
+      "sha256": "c3e60de3b593b43b36a890223413ab7bcf189001e04da86056a9db8c31da6191"
+    },
+    {
+      "path": "Asgard/Volundr/Kubernetes/services/manifest_generator.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 20334,
+      "sha256": "8d26f0aef58377e00a0a65b334d10ac50a682962d0f0031cab11e0b105f47b61"
+    },
+    {
+      "path": "Asgard/Volundr/Kubernetes/services/manifest_generator_helpers.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10585,
+      "sha256": "b9882d42ea08ed431d9fbd514296674cb65684ba5b401fb3068642eff5da7959"
+    },
+    {
+      "path": "Asgard/Volundr/Kustomize/__init__.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1178,
+      "sha256": "5a7ab59478929e3370811a2d7b932c735eb38753ea05f02bfbdcc08bd38888e2"
+    },
+    {
+      "path": "Asgard/Volundr/Kustomize/models/__init__.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 441,
+      "sha256": "ff99a9e225ea629462337be47fc0f53dd957386fa7f107ef729ef32c03d07805"
+    },
+    {
+      "path": "Asgard/Volundr/Kustomize/models/kustomize_models.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11405,
+      "sha256": "267f75d3194d27f3c5738fa65a6efc58a0048efcf6af53291e8cf03bcb3d39f5"
+    },
+    {
+      "path": "Asgard/Volundr/Kustomize/services/__init__.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 398,
+      "sha256": "da91afe0712316c17a979d5b4a558f247285eb20697be05477a869e8c068c810"
+    },
+    {
+      "path": "Asgard/Volundr/Kustomize/services/base_generator.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3353,
+      "sha256": "9497d8c3f35b6903eecfbad78c9f70ba5608efb8e240d41f751c18f067fd03e0"
+    },
+    {
+      "path": "Asgard/Volundr/Kustomize/services/base_generator_helpers.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 13879,
+      "sha256": "5f2b0e0b6556e886a070e8ec7e89ce4d7c47cca99a874f89ac3d427df5274ec2"
+    },
+    {
+      "path": "Asgard/Volundr/Kustomize/services/component_generator.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3466,
+      "sha256": "36972975952bc181bba671751e63c55a1e934408c0e02edde57dd637a8f92a20"
+    },
+    {
+      "path": "Asgard/Volundr/Kustomize/services/overlay_generator.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5076,
+      "sha256": "bcd14a2f51fad7b958c667aed96d03c63ac3a4d72e83aa6df6a9cb91be5b0572"
+    },
+    {
+      "path": "Asgard/Volundr/Kustomize/services/overlay_generator_helpers.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7758,
+      "sha256": "0afe8009413216024ba320a601d415827832b6ddeefba3d588be69f1c06ef32e"
+    },
+    {
+      "path": "Asgard/Volundr/Kustomize/services/patch_generator.py",
+      "completed_at": "2026-08-16T08:44:18+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5823,
+      "sha256": "ced79e27959229a9aeb5e5ca21eb66f22727700d2a4750c8dd3fdd1786667981"
     }
   ]
 }
