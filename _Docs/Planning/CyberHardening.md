@@ -2046,7 +2046,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W4
 - Next: CH-0084, CH-0085, CH-0099
-- Last commit: ee4351c026682b
+- Last commit: ee4351c
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
