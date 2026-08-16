@@ -1702,6 +1702,8 @@ None yet.
 - Spot-check: AKIAIOSFODNN7EXAMPLE is AWS docs sample; L5_known_bad not imported by Asgard/.
 - **Successor:** remaining=2134 completed=1741 ledger=1741. Next: `Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/check_token_high.php` then rest of DVWA, remaining Asgard_Test, `_FutureItems-Security`, `_scripts`, `architecture.yml`, `scripts/cyberhardening_inventory.py`. Continue `python3 scripts/cyberhardening_inventory.py next 8`. Do not rebuild inventory. Do not implement fixes. Highest ID: CH-0109.
 - Batch 21 merged (2026-08-16): rest of DVWA + GoVWA + NodeGoat + OWASP CWE22/327 fixtures. remaining≈1974. Highest ID: CH-0109.
+- Batch 22 merged (2026-08-16): OWASP CWE327–CWE89 corpus remainder. remaining≈1894 completed≈1981. Highest ID: CH-0109.
+- **Successor:** remaining≈1894. Next after pop: remaining `Asgard_Test/fixtures/owasp/` then other Asgard_Test packages, `_FutureItems-Security`, `_scripts`, `architecture.yml`, `scripts/cyberhardening_inventory.py`. `python3 scripts/cyberhardening_inventory.py status` / `next 8`. Do not rebuild inventory. Do not implement fixes.
 - Spot-check: dns_calculator offline (no dig); cgroup_analyzer no /proc I/O; SLO empty=healthy extended CH-0098; tracing cycle walks extended CH-0101.
 - Next: Verdandi cli/handlers_* then Volundr CICD (action_pins / CH-0001) then rest of Volundr / Asgard_Test.
 - Spot-check: html_generator no escape (CH-0046); `_new_code_git` unisolated (CH-0024); `calculate_compliance_rate([])==100` (CH-0098); profile `..` still not exploitable.

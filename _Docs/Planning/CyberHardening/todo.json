@@ -2,491 +2,11 @@
   "version": 1,
   "repo_root": ".",
   "generated_at": "2026-08-16T07:04:47+00:00",
-  "updated_at": "2026-08-16T08:59:17+00:00",
+  "updated_at": "2026-08-16T09:02:31+00:00",
   "planning_dir": "_Docs/Planning",
   "plan_path": "_Docs/Planning/CyberHardening.md",
   "total_discovered": 3875,
   "remaining": [
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/hardcoded_key.py",
-      "bytes": 96,
-      "sha256": "b666c3c95578277a2f988d96ad151765e530ba4f3102a2963f1c00b55337f562",
-      "mtime": "2026-05-19T03:01:02+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/jwt_none_alg.py",
-      "bytes": 123,
-      "sha256": "1e69367054518f3c0e35f5d7f584e27ba1a344b6e6b5d43bd5d97bc6b1506dd1",
-      "mtime": "2026-05-19T03:01:02+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/ssl_verify_false.py",
-      "bytes": 75,
-      "sha256": "867e4be545343cd2183c0f4dd8c89d57c321a29bf3fdbbe09c899f4e4cb24a05",
-      "mtime": "2026-05-19T03:01:02+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/weak_md5.py",
-      "bytes": 98,
-      "sha256": "a73be4f888a8a7a8a9ff0ed5afa32eb229e6abb40c36934522198d80a4ef8dd2",
-      "mtime": "2026-05-19T03:01:02+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/weak_random.py",
-      "bytes": 124,
-      "sha256": "e4d2c49d0e452e24825178a3b593257bf72c3898cf18cfa69a4fb18ae851efe6",
-      "mtime": "2026-05-19T03:01:02+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/weak_sha1.py",
-      "bytes": 81,
-      "sha256": "2a851649d620fc4882b11922437dd24908443806fd4fe21cc29fe9b0bab88c85",
-      "mtime": "2026-05-19T03:01:02+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/safe/safe_aes_gcm.py",
-      "bytes": 215,
-      "sha256": "b7377fb8a58cf61afc0c6d23075bc9f3321a6ec19e2038d23f85436340e016b1",
-      "mtime": "2026-05-19T03:01:02+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/safe/safe_bcrypt.py",
-      "bytes": 114,
-      "sha256": "2a4922506241bffe6f591872c3188e4b22c92b9c1cb2d97f7ff5a8f87c47eaad",
-      "mtime": "2026-05-19T03:01:02+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/safe/safe_secrets.py",
-      "bytes": 126,
-      "sha256": "10e4cacdee788a6c92ee28daf1147b2b682c3063f00aded5df709a24c597f760",
-      "mtime": "2026-05-19T03:01:02+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/safe/safe_sha256.py",
-      "bytes": 80,
-      "sha256": "dacebb08172e178a6390867474be1d2da703fcb1b5c5b5444d5285f7901893f2",
-      "mtime": "2026-05-19T03:01:02+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/safe/safe_ssl.py",
-      "bytes": 74,
-      "sha256": "59fd74952e77415d9f5e037f190505b21bbca6f264cd1bfb21e79134d7d63ca1",
-      "mtime": "2026-05-19T03:01:02+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/bad/redos_exponential.py",
-      "bytes": 90,
-      "sha256": "f97b4c921c5e6d8acb8a786ca18ec2be7cce6323ea3f676a2b3ad97e84616bf1",
-      "mtime": "2026-05-19T03:00:28+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/bad/redos_java.java",
-      "bytes": 149,
-      "sha256": "aeb89f06edb234fc79633c8b130483f0663523c92c9ff47744fdfb1303c1a847",
-      "mtime": "2026-05-19T03:00:28+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/bad/redos_js_nested.js",
-      "bytes": 103,
-      "sha256": "5ef4305710f3961d1c9e1f731918f67802a7a0064f84030e9b391acdb245b54c",
-      "mtime": "2026-05-19T03:00:28+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/bad/redos_nested_1.py",
-      "bytes": 123,
-      "sha256": "c6ce9abe8c7fbd0c2a1c519c620fea932a1d619113467c8ff4064bac9730ffa3",
-      "mtime": "2026-05-19T03:00:28+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/bad/redos_nested_2.py",
-      "bytes": 87,
-      "sha256": "31737130b9d1d4aee31adfebe8fb19aec6757d5b1912591780c2c3d048c463b2",
-      "mtime": "2026-05-19T03:00:28+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/bad/redos_overlapping.py",
-      "bytes": 100,
-      "sha256": "bb4e6c5b57e57c703c981665ada70e9ddb38f8a5f3d73046d4fbdc2ab7e85bc1",
-      "mtime": "2026-05-19T03:00:28+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/bad/redos_overlapping_js.js",
-      "bytes": 103,
-      "sha256": "27aefe3747a0446c79d4b73f7251463b393158b66e1a1a6096307f5f40eb8785",
-      "mtime": "2026-05-19T03:00:28+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/safe/safe_atomic.js",
-      "bytes": 154,
-      "sha256": "2463839760487086eab9a74c6fde33178c94c6f0902eb4c41cb207ba79bc8486",
-      "mtime": "2026-05-19T03:00:28+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/safe/safe_literal.py",
-      "bytes": 88,
-      "sha256": "4231d0d0713be4571a23a864aa5c6019476ad354d21412d6e85b2e91eb170596",
-      "mtime": "2026-05-19T03:00:28+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/safe/safe_no_regex.py",
-      "bytes": 57,
-      "sha256": "dcff26a69ade0d000a3164f184fcb44a032e88c72baecb65f0573feb9057dbd6",
-      "mtime": "2026-05-19T03:00:28+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/safe/safe_simple_java.java",
-      "bytes": 193,
-      "sha256": "3b6ad8d569650217db2ec24a2e364614d9914432142851efc8bdb71c6f4cc6ae",
-      "mtime": "2026-05-19T03:00:28+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/safe/safe_simple_regex.py",
-      "bytes": 106,
-      "sha256": "93994f0d8747d1708c1a5a79f7a33a423481fc24225082dff48f8cdf115752f2",
-      "mtime": "2026-05-19T03:00:28+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/dill_loads.py",
-      "bytes": 61,
-      "sha256": "df09c65d7c55965ae0af6d1ea96ed6f87f0923f2b729b72e338c22f0b61bc17a",
-      "mtime": "2026-05-19T03:00:16+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/jsonpickle_decode.py",
-      "bytes": 69,
-      "sha256": "a33250ed3c4070af20e28b63d507b27d686663cfe1ef75cee8ee2881e13b9704",
-      "mtime": "2026-05-19T03:00:16+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/marshal_load.py",
-      "bytes": 65,
-      "sha256": "bb8593ed0471a889bc2a2374e928d4b584fe371c4030f1260fc05f6231ea7939",
-      "mtime": "2026-05-19T03:00:16+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/php_unserialize.php",
-      "bytes": 81,
-      "sha256": "fd0169ced8185026d51d0c633c1db83a63a6d4128a301d57ddcc480a3031eef1",
-      "mtime": "2026-05-19T03:00:16+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/pickle_load_file.py",
-      "bytes": 98,
-      "sha256": "4e4bbd8bef339cacac29f816a4b606fc3d7e98e71fbd4b1f672a7d05f979f925",
-      "mtime": "2026-05-19T03:00:16+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/pickle_loads.py",
-      "bytes": 81,
-      "sha256": "167d7a767dcda4ebca7ac0227efaf0af61418fd812747bff4dd050fe8e0704a1",
-      "mtime": "2026-05-19T03:00:16+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/shelve_open.py",
-      "bytes": 84,
-      "sha256": "394c8c6b1765b6b1ea929523ed7ca1f03568e9b745ed02ae494b77edefb02f46",
-      "mtime": "2026-05-19T03:00:16+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/yaml_unsafe.py",
-      "bytes": 63,
-      "sha256": "d0981046477300ba5362e51c533f845d4c61362a377f381e2b8dd55ef5595dea",
-      "mtime": "2026-05-19T03:00:16+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/safe/safe_json.py",
-      "bytes": 57,
-      "sha256": "e65472f64819e47f1b781d170092cfefdcd7a1d6d031276ce31ac2cbdb2546b1",
-      "mtime": "2026-05-19T03:00:16+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/safe/safe_msgpack.py",
-      "bytes": 77,
-      "sha256": "9b20d230717c422fa401f9464d001ef6f12c98165d1400ce701297198c5e3ec0",
-      "mtime": "2026-05-19T03:00:16+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/safe/safe_no_deser.py",
-      "bytes": 133,
-      "sha256": "e691e498a92765b996b160d8102e11968bed5cecbc587e2cd732fbfc5d486895",
-      "mtime": "2026-05-19T03:00:16+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/safe/safe_protobuf.py",
-      "bytes": 114,
-      "sha256": "02dadc41047febf84f6ce4897b58472bb62dde123ba4f87226102dd9a229ef11",
-      "mtime": "2026-05-19T03:00:16+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/safe/safe_yaml_safe.py",
-      "bytes": 68,
-      "sha256": "6f691519223594b23314b91a9dacf3db3e367d1e0dbb1287abcf16d7c7ee5f6c",
-      "mtime": "2026-05-19T03:00:16+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/bad/ssrf_axios.js",
-      "bytes": 155,
-      "sha256": "bd8210b209ccf456da2acd6e1e5b783d55b114276a557dfce825e5aa80c260b8",
-      "mtime": "2026-05-19T02:59:53+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/bad/ssrf_fetch.js",
-      "bytes": 114,
-      "sha256": "a9b57c25be000acb30c30a0b949e5c0eaef59a13c48c3bc88cc8356404b98cb5",
-      "mtime": "2026-05-19T02:59:53+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/bad/ssrf_http_get.js",
-      "bytes": 109,
-      "sha256": "75745180b338db844215ccb76e98feea4241cf9ceeeacce28d2d176cab3829a6",
-      "mtime": "2026-05-19T02:59:53+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/bad/ssrf_requests_1.py",
-      "bytes": 114,
-      "sha256": "1bd1bca66a41c989a599f0a71c66ef856424dca7538282600349cd08113bcc9f",
-      "mtime": "2026-05-19T02:59:53+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/bad/ssrf_requests_body.py",
-      "bytes": 130,
-      "sha256": "66477ffc6caa147b11877d38b918d33964e654bd42ede3b3e51b6591a1ae6b12",
-      "mtime": "2026-05-19T02:59:53+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/bad/ssrf_requests_param.py",
-      "bytes": 160,
-      "sha256": "131eecb05760eccd8339df0be6814f541bc92be7e2b0e82889de3f5f52b814c2",
-      "mtime": "2026-05-19T02:59:53+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/safe/safe_allowlist_url.py",
-      "bytes": 203,
-      "sha256": "6a3a8f7e5edfa8fef8e653b64ac6295b7a40c92f7468bfa2bf9835cc5a65e402",
-      "mtime": "2026-05-19T02:59:53+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/safe/safe_defusedxml.py",
-      "bytes": 132,
-      "sha256": "66b006eb00b2ae30d4aebd6449e74bffeb144e3b58872213ba4e239b0b8de439",
-      "mtime": "2026-05-19T02:59:53+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/safe/safe_hardcoded_url.py",
-      "bytes": 104,
-      "sha256": "1f8e5f3f4c40d6c843e90698089deba92a977ca9e1339f45b983857834aa3548",
-      "mtime": "2026-05-19T02:59:53+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/safe/safe_no_user_url.py",
-      "bytes": 139,
-      "sha256": "e404830405fbba20e1e59b04dfb7e8389141afb7ae9ad4fc5d7405967107a656",
-      "mtime": "2026-05-19T02:59:53+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/safe/safe_validated_url.py",
-      "bytes": 214,
-      "sha256": "2ac7bdbe38f4659b80e2b1b4f47cd8bfceaca96b09603cd7447ac48712e81c9d",
-      "mtime": "2026-05-19T02:59:53+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/aws_key.py",
-      "bytes": 81,
-      "sha256": "ed4817543b60a79df4c0085d485aad9f3a60b82374c95ceb9037caa0712daa3e",
-      "mtime": "2026-05-19T03:00:05+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/db_conn_string.py",
-      "bytes": 96,
-      "sha256": "f23364fdc1c1483af2a82f8cda3ed31165dbd383678f94b53522575057fcfe8b",
-      "mtime": "2026-05-19T03:00:05+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/github_token.py",
-      "bytes": 111,
-      "sha256": "8e91926f14bac204ec09c0b2eead2e040ab6d7e3d45c4047e829eaca3928d224",
-      "mtime": "2026-05-19T03:00:05+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/hardcoded_apikey.py",
-      "bytes": 85,
-      "sha256": "14271fad30356f3b44940c38d00a65142a481f885c1f9cefe3fa5ed0e4d56f36",
-      "mtime": "2026-05-19T03:00:05+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/hardcoded_pw_1.py",
-      "bytes": 75,
-      "sha256": "e052cba0c49580c4cc98e87902b63b217ed54dbba2453ab188c87e0e9035b66c",
-      "mtime": "2026-05-19T03:00:05+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/private_key.py",
-      "bytes": 141,
-      "sha256": "9cee61744d708d7b4622929bd9dee05d4a1fca50f9e2f1bd76311a69c816a7ae",
-      "mtime": "2026-05-19T03:00:05+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/secret_key.py",
-      "bytes": 109,
-      "sha256": "f5da3a750045486bcabc1062ca1b0afa0a6cfa308cad508f140ddafa1c5a4f95",
-      "mtime": "2026-05-19T03:00:05+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/stripe_key.py",
-      "bytes": 66,
-      "sha256": "0ba4b8faf45752c1f59fdb45674dd8ccfb2db5da6b11861b85c3a6f4e6fb6eb5",
-      "mtime": "2026-05-19T03:00:05+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/safe/safe_config_file.py",
-      "bytes": 136,
-      "sha256": "29f884fb4658d8209e13fd4f885074b589619a6deaa13cff19f5f6e8cd280265",
-      "mtime": "2026-05-19T03:00:05+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/safe/safe_env_vars.py",
-      "bytes": 132,
-      "sha256": "144cdc7a91e1f30f721f21aab2b255f010e9a66af8f283a809f2cf96fd7d672f",
-      "mtime": "2026-05-19T03:00:05+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/safe/safe_no_creds.py",
-      "bytes": 81,
-      "sha256": "8e7f4f1a68464d4c621848b49adb67b2becc57fa6865c01a2bb949ddb603ab7b",
-      "mtime": "2026-05-19T03:00:05+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/safe/safe_placeholder.py",
-      "bytes": 58,
-      "sha256": "6ba900e9f220443c0ff623f25e8a4dd414c8812d327f21e4736b5d0aed9be0f9",
-      "mtime": "2026-05-19T03:00:05+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/safe/safe_secrets_manager.py",
-      "bytes": 159,
-      "sha256": "10d80623bd4bd2b896725089813f8fe6e852593ac4581826b6900903d1cdc9a3",
-      "mtime": "2026-05-19T03:00:05+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/bad/xss_jinja2_ssti.py",
-      "bytes": 171,
-      "sha256": "b23d6e1cfc88fd64c492280ecba27d33453ddec3a8deaaaedbc8c8b7da44113d",
-      "mtime": "2026-05-19T02:59:43+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/bad/xss_jinja_direct.py",
-      "bytes": 105,
-      "sha256": "fb7e97b73cfffa6db317a9934424e045adebbcacb9eaa78598f485ab34cc238e",
-      "mtime": "2026-05-19T02:59:43+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/bad/xss_render_string.py",
-      "bytes": 148,
-      "sha256": "e3a15bf7b78fc07d0c517b1d52e80fe76f05480004698532191986ff00feadf8",
-      "mtime": "2026-05-19T02:59:43+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/bad/xss_render_string_2.py",
-      "bytes": 181,
-      "sha256": "aa22916b02799f03c766a35fc08ab364903f9665276e3eb837d3ab0680f25a33",
-      "mtime": "2026-05-19T02:59:43+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/bad/xss_ssti_1.py",
-      "bytes": 119,
-      "sha256": "7aacb08a78e41a922550853c19901c3144a1656b6f3df466f45184e79032c165",
-      "mtime": "2026-05-19T02:59:43+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/bad/xss_template_class.py",
-      "bytes": 118,
-      "sha256": "6d9f0fe1fdefc3ee1a6ef5868e08da98eade17532066213cf01049eae17c0fb0",
-      "mtime": "2026-05-19T02:59:43+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/safe/safe_escape.py",
-      "bytes": 112,
-      "sha256": "562914d858632d5a155da8606c8eaf4d072ce91acde0ca65a8364820a9dbe026",
-      "mtime": "2026-05-19T02:59:43+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/safe/safe_hardcoded_html.py",
-      "bytes": 74,
-      "sha256": "9a1b661eca3c2f0a0e01508b1ad5e998f6ddaabd3e943da9c0d2d8de11c0f1c3",
-      "mtime": "2026-05-19T02:59:43+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/safe/safe_no_render_string.py",
-      "bytes": 111,
-      "sha256": "12f238c06ae909bb4714f0d5c04ca8e6e4a565fbbb895134adc6cc8eced26903",
-      "mtime": "2026-05-19T02:59:43+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/safe/safe_static_template.py",
-      "bytes": 104,
-      "sha256": "c5f2491f5d5afa664fec3e44266a3aa21369378ca2223050443bbb8e0c2fd0dc",
-      "mtime": "2026-05-19T02:59:43+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/safe/safe_template_file.py",
-      "bytes": 210,
-      "sha256": "2574f20f01873b270e9fc2c93302370abfff83b8b0c353486bf9396e0267f23b",
-      "mtime": "2026-05-19T02:59:43+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/bad/sqli_concat_1.py",
-      "bytes": 201,
-      "sha256": "e03a28ec7f23c22d32ce2185c19d9d0fadce0b1f403ba4ca7971f84d0e47d700",
-      "mtime": "2026-05-19T02:59:21+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/bad/sqli_concat_2.py",
-      "bytes": 174,
-      "sha256": "0ad42fd0d0284b9a206351dff19de8001ffb24c8b321f99cbd05b101c83c8863",
-      "mtime": "2026-05-19T02:59:21+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/bad/sqli_cursor_execute.py",
-      "bytes": 209,
-      "sha256": "5c34b28028d881075659fcc4e348ee255f122af67fde5d5f56d99bace9180ab1",
-      "mtime": "2026-05-19T02:59:21+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/bad/sqli_js_template.js",
-      "bytes": 148,
-      "sha256": "5174238a78c12e20249a8c642a4ceb66cd2156e4486a21575067bb1e933da36b",
-      "mtime": "2026-05-19T02:59:21+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/bad/sqli_query_concat_3.py",
-      "bytes": 207,
-      "sha256": "dfc16eeeb58dc9c803025190c5f30419d31520b555f9e300ee134475e439d1aa",
-      "mtime": "2026-05-19T02:59:21+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/bad/sqli_template_1.py",
-      "bytes": 167,
-      "sha256": "aae0dfaa831d2b65b9d49f4e45acba75bd6a68a6db0787b9cdd6e9b84a150abd",
-      "mtime": "2026-05-19T02:59:21+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/bad/sqli_template_2.js",
-      "bytes": 147,
-      "sha256": "fa101afcafe7f797a4a20af3f813c2d6b4f272e86e22bc19f96a4022048622c6",
-      "mtime": "2026-05-19T02:59:21+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/safe/safe_no_user_input.py",
-      "bytes": 117,
-      "sha256": "2b9738412352f17d24cf895783e736c9fb405f0d8bcd8420621c6538464b2794",
-      "mtime": "2026-05-19T02:59:21+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/safe/safe_orm_query.py",
-      "bytes": 115,
-      "sha256": "85e49a6b93b420f74d462312f838b1b0a455dcaf1c8bf48f3fa17e586d61bd05",
-      "mtime": "2026-05-19T02:59:21+00:00"
-    },
     {
       "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/safe/safe_param_query_1.py",
       "bytes": 143,
@@ -27667,6 +27187,646 @@
       "disposition": "clean",
       "bytes": 126,
       "sha256": "6a41facfceac3509910f2b3bedeaa73cd506170e190b1b571c42eed355c1642d"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/hardcoded_key.py",
+      "completed_at": "2026-08-16T09:02:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 96,
+      "sha256": "b666c3c95578277a2f988d96ad151765e530ba4f3102a2963f1c00b55337f562"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/jwt_none_alg.py",
+      "completed_at": "2026-08-16T09:02:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 123,
+      "sha256": "1e69367054518f3c0e35f5d7f584e27ba1a344b6e6b5d43bd5d97bc6b1506dd1"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/ssl_verify_false.py",
+      "completed_at": "2026-08-16T09:02:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 75,
+      "sha256": "867e4be545343cd2183c0f4dd8c89d57c321a29bf3fdbbe09c899f4e4cb24a05"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/weak_md5.py",
+      "completed_at": "2026-08-16T09:02:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 98,
+      "sha256": "a73be4f888a8a7a8a9ff0ed5afa32eb229e6abb40c36934522198d80a4ef8dd2"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/weak_random.py",
+      "completed_at": "2026-08-16T09:02:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 124,
+      "sha256": "e4d2c49d0e452e24825178a3b593257bf72c3898cf18cfa69a4fb18ae851efe6"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/weak_sha1.py",
+      "completed_at": "2026-08-16T09:02:26+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 81,
+      "sha256": "2a851649d620fc4882b11922437dd24908443806fd4fe21cc29fe9b0bab88c85"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/safe/safe_aes_gcm.py",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 215,
+      "sha256": "b7377fb8a58cf61afc0c6d23075bc9f3321a6ec19e2038d23f85436340e016b1"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/safe/safe_bcrypt.py",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 114,
+      "sha256": "2a4922506241bffe6f591872c3188e4b22c92b9c1cb2d97f7ff5a8f87c47eaad"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/safe/safe_secrets.py",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 126,
+      "sha256": "10e4cacdee788a6c92ee28daf1147b2b682c3063f00aded5df709a24c597f760"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/safe/safe_sha256.py",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 80,
+      "sha256": "dacebb08172e178a6390867474be1d2da703fcb1b5c5b5444d5285f7901893f2"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/safe/safe_ssl.py",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 74,
+      "sha256": "59fd74952e77415d9f5e037f190505b21bbca6f264cd1bfb21e79134d7d63ca1"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/bad/redos_exponential.py",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 90,
+      "sha256": "f97b4c921c5e6d8acb8a786ca18ec2be7cce6323ea3f676a2b3ad97e84616bf1"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/bad/redos_java.java",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 149,
+      "sha256": "aeb89f06edb234fc79633c8b130483f0663523c92c9ff47744fdfb1303c1a847"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/bad/redos_js_nested.js",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 103,
+      "sha256": "5ef4305710f3961d1c9e1f731918f67802a7a0064f84030e9b391acdb245b54c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/bad/redos_nested_1.py",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 123,
+      "sha256": "c6ce9abe8c7fbd0c2a1c519c620fea932a1d619113467c8ff4064bac9730ffa3"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/bad/redos_nested_2.py",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 87,
+      "sha256": "31737130b9d1d4aee31adfebe8fb19aec6757d5b1912591780c2c3d048c463b2"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/bad/redos_overlapping.py",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 100,
+      "sha256": "bb4e6c5b57e57c703c981665ada70e9ddb38f8a5f3d73046d4fbdc2ab7e85bc1"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/bad/redos_overlapping_js.js",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 103,
+      "sha256": "27aefe3747a0446c79d4b73f7251463b393158b66e1a1a6096307f5f40eb8785"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/safe/safe_atomic.js",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 154,
+      "sha256": "2463839760487086eab9a74c6fde33178c94c6f0902eb4c41cb207ba79bc8486"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/safe/safe_literal.py",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 88,
+      "sha256": "4231d0d0713be4571a23a864aa5c6019476ad354d21412d6e85b2e91eb170596"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/safe/safe_no_regex.py",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 57,
+      "sha256": "dcff26a69ade0d000a3164f184fcb44a032e88c72baecb65f0573feb9057dbd6"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/safe/safe_simple_java.java",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 193,
+      "sha256": "3b6ad8d569650217db2ec24a2e364614d9914432142851efc8bdb71c6f4cc6ae"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE400_ReDoS/safe/safe_simple_regex.py",
+      "completed_at": "2026-08-16T09:02:27+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 106,
+      "sha256": "93994f0d8747d1708c1a5a79f7a33a423481fc24225082dff48f8cdf115752f2"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/dill_loads.py",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 61,
+      "sha256": "df09c65d7c55965ae0af6d1ea96ed6f87f0923f2b729b72e338c22f0b61bc17a"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/jsonpickle_decode.py",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 69,
+      "sha256": "a33250ed3c4070af20e28b63d507b27d686663cfe1ef75cee8ee2881e13b9704"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/marshal_load.py",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 65,
+      "sha256": "bb8593ed0471a889bc2a2374e928d4b584fe371c4030f1260fc05f6231ea7939"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/php_unserialize.php",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 81,
+      "sha256": "fd0169ced8185026d51d0c633c1db83a63a6d4128a301d57ddcc480a3031eef1"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/pickle_load_file.py",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 98,
+      "sha256": "4e4bbd8bef339cacac29f816a4b606fc3d7e98e71fbd4b1f672a7d05f979f925"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/pickle_loads.py",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 81,
+      "sha256": "167d7a767dcda4ebca7ac0227efaf0af61418fd812747bff4dd050fe8e0704a1"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/shelve_open.py",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 84,
+      "sha256": "394c8c6b1765b6b1ea929523ed7ca1f03568e9b745ed02ae494b77edefb02f46"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/bad/yaml_unsafe.py",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 63,
+      "sha256": "d0981046477300ba5362e51c533f845d4c61362a377f381e2b8dd55ef5595dea"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/safe/safe_json.py",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 57,
+      "sha256": "e65472f64819e47f1b781d170092cfefdcd7a1d6d031276ce31ac2cbdb2546b1"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/safe/safe_msgpack.py",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 77,
+      "sha256": "9b20d230717c422fa401f9464d001ef6f12c98165d1400ce701297198c5e3ec0"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/safe/safe_no_deser.py",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 133,
+      "sha256": "e691e498a92765b996b160d8102e11968bed5cecbc587e2cd732fbfc5d486895"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/safe/safe_protobuf.py",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 114,
+      "sha256": "02dadc41047febf84f6ce4897b58472bb62dde123ba4f87226102dd9a229ef11"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE502_Deserialization/safe/safe_yaml_safe.py",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 68,
+      "sha256": "6f691519223594b23314b91a9dacf3db3e367d1e0dbb1287abcf16d7c7ee5f6c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/bad/ssrf_axios.js",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 155,
+      "sha256": "bd8210b209ccf456da2acd6e1e5b783d55b114276a557dfce825e5aa80c260b8"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/bad/ssrf_fetch.js",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 114,
+      "sha256": "a9b57c25be000acb30c30a0b949e5c0eaef59a13c48c3bc88cc8356404b98cb5"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/bad/ssrf_http_get.js",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 109,
+      "sha256": "75745180b338db844215ccb76e98feea4241cf9ceeeacce28d2d176cab3829a6"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/bad/ssrf_requests_1.py",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 114,
+      "sha256": "1bd1bca66a41c989a599f0a71c66ef856424dca7538282600349cd08113bcc9f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/bad/ssrf_requests_body.py",
+      "completed_at": "2026-08-16T09:02:28+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 130,
+      "sha256": "66477ffc6caa147b11877d38b918d33964e654bd42ede3b3e51b6591a1ae6b12"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/bad/ssrf_requests_param.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 160,
+      "sha256": "131eecb05760eccd8339df0be6814f541bc92be7e2b0e82889de3f5f52b814c2"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/safe/safe_allowlist_url.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 203,
+      "sha256": "6a3a8f7e5edfa8fef8e653b64ac6295b7a40c92f7468bfa2bf9835cc5a65e402"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/safe/safe_defusedxml.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 132,
+      "sha256": "66b006eb00b2ae30d4aebd6449e74bffeb144e3b58872213ba4e239b0b8de439"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/safe/safe_hardcoded_url.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 104,
+      "sha256": "1f8e5f3f4c40d6c843e90698089deba92a977ca9e1339f45b983857834aa3548"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/safe/safe_no_user_url.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 139,
+      "sha256": "e404830405fbba20e1e59b04dfb7e8389141afb7ae9ad4fc5d7405967107a656"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE611_XXE/safe/safe_validated_url.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 214,
+      "sha256": "2ac7bdbe38f4659b80e2b1b4f47cd8bfceaca96b09603cd7447ac48712e81c9d"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/aws_key.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 81,
+      "sha256": "ed4817543b60a79df4c0085d485aad9f3a60b82374c95ceb9037caa0712daa3e"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/db_conn_string.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 96,
+      "sha256": "f23364fdc1c1483af2a82f8cda3ed31165dbd383678f94b53522575057fcfe8b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/github_token.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 111,
+      "sha256": "8e91926f14bac204ec09c0b2eead2e040ab6d7e3d45c4047e829eaca3928d224"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/hardcoded_apikey.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 85,
+      "sha256": "14271fad30356f3b44940c38d00a65142a481f885c1f9cefe3fa5ed0e4d56f36"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/hardcoded_pw_1.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 75,
+      "sha256": "e052cba0c49580c4cc98e87902b63b217ed54dbba2453ab188c87e0e9035b66c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/private_key.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 141,
+      "sha256": "9cee61744d708d7b4622929bd9dee05d4a1fca50f9e2f1bd76311a69c816a7ae"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/secret_key.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 109,
+      "sha256": "f5da3a750045486bcabc1062ca1b0afa0a6cfa308cad508f140ddafa1c5a4f95"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/bad/stripe_key.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 66,
+      "sha256": "0ba4b8faf45752c1f59fdb45674dd8ccfb2db5da6b11861b85c3a6f4e6fb6eb5"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/safe/safe_config_file.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 136,
+      "sha256": "29f884fb4658d8209e13fd4f885074b589619a6deaa13cff19f5f6e8cd280265"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/safe/safe_env_vars.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 132,
+      "sha256": "144cdc7a91e1f30f721f21aab2b255f010e9a66af8f283a809f2cf96fd7d672f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/safe/safe_no_creds.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 81,
+      "sha256": "8e7f4f1a68464d4c621848b49adb67b2becc57fa6865c01a2bb949ddb603ab7b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/safe/safe_placeholder.py",
+      "completed_at": "2026-08-16T09:02:29+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 58,
+      "sha256": "6ba900e9f220443c0ff623f25e8a4dd414c8812d327f21e4736b5d0aed9be0f9"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE798_HardcodedCreds/safe/safe_secrets_manager.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 159,
+      "sha256": "10d80623bd4bd2b896725089813f8fe6e852593ac4581826b6900903d1cdc9a3"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/bad/xss_jinja2_ssti.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 171,
+      "sha256": "b23d6e1cfc88fd64c492280ecba27d33453ddec3a8deaaaedbc8c8b7da44113d"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/bad/xss_jinja_direct.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 105,
+      "sha256": "fb7e97b73cfffa6db317a9934424e045adebbcacb9eaa78598f485ab34cc238e"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/bad/xss_render_string.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 148,
+      "sha256": "e3a15bf7b78fc07d0c517b1d52e80fe76f05480004698532191986ff00feadf8"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/bad/xss_render_string_2.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 181,
+      "sha256": "aa22916b02799f03c766a35fc08ab364903f9665276e3eb837d3ab0680f25a33"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/bad/xss_ssti_1.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 119,
+      "sha256": "7aacb08a78e41a922550853c19901c3144a1656b6f3df466f45184e79032c165"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/bad/xss_template_class.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 118,
+      "sha256": "6d9f0fe1fdefc3ee1a6ef5868e08da98eade17532066213cf01049eae17c0fb0"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/safe/safe_escape.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 112,
+      "sha256": "562914d858632d5a155da8606c8eaf4d072ce91acde0ca65a8364820a9dbe026"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/safe/safe_hardcoded_html.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 74,
+      "sha256": "9a1b661eca3c2f0a0e01508b1ad5e998f6ddaabd3e943da9c0d2d8de11c0f1c3"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/safe/safe_no_render_string.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 111,
+      "sha256": "12f238c06ae909bb4714f0d5c04ca8e6e4a565fbbb895134adc6cc8eced26903"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/safe/safe_static_template.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 104,
+      "sha256": "c5f2491f5d5afa664fec3e44266a3aa21369378ca2223050443bbb8e0c2fd0dc"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE79_XSS/safe/safe_template_file.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 210,
+      "sha256": "2574f20f01873b270e9fc2c93302370abfff83b8b0c353486bf9396e0267f23b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/bad/sqli_concat_1.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 201,
+      "sha256": "e03a28ec7f23c22d32ce2185c19d9d0fadce0b1f403ba4ca7971f84d0e47d700"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/bad/sqli_concat_2.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 174,
+      "sha256": "0ad42fd0d0284b9a206351dff19de8001ffb24c8b321f99cbd05b101c83c8863"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/bad/sqli_cursor_execute.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 209,
+      "sha256": "5c34b28028d881075659fcc4e348ee255f122af67fde5d5f56d99bace9180ab1"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/bad/sqli_js_template.js",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 148,
+      "sha256": "5174238a78c12e20249a8c642a4ceb66cd2156e4486a21575067bb1e933da36b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/bad/sqli_query_concat_3.py",
+      "completed_at": "2026-08-16T09:02:30+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 207,
+      "sha256": "dfc16eeeb58dc9c803025190c5f30419d31520b555f9e300ee134475e439d1aa"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/bad/sqli_template_1.py",
+      "completed_at": "2026-08-16T09:02:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 167,
+      "sha256": "aae0dfaa831d2b65b9d49f4e45acba75bd6a68a6db0787b9cdd6e9b84a150abd"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/bad/sqli_template_2.js",
+      "completed_at": "2026-08-16T09:02:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 147,
+      "sha256": "fa101afcafe7f797a4a20af3f813c2d6b4f272e86e22bc19f96a4022048622c6"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/safe/safe_no_user_input.py",
+      "completed_at": "2026-08-16T09:02:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 117,
+      "sha256": "2b9738412352f17d24cf895783e736c9fb405f0d8bcd8420621c6538464b2794"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE89_SQLi/safe/safe_orm_query.py",
+      "completed_at": "2026-08-16T09:02:31+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 115,
+      "sha256": "85e49a6b93b420f74d462312f838b1b0a455dcaf1c8bf48f3fa17e586d61bd05"
     }
   ]
 }
