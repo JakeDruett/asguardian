@@ -31,3 +31,4 @@
 {"id":"CH-0082","at":"2026-08-16T12:25:00Z","commit":"36692e3","wave":"W1","summary":"Redact secrets and cap Claude triage payload; untrusted model JSON"}
 {"id":"CH-0035","at":"2026-08-16T12:32:00Z","commit":"f6c81bb","wave":"W2","summary":"Jail RequirementsChecker.sync target_file under scan_path"}
 {"id":"CH-0050","at":"2026-08-16T12:34:00Z","commit":"35aa35c","wave":"W2","summary":"Already closed by CH-0049 isolated pyright --project workspace"}
+{"id":"CH-0072","at":"2026-08-16T12:38:00Z","commit":"b7fc3e8","wave":"W2","summary":"Sanitize screenshot/regression filenames; jail under output dir"}

@@ -1148,7 +1148,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0072 — Screenshot / visual-regression writes unsanitized filenames
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** b7fc3e8
 - **Fixed at:** 2026-08-16T12:38:00Z
 - **Implementation note:** sanitize_output_name + confine_output_path; reject abs/`..`; wired into capture, regression, breakpoint tester.
 - **Severity:** High
@@ -1869,7 +1869,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W2
 - Next: CH-0058, CH-0059, CH-0068
-- Last commit: pending
+- Last commit: b7fc3e8
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
