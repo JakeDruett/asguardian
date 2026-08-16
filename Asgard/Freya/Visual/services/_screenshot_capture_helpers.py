@@ -4,13 +4,12 @@ Freya Screenshot Capture helper functions.
 Helper functions extracted from screenshot_capture.py.
 """
 
+import json
 import os
 import re
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
-
-_SAFE_NAME_RE = re.compile(r"[^A-Za-z0-9._-]+")
 
 from playwright.async_api import async_playwright
 
@@ -19,6 +18,22 @@ from Asgard.Freya.Visual.models.visual_models import (
     ScreenshotResult,
     COMMON_DEVICES,
 )
+
+_SAFE_NAME_RE = re.compile(r"[^A-Za-z0-9._-]+")
+
+# Selector is JSON.parse'd from the evaluate argument — never interpolated.
+HIDE_SELECTOR_JS = """
+(encoded) => {
+    const selector = JSON.parse(encoded);
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(el => el.style.visibility = 'hidden');
+}
+"""
+
+
+def encode_hide_selector(selector: str) -> str:
+    """JSON-encode a hide selector so it is evaluate data, not JS source."""
+    return json.dumps("" if selector is None else str(selector))
 
 
 def url_to_filename(url: str) -> str:
@@ -109,12 +124,7 @@ async def capture(
                 await page.wait_for_timeout(config.wait_for_timeout)
 
             for selector in config.hide_selectors:
-                await page.evaluate(f"""
-                    () => {{
-                        const elements = document.querySelectorAll("{selector}");
-                        elements.forEach(el => el.style.visibility = 'hidden');
-                    }}
-                """)
+                await page.evaluate(HIDE_SELECTOR_JS, encode_hide_selector(selector))
 
             screenshot_options = {
                 "path": str(file_path),

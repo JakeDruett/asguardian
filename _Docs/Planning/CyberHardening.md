@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 7    | 52    | 0             |
+| Medium   | 6    | 53    | 0             |
 | Low      | 10   | 12    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1291,7 +1291,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0074 — Screenshot `hide_selectors` interpolated into `page.evaluate`
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T18:13:00Z
+- **Implementation note:** hide_selectors JSON-encoded and passed as evaluate args, not JS source.
 - **Severity:** Medium
 - **Confidence:** Medium
 - **CWE / class:** CWE-95
@@ -2035,12 +2038,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 23
-- Fixed: 91
+- Open: 22
+- Fixed: 92
 - Accepted risk: 0
 - Current wave: W4
-- Next: CH-0074, CH-0083, CH-0084
-- Last commit: 026682b
+- Next: CH-0083, CH-0084, CH-0085
+- Last commit: pending026682b
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
