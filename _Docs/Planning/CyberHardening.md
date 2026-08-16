@@ -740,7 +740,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0043 — Hardcoded-credential rules copy the secret into `code_snippet`
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 51b545f
 - **Fixed at:** 2026-08-16T16:47:00Z
 - **Implementation note:** JS/PHP/Ruby/Rust credential snippets and env-fallback defaults use last-2/length-only mask; CLI remasks before print/JSON.
 - **Severity:** Medium
@@ -1995,7 +1995,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0047, CH-0048, CH-0052
-- Last commit: pending
+- Last commit: 51b545f
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
