@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 22   | 37    | 0             |
+| Medium   | 21   | 38    | 0             |
 | Low      | 12   | 10    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -616,7 +616,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0036 — Unsigned vulnerability lookup cache can hide or inject CVEs
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T16:45:00Z
+- **Implementation note:** HMAC + schema on vuln cache envelopes; 0o700 dir; unsigned/planted empty bodies are a miss and refetch.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-345
@@ -1984,12 +1987,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 40
-- Fixed: 74
+- Open: 39
+- Fixed: 75
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0036, CH-0043, CH-0047
-- Last commit: f2fa8e9
+- Next: CH-0043, CH-0047, CH-0048
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
