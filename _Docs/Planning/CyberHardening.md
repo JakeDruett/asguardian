@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 11   | 17    | 0             |
+| High     | 10   | 18    | 0             |
 | Medium   | 46   | 13    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
@@ -1147,7 +1147,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0072 — Screenshot / visual-regression writes unsanitized filenames
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T12:38:00Z
+- **Implementation note:** sanitize_output_name + confine_output_path; reject abs/`..`; wired into capture, regression, breakpoint tester.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-22
@@ -1861,12 +1864,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 81
-- Fixed: 33
+- Open: 80
+- Fixed: 34
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0058, CH-0059, CH-0068, CH-0072
-- Last commit: f6c81bb
+- Next: CH-0058, CH-0059, CH-0068
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

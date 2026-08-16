@@ -5,9 +5,12 @@ Helper functions extracted from screenshot_capture.py.
 """
 
 import os
+import re
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
+
+_SAFE_NAME_RE = re.compile(r"[^A-Za-z0-9._-]+")
 
 from playwright.async_api import async_playwright
 
@@ -19,11 +22,38 @@ from Asgard.Freya.Visual.models.visual_models import (
 
 
 def url_to_filename(url: str) -> str:
-    """Convert URL to safe filename."""
+    """Convert URL to a safe filename fragment."""
     url = url.replace("https://", "").replace("http://", "")
     url = url.replace("/", "_").replace(":", "_").replace("?", "_")
     url = url.replace("&", "_").replace("=", "_")
-    return url[:50]
+    return sanitize_output_name(url[:50], default="page")
+
+
+def sanitize_output_name(name: str, *, default: str = "file") -> str:
+    """Keep only ``[A-Za-z0-9._-]``; reject empty / ``.`` / ``..`` names."""
+    text = (name or "").strip().replace("\\", "/")
+    raw = Path(text)
+    if raw.is_absolute() or ".." in raw.parts or text.startswith("/"):
+        raise ValueError("output name must not be absolute or contain ..")
+    base = raw.name
+    if base in {"", ".", ".."}:
+        raise ValueError("output name is empty")
+    cleaned = _SAFE_NAME_RE.sub("_", base).strip("._")
+    if not cleaned:
+        cleaned = default
+    if not re.fullmatch(r"[A-Za-z0-9._-]+", cleaned):
+        raise ValueError("output name is not a safe filename")
+    return cleaned
+
+
+def confine_output_path(output_directory: Path, name: str) -> Path:
+    """Resolve *name* under *output_directory*; reject abs and ``..``."""
+    root = Path(output_directory).resolve()
+    safe = sanitize_output_name(name)
+    dest = (root / safe).resolve()
+    if not dest.is_relative_to(root):
+        raise ValueError("output path must stay under the output directory")
+    return dest
 
 
 async def capture(
@@ -38,7 +68,7 @@ async def capture(
         url_part = url_to_filename(url)
         filename = f"{url_part}_{timestamp}.{config.format}"
 
-    file_path = output_directory / filename
+    file_path = confine_output_path(output_directory, filename)
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
@@ -144,10 +174,10 @@ async def capture_element(
     """Capture a specific element."""
     if filename is None:
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        selector_part = selector.replace(" ", "_").replace(".", "_")[:20]
+        selector_part = sanitize_output_name(selector.replace(" ", "_")[:20], default="el")
         filename = f"element_{selector_part}_{timestamp}.{config.format}"
 
-    file_path = output_directory / filename
+    file_path = confine_output_path(output_directory, filename)
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)

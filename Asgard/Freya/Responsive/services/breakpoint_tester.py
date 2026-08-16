@@ -18,6 +18,7 @@ from Asgard.Freya.Responsive.models.responsive_models import (
     BreakpointTestResult,
     COMMON_BREAKPOINTS,
 )
+from Asgard.Freya.Visual.services._screenshot_capture_helpers import confine_output_path
 from Asgard.Freya.Responsive.services._breakpoint_tester_checks import (
     check_horizontal_scroll,
     check_content_overflow,
@@ -104,7 +105,10 @@ class BreakpointTester:
                     screenshot_path = None
                     if capture_screenshots:
                         screenshot_path = str(
-                            self.output_directory / f"{bp.name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+                            confine_output_path(
+                                self.output_directory,
+                                f"{bp.name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png",
+                            )
                         )
                         await page.screenshot(path=screenshot_path, full_page=True)
                         screenshots[bp.name] = screenshot_path

@@ -23,6 +23,7 @@ from Asgard.Freya.Visual.models.visual_models import (
     RegressionTestSuite,
     VisualComparisonResult,
 )
+from Asgard.Freya.Visual.services._screenshot_capture_helpers import confine_output_path
 from Asgard.Freya.Visual.services.image_ops import (
     Image,
     difference,
@@ -192,8 +193,10 @@ class VisualRegressionTester:
         )
 
         for test_case in suite.test_cases:
-            baseline_path = baseline_dir / f"{test_case.name}.png"
-            comparison_path = Path(suite.output_directory) / f"{test_case.name}_current.png"
+            baseline_path = confine_output_path(baseline_dir, f"{test_case.name}.png")
+            comparison_path = confine_output_path(
+                Path(suite.output_directory), f"{test_case.name}_current.png"
+            )
 
             if not baseline_path.exists():
                 continue
