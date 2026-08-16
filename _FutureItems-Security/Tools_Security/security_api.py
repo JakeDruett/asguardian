@@ -13,6 +13,28 @@ from datetime import datetime
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, asdict
 
+_ALLOWED_OUTPUT_SUFFIXES = {".json", ".sarif"}
+
+
+def confine_output_path(output: str, *, allow_abs: bool = False) -> Path:
+    """Resolve -o under CWD unless --allow-abs; only .json/.sarif."""
+    raw = Path(output)
+    suffix = raw.suffix.lower()
+    if suffix not in _ALLOWED_OUTPUT_SUFFIXES:
+        raise ValueError("output path must end with .json or .sarif")
+    if raw.is_absolute() or ".." in raw.parts:
+        if not allow_abs:
+            raise ValueError("output path must stay under the current directory")
+        dest = raw.resolve()
+        if dest.suffix.lower() not in _ALLOWED_OUTPUT_SUFFIXES:
+            raise ValueError("output path must end with .json or .sarif")
+        return dest
+    root = Path.cwd().resolve()
+    dest = (root / raw).resolve()
+    if not dest.is_relative_to(root):
+        raise ValueError("output path must stay under the current directory")
+    return dest
+
 
 @dataclass
 class ScanResult:
@@ -329,7 +351,12 @@ def main():
     )
     parser.add_argument(
         '-o', '--output',
-        help='Output file (default: stdout)'
+        help='Output file under CWD (default: stdout); .json or .sarif only'
+    )
+    parser.add_argument(
+        '--allow-abs',
+        action='store_true',
+        help='Allow absolute -o paths (still .json/.sarif only)'
     )
     parser.add_argument(
         '--tools',
@@ -382,9 +409,14 @@ def main():
 
     # Write output
     if args.output:
-        with open(args.output, 'w') as f:
-            f.write(output)
-        print(f"Results written to {args.output}")
+        try:
+            dest = confine_output_path(args.output, allow_abs=args.allow_abs)
+        except ValueError as exc:
+            print(f"Error: {exc}")
+            return 1
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(output, encoding="utf-8")
+        print(f"Results written to {dest}")
     else:
         print(output)
 
