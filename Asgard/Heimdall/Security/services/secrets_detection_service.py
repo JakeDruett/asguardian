@@ -38,7 +38,6 @@ from Asgard.Heimdall.Security.utilities.security_utils import (
     extract_code_snippet,
     find_line_column,
     is_in_comment_or_docstring,
-    is_example_or_placeholder,
     mask_secret,
     scan_directory_for_security,
 )
@@ -164,17 +163,23 @@ class SecretsDetectionService:
                 context_end = min(len(content), match.end() + 100)
                 context = content[context_start:context_end]
 
-                if is_example_or_placeholder(secret_value, context):
+                if is_false_positive(
+                    secret_value,
+                    matched_text,
+                    content,
+                    match.start(),
+                    secret_type=pattern.secret_type,
+                    pattern_name=pattern.name,
+                ):
                     continue
 
-                if is_false_positive(secret_value, matched_text, content, match.start()):
-                    continue
-
-                # BLOCKER-3 fix: proximity of an unrelated env-var read
-                # call or "example"/"sample" wording is a soft signal --
-                # it downgrades confidence below, it does not drop the
-                # finding. Only a placeholder VALUE (checked above and
-                # via is_example_or_placeholder) justifies a full drop.
+                # BLOCKER-3 / CH-0085: proximity of "example"/"sample" or
+                # an unrelated env-var read is a soft signal -- it
+                # downgrades confidence below, it does not drop the
+                # finding. Only a whole-value placeholder justifies a
+                # full drop. Substring test/example in the value or
+                # matched_text must not delete AWS/GitHub/private-key
+                # findings or credentials like ContestWinner1.
                 soft_fp_context = has_env_or_example_proximity(
                     content, match.start(), len(matched_text)
                 )

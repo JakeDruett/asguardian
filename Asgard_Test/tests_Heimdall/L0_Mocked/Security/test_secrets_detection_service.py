@@ -17,6 +17,9 @@ from Asgard.Heimdall.Security.services._secret_patterns import (
     DEFAULT_SECRET_PATTERNS,
     FALSE_POSITIVE_PATTERNS,
 )
+from Asgard.Heimdall.Security.services._secrets_detection_helpers import (
+    is_false_positive,
+)
 from Asgard.Heimdall.Security.models.security_models import (
     SecretType,
     SecuritySeverity,
@@ -83,6 +86,10 @@ class TestDefaultSecretPatterns:
         assert "stripe_key" in pattern_names
 
 
+def _is_placeholder_value(value: str) -> bool:
+    return is_false_positive(value, value, "", 0)
+
+
 class TestFalsePositivePatterns:
     """Tests for FALSE_POSITIVE_PATTERNS."""
 
@@ -96,24 +103,37 @@ class TestFalsePositivePatterns:
         ]
 
         for test_str in test_strings:
-            matched = any(p.search(test_str) for p in FALSE_POSITIVE_PATTERNS)
+            matched = any(p.fullmatch(test_str) for p in FALSE_POSITIVE_PATTERNS)
             assert matched, f"'{test_str}' should be detected as false positive"
+            assert _is_placeholder_value(test_str)
 
     def test_detects_repeated_characters(self):
         """Test that repeated character patterns are detected."""
         test_strings = ["xxxxxxxx", "00000000", "aaaaaaaa"]
 
         for test_str in test_strings:
-            matched = any(p.search(test_str) for p in FALSE_POSITIVE_PATTERNS)
+            matched = any(p.fullmatch(test_str) for p in FALSE_POSITIVE_PATTERNS)
             assert matched
+            assert _is_placeholder_value(test_str)
 
     def test_detects_placeholders(self):
         """Test that placeholder patterns are detected."""
         test_strings = ["<api_key>", "${SECRET}", "%(password)s"]
 
         for test_str in test_strings:
-            matched = any(p.search(test_str) for p in FALSE_POSITIVE_PATTERNS)
+            matched = any(p.fullmatch(test_str) for p in FALSE_POSITIVE_PATTERNS)
             assert matched
+            assert _is_placeholder_value(test_str)
+
+    def test_substring_test_is_not_a_placeholder(self):
+        """CH-0085: embedded test/example must not full-drop the value."""
+        for test_str in (
+            "postgres://u:p@testhost/db",
+            "ContestWinner1",
+            "sk_test_51NotARealStripeKey000000",
+        ):
+            assert not _is_placeholder_value(test_str), test_str
+            assert not any(p.fullmatch(test_str) for p in FALSE_POSITIVE_PATTERNS)
 
 
 class TestSecretsDetectionService:

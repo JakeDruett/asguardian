@@ -211,17 +211,19 @@ DEFAULT_SECRET_PATTERNS: List[SecretPattern] = [
     ),
 ]
 
-FALSE_POSITIVE_PATTERNS: List[Pattern] = [
-    re.compile(r"example|sample|test|dummy|fake|mock|placeholder|your[_-]?key", re.IGNORECASE),
-    re.compile(r"xxx+|000+|111+|aaa+", re.IGNORECASE),
-    re.compile(r"<[^>]+>"),
-    re.compile(r"\$\{[^}]+\}"),
-    re.compile(r"%\([^)]+\)s"),
-    re.compile(r"process\.env\.[A-Z_]+"),
-    re.compile(r"os\.environ\["),
-    re.compile(r"getenv\("),
-    re.compile(r"\{self\.\w+\}"),
-    re.compile(r"\{[a-z_]+\}"),
+# Whole-value placeholders only. Unanchored test|example|sample dropped real
+# secrets (CH-0085): testhost URLs, ContestWinner1, Stripe sk_test_, AWS/GitHub.
+_PLACEHOLDER_TOKEN_RE = re.compile(
+    r"^(?:"
+    r"(?:example|sample|test|dummy|fake|mock|placeholder|demo|changeme)"
+    r"(?:[_-][A-Za-z0-9._-]{0,64})?"
+    r"|(?:your|my)[_-][A-Za-z0-9._-]{0,128}"
+    r"|your[_-]?key(?:[_-]?here)?"
+    r")$",
+    re.IGNORECASE,
+)
+_PLACEHOLDER_DUMMY_RE = re.compile(r"^(?:x{3,}|0{3,}|1{3,}|a{3,})$", re.IGNORECASE)
+_PLACEHOLDER_BARE_NAME_RES: List[Pattern] = [
     re.compile(r"^password$", re.IGNORECASE),
     re.compile(r"^passwd$", re.IGNORECASE),
     re.compile(r"^secret$", re.IGNORECASE),
@@ -240,3 +242,24 @@ FALSE_POSITIVE_PATTERNS: List[Pattern] = [
     re.compile(r"^rabbitmq[_-]?password$", re.IGNORECASE),
     re.compile(r"^not[_-]?a[_-]?password$", re.IGNORECASE),
 ]
+
+PLACEHOLDER_VALUE_PATTERNS: List[Pattern] = [
+    _PLACEHOLDER_TOKEN_RE,
+    _PLACEHOLDER_DUMMY_RE,
+    *_PLACEHOLDER_BARE_NAME_RES,
+]
+
+TEMPLATE_VALUE_PATTERNS: List[Pattern] = [
+    re.compile(r"^<[^<>]{1,128}>$"),
+    re.compile(r"^\$\{[^{}]{1,128}\}$"),
+    re.compile(r"^%\([^)]{1,64}\)s$"),
+    re.compile(r"^process\.env\.[A-Z_][A-Z0-9_]*$"),
+    re.compile(r"^os\.environ\[.+$"),
+    re.compile(r"^getenv\(.+$"),
+    re.compile(r"^\{self\.\w+\}$"),
+    re.compile(r"^\{[a-z_]+\}$"),
+]
+
+FALSE_POSITIVE_PATTERNS: List[Pattern] = (
+    PLACEHOLDER_VALUE_PATTERNS + TEMPLATE_VALUE_PATTERNS
+)

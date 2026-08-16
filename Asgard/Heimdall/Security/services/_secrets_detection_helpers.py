@@ -9,10 +9,34 @@ from typing import List, Optional
 
 from Asgard.Heimdall.Security.models.security_models import SecretType, SecuritySeverity
 from Asgard.Heimdall.Security.services._secret_patterns import (
-    FALSE_POSITIVE_PATTERNS,
+    PLACEHOLDER_VALUE_PATTERNS,
+    TEMPLATE_VALUE_PATTERNS,
     SecretPattern,
 )
 from Asgard.Heimdall.Security.utilities.security_utils import redact_line_span
+
+# High-signal structured secrets are never dropped on placeholder *words*
+# (test/example/…). Templates like `${VAR}` may still be dropped.
+_NEVER_DROP_PLACEHOLDER_WORD_TYPES = frozenset(
+    {
+        SecretType.AWS_CREDENTIALS,
+        SecretType.PRIVATE_KEY,
+        SecretType.SSH_KEY,
+    }
+)
+
+
+def _never_drop_placeholder_words(
+    secret_type: Optional[SecretType],
+    pattern_name: str,
+) -> bool:
+    if secret_type in _NEVER_DROP_PLACEHOLDER_WORD_TYPES:
+        return True
+    return (pattern_name or "").lower().startswith("github_")
+
+
+def _full_value_matches(value: str, patterns) -> bool:
+    return any(pattern.fullmatch(value) for pattern in patterns)
 
 
 def is_false_positive(
@@ -20,6 +44,9 @@ def is_false_positive(
     matched_text: str,
     content: str,
     match_start: int,
+    *,
+    secret_type: Optional[SecretType] = None,
+    pattern_name: str = "",
 ) -> bool:
     """
     Check if the matched VALUE itself is a placeholder/dummy secret and
@@ -34,33 +61,41 @@ def is_false_positive(
         os.environ.get("DB_HOST")           # unrelated env lookup
         aws_secret_access_key = "wJalr..."  # real key, 100 chars later
 
-    A docstring promise elsewhere in this module ("never disappears,
-    floor keeps it visible") was being violated by this full-drop path.
-    This function is now scoped to the VALUE only: it drops a match only
-    when the matched value (or its own regex-matched text) literally
-    looks like a placeholder/dummy (e.g. "your_key_here", "XXXX",
-    "example_secret", a template `${VAR}` / `<PLACEHOLDER>` token, or a
-    bare generic word like "password"). Proximity of an unrelated
-    env-var call or the word "example"/"sample" *elsewhere* in the
-    surrounding code is handled separately by
+    CH-0085: only the captured VALUE is inspected, and only as a whole
+    string. Substring `test`/`example` in `matched_text` or inside a
+    real token (testhost URLs, ContestWinner1, Stripe `sk_test_`, AWS
+    keys containing EXAMPLE) must not drop the finding. AWS / GitHub /
+    private-key types never drop on placeholder words.
+
+    Proximity of an unrelated env-var call or the word "example"/"sample"
+    *elsewhere* in the surrounding code is handled separately by
     `has_env_or_example_proximity`, which only DOWNGRADES confidence
     (see `secrets_detection_service.py`) -- it never drops a finding.
 
     Args:
         secret_value: The detected secret value
-        matched_text: The full matched text
+        matched_text: The full matched text (ignored; kept for callers)
+        content: Unused; kept for callers
+        match_start: Unused; kept for callers
+        secret_type: Detected secret type (exempts AWS/private-key/SSH)
+        pattern_name: Pattern name (exempts github_*)
 
     Returns:
         True if the matched value itself is a placeholder/dummy and the
         finding should be dropped outright.
     """
-    for fp_pattern in FALSE_POSITIVE_PATTERNS:
-        if fp_pattern.search(secret_value):
-            return True
-        if fp_pattern.search(matched_text):
-            return True
+    _ = (matched_text, content, match_start)
+    value = (secret_value or "").strip()
+    if not value:
+        return True
 
-    return False
+    if _full_value_matches(value, TEMPLATE_VALUE_PATTERNS):
+        return True
+
+    if _never_drop_placeholder_words(secret_type, pattern_name):
+        return False
+
+    return _full_value_matches(value, PLACEHOLDER_VALUE_PATTERNS)
 
 
 def has_env_or_example_proximity(
