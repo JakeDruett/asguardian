@@ -1973,7 +1973,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0114 — SecurityAPI loads scanners with broken operator precedence and fail-opens on errors
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** bbc7e09
 - **Fixed at:** 2026-08-16T17:44:00Z
 - **Implementation note:** Load only module-local BaseScanner types; scan_all sets total_issues=-1 and non-zero exit on crash.
 - **Severity:** Medium
@@ -2025,7 +2025,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W4
 - Next: CH-0017, CH-0022, CH-0053
-- Last commit: pending
+- Last commit: bbc7e09
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
