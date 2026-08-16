@@ -100,3 +100,4 @@
 {"id":"CH-0087","at":"2026-08-16T13:28:00Z","commit":"77fbace","wave":"W4","summary":"Private-index detection ignores comments"}
 {"id":"CH-0095","at":"2026-08-16T13:32:00Z","commit":"11ed22f","wave":"W4","summary":"Cap tree-sitter parse size/timeout and query cache"}
 {"id":"CH-0101","at":"2026-08-16T13:36:00Z","commit":"e18ab61","wave":"W4","summary":"Critical-path walks break on cyclic parent spans"}
+{"id":"CH-0025","at":"2026-08-16T13:40:00Z","commit":"d7e275c","wave":"W4","summary":"Cap SZZ hunks and blame calls"}

@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
 | Medium   | 2    | 57    | 0             |
-| Low      | 4    | 18    | 0             |
+| Low      | 3    | 19    | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -459,7 +459,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0025 — SZZ unbounded per-hunk `git blame`
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** d7e275c
+- **Fixed at:** 2026-08-16T13:40:00Z
+- **Implementation note:** Cap hunks/commit and total blame calls; skip -C on wide diffs; INSUFFICIENT_DATA over budget.
 - **Severity:** Low
 - **Confidence:** High
 - **CWE / class:** CWE-400
@@ -2068,12 +2071,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 12
-- Fixed: 102
+- Open: 11
+- Fixed: 103
 - Accepted risk: 0
 - Current wave: W4
-- Next: CH-0025, CH-0031, CH-0039
-- Last commit: e18ab61
+- Next: CH-0031, CH-0039
+- Last commit: d7e275c
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
