@@ -54,4 +54,4 @@
 {"id":"CH-0028","at":"2026-08-16T14:26:00Z","commit":"af33d04","wave":"W2","summary":"Jail write_local_profile under cwd"}
 {"id":"CH-0034","at":"2026-08-16T14:27:00Z","commit":"c8be38a","wave":"W2","summary":"Normalize/quote PyPI names; block off-host redirects"}
 {"id":"CH-0076","at":"2026-08-16T15:10:00Z","commit":"68fac38","wave":"W3","summary":"HMAC file-integrity baseline; has_changes includes added; O_NOFOLLOW"}
-{"id":"CH-0069","at":"2026-08-16T15:20:00Z","commit":"pending","wave":"W3","summary":"Redact crawl auth_config secrets in generate/save report"}
+{"id":"CH-0069","at":"2026-08-16T15:20:00Z","commit":"27b3092","wave":"W3","summary":"Redact crawl auth_config secrets in generate/save report"}

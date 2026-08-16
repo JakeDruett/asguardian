@@ -1148,7 +1148,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0069 — Crawl reports persist `auth_config` (passwords) on disk
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 27b3092
 - **Fixed at:** 2026-08-16T15:20:00Z
 - **Implementation note:** `generate_report`/`save_report` copy config and replace secret `auth_config` values with `****`; keys kept. Deviation: length-only mask, not prefix/suffix.
 - **Severity:** High
@@ -1938,7 +1938,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0012, CH-0051, CH-0077
-- Last commit: pending
+- Last commit: 27b3092
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
