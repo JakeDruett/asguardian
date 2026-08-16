@@ -49,6 +49,7 @@ def row_to_issue(row: sqlite3.Row) -> TrackedIssue:
     """Convert a database row to a TrackedIssue model."""
     return TrackedIssue(
         issue_id=row["issue_id"],
+        project_path=row["project_path"],
         rule_id=row["rule_id"],
         issue_type=row["issue_type"],
         file_path=row["file_path"],

@@ -68,18 +68,22 @@ class IssueTracker:
         return self._repository.mark_resolved(project_path, scan_start_time)
 
     def update_status(
-        self, issue_id: str, new_status: IssueStatus, reason: Optional[str] = None,
+        self,
+        project_path: str,
+        issue_id: str,
+        new_status: IssueStatus,
+        reason: Optional[str] = None,
     ) -> Optional[TrackedIssue]:
         """Transition an issue to a new lifecycle status."""
-        return self._repository.update_status(issue_id, new_status, reason)
+        return self._repository.update_status(project_path, issue_id, new_status, reason)
 
-    def assign_issue(self, issue_id: str, assignee: str) -> Optional[TrackedIssue]:
+    def assign_issue(self, project_path: str, issue_id: str, assignee: str) -> Optional[TrackedIssue]:
         """Assign an issue to a user."""
-        return self._repository.assign_issue(issue_id, assignee)
+        return self._repository.assign_issue(project_path, issue_id, assignee)
 
-    def add_comment(self, issue_id: str, comment: str) -> Optional[TrackedIssue]:
+    def add_comment(self, project_path: str, issue_id: str, comment: str) -> Optional[TrackedIssue]:
         """Append a comment to an issue."""
-        return self._repository.add_comment(issue_id, comment)
+        return self._repository.add_comment(project_path, issue_id, comment)
 
     def get_issues(
         self, project_path: str, issue_filter: Optional[IssueFilter] = None,
@@ -91,9 +95,9 @@ class IssueTracker:
         """Generate an aggregated summary of issues for a project."""
         return self._repository.get_summary(project_path)
 
-    def get_issue(self, issue_id: str) -> Optional[TrackedIssue]:
-        """Retrieve a single issue by its UUID."""
-        return self._repository.get_issue(issue_id)
+    def get_issue(self, project_path: str, issue_id: str) -> Optional[TrackedIssue]:
+        """Retrieve a single issue by its UUID, scoped to a project."""
+        return self._repository.get_issue(project_path, issue_id)
 
     def get_git_blame(self, file_path: str, line_number: int) -> Optional[Dict[str, str]]:
         """Run git blame on a specific line to identify the author and commit."""

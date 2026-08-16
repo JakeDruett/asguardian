@@ -60,6 +60,7 @@ class IIssueRepository(Protocol):
 
     def update_status(
         self,
+        project_path: str,
         issue_id: str,
         new_status: IssueStatus,
         reason: Optional[str] = None,
@@ -67,11 +68,11 @@ class IIssueRepository(Protocol):
         """Transition an issue to a new lifecycle status."""
         ...
 
-    def assign_issue(self, issue_id: str, assignee: str) -> Optional[TrackedIssue]:
+    def assign_issue(self, project_path: str, issue_id: str, assignee: str) -> Optional[TrackedIssue]:
         """Assign an issue to a user."""
         ...
 
-    def add_comment(self, issue_id: str, comment: str) -> Optional[TrackedIssue]:
+    def add_comment(self, project_path: str, issue_id: str, comment: str) -> Optional[TrackedIssue]:
         """Append a comment to an issue."""
         ...
 
@@ -87,8 +88,8 @@ class IIssueRepository(Protocol):
         """Generate an aggregated summary of issues for a project."""
         ...
 
-    def get_issue(self, issue_id: str) -> Optional[TrackedIssue]:
-        """Retrieve a single issue by its UUID."""
+    def get_issue(self, project_path: str, issue_id: str) -> Optional[TrackedIssue]:
+        """Retrieve a single issue by its UUID, scoped to a project."""
         ...
 
 
@@ -214,6 +215,7 @@ class SQLiteIssueRepository:
 
     def update_status(
         self,
+        project_path: str,
         issue_id: str,
         new_status: IssueStatus,
         reason: Optional[str] = None,
@@ -224,7 +226,8 @@ class SQLiteIssueRepository:
 
         with self._get_connection() as conn:
             row = conn.execute(
-                "SELECT * FROM issues WHERE issue_id = ?", (issue_id,),
+                "SELECT * FROM issues WHERE issue_id = ? AND project_path = ?",
+                (issue_id, project_path),
             ).fetchone()
             if not row:
                 return None
@@ -240,48 +243,52 @@ class SQLiteIssueRepository:
                 """
                 UPDATE issues
                 SET status = ?, resolved_at = ?, false_positive_reason = ?
-                WHERE issue_id = ?
+                WHERE issue_id = ? AND project_path = ?
                 """,
-                (status_val, resolved_at, false_positive_reason, issue_id),
+                (status_val, resolved_at, false_positive_reason, issue_id, project_path),
             )
             conn.commit()
             updated = conn.execute(
-                "SELECT * FROM issues WHERE issue_id = ?", (issue_id,),
+                "SELECT * FROM issues WHERE issue_id = ? AND project_path = ?",
+                (issue_id, project_path),
             ).fetchone()
             return row_to_issue(updated)
 
-    def assign_issue(self, issue_id: str, assignee: str) -> Optional[TrackedIssue]:
+    def assign_issue(self, project_path: str, issue_id: str, assignee: str) -> Optional[TrackedIssue]:
         """Assign an issue to a user."""
         with self._get_connection() as conn:
             cursor = conn.execute(
-                "UPDATE issues SET assigned_to = ? WHERE issue_id = ?",
-                (assignee, issue_id),
+                "UPDATE issues SET assigned_to = ? WHERE issue_id = ? AND project_path = ?",
+                (assignee, issue_id, project_path),
             )
             conn.commit()
             if cursor.rowcount == 0:
                 return None
             row = conn.execute(
-                "SELECT * FROM issues WHERE issue_id = ?", (issue_id,),
+                "SELECT * FROM issues WHERE issue_id = ? AND project_path = ?",
+                (issue_id, project_path),
             ).fetchone()
             return row_to_issue(row)
 
-    def add_comment(self, issue_id: str, comment: str) -> Optional[TrackedIssue]:
+    def add_comment(self, project_path: str, issue_id: str, comment: str) -> Optional[TrackedIssue]:
         """Append a comment to an issue."""
         with self._get_connection() as conn:
             row = conn.execute(
-                "SELECT * FROM issues WHERE issue_id = ?", (issue_id,),
+                "SELECT * FROM issues WHERE issue_id = ? AND project_path = ?",
+                (issue_id, project_path),
             ).fetchone()
             if not row:
                 return None
             existing_comments = json.loads(row["comments_json"] or "[]")
             existing_comments.append(comment)
             conn.execute(
-                "UPDATE issues SET comments_json = ? WHERE issue_id = ?",
-                (json.dumps(existing_comments), issue_id),
+                "UPDATE issues SET comments_json = ? WHERE issue_id = ? AND project_path = ?",
+                (json.dumps(existing_comments), issue_id, project_path),
             )
             conn.commit()
             updated = conn.execute(
-                "SELECT * FROM issues WHERE issue_id = ?", (issue_id,),
+                "SELECT * FROM issues WHERE issue_id = ? AND project_path = ?",
+                (issue_id, project_path),
             ).fetchone()
             return row_to_issue(updated)
 
@@ -299,11 +306,12 @@ class SQLiteIssueRepository:
         with self._get_connection() as conn:
             return build_summary(conn, project_path)
 
-    def get_issue(self, issue_id: str) -> Optional[TrackedIssue]:
-        """Retrieve a single issue by its UUID."""
+    def get_issue(self, project_path: str, issue_id: str) -> Optional[TrackedIssue]:
+        """Retrieve a single issue by its UUID, scoped to a project."""
         with self._get_connection() as conn:
             row = conn.execute(
-                "SELECT * FROM issues WHERE issue_id = ?", (issue_id,),
+                "SELECT * FROM issues WHERE issue_id = ? AND project_path = ?",
+                (issue_id, project_path),
             ).fetchone()
             if not row:
                 return None

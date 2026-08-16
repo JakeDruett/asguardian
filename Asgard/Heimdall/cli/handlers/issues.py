@@ -85,8 +85,9 @@ def _run_issues_list(args: argparse.Namespace, verbose: bool) -> int:
 def _run_issues_show(args: argparse.Namespace, verbose: bool) -> int:
     try:
         issue_id = args.issue_id
+        project_path = str(Path(getattr(args, "path", ".")).resolve())
         tracker = IssueTracker()
-        issue = tracker.get_issue(issue_id)
+        issue = tracker.get_issue(project_path, issue_id)
 
         if not issue:
             print(f"Issue not found: {issue_id}")
@@ -137,8 +138,9 @@ def _run_issues_update(args: argparse.Namespace, verbose: bool) -> int:
         new_status = IssueStatus(args.status)
         reason = getattr(args, "reason", None)
 
+        project_path = str(Path(getattr(args, "path", ".")).resolve())
         tracker = IssueTracker()
-        updated = tracker.update_status(issue_id, new_status, reason)
+        updated = tracker.update_status(project_path, issue_id, new_status, reason)
 
         if not updated:
             print(f"Issue not found: {issue_id}")
@@ -159,8 +161,9 @@ def _run_issues_assign(args: argparse.Namespace, verbose: bool) -> int:
         issue_id = args.issue_id
         assignee = args.assignee
 
+        project_path = str(Path(getattr(args, "path", ".")).resolve())
         tracker = IssueTracker()
-        updated = tracker.assign_issue(issue_id, assignee)
+        updated = tracker.assign_issue(project_path, issue_id, assignee)
 
         if not updated:
             print(f"Issue not found: {issue_id}")

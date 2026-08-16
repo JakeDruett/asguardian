@@ -258,7 +258,7 @@ class TestIssueTrackerGetIssues:
             issue_open = _upsert_basic(tracker, rule_id="js.no-eval", line_number=10)
             issue_to_resolve = _upsert_basic(tracker, rule_id="js.no-var", line_number=20)
 
-            tracker.update_status(issue_to_resolve.issue_id, IssueStatus.RESOLVED)
+            tracker.update_status("/project", issue_to_resolve.issue_id, IssueStatus.RESOLVED)
 
             open_filter = IssueFilter(status=[IssueStatus.OPEN])
             open_issues = tracker.get_issues("/project", issue_filter=open_filter)
@@ -328,7 +328,7 @@ class TestIssueTrackerUpdateStatus:
             tracker = _make_tracker(Path(tmpdir))
             issue = _upsert_basic(tracker)
 
-            updated = tracker.update_status(issue.issue_id, IssueStatus.RESOLVED)
+            updated = tracker.update_status("/project", issue.issue_id, IssueStatus.RESOLVED)
 
             assert updated is not None
             assert updated.status == IssueStatus.RESOLVED.value
@@ -340,7 +340,7 @@ class TestIssueTrackerUpdateStatus:
             issue = _upsert_basic(tracker)
 
             before = datetime.now()
-            updated = tracker.update_status(issue.issue_id, IssueStatus.RESOLVED)
+            updated = tracker.update_status("/project", issue.issue_id, IssueStatus.RESOLVED)
             after = datetime.now()
 
             assert updated.resolved_at is not None
@@ -352,7 +352,7 @@ class TestIssueTrackerUpdateStatus:
             tracker = _make_tracker(Path(tmpdir))
             issue = _upsert_basic(tracker)
 
-            updated = tracker.update_status(
+            updated = tracker.update_status("/project", 
                 issue.issue_id,
                 IssueStatus.FALSE_POSITIVE,
                 reason="Test environment variable, not production code.",
@@ -368,7 +368,7 @@ class TestIssueTrackerUpdateStatus:
             issue = _upsert_basic(tracker)
 
             reason = "This is a test fixture, not production code."
-            updated = tracker.update_status(
+            updated = tracker.update_status("/project", 
                 issue.issue_id,
                 IssueStatus.FALSE_POSITIVE,
                 reason=reason,
@@ -382,7 +382,7 @@ class TestIssueTrackerUpdateStatus:
             tracker = _make_tracker(Path(tmpdir))
             issue = _upsert_basic(tracker)
 
-            updated = tracker.update_status(issue.issue_id, IssueStatus.CONFIRMED)
+            updated = tracker.update_status("/project", issue.issue_id, IssueStatus.CONFIRMED)
 
             assert updated.status == IssueStatus.CONFIRMED.value
 
@@ -392,7 +392,7 @@ class TestIssueTrackerUpdateStatus:
             tracker = _make_tracker(Path(tmpdir))
             issue = _upsert_basic(tracker)
 
-            updated = tracker.update_status(issue.issue_id, IssueStatus.WONT_FIX)
+            updated = tracker.update_status("/project", issue.issue_id, IssueStatus.WONT_FIX)
 
             assert updated.status == IssueStatus.WONT_FIX.value
 
@@ -401,7 +401,7 @@ class TestIssueTrackerUpdateStatus:
         with tempfile.TemporaryDirectory() as tmpdir:
             tracker = _make_tracker(Path(tmpdir))
 
-            result = tracker.update_status("nonexistent-uuid", IssueStatus.RESOLVED)
+            result = tracker.update_status("/project", "nonexistent-uuid", IssueStatus.RESOLVED)
 
             assert result is None
 
@@ -411,7 +411,7 @@ class TestIssueTrackerUpdateStatus:
             tracker = _make_tracker(Path(tmpdir))
 
             issue = _upsert_basic(tracker, line_number=10)
-            tracker.update_status(issue.issue_id, IssueStatus.RESOLVED)
+            tracker.update_status("/project", issue.issue_id, IssueStatus.RESOLVED)
 
             new_issue = _upsert_basic(tracker, line_number=10)
 
@@ -453,7 +453,7 @@ class TestIssueTrackerGetSummary:
             tracker = _make_tracker(Path(tmpdir))
 
             issue = _upsert_basic(tracker)
-            tracker.update_status(issue.issue_id, IssueStatus.RESOLVED)
+            tracker.update_status("/project", issue.issue_id, IssueStatus.RESOLVED)
 
             summary = tracker.get_summary("/project")
 
@@ -466,7 +466,7 @@ class TestIssueTrackerGetSummary:
             tracker = _make_tracker(Path(tmpdir))
 
             issue = _upsert_basic(tracker)
-            tracker.update_status(issue.issue_id, IssueStatus.FALSE_POSITIVE)
+            tracker.update_status("/project", issue.issue_id, IssueStatus.FALSE_POSITIVE)
 
             summary = tracker.get_summary("/project")
 
@@ -531,7 +531,7 @@ class TestIssueTrackerGetSummary:
             tracker = _make_tracker(Path(tmpdir))
 
             issue = _upsert_basic(tracker)
-            tracker.update_status(issue.issue_id, IssueStatus.RESOLVED)
+            tracker.update_status("/project", issue.issue_id, IssueStatus.RESOLVED)
 
             summary = tracker.get_summary("/project")
 
@@ -547,9 +547,9 @@ class TestIssueTrackerGetSummary:
             fp_issue = _upsert_basic(tracker, rule_id="r3", line_number=30)
             wf_issue = _upsert_basic(tracker, rule_id="r4", line_number=40)
 
-            tracker.update_status(resolved_issue.issue_id, IssueStatus.RESOLVED)
-            tracker.update_status(fp_issue.issue_id, IssueStatus.FALSE_POSITIVE)
-            tracker.update_status(wf_issue.issue_id, IssueStatus.WONT_FIX)
+            tracker.update_status("/project", resolved_issue.issue_id, IssueStatus.RESOLVED)
+            tracker.update_status("/project", fp_issue.issue_id, IssueStatus.FALSE_POSITIVE)
+            tracker.update_status("/project", wf_issue.issue_id, IssueStatus.WONT_FIX)
 
             summary = tracker.get_summary("/project")
 
@@ -568,7 +568,7 @@ class TestIssueTrackerGetIssue:
             tracker = _make_tracker(Path(tmpdir))
             created = _upsert_basic(tracker)
 
-            fetched = tracker.get_issue(created.issue_id)
+            fetched = tracker.get_issue("/project", created.issue_id)
 
             assert fetched is not None
             assert fetched.issue_id == created.issue_id
@@ -578,7 +578,7 @@ class TestIssueTrackerGetIssue:
         with tempfile.TemporaryDirectory() as tmpdir:
             tracker = _make_tracker(Path(tmpdir))
 
-            result = tracker.get_issue("nonexistent-uuid-1234")
+            result = tracker.get_issue("/project", "nonexistent-uuid-1234")
 
             assert result is None
 
@@ -597,7 +597,7 @@ class TestIssueTrackerMarkResolved:
             count = tracker.mark_resolved("/project", scan_start)
 
             assert count >= 1
-            updated = tracker.get_issue(issue.issue_id)
+            updated = tracker.get_issue("/project", issue.issue_id)
             assert updated.status == IssueStatus.RESOLVED.value
 
     def test_mark_resolved_does_not_affect_recent_issues(self):
@@ -611,5 +611,16 @@ class TestIssueTrackerMarkResolved:
             count = tracker.mark_resolved("/project", scan_start)
 
             assert count == 0
-            updated = tracker.get_issue(issue.issue_id)
+            updated = tracker.get_issue("/project", issue.issue_id)
             assert updated.status == IssueStatus.OPEN.value
+
+
+    def test_cannot_mutate_issue_from_other_project(self):
+        """A UUID belonging to project A must not update under project B."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tracker = _make_tracker(Path(tmpdir))
+            issue = _upsert_basic(tracker, project_path="/project_a", file_path="/project_a/a.py")
+            assert tracker.update_status("/project_b", issue.issue_id, IssueStatus.RESOLVED) is None
+            fetched = tracker.get_issue("/project_a", issue.issue_id)
+            assert fetched is not None
+            assert fetched.status == IssueStatus.OPEN.value

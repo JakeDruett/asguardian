@@ -48,6 +48,7 @@ class TrackedIssue(BaseModel):
     and assigned a stable UUID that remains constant across subsequent scans.
     """
     issue_id: str = Field(..., description="Stable UUID identifying this issue across scans")
+    project_path: Optional[str] = Field(None, description="Project this issue belongs to")
     rule_id: str = Field(..., description="Rule identifier that produced this issue")
     issue_type: IssueType = Field(..., description="Category of the issue")
     file_path: str = Field(..., description="Absolute path to the file containing the issue")

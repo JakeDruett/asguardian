@@ -19,7 +19,7 @@ Usage:
         title="Use of eval()",
         description="eval() executes arbitrary code.",
     )
-    tracker.update_status(issue.issue_id, IssueStatus.CONFIRMED)
+    tracker.update_status("/path/to/project", issue.issue_id, IssueStatus.CONFIRMED)
     summary = tracker.get_summary("/path/to/project")
     print(f"Open issues: {summary.total_open}")
 """
