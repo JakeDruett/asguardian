@@ -18,7 +18,10 @@ Pipeline:
        `-w` ignores whitespace-only changes and `-C` follows copied/moved
        lines, which is how this module satisfies the "filter out cosmetic
        changes" requirement: blame walks straight past pure reformatting
-       to the substantive change underneath.
+       to the substantive change underneath. Copy-detection is skipped on
+       wide/tall diffs (`-C` is quadratic). Hunks-per-commit and total
+       blame calls are hard-capped (CH-0025); exceeding either budget
+       returns `INSUFFICIENT_DATA` rather than spawning unbounded processes.
 
 Known, documented limitation: classic SZZ also filters inducing commits
 that post-date the *bug report* (not the fix) - meaningful triage requires
@@ -46,6 +49,12 @@ from Asgard.Shared.common._git_isolated import run_isolated_git
 
 MIN_FIX_COMMITS = 5
 MAX_FIX_COMMITS_SCANNED = 500  # deterministic cap so runtime stays bounded on huge histories
+# One hostile "fix" must not spawn thousands of `git blame` processes (CH-0025).
+MAX_HUNKS_PER_COMMIT = 32
+MAX_BLAME_CALLS = 2048
+# `git blame -C` is quadratic in the blamed range / nearby files; skip it on huge diffs.
+MAX_COPY_DETECT_HUNKS = 8
+MAX_COPY_DETECT_LINES = 64
 
 _RECORD_SEP = "\x1e"
 _FIELD_SEP = "\x1f"
@@ -132,17 +141,25 @@ def identify_bugfix_commits(
     return commits
 
 
-def _parse_unified_diff_hunks(diff_text: str) -> List[Tuple[str, int, int]]:
+def _parse_unified_diff_hunks(
+    diff_text: str, max_hunks: Optional[int] = None
+) -> List[Tuple[str, int, int]]:
     """
     Parse `git diff -U0` output into `(old_file_path, old_start, old_count)`
     tuples - one per hunk that removed/modified at least one old-side line.
     Pure additions (`old_count == 0`) are skipped: there is no prior line
     to blame.
+
+    When `max_hunks` is set, collection stops at `max_hunks + 1` so the
+    caller can distinguish "exactly at the cap" from "over budget".
     """
     hunks: List[Tuple[str, int, int]] = []
     current_path: Optional[str] = None
     hunk_re = re.compile(r"^@@ -(\d+)(?:,(\d+))? \+\d+(?:,\d+)? @@")
+    collect_limit = None if max_hunks is None else max_hunks + 1
     for line in diff_text.splitlines():
+        if collect_limit is not None and len(hunks) >= collect_limit:
+            break
         if line.startswith("diff --git "):
             current_path = None
         elif line.startswith("--- "):
@@ -161,7 +178,11 @@ def _parse_unified_diff_hunks(diff_text: str) -> List[Tuple[str, int, int]]:
     return hunks
 
 
-def _fix_commit_hunks(repo_root: Path, commit: BugFixCommit) -> List[Tuple[str, int, int]]:
+def _fix_commit_hunks(
+    repo_root: Path,
+    commit: BugFixCommit,
+    max_hunks: int = MAX_HUNKS_PER_COMMIT,
+) -> List[Tuple[str, int, int]]:
     diff = _run_git(
         repo_root,
         ["diff", "-U0", "--no-color", commit.parent_sha, commit.sha],
@@ -169,24 +190,42 @@ def _fix_commit_hunks(repo_root: Path, commit: BugFixCommit) -> List[Tuple[str, 
     )
     if diff is None:
         return []
-    return _parse_unified_diff_hunks(diff)
+    return _parse_unified_diff_hunks(diff, max_hunks=max_hunks)
+
+
+def _copy_detect_for_hunks(hunks: List[Tuple[str, int, int]]) -> bool:
+    """False on wide or tall diffs - `git blame -C` is too expensive there."""
+    if len(hunks) > MAX_COPY_DETECT_HUNKS:
+        return False
+    return all(count <= MAX_COPY_DETECT_LINES for _, _, count in hunks)
 
 
 _BLAME_SHA_RE = re.compile(r"^([0-9a-f]{40})\s")
 
 
 def _blame_inducing_commits(
-    repo_root: Path, parent_sha: str, path: str, start: int, count: int
+    repo_root: Path,
+    parent_sha: str,
+    path: str,
+    start: int,
+    count: int,
+    *,
+    copy_detect: bool = True,
 ) -> Set[str]:
-    out = _run_git(
-        repo_root,
+    args = ["blame", "-w"]
+    if copy_detect:
+        args.append("-C")
+    args.extend(
         [
-            "blame", "-w", "-C", "--porcelain",
-            "-L", f"{start},{start + count - 1}",
-            parent_sha, "--", path,
-        ],
-        timeout=30,
+            "--porcelain",
+            "-L",
+            f"{start},{start + count - 1}",
+            parent_sha,
+            "--",
+            path,
+        ]
     )
+    out = _run_git(repo_root, args, timeout=30)
     if out is None:
         return set()
     shas: Set[str] = set()
@@ -197,10 +236,23 @@ def _blame_inducing_commits(
     return shas
 
 
+def _budget_exhausted_result(
+    bugfix_count: int, min_fix_commits: int, note: str
+) -> SZZResult:
+    return SZZResult(
+        status=SZZStatus.INSUFFICIENT_DATA,
+        fix_commit_count=bugfix_count,
+        min_fix_commits=min_fix_commits,
+        note=note,
+    )
+
+
 def compute_szz(
     repo_root,
     min_fix_commits: int = MIN_FIX_COMMITS,
     max_commits: int = MAX_FIX_COMMITS_SCANNED,
+    max_hunks_per_commit: int = MAX_HUNKS_PER_COMMIT,
+    max_blame_calls: int = MAX_BLAME_CALLS,
 ) -> SZZResult:
     """
     Run the full SZZ trace over `repo_root`'s own history.
@@ -208,7 +260,9 @@ def compute_szz(
     Returns `SZZStatus.INSUFFICIENT_DATA` (never a fabricated/empty-but-OK
     result) when fewer than `min_fix_commits` bug-fix commits can be
     identified - the plan's documented gate for "too few fix commits to
-    trust the trace".
+    trust the trace" - or when a fix would require more than
+    `max_hunks_per_commit` blames or the trace would exceed
+    `max_blame_calls` processes (CH-0025).
     """
     repo_root = Path(repo_root)
     bugfix_commits = identify_bugfix_commits(repo_root, max_commits=max_commits)
@@ -227,17 +281,48 @@ def compute_szz(
         )
 
     induced_by_file: Dict[str, Set[str]] = {}
+    blame_calls = 0
+    n_fixes = len(bugfix_commits)
     for commit in bugfix_commits:
-        for path, start, count in _fix_commit_hunks(repo_root, commit):
-            inducing = _blame_inducing_commits(repo_root, commit.parent_sha, path, start, count)
+        hunks = _fix_commit_hunks(repo_root, commit, max_hunks=max_hunks_per_commit)
+        if len(hunks) > max_hunks_per_commit:
+            return _budget_exhausted_result(
+                n_fixes,
+                min_fix_commits,
+                (
+                    f"fix commit {commit.sha[:12]} touches more than "
+                    f"{max_hunks_per_commit} blameable hunks; SZZ refuses "
+                    "an unbounded per-hunk blame walk"
+                ),
+            )
+        if blame_calls + len(hunks) > max_blame_calls:
+            return _budget_exhausted_result(
+                n_fixes,
+                min_fix_commits,
+                (
+                    f"SZZ blame budget exhausted ({max_blame_calls} calls); "
+                    "refusing a partial inducing-commit trace"
+                ),
+            )
+        copy_detect = _copy_detect_for_hunks(hunks)
+        for path, start, count in hunks:
+            inducing = _blame_inducing_commits(
+                repo_root,
+                commit.parent_sha,
+                path,
+                start,
+                count,
+                copy_detect=copy_detect,
+            )
+            blame_calls += 1
             if not inducing:
                 continue
             induced_by_file.setdefault(path, set()).update(inducing)
 
     return SZZResult(
         status=SZZStatus.OK,
-        fix_commit_count=len(bugfix_commits),
+        fix_commit_count=n_fixes,
         min_fix_commits=min_fix_commits,
         induced_commit_counts={path: len(shas) for path, shas in induced_by_file.items()},
-        note=f"traced {len(bugfix_commits)} bug-fix commit(s) across {len(induced_by_file)} file(s)",
+        note=f"traced {n_fixes} bug-fix commit(s) across {len(induced_by_file)} file(s)",
     )

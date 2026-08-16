@@ -13,8 +13,14 @@ from pathlib import Path
 import pytest
 
 from Asgard.Bragi.Calibration.models.calibration_models import SZZStatus
+from Asgard.Bragi.Calibration.services import szz
 from Asgard.Bragi.Calibration.services.szz import (
+    MAX_COPY_DETECT_HUNKS,
+    MAX_COPY_DETECT_LINES,
     MIN_FIX_COMMITS,
+    _blame_inducing_commits,
+    _copy_detect_for_hunks,
+    _parse_unified_diff_hunks,
     _run_git,
     compute_szz,
     identify_bugfix_commits,
@@ -101,6 +107,160 @@ class TestComputeSzz:
             _commit(repo, f"fix: guard missing case {i}", {f"noise_{i}.py": f"n = {i}\n"})
         result = compute_szz(repo, min_fix_commits=MIN_FIX_COMMITS)
         assert result.status == SZZStatus.OK  # doesn't crash; just no trace for a.py
+
+
+def _synthetic_unified_diff(hunk_count: int, old_count: int = 1) -> str:
+    lines = ["diff --git a/f.py b/f.py", "--- a/f.py", "+++ b/f.py"]
+    for i in range(hunk_count):
+        lines.append(f"@@ -{i + 1},{old_count} +{i + 1},1 @@")
+        lines.extend(["-old"] * old_count)
+        lines.append("+new")
+    return "\n".join(lines)
+
+
+def _seed_min_fix_commits(repo):
+    _commit(repo, "initial commit", {"seed.py": "x = 0\n"})
+    for i in range(MIN_FIX_COMMITS):
+        _commit(repo, f"fix: seed issue {i}", {f"seed_{i}.py": f"n = {i}\n"})
+
+
+class TestHunkParseCap:
+    def test_collects_overflow_sentinel_then_stops(self):
+        hunks = _parse_unified_diff_hunks(_synthetic_unified_diff(20), max_hunks=5)
+        assert len(hunks) == 6
+        assert all(path == "f.py" and count == 1 for path, _, count in hunks)
+
+    def test_unlimited_when_max_hunks_is_none(self):
+        hunks = _parse_unified_diff_hunks(_synthetic_unified_diff(7))
+        assert len(hunks) == 7
+
+    def test_skips_pure_additions(self):
+        diff = "diff --git a/f.py b/f.py\n--- a/f.py\n+++ b/f.py\n@@ -3,0 +3,2 @@\n+new\n+new2\n"
+        assert _parse_unified_diff_hunks(diff) == []
+
+
+class TestCopyDetectBudget:
+    def test_enabled_for_small_diff(self):
+        assert _copy_detect_for_hunks([("a.py", 1, 1)]) is True
+
+    def test_disabled_when_too_many_hunks(self):
+        hunks = [("a.py", i + 1, 1) for i in range(MAX_COPY_DETECT_HUNKS + 1)]
+        assert _copy_detect_for_hunks(hunks) is False
+
+    def test_disabled_when_hunk_is_tall(self):
+        assert _copy_detect_for_hunks([("a.py", 1, MAX_COPY_DETECT_LINES + 1)]) is False
+
+    def test_blame_argv_omits_c_when_disabled(self, repo, monkeypatch):
+        captured = []
+
+        def fake_run(_repo, args, timeout=60):
+            captured.append(args)
+            return None
+
+        monkeypatch.setattr(szz, "_run_git", fake_run)
+        _blame_inducing_commits(repo, "abc", "a.py", 1, 1, copy_detect=False)
+        assert captured
+        assert captured[0][:2] == ["blame", "-w"]
+        assert "-C" not in captured[0]
+
+    def test_blame_argv_includes_c_by_default(self, repo, monkeypatch):
+        captured = []
+
+        def fake_run(_repo, args, timeout=60):
+            captured.append(args)
+            return None
+
+        monkeypatch.setattr(szz, "_run_git", fake_run)
+        _blame_inducing_commits(repo, "abc", "a.py", 1, 1)
+        assert "-C" in captured[0]
+
+
+class TestBlameProcessBudget:
+    def test_hunk_cap_returns_insufficient_data_without_blaming(self, repo, monkeypatch):
+        _seed_min_fix_commits(repo)
+        blame_calls = []
+
+        def fake_hunks(_repo, _commit, max_hunks=32):
+            return [("a.py", i + 1, 1) for i in range(max_hunks + 1)]
+
+        def fake_blame(*_args, **_kwargs):
+            blame_calls.append(1)
+            return {"a" * 40}
+
+        monkeypatch.setattr(szz, "_fix_commit_hunks", fake_hunks)
+        monkeypatch.setattr(szz, "_blame_inducing_commits", fake_blame)
+
+        result = compute_szz(repo, min_fix_commits=MIN_FIX_COMMITS, max_hunks_per_commit=3)
+        assert result.status == SZZStatus.INSUFFICIENT_DATA
+        assert "hunk" in result.note.lower()
+        assert blame_calls == []
+
+    def test_total_blame_cap_returns_insufficient_data_without_blaming(self, repo, monkeypatch):
+        _seed_min_fix_commits(repo)
+        blame_calls = []
+
+        def fake_hunks(_repo, _commit, max_hunks=32):
+            return [("a.py", 1, 1), ("b.py", 1, 1)]
+
+        def fake_blame(*_args, **_kwargs):
+            blame_calls.append(1)
+            return {"a" * 40}
+
+        monkeypatch.setattr(szz, "_fix_commit_hunks", fake_hunks)
+        monkeypatch.setattr(szz, "_blame_inducing_commits", fake_blame)
+
+        result = compute_szz(
+            repo,
+            min_fix_commits=MIN_FIX_COMMITS,
+            max_hunks_per_commit=8,
+            max_blame_calls=1,
+        )
+        assert result.status == SZZStatus.INSUFFICIENT_DATA
+        assert "blame budget" in result.note.lower()
+        assert blame_calls == []
+
+    def test_wide_diff_skips_copy_detect(self, repo, monkeypatch):
+        _seed_min_fix_commits(repo)
+        flags = []
+
+        def fake_hunks(_repo, _commit, max_hunks=32):
+            return [("a.py", i + 1, 1) for i in range(MAX_COPY_DETECT_HUNKS + 1)]
+
+        def fake_blame(*_args, **kwargs):
+            flags.append(kwargs.get("copy_detect", True))
+            return set()
+
+        monkeypatch.setattr(szz, "_fix_commit_hunks", fake_hunks)
+        monkeypatch.setattr(szz, "_blame_inducing_commits", fake_blame)
+
+        result = compute_szz(
+            repo,
+            min_fix_commits=MIN_FIX_COMMITS,
+            max_hunks_per_commit=MAX_COPY_DETECT_HUNKS + 2,
+            max_blame_calls=200,
+        )
+        assert result.status == SZZStatus.OK
+        assert flags
+        assert all(flag is False for flag in flags)
+
+    def test_small_diff_keeps_copy_detect(self, repo, monkeypatch):
+        _seed_min_fix_commits(repo)
+        flags = []
+
+        def fake_hunks(_repo, _commit, max_hunks=32):
+            return [("a.py", 1, 1)]
+
+        def fake_blame(*_args, **kwargs):
+            flags.append(kwargs.get("copy_detect", True))
+            return set()
+
+        monkeypatch.setattr(szz, "_fix_commit_hunks", fake_hunks)
+        monkeypatch.setattr(szz, "_blame_inducing_commits", fake_blame)
+
+        result = compute_szz(repo, min_fix_commits=MIN_FIX_COMMITS)
+        assert result.status == SZZStatus.OK
+        assert flags
+        assert all(flag is True for flag in flags)
 
 
 class TestGitIsolation:
