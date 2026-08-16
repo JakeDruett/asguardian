@@ -17,7 +17,10 @@ from Asgard.Bragi.Quality.BugDetection.models.bug_models import (
     BugReport,
     BugSeverity,
 )
-from Asgard.Bragi.Quality.BugDetection.services.bug_detector import BugDetector
+from Asgard.Bragi.Quality.BugDetection.services.bug_detector import (
+    BugDetector,
+    _collect_python_files,
+)
 
 
 class TestBugDetectorInitialization:
@@ -71,6 +74,20 @@ class TestBugDetectorEmptyInputs:
             report = detector.scan(tmpdir_path)
 
             assert report.total_bugs == 0
+
+    def test_dir_symlink_escape_is_not_collected(self, tmp_path: Path):
+        inside = tmp_path / "scan"
+        outside = tmp_path / "outside"
+        inside.mkdir()
+        outside.mkdir()
+        (inside / "ok.py").write_text("x = 1\n", encoding="utf-8")
+        (outside / "secret.py").write_text("password = 1\n", encoding="utf-8")
+        (inside / "link").symlink_to(outside)
+
+        files = _collect_python_files(inside, exclude_patterns=[])
+        names = {path.name for path in files}
+        assert names == {"ok.py"}
+        assert all(path.is_relative_to(inside.resolve()) for path in files)
 
     def test_scan_returns_bug_report_type(self):
         """Test that scan always returns a BugReport."""

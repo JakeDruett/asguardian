@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
 | Medium   | 35   | 24    | 0             |
-| Low      | 18   | 4     | 0             |
+| Low      | 17   | 5     | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -608,7 +608,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0037 — Vuln cache key is used as a path fragment
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 0bef19b
 - **Fixed at:** 2026-08-16T14:15:00Z
 - **Implementation note:** Allowlist cache keys/namespaces; hash key for filename; dest must stay under cache_dir.
 - **Severity:** Low
@@ -673,7 +673,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0041 — `BugDetector` `rglob("*.py")` follows directory symlinks
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T14:16:00Z
+- **Implementation note:** os.walk(followlinks=False); skip file/dir symlinks; require resolved.is_relative_to(root).
 - **Severity:** Low
 - **Confidence:** High
 - **CWE / class:** CWE-59
@@ -1912,12 +1915,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 64
-- Fixed: 50
+- Open: 63
+- Fixed: 51
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0014, CH-0028, CH-0034, CH-0041
-- Last commit: pending
+- Next: CH-0014, CH-0028, CH-0034, CH-0115
+- Last commit: 0bef19b
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

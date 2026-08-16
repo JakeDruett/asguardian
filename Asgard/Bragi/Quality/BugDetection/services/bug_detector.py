@@ -6,6 +6,7 @@ and other bug detection services into a unified scan.
 """
 
 import fnmatch
+import os
 import time
 from pathlib import Path
 from typing import List, Optional
@@ -42,11 +43,24 @@ def _should_exclude(path: Path, exclude_patterns: List[str]) -> bool:
 
 
 def _collect_python_files(scan_path: Path, exclude_patterns: List[str]) -> List[Path]:
-    """Collect all Python files under scan_path, respecting exclusions."""
+    """Collect Python files under scan_path without following symlinks."""
+    root = Path(scan_path).resolve()
     files: List[Path] = []
-    for py_file in scan_path.rglob("*.py"):
-        if not _should_exclude(py_file, exclude_patterns):
-            files.append(py_file)
+    for dirpath, dirnames, filenames in os.walk(root, followlinks=False):
+        current = Path(dirpath)
+        dirnames[:] = [name for name in dirnames if not (current / name).is_symlink()]
+        for name in filenames:
+            path = current / name
+            if path.is_symlink() or path.suffix != ".py":
+                continue
+            try:
+                resolved = path.resolve()
+            except OSError:
+                continue
+            if not resolved.is_relative_to(root):
+                continue
+            if not _should_exclude(path, exclude_patterns):
+                files.append(path)
     return sorted(files)
 
 
