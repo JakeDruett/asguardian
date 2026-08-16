@@ -1,5 +1,6 @@
 """DNS security checker — live DNS query-based analysis."""
 
+import re
 import socket
 import subprocess
 from datetime import datetime
@@ -8,6 +9,17 @@ from typing import Dict, List
 from Asgard.Heimdall.Security.DNS.models.dns_models import DNSCheck, DNSIssue, DNSScanReport
 
 _COMMON_DKIM_SELECTORS = ["default", "google", "selector1", "selector2", "k1", "mail"]
+_DOMAIN_RE = re.compile(r"^[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$")
+
+
+def validate_dns_domain(domain: str) -> str:
+    """Allowlist hostname tokens; reject @, leading -, and option-like names."""
+    text = (domain or "").strip().rstrip(".")
+    if not text or "@" in text or text.startswith("-") or "/" in text or " " in text:
+        raise ValueError("invalid domain")
+    if not _DOMAIN_RE.fullmatch(text):
+        raise ValueError("invalid domain")
+    return text
 
 
 class DNSSecurityChecker:
@@ -17,6 +29,7 @@ class DNSSecurityChecker:
         self.timeout = timeout
 
     def check(self, domain: str) -> DNSScanReport:
+        domain = validate_dns_domain(domain)
         report = DNSScanReport(domain=domain, timestamp=datetime.now().isoformat())
 
         for rtype in ("A", "AAAA", "MX", "TXT", "NS", "CAA"):
@@ -37,7 +50,7 @@ class DNSSecurityChecker:
     def _get_records(self, domain: str, rtype: str) -> List[str]:
         try:
             result = subprocess.run(
-                ["dig", "+short", domain, rtype],
+                ["dig", "+short", "--", domain, rtype],
                 capture_output=True, text=True, timeout=self.timeout,
             )
             if result.returncode == 0 and result.stdout.strip():
@@ -127,7 +140,7 @@ class DNSSecurityChecker:
         enabled = False
         try:
             result = subprocess.run(
-                ["dig", "+short", domain, "DNSKEY"],
+                ["dig", "+short", "--", domain, "DNSKEY"],
                 capture_output=True, text=True, timeout=self.timeout,
             )
             enabled = result.returncode == 0 and bool(result.stdout.strip())

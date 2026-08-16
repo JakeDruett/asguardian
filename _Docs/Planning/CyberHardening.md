@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
-| Medium   | 44   | 15    | 0             |
+| Medium   | 43   | 16    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1210,7 +1210,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0075 — DNS checker runs `dig` with an unvalidated domain
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T13:15:00Z
+- **Implementation note:** RFC1123-style domain allowlist; reject @ and leading -; pass dig -- domain type.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-88
@@ -1879,8 +1882,8 @@ None yet.
 
 ## Implementation progress
 
-- Open: 75
-- Fixed: 39
+- Open: 74
+- Fixed: 40
 - Accepted risk: 0
 - Current wave: W2
 - Next: CH-0026, CH-0040, CH-0042, CH-0057
