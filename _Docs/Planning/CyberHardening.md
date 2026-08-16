@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 1    | 27    | 0             |
+| High     | 0    | 28    | 0             |
 | Medium   | 2    | 57    | 0             |
 | Low      | 1    | 21    | 0             |
 | Info     | 4    | 1     | 0             |
@@ -1189,7 +1189,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0067 — Freya HTML/JUnit reports interpolate crawl strings unescaped
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** c42b8a3
+- **Fixed at:** 2026-08-16T14:00:00Z
+- **Implementation note:** Escape HTML/XML; allowlist http(s) href/src; reject javascript:/data:. Tests with script in finding message.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-79
@@ -2080,12 +2083,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 8
-- Fixed: 106
+- Open: 7
+- Fixed: 107
 - Accepted risk: 0
 - Current wave: W5
-- Next: CH-0067, CH-0046, CH-0064
-- Last commit: 869496e
+- Next: CH-0046, CH-0064, CH-0019
+- Last commit: c42b8a3
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

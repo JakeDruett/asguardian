@@ -104,3 +104,4 @@
 {"id":"CH-0031","at":"2026-08-16T13:41:00Z","commit":"10d6429","wave":"W4","summary":"Catch profile YAML ValidationError; fall back"}
 {"id":"CH-0039","at":"2026-08-16T13:42:00Z","commit":"e2841e7","wave":"W4","summary":"HMAC+schema dep-graph cache; atomic write"}
 {"id":"CH-0055","at":"2026-08-16T13:50:00Z","commit":"869496e","wave":"W5","summary":"Escape dashboard HTML path and issue fields"}
+{"id":"CH-0067","at":"2026-08-16T14:00:00Z","commit":"c42b8a3","wave":"W5","summary":"Escape Freya HTML/JUnit crawl strings"}
