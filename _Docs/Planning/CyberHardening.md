@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 13   | 15    | 0             |
-| Medium   | 51   | 8     | 0             |
+| Medium   | 50   | 9     | 0             |
 | Low      | 21   | 1     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1735,7 +1735,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0110 — FutureItems security-scan workflow is fail-open and points at a missing directory
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T11:34:00Z
+- **Implementation note:** Run scanners from Tools_Security cwd; drop continue-on-error; require SARIF output. Deviation: working-directory . (workflow already lives in Tools_Security).
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-390 / CWE-670
@@ -1837,12 +1840,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 89
-- Fixed: 25
+- Open: 88
+- Fixed: 26
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0071, CH-0097, CH-0105, CH-0108
-- Last commit: 2c99bab
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

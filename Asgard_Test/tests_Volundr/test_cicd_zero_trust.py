@@ -30,7 +30,10 @@ from Asgard.Volundr.CICD import (
 )
 from Asgard.Volundr.CICD.services.action_pins import (
     KNOWN_ACTION_PINS,
+    KNOWN_IMAGE_PINS,
+    is_digest_pinned,
     is_sha_pinned,
+    pin_container_image,
     resolve_action_ref,
 )
 from Asgard.Volundr.CICD.services.context_hardening import (
@@ -134,7 +137,7 @@ class TestStructuralInvariants:
         for content in result.files.values():
             for step in _iter_steps(content):
                 if "uses" in step:
-                    assert SHA_RE.search(step["uses"]), step["uses"]
+                    assert is_sha_pinned(step["uses"]), step["uses"]
 
     def test_pinned_uses_carry_version_comment(self, generator, full_config):
         result = generator.generate(full_config)
@@ -183,6 +186,24 @@ class TestActionPins:
         ref, version = resolve_action_ref("pypa/gh-action-pypi-publish@release/v1")
         assert SHA_RE.search(ref)
         assert version == "v1.14.2"
+
+    def test_docker_actionlint_resolves_to_digest(self):
+        ref, version = resolve_action_ref("docker://rhysd/actionlint:1.7.7")
+        assert ref.startswith("docker://rhysd/actionlint:1.7.7@sha256:")
+        assert is_digest_pinned(ref[len("docker://"):])
+        assert version is None
+
+    def test_unknown_docker_ref_is_refused(self):
+        with pytest.raises(ValueError, match="digest"):
+            resolve_action_ref("docker://example/unknown:1.0")
+
+    def test_known_image_pins_are_digests(self):
+        for tag, (canonical, digest) in KNOWN_IMAGE_PINS.items():
+            assert digest.startswith("sha256:")
+            assert is_digest_pinned(f"{canonical}@{digest}"), tag
+            pinned = pin_container_image(tag)
+            assert is_digest_pinned(pinned)
+            assert "latest" not in pinned.split("@", 1)[0]
 
 
 class TestRepoWorkflowPins:
@@ -766,6 +787,8 @@ class TestSelfAudit:
         steps = job["steps"]
         assert any("zizmor==" in (s.get("run") or "") for s in steps)
         assert any("actionlint" in (s.get("uses") or "") for s in steps)
+        actionlint = next(s for s in steps if "actionlint" in (s.get("uses") or ""))
+        assert is_sha_pinned(actionlint["uses"])
 
     def test_self_audit_off_by_default(self, generator):
         result = generator.generate(self._config(self_audit=False))
@@ -800,3 +823,92 @@ class TestSelfAudit:
         result = generator.generate(config)
         assert "lint-workflows" not in result.pipeline_content
         assert "zizmor" not in result.pipeline_content
+
+
+class TestFloatingTagsVaultAndPrivileged:
+    """CH-0105: pin generator images, require https Vault, reject privileged."""
+
+    def test_http_vault_url_is_rejected(self):
+        with pytest.raises(ValueError, match="https"):
+            OIDCConfig(
+                provider=OIDCProvider.VAULT,
+                role="ci",
+                vault_url="http://vault",
+            )
+
+    def test_https_vault_url_is_emitted(self, generator):
+        config = PipelineConfig(
+            name="CI",
+            platform=CICDPlatform.GITHUB_ACTIONS,
+            triggers=[TriggerConfig(type=TriggerType.PUSH, branches=["main"])],
+            stages=[PipelineStage(
+                name="Deploy",
+                environment="prod",
+                steps=[StepConfig(name="d", run="make deploy")],
+            )],
+            oidc=OIDCConfig(
+                provider=OIDCProvider.VAULT,
+                role="ci",
+                vault_url="https://vault.example.com",
+            ),
+            split_trust=False,
+        )
+        result = generator.generate(config)
+        parsed = yaml.safe_load(result.pipeline_content)
+        vault_step = next(
+            s for s in parsed["jobs"]["deploy"]["steps"]
+            if "vault-action" in (s.get("uses") or "")
+        )
+        assert vault_step["with"]["url"] == "https://vault.example.com"
+
+    def test_privileged_service_is_rejected(self):
+        with pytest.raises(ValueError, match="privileged"):
+            PipelineStage(
+                name="test",
+                services={"db": {"image": "postgres:15", "privileged": True}},
+            )
+
+    def test_privileged_service_options_are_rejected(self):
+        with pytest.raises(ValueError, match="privileged"):
+            PipelineStage(
+                name="test",
+                services={"db": {"image": "postgres:15", "options": "--privileged"}},
+            )
+
+    def test_floating_service_image_is_rejected(self):
+        with pytest.raises(ValueError, match="floating"):
+            PipelineStage(
+                name="test",
+                services={"db": {"image": "postgres:latest"}},
+            )
+
+    def test_versioned_service_image_is_kept(self):
+        stage = PipelineStage(
+            name="test",
+            services={"postgres": {"image": "postgres:15", "env": {"POSTGRES_PASSWORD": "test"}}},
+        )
+        assert stage.services["postgres"]["image"] == "postgres:15"
+
+    def test_gitlab_default_image_is_digest_pinned(self, generator):
+        config = PipelineConfig(
+            name="CI",
+            platform=CICDPlatform.GITLAB_CI,
+            stages=[PipelineStage(name="Build", steps=[StepConfig(name="b", run="make")])],
+        )
+        result = generator.generate(config)
+        parsed = yaml.safe_load(result.pipeline_content)
+        image = parsed["build"]["image"]
+        assert is_digest_pinned(image)
+        assert ":latest" not in image.split("@", 1)[0]
+
+    def test_circleci_base_image_is_digest_pinned(self, generator):
+        config = PipelineConfig(
+            name="CI",
+            platform=CICDPlatform.CIRCLECI,
+            stages=[PipelineStage(name="Build", steps=[StepConfig(name="b", run="make")])],
+        )
+        result = generator.generate(config)
+        parsed = yaml.safe_load(result.pipeline_content)
+        image = parsed["jobs"]["build"]["docker"][0]["image"]
+        assert is_digest_pinned(image)
+        assert image.startswith("cimg/base:")
