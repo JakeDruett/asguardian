@@ -39,3 +39,5 @@
 {"id":"CH-0058","at":"2026-08-16T13:05:00Z","commit":"9b2b360","wave":"W2","summary":"JSON-encode OpenAPI paths; sanitize idents; jail codegen writes"}
 {"id":"CH-0075","at":"2026-08-16T13:15:00Z","commit":"55cc51f","wave":"W2","summary":"Allowlist Heimdall DNS domain; pass dig -- domain"}
 {"id":"CH-0106","at":"2026-08-16T13:16:00Z","commit":"e11ec5a","wave":"W2","summary":"Allowlist pipeline names; jail pipeline/scaffold writes"}
+{"id":"CH-0026","at":"2026-08-16T13:22:00Z","commit":"7b81377","wave":"W2","summary":"Allowlist LanguageProfileService language path under profiles_dir"}
+{"id":"CH-0040","at":"2026-08-16T13:23:00Z","commit":"62fb89a","wave":"W2","summary":"Skip performance walker symlinks; inode cycle guard"}

@@ -650,7 +650,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0040 — Performance directory walker follows symlinks and can recurse forever
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 62fb89a
 - **Fixed at:** 2026-08-16T13:23:00Z
 - **Implementation note:** Skip file/dir symlinks; track dir inodes; require resolved paths under scan root.
 - **Severity:** Medium
