@@ -1061,7 +1061,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0065 — SQL `DEFAULT` interpolated unsanitized into migrations/Alembic
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 112dd47
 - **Fixed at:** 2026-08-16T13:51:00Z
 - **Implementation note:** Restrict defaults to literals; quote identifiers; Alembic op.execute(repr(sql)); reject 1;DROP / comments / newlines.
 - **Severity:** Medium
