@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 14   | 14    | 0             |
-| Medium   | 58   | 1     | 0             |
+| Medium   | 57   | 2     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
 
@@ -90,7 +90,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0004 — No `timeout-minutes` on live ARC workflows
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** ca95bf4
+- **Fixed at:** 2026-08-16T09:55:00Z
+- **Implementation note:** Already closed by CH-0002 (ci.yml timeout 30 + concurrency) and CH-0003 (publish.yml timeout 15).
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-400
@@ -1807,12 +1810,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 99
-- Fixed: 15
+- Open: 98
+- Fixed: 16
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0066, CH-0004, CH-0005, CH-0033
-- Last commit: b219a65
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
