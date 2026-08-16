@@ -391,7 +391,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0024 — SZZ runs `git diff` against an untrusted repo without isolating git config
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** dd664de
 - **Fixed at:** 2026-08-16T10:32:00Z
 - **Implementation note:** Shared isolated git helper; --no-ext-diff, blank global, cleared GIT_EXTERNAL_DIFF/PAGER/DIR; applied on all caller-repo git sinks.
 - **Severity:** High
@@ -1797,7 +1797,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0066
-- Last commit: PENDING
+- Last commit: dd664de
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
