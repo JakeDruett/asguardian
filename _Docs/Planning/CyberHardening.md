@@ -1877,7 +1877,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0109 — Incremental `FileHashCache` is unsigned and unconfined
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 384037a
 - **Fixed at:** 2026-08-16T17:28:00Z
 - **Implementation note:** HMAC + jail cache_path; always re-hash; `store_results` defaults False. Unsigned planted result is ignored.
 - **Severity:** Medium
@@ -2016,7 +2016,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0092, CH-0107, CH-0114
-- Last commit: pending
+- Last commit: 384037a
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
