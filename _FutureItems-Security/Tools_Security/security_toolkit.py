@@ -330,7 +330,8 @@ class SecurityToolkit:
             except Exception as e:
                 results[tool_id] = {
                     'status': 'ERROR',
-                    'error': str(e)
+                    'error': str(e),
+                    'exit_code': 1,
                 }
 
         # Print summary

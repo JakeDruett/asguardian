@@ -83,3 +83,4 @@
 {"id":"CH-0109","at":"2026-08-16T17:28:00Z","commit":"384037a","wave":"W3","summary":"HMAC/jail common FileHashCache; store_results default False"}
 {"id":"CH-0092","at":"2026-08-16T17:40:00Z","commit":"472088e","wave":"W3","summary":"Jail+HMAC calibration map writes/loads"}
 {"id":"CH-0107","at":"2026-08-16T17:42:00Z","commit":"6126246","wave":"W3","summary":"Volundr suppressions reject * and unsigned CI files"}
+{"id":"CH-0114","at":"2026-08-16T17:44:00Z","commit":"pending","wave":"W3","summary":"SecurityAPI loader precedence + fail-closed scan_all"}

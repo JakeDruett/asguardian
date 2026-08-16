@@ -8,12 +8,33 @@ import json
 import argparse
 import importlib.util
 import sys
+from abc import ABC
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, asdict
 
 _ALLOWED_OUTPUT_SUFFIXES = {".json", ".sarif"}
+_SCANNER_NAME_SUFFIXES = ("Scanner", "Detector", "Analyzer")
+
+
+class BaseScanner(ABC):
+    """Local contract for classes SecurityAPI may instantiate."""
+
+    def scan_file(self, path):
+        raise NotImplementedError
+
+    def scan_directory(self, path):
+        raise NotImplementedError
+
+    @classmethod
+    def __subclasshook__(cls, subclass):
+        if cls is BaseScanner:
+            return (
+                callable(getattr(subclass, "scan_file", None))
+                and callable(getattr(subclass, "scan_directory", None))
+            )
+        return NotImplemented
 
 
 def confine_output_path(output: str, *, allow_abs: bool = False) -> Path:
@@ -166,20 +187,36 @@ class SecurityAPI:
             try:
                 results[tool] = self.scan(tool, target)
             except Exception as e:
-                results[tool] = ScanReport(
-                    tool=tool,
-                    target=str(target),
-                    timestamp=datetime.now().isoformat(),
-                    duration_ms=0,
-                    total_issues=0,
-                    by_severity={'CRITICAL': 0, 'HIGH': 0, 'MEDIUM': 0, 'LOW': 0},
-                    issues=[{'error': str(e)}]
-                )
+                results[tool] = self._error_report(tool, target, e)
 
         return results
 
+    def _error_report(self, tool: str, target: str, exc: BaseException) -> ScanReport:
+        """Fail-closed report: total_issues=-1 so CI cannot treat a crash as clean."""
+        return ScanReport(
+            tool=tool,
+            target=str(target),
+            timestamp=datetime.now().isoformat(),
+            duration_ms=0,
+            total_issues=-1,
+            by_severity={'CRITICAL': 0, 'HIGH': 0, 'MEDIUM': 0, 'LOW': 0},
+            issues=[{'error': str(exc), 'exception_type': type(exc).__name__}],
+        )
+
+    def _is_scanner_class(self, obj, name: str, module) -> bool:
+        if obj is BaseScanner or not isinstance(obj, type):
+            return False
+        if getattr(obj, "__module__", None) != module.__name__:
+            return False
+        if not name.endswith(_SCANNER_NAME_SUFFIXES):
+            return False
+        try:
+            return issubclass(obj, BaseScanner)
+        except TypeError:
+            return False
+
     def _load_scanner(self, module_name: str):
-        """Load a scanner module and return scanner instance."""
+        """Load a scanner module and return a local BaseScanner instance."""
         module_path = self.tools_dir / f"{module_name}.py"
 
         if not module_path.exists():
@@ -189,10 +226,9 @@ class SecurityAPI:
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
 
-        # Find scanner class
         for name in dir(module):
             obj = getattr(module, name)
-            if isinstance(obj, type) and name.endswith('Scanner') or name.endswith('Detector'):
+            if self._is_scanner_class(obj, name, module):
                 return obj()
 
         raise ValueError(f"No scanner class found in {module_name}")
@@ -388,9 +424,11 @@ def main():
         return 1
 
     # Run scan(s)
+    scan_failed = False
     if args.tool == 'all':
         tools = args.tools.split(',') if args.tools else None
         results = api.scan_all(args.target, tools)
+        scan_failed = any(report.total_issues < 0 for report in results.values())
 
         # Combine all results
         combined = {
@@ -420,6 +458,9 @@ def main():
     else:
         print(output)
 
+    if scan_failed:
+        print("Error: one or more scanners failed", file=sys.stderr)
+        return 1
     return 0
 
 

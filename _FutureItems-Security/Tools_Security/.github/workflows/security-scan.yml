@@ -66,19 +66,22 @@ jobs:
 
       - name: Check for Critical Issues
         run: |
-          CRITICAL=$(cat security-report.json | python -c "
+          python -c "
           import json, sys
-          data = json.load(sys.stdin)
+          data = json.load(open('security-report.json', encoding='utf-8'))
+          scans = data.get('scans', {})
+          failed = [k for k, s in scans.items() if s.get('total_issues', 0) < 0]
+          if failed:
+              print('::error::Scan failed for: ' + ', '.join(failed))
+              sys.exit(1)
           critical = sum(
-            s.get('by_severity', {}).get('CRITICAL', 0)
-            for s in data.get('scans', {}).values()
+              s.get('by_severity', {}).get('CRITICAL', 0)
+              for s in scans.values()
           )
-          print(critical)
-          ")
-          if [ "$CRITICAL" -gt 0 ]; then
-            echo "::error::Found $CRITICAL critical security issues!"
-            exit 1
-          fi
+          if critical > 0:
+              print(f'::error::Found {critical} critical security issues!')
+              sys.exit(1)
+          "
 
   secrets-scan:
     name: Secrets Detection

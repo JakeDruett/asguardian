@@ -254,6 +254,14 @@ class GitSecurityScanner:
 
         return issues
 
+    def scan_file(self, file_path: Path) -> List[GitSecurityIssue]:
+        path = Path(file_path)
+        root = path if path.is_dir() else path.parent
+        return self.scan_repository(root)
+
+    def scan_directory(self, directory: Path, recursive: bool = True) -> List[GitSecurityIssue]:
+        return self.scan_repository(Path(directory))
+
     def scan_repository(self, repo_path: Path) -> List[GitSecurityIssue]:
         """Perform full security scan on repository."""
         self.repo_path = repo_path

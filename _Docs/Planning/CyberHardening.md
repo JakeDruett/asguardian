@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 12   | 47    | 0             |
+| Medium   | 11   | 48    | 0             |
 | Low      | 11   | 11    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1972,7 +1972,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0114 — SecurityAPI loads scanners with broken operator precedence and fail-opens on errors
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T17:44:00Z
+- **Implementation note:** Load only module-local BaseScanner types; scan_all sets total_issues=-1 and non-zero exit on crash.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-670 / CWE-390
@@ -2017,12 +2020,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 29
-- Fixed: 85
+- Open: 28
+- Fixed: 86
 - Accepted risk: 0
-- Current wave: W3
-- Next: CH-0114
-- Last commit: 6126246
+- Current wave: W4
+- Next: CH-0017, CH-0022, CH-0053
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
