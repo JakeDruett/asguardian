@@ -229,7 +229,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0012 — Fuzzy match with empty message suppresses a whole file+type
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 1801500
 - **Fixed at:** 2026-08-16T15:22:00Z
 - **Implementation note:** Empty/whitespace fuzzy keys unmatched; persist `violation_id` instead of blank; SecretFinding.message is pattern:masked_value.
 - **Severity:** High
@@ -1941,7 +1941,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0051, CH-0077
-- Last commit: pending
+- Last commit: 1801500
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
