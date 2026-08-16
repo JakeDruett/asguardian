@@ -10,6 +10,7 @@ from Asgard.Bragi.Quality.services.syntax_checker import SyntaxChecker
 from Asgard.Bragi.Dependencies.models.requirements_models import RequirementsConfig
 from Asgard.Bragi.Dependencies.services.requirements_checker import RequirementsChecker
 from Asgard.Bragi.Dependencies.models.license_models import LicenseConfig
+from Asgard.Bragi.Dependencies.services._license_cache import default_use_cache
 from Asgard.Bragi.Dependencies.services.license_checker import LicenseChecker
 
 
@@ -146,7 +147,7 @@ def run_licenses_analysis(args: argparse.Namespace, verbose: bool = False) -> in
         allowed_licenses=getattr(args, "allowed", None),
         prohibited_licenses=getattr(args, "prohibited", None),
         warning_licenses=getattr(args, "warn", None),
-        use_cache=not getattr(args, "no_cache", False),
+        use_cache=default_use_cache() and not getattr(args, "no_cache", False),
         output_format=args.format,
         verbose=verbose,
     )

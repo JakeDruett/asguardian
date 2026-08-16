@@ -15,7 +15,7 @@ import urllib.error
 import urllib.request
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional, Tuple
 from urllib.parse import quote, urlsplit
 
 from Asgard.Bragi.Dependencies.models.license_models import (
@@ -121,7 +121,7 @@ class LicenseChecker:
             self._disk_cache = LicenseDiskCache(
                 scan_path, expiry_days=self.config.cache_expiry_days)
 
-        package_licenses = self._resolve_packages(sorted(packages))
+        package_licenses = self._resolve_packages(packages)
 
         if self._disk_cache is not None:
             self._disk_cache.save()
@@ -139,54 +139,85 @@ class LicenseChecker:
             issues=issues,
         )
 
-    def _parse_requirements(self, scan_path: Path) -> tuple[Set[str], List[str]]:
-        """Parse all requirements files and get package names."""
-        packages: Set[str] = set()
+    def _parse_requirements(
+        self, scan_path: Path
+    ) -> tuple[Dict[str, Optional[str]], List[str]]:
+        """Parse requirements files into ``{name: exact_version_or_None}``."""
+        packages: Dict[str, Optional[str]] = {}
         found_files = []
         for req_file in self.config.requirements_files:
             req_path = scan_path / req_file
             if req_path.exists():
                 found_files.append(req_file)
-                pkg_names = self._parse_requirements_file(req_path)
-                packages.update(pkg_names)
+                for name, version in self._parse_requirements_file(req_path).items():
+                    if name not in packages or (version and not packages[name]):
+                        packages[name] = version
         return packages, found_files
 
-    def _parse_requirements_file(self, req_path: Path) -> Set[str]:
-        """Parse a single requirements file for package names."""
-        packages = set()
+    def _parse_requirements_file(self, req_path: Path) -> Dict[str, Optional[str]]:
+        """Parse a single requirements file for names and exact pins."""
+        packages: Dict[str, Optional[str]] = {}
         content = req_path.read_text()
         for line in content.split("\n"):
             line = line.strip()
             if not line or line.startswith("#") or line.startswith("-"):
                 continue
-            pkg_name = self._extract_package_name(line)
+            pkg_name, version = self._extract_package_spec(line)
             if pkg_name:
-                packages.add(pkg_name.lower())
+                key = pkg_name.lower()
+                if key not in packages or (version and not packages[key]):
+                    packages[key] = version
         return packages
 
     def _extract_package_name(self, line: str) -> Optional[str]:
         """Extract package name from a requirements line."""
-        if "[" in line:
-            line = line.split("[")[0]
+        name, _version = self._extract_package_spec(line)
+        return name
+
+    def _extract_package_spec(self, line: str) -> Tuple[Optional[str], Optional[str]]:
+        """Return ``(name, exact_version)``. Version is set only for ``==`` / ``===``."""
+        if ";" in line:
+            line = line.split(";", 1)[0]
+        version = None
+        name_src = line
         for op in ["===", "~=", "==", ">=", "<=", "!=", ">", "<", "@"]:
             if op in line:
-                line = line.split(op)[0]
+                left, right = line.split(op, 1)
+                name_src = left
+                if op in ("==", "==="):
+                    version = self._exact_pin_version(right)
                 break
-        if ";" in line:
-            line = line.split(";")[0]
-        return line.strip() or None
+        if "[" in name_src:
+            name_src = name_src.split("[", 1)[0]
+        name = name_src.strip() or None
+        return name, version
 
-    def _resolve_packages(self, package_names: List[str]) -> List[PackageLicense]:
+    @staticmethod
+    def _exact_pin_version(rhs: str) -> Optional[str]:
+        token = (rhs or "").strip().split()[0] if rhs else ""
+        token = token.strip().strip("\"'").rstrip("\\")
+        if not token or "*" in token or "," in token:
+            return None
+        if not re.fullmatch(r"[A-Za-z0-9_.+-]+", token):
+            return None
+        return token
+
+    def _resolve_packages(
+        self, packages: Dict[str, Optional[str]]
+    ) -> List[PackageLicense]:
         """
         Resolve licenses for all packages: disk cache, then local installed
         metadata, then PyPI in parallel (bounded pool) for the leftovers.
         Output order is deterministic (sorted by package name).
         """
+        package_names = sorted(packages)
         resolved: Dict[str, PackageLicense] = {}
         needs_network: List[str] = []
 
         for pkg_name in package_names:
-            local = self._get_package_license_local(pkg_name)
+            local = self._get_package_license_local(
+                pkg_name, pinned_version=packages.get(pkg_name),
+            )
             if local is not None:
                 resolved[pkg_name] = local
             else:
@@ -219,15 +250,30 @@ class LicenseChecker:
 
         return [resolved[name] for name in package_names]
 
+    def _mem_key(self, package_name: str, version: Optional[str]) -> str:
+        if version:
+            return f"{package_name}@{version}"
+        return package_name
+
+    def _installed_version(self, package_name: str) -> Optional[str]:
+        try:
+            return importlib.metadata.version(package_name)
+        except importlib.metadata.PackageNotFoundError:
+            return None
+        except Exception:
+            return None
+
     def _get_package_license_local(
-        self, package_name: str
+        self, package_name: str, pinned_version: Optional[str] = None,
     ) -> Optional[PackageLicense]:
         """Cache/installed-metadata resolution (no network)."""
-        if self.config.use_cache and package_name in self._cache:
-            return self._cache[package_name]
+        lookup_version = pinned_version or self._installed_version(package_name)
+        mem_key = self._mem_key(package_name, lookup_version)
+        if self.config.use_cache and mem_key in self._cache:
+            return self._cache[mem_key]
 
-        if self._disk_cache is not None:
-            record = self._disk_cache.get(package_name)
+        if self._disk_cache is not None and lookup_version:
+            record = self._disk_cache.get(package_name, lookup_version)
             if record is not None:
                 lic_info = PackageLicense(
                     package_name=package_name,
@@ -240,7 +286,7 @@ class LicenseChecker:
                 )
                 lic_info = self._classify_license(lic_info)
                 if self.config.use_cache:
-                    self._cache[package_name] = lic_info
+                    self._cache[mem_key] = lic_info
                 return lic_info
 
         lic_info = self._get_license_from_installed(package_name)
@@ -253,9 +299,15 @@ class LicenseChecker:
     ) -> PackageLicense:
         """Classify a freshly fetched record and store it in both caches."""
         lic_info = self._classify_license(lic_info)
+        version = lic_info.version
+        mem_key = self._mem_key(package_name, version)
         if self.config.use_cache:
-            self._cache[package_name] = lic_info
-        if self._disk_cache is not None and lic_info.source != "not_found":
+            self._cache[mem_key] = lic_info
+        if (
+            self._disk_cache is not None
+            and lic_info.source != "not_found"
+            and version
+        ):
             self._disk_cache.put(package_name, {
                 "version": lic_info.version,
                 "license_name": lic_info.license_name,

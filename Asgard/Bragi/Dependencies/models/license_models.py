@@ -11,6 +11,11 @@ from pathlib import Path
 from typing import Dict, List, Optional, Set
 
 
+def _default_use_cache() -> bool:
+    from Asgard.Bragi.Dependencies.services._license_cache import default_use_cache
+    return default_use_cache()
+
+
 class LicenseCategory(str, Enum):
     """License categories for compliance classification."""
     PERMISSIVE = "permissive"        # MIT, Apache, BSD - commercial-friendly
@@ -89,7 +94,7 @@ class LicenseConfig:
         "GPL-2.0",
         "GNU General Public License v2",
     ])
-    use_cache: bool = True
+    use_cache: bool = field(default_factory=_default_use_cache)
     cache_expiry_days: int = 7
     output_format: str = "text"
     verbose: bool = False

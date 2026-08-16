@@ -49,7 +49,7 @@ def test_graph_service_still_caches_without_env(project, monkeypatch):
 def test_license_cache_disabled_with_env(project, monkeypatch):
     monkeypatch.setenv("ASGARD_NO_CACHE", "1")
     cache = LicenseDiskCache(Path(project))
-    cache.put("requests", {"license_name": "Apache-2.0"})
+    cache.put("requests", {"version": "2.28.0", "license_name": "Apache-2.0"})
     cache.save()
     assert not (project / ".asgard_cache").exists()
 
@@ -57,7 +57,7 @@ def test_license_cache_disabled_with_env(project, monkeypatch):
 def test_license_cache_saves_without_env(project, monkeypatch):
     monkeypatch.delenv("ASGARD_NO_CACHE", raising=False)
     cache = LicenseDiskCache(Path(project))
-    cache.put("requests", {"license_name": "Apache-2.0"})
+    cache.put("requests", {"version": "2.28.0", "license_name": "Apache-2.0"})
     cache.save()
     assert (project / ".asgard_cache" / "bragi_license_cache.json").exists()
 

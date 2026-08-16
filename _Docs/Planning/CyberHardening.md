@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 25   | 34    | 0             |
+| Medium   | 24   | 35    | 0             |
 | Low      | 12   | 10    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -544,7 +544,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0032 — Unsigned license disk cache can bypass license policy
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T16:28:00Z
+- **Implementation note:** HMAC + `name@version` keys; unsigned/v1 cache ignored. `use_cache` defaults off in CI.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-345
@@ -1975,12 +1978,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 43
-- Fixed: 71
+- Open: 42
+- Fixed: 72
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0032, CH-0036, CH-0043
-- Last commit: 946abc9
+- Next: CH-0036, CH-0043, CH-0047
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

@@ -6,23 +6,108 @@ and `cache_expiry_days` were previously backed by an in-memory dict that died
 with the process, so every run re-hit `pip show` per package and then
 pypi.org serially.
 
-Storage: `.asgard_cache/bragi_license_cache.json` under the scan path —
-`{package: {version, license_name, license_classifier, source, fetched_at}}`.
-Entries expire after `cache_expiry_days`. Corrupt or unreadable cache files
-are treated as empty (caching is best-effort, never fatal).
+Storage: `.asgard_cache/bragi_license_cache.json` under the scan path.
+Entries are keyed by ``name@version``. The file is HMAC-SHA256 signed
+(`ASGARD_LICENSE_HMAC_KEY` or a sibling ``.key``). Unsigned, corrupt,
+schema-invalid, or version-mismatched records are treated as a miss.
+CI defaults `use_cache=False` so a committed cache cannot steer policy.
 """
 
+from __future__ import annotations
+
+import hashlib
+import hmac
 import json
+import os
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, Optional
 
 CACHE_RELATIVE_PATH = Path(".asgard_cache") / "bragi_license_cache.json"
-CACHE_VERSION = "1.0.0"
+CACHE_VERSION = "2.0.0"
+HMAC_ENV = "ASGARD_LICENSE_HMAC_KEY"
+
+_MAX_FIELD_LEN = 512
+_MAX_VERSION_LEN = 64
+_RECORD_OPTIONAL_STRS = (
+    "license_name",
+    "license_classifier",
+    "homepage",
+    "author",
+    "source",
+)
+
+_CI_ENV_VARS = (
+    "CI",
+    "GITHUB_ACTIONS",
+    "GITLAB_CI",
+    "TF_BUILD",
+    "CIRCLECI",
+    "JENKINS_URL",
+    "BUILDKITE",
+)
+
+
+def default_use_cache() -> bool:
+    """Disk cache is off in CI so a committed cache cannot steer policy."""
+    for name in _CI_ENV_VARS:
+        raw = os.environ.get(name, "").strip().lower()
+        if raw and raw not in ("0", "false", "no", "off"):
+            return False
+    return True
+
+
+def entry_key(package_name: str, version: str) -> str:
+    """Stable cache key: lowercased name plus exact version."""
+    return f"{package_name.strip().lower()}@{version.strip()}"
+
+
+def _sanitize_record(entry: object) -> Optional[dict]:
+    if not isinstance(entry, dict):
+        return None
+    version = entry.get("version")
+    if not isinstance(version, str):
+        return None
+    version = version.strip()
+    if not version or len(version) > _MAX_VERSION_LEN:
+        return None
+    fetched_at = entry.get("fetched_at")
+    if not isinstance(fetched_at, str):
+        return None
+    try:
+        datetime.fromisoformat(fetched_at)
+    except ValueError:
+        return None
+    clean = {"version": version, "fetched_at": fetched_at}
+    for field in _RECORD_OPTIONAL_STRS:
+        value = entry.get(field)
+        if value is None:
+            continue
+        if not isinstance(value, str) or len(value) > _MAX_FIELD_LEN:
+            return None
+        clean[field] = value
+    return clean
+
+
+def _sanitize_packages(raw: object) -> Dict[str, dict]:
+    if not isinstance(raw, dict):
+        return {}
+    out: Dict[str, dict] = {}
+    for key, entry in raw.items():
+        if not isinstance(key, str):
+            continue
+        clean = _sanitize_record(entry)
+        if clean is None:
+            continue
+        expected = entry_key(key.rsplit("@", 1)[0], clean["version"])
+        if key.strip().lower() != expected:
+            continue
+        out[expected] = clean
+    return out
 
 
 class LicenseDiskCache:
-    """Disk-backed license lookup cache with day-granularity expiry."""
+    """Disk-backed license lookup cache with HMAC, versioned keys, and expiry."""
 
     def __init__(self, scan_path: Path, expiry_days: int = 7,
                  cache_path: Optional[Path] = None,
@@ -41,22 +126,71 @@ class LicenseDiskCache:
     def _current_time(self) -> datetime:
         return self._now or datetime.now()
 
+    def _key_path(self) -> Path:
+        return self.cache_path.with_name(self.cache_path.name + ".key")
+
+    def _hmac_key(self, *, create: bool = False) -> Optional[bytes]:
+        env = os.environ.get(HMAC_ENV, "").strip()
+        if env:
+            return env.encode("utf-8")
+        key_path = self._key_path()
+        if key_path.is_symlink():
+            return None
+        if key_path.exists():
+            try:
+                return key_path.read_bytes()
+            except OSError:
+                return None
+        if not create:
+            return None
+        key = os.urandom(32)
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+        try:
+            fd = os.open(key_path, flags, 0o600)
+            try:
+                os.write(fd, key)
+            finally:
+                os.close(fd)
+            os.chmod(key_path, 0o600)
+        except OSError:
+            return None
+        return key
+
+    def _sign(self, payload: dict, key: bytes) -> str:
+        canonical = json.dumps(
+            payload, sort_keys=True, separators=(",", ":"), default=str,
+        )
+        return hmac.new(key, canonical.encode("utf-8"), hashlib.sha256).hexdigest()
+
     def _load(self) -> Dict[str, dict]:
-        if not self.cache_path.exists():
+        if not self.cache_path.exists() or self.cache_path.is_symlink():
+            return {}
+        key = self._hmac_key(create=False)
+        if key is None:
             return {}
         try:
             with open(self.cache_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
-            if data.get("version") != CACHE_VERSION:
+            if not isinstance(data, dict) or data.get("version") != CACHE_VERSION:
                 return {}
-            entries = data.get("packages", {})
-            return entries if isinstance(entries, dict) else {}
-        except (json.JSONDecodeError, OSError):
+            expected = data.pop("hmac", None)
+            unsigned = {
+                "version": data.get("version"),
+                "packages": data.get("packages"),
+            }
+            if not isinstance(expected, str) or not hmac.compare_digest(
+                expected, self._sign(unsigned, key)
+            ):
+                return {}
+            return _sanitize_packages(unsigned["packages"])
+        except (json.JSONDecodeError, OSError, TypeError, ValueError):
             return {}
 
-    def get(self, package_name: str) -> Optional[dict]:
-        """Return the cached record for a package, or None if absent/expired."""
-        entry = self._entries.get(package_name.lower())
+    def get(self, package_name: str, version: Optional[str] = None) -> Optional[dict]:
+        """Return the cached record for name@version, or None if absent/expired."""
+        if not version or not isinstance(version, str) or not version.strip():
+            return None
+        entry = self._entries.get(entry_key(package_name, version))
         if entry is None:
             return None
         try:
@@ -68,21 +202,36 @@ class LicenseDiskCache:
         return entry
 
     def put(self, package_name: str, record: dict) -> None:
-        """Store a record (fetched_at stamped automatically)."""
+        """Store a record keyed by name@version (fetched_at stamped automatically)."""
         record = dict(record)
+        version = record.get("version")
+        if not isinstance(version, str) or not version.strip():
+            return
         record["fetched_at"] = self._current_time().isoformat()
-        self._entries[package_name.lower()] = record
+        clean = _sanitize_record(record)
+        if clean is None:
+            return
+        self._entries[entry_key(package_name, version)] = clean
         self._dirty = True
 
     def save(self) -> None:
-        """Persist the cache (best-effort; no-op when nothing changed)."""
+        """Persist the signed cache (best-effort; no-op when nothing changed)."""
         if self._disabled or not self._dirty:
             return
         try:
+            if self.cache_path.is_symlink():
+                return
             self.cache_path.parent.mkdir(parents=True, exist_ok=True)
-            payload = {"version": CACHE_VERSION, "packages": self._entries}
-            with open(self.cache_path, "w", encoding="utf-8") as f:
+            key = self._hmac_key(create=True)
+            if key is None:
+                return
+            body = {"version": CACHE_VERSION, "packages": self._entries}
+            payload = dict(body)
+            payload["hmac"] = self._sign(body, key)
+            tmp_path = self.cache_path.with_name(self.cache_path.name + ".tmp")
+            with open(tmp_path, "w", encoding="utf-8") as f:
                 json.dump(payload, f, indent=1, sort_keys=True)
+            os.replace(tmp_path, self.cache_path)
             self._dirty = False
         except OSError:
             pass
