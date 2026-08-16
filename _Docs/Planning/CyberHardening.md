@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 3    | 56    | 0             |
+| Medium   | 2    | 57    | 0             |
 | Low      | 10   | 12    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1735,7 +1735,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0099 — Sketch `from_dict` trusts unbounded attacker JSON
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** c055fdc
+- **Fixed at:** 2026-08-16T13:15:00Z
+- **Implementation note:** Cap centroid/bucket count and compression; reject non-finite/negative weights; clamp DDSketch indexes. CLI merge caps files/size and jails -o.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-502 / CWE-400
@@ -2047,12 +2050,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 19
-- Fixed: 95
+- Open: 18
+- Fixed: 96
 - Accepted risk: 0
 - Current wave: W4
-- Next: CH-0099
-- Last commit: 3d1bbf0
+- Next: CH-0016, CH-0021, CH-0025
+- Last commit: c055fdc
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
