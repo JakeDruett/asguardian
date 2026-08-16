@@ -875,7 +875,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0056 — Dashboard has no authentication; `--host` can bind all interfaces
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 39f6d7c
 - **Fixed at:** 2026-08-16T11:00:00Z
 - **Implementation note:** Refuse 0.0.0.0/:: unless --expose. Default remains localhost. Dashboard is local-only.
 - **Severity:** Medium
@@ -1821,7 +1821,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0066, CH-0004, CH-0005, CH-0033
-- Last commit: PENDING
+- Last commit: 39f6d7c
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
