@@ -51,6 +51,23 @@ DEFAULT_EXCLUDE_DIRS: Set[str] = {
 }
 
 
+def _inode_key(path: Path) -> Optional[Tuple[int, int]]:
+    """Return (device, inode) for *path* without following a symlink."""
+    try:
+        stat_result = path.lstat()
+    except OSError:
+        return None
+    return (stat_result.st_dev, stat_result.st_ino)
+
+
+def _resolved_is_relative_to(path: Path, root: Path) -> bool:
+    """Return True if path.resolve() is inside an already-resolved *root*."""
+    try:
+        return path.resolve().is_relative_to(root)
+    except OSError:
+        return False
+
+
 def is_excluded_path(path: Path, exclude_patterns: List[str]) -> bool:
     """
     Check if a path should be excluded from scanning.
@@ -90,6 +107,10 @@ def scan_directory_for_performance(
     """
     Recursively scan a directory for files to analyze for performance issues.
 
+    Directory and file symlinks are skipped (not followed). Recursion tracks
+    directory inodes so bind-mount or hard-link cycles terminate. Only paths
+    whose resolve() is inside root_path.resolve() are yielded.
+
     Args:
         root_path: Root directory to scan
         exclude_patterns: Additional patterns to exclude
@@ -108,20 +129,39 @@ def scan_directory_for_performance(
     else:
         valid_extensions = PERFORMANCE_SCAN_EXTENSIONS
 
+    try:
+        root_resolved = root_path.resolve()
+    except OSError:
+        return
+
+    visited: Set[Tuple[int, int]] = set()
+    root_inode = _inode_key(root_resolved)
+    if root_inode is not None:
+        visited.add(root_inode)
+
     def _scan_recursive(current_path: Path) -> Generator[Path, None, None]:
         try:
             for entry in current_path.iterdir():
+                if entry.is_symlink():
+                    continue
                 if is_excluded_path(entry, all_exclusions):
+                    continue
+                if not _resolved_is_relative_to(entry, root_resolved):
                     continue
 
                 if entry.is_dir():
+                    inode = _inode_key(entry)
+                    if inode is not None:
+                        if inode in visited:
+                            continue
+                        visited.add(inode)
                     yield from _scan_recursive(entry)
                 elif entry.is_file():
                     ext = entry.suffix.lower()
                     if ext in valid_extensions:
                         yield entry
 
-        except PermissionError:
+        except OSError:
             pass
 
     yield from _scan_recursive(root_path)

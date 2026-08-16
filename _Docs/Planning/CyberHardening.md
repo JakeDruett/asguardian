@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
-| Medium   | 41   | 18    | 0             |
+| Medium   | 40   | 19    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -442,7 +442,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0026 — `LanguageProfileService` joins unsanitized `language` into a file path
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 7b81377
 - **Fixed at:** 2026-08-16T13:22:00Z
 - **Implementation note:** Allowlist language `^[a-z][a-z0-9_]*$`; resolve under profiles_dir; invalid/unknown falls back to generic.
 - **Severity:** Medium
@@ -649,7 +649,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0040 — Performance directory walker follows symlinks and can recurse forever
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T13:23:00Z
+- **Implementation note:** Skip file/dir symlinks; track dir inodes; require resolved paths under scan root.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-59 / CWE-674
@@ -1888,12 +1891,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 72
-- Fixed: 42
+- Open: 71
+- Fixed: 43
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0040, CH-0042, CH-0057, CH-0065
-- Last commit: pending
+- Next: CH-0042, CH-0057, CH-0065, CH-0078
+- Last commit: 7b81377
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

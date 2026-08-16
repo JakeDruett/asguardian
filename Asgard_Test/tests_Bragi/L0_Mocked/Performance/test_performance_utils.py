@@ -189,6 +189,68 @@ class TestScanDirectoryForPerformance:
             files = list(scan_directory_for_performance(tmpdir_path))
             assert len(files) == 3
 
+    def test_directory_symlink_outside_root_is_not_walked(self):
+        """Directory symlink pointing outside the scan root must not be walked."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmpdir_path = Path(tmpdir)
+            root = tmpdir_path / "root"
+            outside = tmpdir_path / "outside"
+            root.mkdir()
+            outside.mkdir()
+            (root / "inside.py").write_text("x = 1")
+            (outside / "secret.py").write_text("SECRET = 1")
+            (root / "escape").symlink_to(outside)
+
+            files = list(scan_directory_for_performance(root))
+            names = {path.name for path in files}
+            resolved_root = root.resolve()
+
+            assert names == {"inside.py"}
+            assert all(path.resolve().is_relative_to(resolved_root) for path in files)
+
+    def test_symlink_to_dot_does_not_recurse_forever(self):
+        """Symlink to '.' must not recurse until stack overflow."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmpdir_path = Path(tmpdir)
+            (tmpdir_path / "ok.py").write_text("x = 1")
+            (tmpdir_path / "loop").symlink_to(".")
+
+            files = []
+            for index, path in enumerate(scan_directory_for_performance(tmpdir_path)):
+                files.append(path)
+                assert index < 100
+
+            assert [path.name for path in files] == ["ok.py"]
+
+    def test_file_symlink_outside_root_is_not_yielded(self):
+        """File symlink whose target is outside the scan root must not be yielded."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmpdir_path = Path(tmpdir)
+            root = tmpdir_path / "root"
+            root.mkdir()
+            outside = tmpdir_path / "secret.py"
+            outside.write_text("SECRET = 1")
+            (root / "inside.py").write_text("x = 1")
+            (root / "link.py").symlink_to(outside)
+
+            files = list(scan_directory_for_performance(root))
+            assert {path.name for path in files} == {"inside.py"}
+
+    def test_normal_files_still_scanned_with_symlinks_present(self):
+        """Real files under the root are still scanned when the tree has symlinks."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tmpdir_path = Path(tmpdir)
+            nested = tmpdir_path / "pkg"
+            nested.mkdir()
+            (tmpdir_path / "top.py").write_text("x = 1")
+            (nested / "mod.py").write_text("y = 2")
+            (tmpdir_path / "loop").symlink_to(".")
+            (tmpdir_path / "escape").symlink_to(tmpdir_path.parent)
+
+            files = list(scan_directory_for_performance(tmpdir_path))
+            names = {path.name for path in files}
+            assert names == {"top.py", "mod.py"}
+
 
 class TestCalculateComplexity:
     """Tests for calculate_complexity function."""
