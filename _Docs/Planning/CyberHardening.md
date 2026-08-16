@@ -1469,7 +1469,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0091 — Evaluation corpus manifest paths are unjailed
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 5408109
 - **Fixed at:** 2026-08-16T13:35:00Z
 - **Implementation note:** confine_eval_path rejects abs/`..`; vendored/taint/CVE holdout joins must stay under corpus/checkout root.
 - **Severity:** Medium
