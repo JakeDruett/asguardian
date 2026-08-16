@@ -38,7 +38,6 @@ def run_baseline_command(args: argparse.Namespace, verbose: bool = False) -> int
                             "file_path": e.file_path,
                             "line_number": e.line_number,
                             "violation_type": e.violation_type,
-                            "message": e.message,
                             "reason": e.reason,
                             "expired": e.is_expired,
                         }

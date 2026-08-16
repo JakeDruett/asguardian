@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 27   | 32    | 0             |
+| Medium   | 26   | 33    | 0             |
 | Low      | 12   | 10    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -249,7 +249,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0013 — Raw violation text persisted and dumped
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T16:22:00Z
+- **Implementation note:** Persist sha256 of message/snippet attrs; default JSON report and CLI list omit `message`. Matching hashes both sides.
 - **Severity:** Medium
 - **Confidence:** Medium
 - **CWE / class:** CWE-532
@@ -1969,12 +1972,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 45
-- Fixed: 69
+- Open: 44
+- Fixed: 70
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0013, CH-0032, CH-0036
-- Last commit: 5c24531
+- Next: CH-0032, CH-0036, CH-0043
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

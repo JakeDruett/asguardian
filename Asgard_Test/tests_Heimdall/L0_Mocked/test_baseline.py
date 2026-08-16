@@ -1,4 +1,5 @@
 """Tests for Asgard.Baseline.*"""
+import argparse
 import json
 import pytest
 from datetime import datetime, timedelta
@@ -9,10 +10,12 @@ from Asgard.Baseline.models import BaselineEntry, BaselineFile, BaselineStats
 from Asgard.Baseline._baseline_helpers import (
     generate_violation_id,
     get_violation_message,
+    hash_violation_message,
     is_usable_fuzzy_message,
     persistable_violation_message,
     relative_path,
 )
+from Asgard.Heimdall.cli.handlers.baseline import run_baseline_command
 from Asgard.Heimdall.Security.models.security_models_base import (
     SecretFinding,
     SecretType,
@@ -229,7 +232,7 @@ class TestBaselineFileEdgeCases:
             violation_id="vid-empty",
             message="",
         ))
-        assert bf.entries[0].message == "vid-empty"
+        assert bf.entries[0].message == hash_violation_message("vid-empty")
 
     def test_find_fuzzy_match_empty_message_returns_none(self):
         bf = BaselineFile()
@@ -486,9 +489,9 @@ class TestBaselineHelpersEdgeCases:
         assert is_usable_fuzzy_message("aws_access_key:AKIA****1111") is True
 
     def test_persistable_message_replaces_empty_with_violation_id(self):
-        assert persistable_violation_message("", "vid1") == "vid1"
-        assert persistable_violation_message("   ", "vid1") == "vid1"
-        assert persistable_violation_message("keep", "vid1") == "keep"
+        assert persistable_violation_message("", "vid1") == hash_violation_message("vid1")
+        assert persistable_violation_message("   ", "vid1") == hash_violation_message("vid1")
+        assert persistable_violation_message("keep", "vid1") == hash_violation_message("keep")
 
 
 class _SecretLike:
@@ -516,7 +519,7 @@ class TestFuzzyEmptyMessageSuppression:
         assert manager.create_from_violations([first], "heimdall_secret") == 1
 
         stored = manager.list_entries()[0].message
-        assert stored == "aws_access_key:AKIA****1111"
+        assert stored == hash_violation_message("aws_access_key:AKIA****1111")
 
         remaining = manager.filter_violations(
             [first, later], "heimdall_secret", use_fuzzy_matching=True
@@ -562,7 +565,7 @@ class TestFuzzyEmptyMessageSuppression:
         entry = manager.list_entries()[0]
         assert entry.message
         assert entry.message.strip()
-        assert entry.message == entry.violation_id
+        assert entry.message == hash_violation_message(entry.violation_id)
 
     def test_add_entry_does_not_persist_empty_message(self, tmp_path):
         manager = BaselineManager(project_path=tmp_path)
@@ -574,7 +577,7 @@ class TestFuzzyEmptyMessageSuppression:
         )
         entry = manager.list_entries()[0]
         assert entry.message
-        assert entry.message == entry.violation_id
+        assert entry.message == hash_violation_message(entry.violation_id)
 
     def test_real_secret_finding_baseline_does_not_hide_other_secret(self, tmp_path):
         src = str(tmp_path / "config.py")
@@ -683,3 +686,163 @@ class TestBaselineIdentityAndHmac:
         fresh = BaselineManager(project_path=tmp_path)
         remaining = fresh.filter_violations([other], "lint")
         assert remaining == [other]
+
+
+_FAKE_SECRET = "sk_test_fake_CH0013_not_a_real_secret_xyz"
+
+
+class _SnippetFinding:
+    def __init__(self, file_path, line_number, description="", code_snippet=""):
+        self.file_path = file_path
+        self.line_number = line_number
+        self.description = description
+        self.code_snippet = code_snippet
+
+
+def _baseline_cli_args(tmp_path, command, output_format="json"):
+    return argparse.Namespace(
+        path=str(tmp_path),
+        baseline_file=".asgard-baseline.json",
+        format=output_format,
+        baseline_command=command,
+        type=None,
+        file=None,
+        id=None,
+    )
+
+
+class TestRawViolationTextNotPersisted:
+    def test_hash_violation_message_is_idempotent(self):
+        first = hash_violation_message("import os")
+        assert first.startswith("sha256:")
+        assert hash_violation_message(first) == first
+
+    def test_get_violation_message_hashes_description_without_hook(self):
+        finding = _SnippetFinding(
+            "a.py", 1, description=f"secret {_FAKE_SECRET}"
+        )
+        identity = get_violation_message(finding)
+        assert _FAKE_SECRET not in identity
+        assert identity == hash_violation_message(f"secret {_FAKE_SECRET}")
+
+    def test_get_violation_message_hashes_code_snippet_without_hook(self):
+        finding = _SnippetFinding(
+            "a.py", 1, code_snippet=f'api_key = "{_FAKE_SECRET}"'
+        )
+        identity = get_violation_message(finding)
+        assert _FAKE_SECRET not in identity
+        assert identity == hash_violation_message(f'api_key = "{_FAKE_SECRET}"')
+
+    def test_redaction_hook_can_replace_sensitive_text(self):
+        finding = _SnippetFinding(
+            "a.py", 1, description=f"secret {_FAKE_SECRET}"
+        )
+
+        def redact(attr, value):
+            assert attr == "description"
+            assert _FAKE_SECRET in value
+            return "credential:redacted"
+
+        assert get_violation_message(finding, redact=redact) == "credential:redacted"
+
+    def test_secret_in_description_not_stored_in_baseline_json(self, tmp_path):
+        src = str(tmp_path / "config.py")
+        finding = _SnippetFinding(
+            src, 3, description=f"hardcoded credential {_FAKE_SECRET}"
+        )
+        manager = BaselineManager(project_path=tmp_path)
+        assert manager.create_from_violations([finding], "lint") == 1
+
+        on_disk = manager.baseline_path.read_text(encoding="utf-8")
+        assert _FAKE_SECRET not in on_disk
+        payload = json.loads(on_disk)
+        stored = payload["entries"][0]["message"]
+        assert stored == hash_violation_message(f"hardcoded credential {_FAKE_SECRET}")
+
+    def test_secret_in_code_snippet_not_stored_in_baseline_json(self, tmp_path):
+        src = str(tmp_path / "config.py")
+        finding = _SnippetFinding(
+            src, 4, code_snippet=f'api_key = "{_FAKE_SECRET}"'
+        )
+        manager = BaselineManager(project_path=tmp_path)
+        assert manager.create_from_violations([finding], "lint") == 1
+
+        on_disk = manager.baseline_path.read_text(encoding="utf-8")
+        assert _FAKE_SECRET not in on_disk
+        assert "api_key" not in on_disk
+
+    def test_message_attr_secret_not_stored_in_baseline_json(self, tmp_path):
+        manager = BaselineManager(project_path=tmp_path)
+        assert manager.add_entry(
+            file_path=str(tmp_path / "a.py"),
+            line_number=1,
+            violation_type="lint",
+            message=f"found {_FAKE_SECRET}",
+        )
+        on_disk = manager.baseline_path.read_text(encoding="utf-8")
+        assert _FAKE_SECRET not in on_disk
+        payload = json.loads(on_disk)
+        assert payload["entries"][0]["message"] == hash_violation_message(
+            f"found {_FAKE_SECRET}"
+        )
+
+    def test_secret_not_in_default_json_report(self, tmp_path):
+        src = str(tmp_path / "config.py")
+        finding = _SnippetFinding(
+            src,
+            5,
+            description=f"hardcoded credential {_FAKE_SECRET}",
+            code_snippet=f'api_key = "{_FAKE_SECRET}"',
+        )
+        manager = BaselineManager(project_path=tmp_path)
+        manager.create_from_violations([finding], "lint")
+
+        report = manager.generate_report("json")
+        parsed = json.loads(report)
+        assert _FAKE_SECRET not in report
+        assert "message" not in parsed["entries"][0]
+
+    def test_hashed_identity_still_suppresses_same_finding(self, tmp_path):
+        src = str(tmp_path / "config.py")
+        finding = _SnippetFinding(
+            src, 6, description=f"hardcoded credential {_FAKE_SECRET}"
+        )
+        later = _SnippetFinding(
+            src, 9, description=f"other finding {_FAKE_SECRET}_other"
+        )
+        manager = BaselineManager(project_path=tmp_path)
+        manager.create_from_violations([finding], "lint")
+
+        remaining = manager.filter_violations([finding, later], "lint")
+        assert remaining == [later]
+
+        shifted = _SnippetFinding(
+            src, 99, description=f"hardcoded credential {_FAKE_SECRET}"
+        )
+        still_baselined = manager.filter_violations(
+            [shifted], "lint", use_fuzzy_matching=True
+        )
+        assert still_baselined == []
+
+    def test_cli_json_list_and_show_omit_secret(self, tmp_path, capsys):
+        src = str(tmp_path / "config.py")
+        finding = _SnippetFinding(
+            src,
+            7,
+            description=f"hardcoded credential {_FAKE_SECRET}",
+            code_snippet=f'api_key = "{_FAKE_SECRET}"',
+        )
+        manager = BaselineManager(project_path=tmp_path)
+        manager.create_from_violations([finding], "lint")
+
+        assert run_baseline_command(_baseline_cli_args(tmp_path, "list")) == 0
+        listed = capsys.readouterr().out
+        assert _FAKE_SECRET not in listed
+        listed_payload = json.loads(listed)
+        assert "message" not in listed_payload[0]
+
+        assert run_baseline_command(_baseline_cli_args(tmp_path, "show")) == 0
+        shown = capsys.readouterr().out
+        assert _FAKE_SECRET not in shown
+        shown_payload = json.loads(shown)
+        assert "message" not in shown_payload["entries"][0]

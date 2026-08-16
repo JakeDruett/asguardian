@@ -10,6 +10,11 @@ from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
 
+from Asgard.Baseline._baseline_helpers import (
+    hash_violation_message,
+    messages_match,
+)
+
 
 class BaselineEntry(BaseModel):
     """Represents a single baselined violation."""
@@ -17,7 +22,7 @@ class BaselineEntry(BaseModel):
     line_number: int = Field(..., description="Line number of violation")
     violation_type: str = Field(..., description="Type of violation (e.g., 'lazy_import', 'complexity')")
     violation_id: str = Field(..., description="Unique identifier for the violation")
-    message: str = Field("", description="Original violation message")
+    message: str = Field("", description="Hash of the violation identity (never raw text)")
     reason: str = Field("", description="Reason for baselining")
     created_at: datetime = Field(default_factory=datetime.now, description="When entry was created")
     created_by: str = Field("", description="Who created this baseline entry")
@@ -56,7 +61,7 @@ class BaselineEntry(BaseModel):
             return False
         query = (message or "").strip()
         stored = (self.message or "").strip()
-        if query and stored and stored == query:
+        if query and stored and messages_match(stored, query):
             return True
         vid = (violation_id or "").strip()
         if vid and vid == self.violation_id:
@@ -80,12 +85,11 @@ class BaselineEntry(BaseModel):
         """
         query = (message or "").strip()
         stored = (self.message or "").strip()
-        if not query or not stored:
+        if not query or not stored or not messages_match(stored, query):
             return False
         return (
             self.file_path == file_path
             and self.violation_type == violation_type
-            and stored == query
             and not self.is_expired
         )
 
@@ -123,6 +127,7 @@ class BaselineFile(BaseModel):
         if not (entry.message or "").strip():
             # Empty message is a file+type wildcard under fuzzy match.
             entry.message = entry.violation_id
+        entry.message = hash_violation_message(entry.message)
         self.entries.append(entry)
         self.updated_at = datetime.now()
 

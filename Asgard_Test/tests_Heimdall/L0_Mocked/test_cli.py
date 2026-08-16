@@ -49,6 +49,16 @@ class TestCreateParser:
             assert args.command == "quality"
             assert args.quality_command == "analyze"
 
+    def test_baseline_list_json_parses(self):
+        parser = create_parser()
+        with tempfile.TemporaryDirectory() as tmp:
+            args = parser.parse_args(
+                ["baseline", "list", tmp, "--format", "json"]
+            )
+            assert args.command == "baseline"
+            assert args.baseline_command == "list"
+            assert args.format == "json"
+
 
 class TestCommandRegistry:
     """Tests for the command default/known registry constants."""

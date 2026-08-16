@@ -17,6 +17,7 @@ _HMAC_ENV = "ASGARD_BASELINE_HMAC_KEY"
 
 from Asgard.Baseline._baseline_helpers import (
     generate_violation_id,
+    hash_violation_message,
     persistable_violation_message,
     relative_path,
 )
@@ -24,7 +25,11 @@ from Asgard.Baseline._baseline_operations import (
     create_from_violations as _create_from_violations,
     filter_violations as _filter_violations,
 )
-from Asgard.Baseline._baseline_report import format_markdown_report, format_text_report
+from Asgard.Baseline._baseline_report import (
+    format_json_report,
+    format_markdown_report,
+    format_text_report,
+)
 from Asgard.Baseline.models import (
     BaselineEntry,
     BaselineFile,
@@ -122,6 +127,8 @@ class BaselineManager:
                 self._baseline = BaselineFile(project_path=str(self.project_path))
                 return self._baseline
             self._baseline = BaselineFile(**data)
+            for entry in self._baseline.entries:
+                entry.message = hash_violation_message(entry.message)
         except FileNotFoundError:
             self._baseline = BaselineFile(project_path=str(self.project_path))
         except (json.JSONDecodeError, TypeError, ValueError, OSError):
@@ -139,6 +146,8 @@ class BaselineManager:
             raise ValueError("baseline path must not be a symlink")
 
         self._baseline.updated_at = datetime.now()
+        for entry in self._baseline.entries:
+            entry.message = hash_violation_message(entry.message)
         payload = self._baseline.model_dump(mode='json')
         payload["hmac"] = self._sign_payload(payload)
 
@@ -282,7 +291,7 @@ class BaselineManager:
         stats = baseline.get_stats()
 
         if output_format == "json":
-            return json.dumps(baseline.model_dump(mode='json'), indent=2, default=str)
+            return format_json_report(baseline)
 
         elif output_format == "markdown":
             return format_markdown_report(baseline, stats, self.baseline_path)

@@ -4,9 +4,19 @@ Baseline Manager - Report Formatting
 Text and Markdown report formatters for baseline entries.
 """
 
+import json
 from pathlib import Path
 
 from Asgard.Baseline.models import BaselineFile, BaselineStats
+
+
+def format_json_report(baseline: BaselineFile) -> str:
+    """JSON report without raw or hashed violation messages."""
+    payload = baseline.model_dump(mode="json")
+    for entry in payload.get("entries") or []:
+        if isinstance(entry, dict):
+            entry.pop("message", None)
+    return json.dumps(payload, indent=2, default=str)
 
 
 def format_text_report(
