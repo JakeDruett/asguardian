@@ -25,9 +25,9 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|---------|---------------|
 | Critical | 0    | 0       | 0             |
 | High     | 6    | 0       | 0             |
-| Medium   | 15   | 0       | 0             |
-| Low      | 14   | 0       | 0             |
-| Info     | 4    | 0       | 0             |
+| Medium   | 17   | 0       | 0             |
+| Low      | 15   | 0       | 0             |
+| Info     | 5    | 0       | 0             |
 
 ## Findings
 
@@ -637,13 +637,73 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Planned fix:** Same walker policy as CH-0040; prefer `os.walk(followlinks=False)` + skip file symlinks (or resolve+jail).
 - **Fix wave:** W2
 
+### CH-0042 — Language analyzers `rglob` and ignore advertised exclude/size limits
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-59 / CWE-400
+- **Primary file:** `Asgard/Bragi/Quality/languages/javascript/services/js_analyzer.py`
+- **Also on trace:** `Asgard/Bragi/Quality/languages/cpp/services/cpp_analyzer.py`, `csharp/services/csharp_analyzer.py`, `go/services/go_analyzer.py`, `java/services/java_analyzer.py`, `php/services/php_analyzer.py` (and remaining language analyzers if they share the same skeleton)
+- **Location:** `analyze` / `_discover_files` / `analyze_directory`
+- **Trace:** `Path(scan_path).rglob(f"*{ext}")` → `read_text` of entire files. `rglob` follows directory symlinks. `exclude_patterns`, `max_file_lines`, `max_findings` exist on scan configs and are never applied.
+- **Impact:** Escape via dir symlink; unbounded memory/CPU on huge trees/`bundle.js`; `include_extensions` glob interpolation can widen the walk.
+- **Evidence:** Same unused-limit pattern in C++/C#/Go/Java/JS/PHP analyzers. JS is wired through `Heimdall/cli/handlers/lang_analyzers.py`.
+- **Planned fix:** Shared walker: `os.walk(followlinks=False)`, skip file symlinks, apply exclude/max_file_lines/max_findings, cap line length before regex. Validate extensions against an allowlist.
+- **Fix wave:** W2
+
+### CH-0043 — Hardcoded-credential rules copy the secret into `code_snippet`
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-532
+- **Primary file:** `Asgard/Bragi/Quality/languages/javascript/services/_js_security_rules.py`
+- **Also on trace:** `Asgard/Bragi/Quality/languages/php/services/_php_rules.py`, `Asgard/Heimdall/cli/handlers/lang_analyzers.py` (prints `Code:` / JSON)
+- **Location:** `check_hardcoded_credentials`
+- **Trace:** Matching source line (including the literal) → `code_snippet` → CLI print / `report.dict()`
+- **Impact:** Detected secrets leave the file into reports, logs, and CI artifacts.
+- **Evidence:** No redaction/masking of the matched credential.
+- **Planned fix:** Store a masked snippet (keep last 4 chars or variable name only). Same policy as CH-0013. Tests that a fake key is not present in full in the report.
+- **Fix wave:** W3
+
+### CH-0044 — `js.no-eval` remediates to `Function`
+
+- **Status:** Open
+- **Severity:** Info
+- **Confidence:** High
+- **CWE / class:** CWE-94 adjacent (unsafe guidance)
+- **Primary file:** `Asgard/Bragi/Quality/languages/javascript/services/_js_rules.py`
+- **Also on trace:** none
+- **Location:** `check_no_eval` `fix_suggestion`
+- **Trace:** Finding recommends “JSON.parse() or Function.” `Function` is implied eval. The checker does not execute it.
+- **Impact:** Operators following the suggestion reintroduce code execution.
+- **Evidence:** `fix_suggestion` text names `Function`.
+- **Planned fix:** Recommend `JSON.parse` / structured parsers only; never `Function`/`eval`.
+- **Fix wave:** W5
+
+### CH-0045 — PHP rule regexes are quadratic on long lines
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** Medium
+- **CWE / class:** CWE-1333
+- **Primary file:** `Asgard/Bragi/Quality/languages/php/services/_php_rules.py`
+- **Also on trace:** `Asgard/Bragi/Quality/languages/php/services/php_analyzer.py`
+- **Location:** SQL-build and XSS-concat patterns using `.*` + `$_GET|POST|...`
+- **Trace:** Unbounded source line → `re.search` with `.*` → polynomial backtracking
+- **Impact:** Availability on huge/minified PHP lines. Combined with CH-0042 unused `max_file_lines`.
+- **Evidence:** Two patterns use `.*` before `$_(?:GET|POST|REQUEST|COOKIE)`.
+- **Planned fix:** Bound `.{0,200}`; skip lines over a max length; apply `max_file_lines`.
+- **Fix wave:** W4
+
 ## Planned fix waves
 
 - **W1 — CI / supply chain / secrets policy (do first):** CH-0001, CH-0002, CH-0003, CH-0004, CH-0005, CH-0006, CH-0023, CH-0024, CH-0033. Pin actions, stop executing PR code on ARC, lock PyPI publish, isolate git, do not phone home to PyPI unless opted in.
-- **W2 — Path confinement:** CH-0007, CH-0008, CH-0010, CH-0014, CH-0026, CH-0028, CH-0034, CH-0035, CH-0037, CH-0040, CH-0041. Validate CLI/API/language/profile/sync/cache-key paths; do not follow scan-tree symlinks.
-- **W3 — Baseline / cache / policy integrity:** CH-0011, CH-0012, CH-0013, CH-0015, CH-0027, CH-0032, CH-0036, CH-0038. Sign or refuse caches; fail-closed license defaults.
-- **W4 — Analyzer robustness:** CH-0016, CH-0017, CH-0018, CH-0021, CH-0022, CH-0025, CH-0031, CH-0039. Size/recursion/hunk caps; cache schema; fail soft on bad YAML.
-- **W5 — Output / template hygiene:** CH-0009, CH-0019, CH-0020, CH-0030. Escape markdown cells; tighten generated gitignore; constrain profile model fields.
+- **W2 — Path confinement:** CH-0007, CH-0008, CH-0010, CH-0014, CH-0026, CH-0028, CH-0034, CH-0035, CH-0037, CH-0040, CH-0041, CH-0042. Shared symlink-safe walker for Performance, BugDetection, and language analyzers.
+- **W3 — Baseline / cache / policy integrity:** CH-0011, CH-0012, CH-0013, CH-0015, CH-0027, CH-0032, CH-0036, CH-0038, CH-0043. Sign or refuse caches; fail-closed license defaults; redact secrets in findings.
+- **W4 — Analyzer robustness:** CH-0016, CH-0017, CH-0018, CH-0021, CH-0022, CH-0025, CH-0031, CH-0039, CH-0045. Size/recursion/hunk/regex caps; cache schema.
+- **W5 — Output / template hygiene:** CH-0009, CH-0019, CH-0020, CH-0030, CH-0044. Escape markdown; tighten gitignore; fix unsafe remediations.
 
 ## Accepted risks
 
@@ -655,10 +715,11 @@ None yet.
 - Batch 1 merged: 64 files (CI + BackendInit + Baseline + Architecture CIR/graph/services helpers)
 - Batch 2 merged: Architecture analyzers + Calibration + CodeFix + Coverage core (50 files)
 - Batch 3 merged: Coverage extractors + Dependencies + OOP models (40 files)
-- Batch 4 merged (2026-08-16): OOP services + Performance + BugDetection (~48 files)
-- Last paths completed: through `Asgard/Bragi/Quality/BugDetection/services/unreachable_code_detector.py` and `Asgard/Bragi/Quality/__init__.py`
-- Next batch: remaining `Asgard/Bragi/Quality/**` (Complexity, ComplexityCognitive, Duplication, Maintainability, Metrics, Naming, …)
-- Resume pointer: after batch-4 pop; `python3 scripts/cyberhardening_inventory.py status` (expect remaining≈3673)
-- Spot-check batch 4: grep Performance for subprocess/eval (none); re-read walker follows `is_dir()`/`is_file()`. Traces matched.
-- Highest ID: CH-0041
-- **Successor:** do not rebuild inventory. `init` is idempotent. Continue `next N` from disk. Do not implement fixes. Unit of progress remains one inventoried file traced + ledger + `done`.
+- Batch 4 merged: OOP + Performance + BugDetection (48 files)
+- Batch 5 merged (2026-08-16): Quality language barrels + C++/C#/Go/Java/JS/PHP
+- Last paths completed: through `Asgard/Bragi/Quality/languages/php/services/_php_rules.py` (and `php_analyzer.py` if present in the pop)
+- Next batch: remaining Quality languages (php_analyzer if not popped, ruby/rust/shell/typescript) then Quality Complexity/*
+- Resume pointer: `python3 scripts/cyberhardening_inventory.py status`
+- Spot-check batch 5: language `eval` hits are detectors of scanned source, not Python eval. JS/PHP analyzers use `rglob` + unused limits.
+- Highest ID: CH-0045
+- **Successor:** do not rebuild inventory unless `todo.json` is missing. Continue `next N`. Do not implement fixes.

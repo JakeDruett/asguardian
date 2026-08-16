@@ -2,257 +2,11 @@
   "version": 1,
   "repo_root": ".",
   "generated_at": "2026-08-16T07:04:47+00:00",
-  "updated_at": "2026-08-16T07:28:05+00:00",
+  "updated_at": "2026-08-16T07:31:16+00:00",
   "planning_dir": "_Docs/Planning",
   "plan_path": "_Docs/Planning/CyberHardening.md",
   "total_discovered": 3875,
   "remaining": [
-    {
-      "path": "Asgard/Bragi/Quality/_quality_models_imports.py",
-      "bytes": 4311,
-      "sha256": "6b8fd4301c3021a0407f81dd181b7ef31f8b94e2ade6bc66d51593d0df6c7f53",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/_quality_services_imports.py",
-      "bytes": 2407,
-      "sha256": "989d5e17da4e0540d94f1be65c0067f66eb81eab8feaa2eb36145caa97516e7a",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/__init__.py",
-      "bytes": 3695,
-      "sha256": "c1313a5bc4d8d97e5e2660e9fee7f94294dc26750f3c7babcb6c5a6ac70030b0",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/cpp/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/cpp/models/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/cpp/models/cpp_models.py",
-      "bytes": 1436,
-      "sha256": "e83051c99a802844ab09e29ca2a88d6aa57433b6e47860307f1782893bd872f3",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/cpp/services/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/cpp/services/_cpp_rules.py",
-      "bytes": 6580,
-      "sha256": "9878c8c3bac7795f0742321104d9f6771dabe00edb6e47c698fd41541434d4b2",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/cpp/services/cpp_analyzer.py",
-      "bytes": 2816,
-      "sha256": "1531b66faab0158e1f71e7769eae2552070a53a7e8a7e84ed564fc57b1fdaa74",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/csharp/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/csharp/models/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/csharp/models/csharp_models.py",
-      "bytes": 1405,
-      "sha256": "f61ea0fbbf781cf7f9cea853a7439f5b9d433ea6531c267300899171d89b4e25",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/csharp/services/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/csharp/services/_csharp_rules.py",
-      "bytes": 8217,
-      "sha256": "a9ca217faae5bf729614e5f46a769abc4766cdf2ad1761d963341b23eef89a56",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/csharp/services/csharp_analyzer.py",
-      "bytes": 2788,
-      "sha256": "e1d0fa683f5bfd5e0573e03d633b5dbb6bf42b663f99fae9be2e999dc41926e7",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/go/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/go/models/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/go/models/go_models.py",
-      "bytes": 1369,
-      "sha256": "e8f60f2309fc9cdf66812da8df9a2431fb5583b9f0966bea05273177e1de8a26",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/go/services/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/go/services/_go_rules.py",
-      "bytes": 9503,
-      "sha256": "ce43633e5892feb20b09213f960f4a96122b58c6c8291b255789b088dac4c926",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/go/services/go_analyzer.py",
-      "bytes": 2804,
-      "sha256": "133509738dbeec01302348dc326c6bb3325ce4cfa752c752a9169d65ae1fb121",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/java/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/java/models/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/java/models/java_models.py",
-      "bytes": 1389,
-      "sha256": "4aefe93243e7ebe7620ac8461a7bdb8176fa7fa3dc63f5e0ad44efdb06e5b013",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/java/services/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/java/services/_java_rules.py",
-      "bytes": 10636,
-      "sha256": "4d374725874c1b5f706eea4fe1f2d3e9414c2af8d082ad3bf515344fb5ea94df",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/java/services/java_analyzer.py",
-      "bytes": 2890,
-      "sha256": "0a6a7d74619d1d5068b59c3a2f266b6112e0b7d883bed595a4a8ecf23d6e467c",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/javascript/__init__.py",
-      "bytes": 425,
-      "sha256": "b9422e3caf5aea8ee8271f17a0faa406ee1ef1f19b6732aadf522d659c5881bf",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/javascript/models/__init__.py",
-      "bytes": 308,
-      "sha256": "fc12eb0eb9845407f664ad49902d86b8b670951ec2b8db704827d847d28533d9",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/javascript/models/js_models.py",
-      "bytes": 4588,
-      "sha256": "55380d8332871172bd7bb7ff7b5343fea27e1dcc0c337fbb1bb2da1f3503a844",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/javascript/services/__init__.py",
-      "bytes": 155,
-      "sha256": "3f3f9c1d2bad4701f4533120e52e817c21e6788980edbcd577c1ead824a02eb4",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/javascript/services/_js_rules.py",
-      "bytes": 5394,
-      "sha256": "3f4b877fa4035f43436d77edca9faf27a54fb6ce98838378230e9e917516f1f6",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/javascript/services/_js_security_rules.py",
-      "bytes": 6350,
-      "sha256": "3e8666b23c8cd2c58cdfdc8cf58e5353d3f1686caa87b33e1a55c6503942e40d",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/javascript/services/_js_style_rules.py",
-      "bytes": 6884,
-      "sha256": "6ac769c577fc447323a6b433c4ed94d72cd0688e194987666fe74e98453ffb75",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/javascript/services/js_analyzer.py",
-      "bytes": 5248,
-      "sha256": "d2229c8a54afc9d1c65b06f4c18485f7966bcaf46c12aabaafe83fdbf2b52257",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/php/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/php/models/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/php/models/php_models.py",
-      "bytes": 1416,
-      "sha256": "b973bd6b473744eb0e98f44fced4c268bd535132df41d2187084d2d83eaf5f14",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/php/services/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/php/services/_php_rules.py",
-      "bytes": 7919,
-      "sha256": "9016a40d1f94f98f9cece442989bd04e33784a709d261fba9f1954c04ae90fb7",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/languages/php/services/php_analyzer.py",
-      "bytes": 2677,
-      "sha256": "2868432854711b3d546ea0c5dffeb5d4cec29381ab9da2e2b4772cdd8726d7a0",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
     {
       "path": "Asgard/Bragi/Quality/languages/ruby/__init__.py",
       "bytes": 0,
@@ -23783,6 +23537,353 @@
       "disposition": "clean",
       "bytes": 6791,
       "sha256": "23230a0778e6e2e57f290af359c8585e1ffccca281bbc1a1baba2129b7dfeb4c"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/_quality_models_imports.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4311,
+      "sha256": "6b8fd4301c3021a0407f81dd181b7ef31f8b94e2ade6bc66d51593d0df6c7f53"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/_quality_services_imports.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2407,
+      "sha256": "989d5e17da4e0540d94f1be65c0067f66eb81eab8feaa2eb36145caa97516e7a"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3695,
+      "sha256": "c1313a5bc4d8d97e5e2660e9fee7f94294dc26750f3c7babcb6c5a6ac70030b0"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/cpp/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/cpp/models/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/cpp/models/cpp_models.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1436,
+      "sha256": "e83051c99a802844ab09e29ca2a88d6aa57433b6e47860307f1782893bd872f3"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/cpp/services/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/cpp/services/_cpp_rules.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6580,
+      "sha256": "9878c8c3bac7795f0742321104d9f6771dabe00edb6e47c698fd41541434d4b2"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/cpp/services/cpp_analyzer.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [
+        "CH-0042"
+      ],
+      "disposition": "findings",
+      "bytes": 2816,
+      "sha256": "1531b66faab0158e1f71e7769eae2552070a53a7e8a7e84ed564fc57b1fdaa74"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/csharp/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/csharp/models/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/csharp/models/csharp_models.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1405,
+      "sha256": "f61ea0fbbf781cf7f9cea853a7439f5b9d433ea6531c267300899171d89b4e25"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/csharp/services/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/csharp/services/_csharp_rules.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8217,
+      "sha256": "a9ca217faae5bf729614e5f46a769abc4766cdf2ad1761d963341b23eef89a56"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/csharp/services/csharp_analyzer.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [
+        "CH-0042"
+      ],
+      "disposition": "findings",
+      "bytes": 2788,
+      "sha256": "e1d0fa683f5bfd5e0573e03d633b5dbb6bf42b663f99fae9be2e999dc41926e7"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/go/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/go/models/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/go/models/go_models.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1369,
+      "sha256": "e8f60f2309fc9cdf66812da8df9a2431fb5583b9f0966bea05273177e1de8a26"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/go/services/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/go/services/_go_rules.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9503,
+      "sha256": "ce43633e5892feb20b09213f960f4a96122b58c6c8291b255789b088dac4c926"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/go/services/go_analyzer.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [
+        "CH-0042"
+      ],
+      "disposition": "findings",
+      "bytes": 2804,
+      "sha256": "133509738dbeec01302348dc326c6bb3325ce4cfa752c752a9169d65ae1fb121"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/java/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/java/models/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/java/models/java_models.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1389,
+      "sha256": "4aefe93243e7ebe7620ac8461a7bdb8176fa7fa3dc63f5e0ad44efdb06e5b013"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/java/services/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/java/services/_java_rules.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10636,
+      "sha256": "4d374725874c1b5f706eea4fe1f2d3e9414c2af8d082ad3bf515344fb5ea94df"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/java/services/java_analyzer.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [
+        "CH-0042"
+      ],
+      "disposition": "findings",
+      "bytes": 2890,
+      "sha256": "0a6a7d74619d1d5068b59c3a2f266b6112e0b7d883bed595a4a8ecf23d6e467c"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/javascript/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 425,
+      "sha256": "b9422e3caf5aea8ee8271f17a0faa406ee1ef1f19b6732aadf522d659c5881bf"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/javascript/models/__init__.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 308,
+      "sha256": "fc12eb0eb9845407f664ad49902d86b8b670951ec2b8db704827d847d28533d9"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/javascript/models/js_models.py",
+      "completed_at": "2026-08-16T07:31:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4588,
+      "sha256": "55380d8332871172bd7bb7ff7b5343fea27e1dcc0c337fbb1bb2da1f3503a844"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/javascript/services/__init__.py",
+      "completed_at": "2026-08-16T07:31:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 155,
+      "sha256": "3f3f9c1d2bad4701f4533120e52e817c21e6788980edbcd577c1ead824a02eb4"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/javascript/services/_js_rules.py",
+      "completed_at": "2026-08-16T07:31:16+00:00",
+      "finding_ids": [
+        "CH-0044"
+      ],
+      "disposition": "findings",
+      "bytes": 5394,
+      "sha256": "3f4b877fa4035f43436d77edca9faf27a54fb6ce98838378230e9e917516f1f6"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/javascript/services/_js_security_rules.py",
+      "completed_at": "2026-08-16T07:31:16+00:00",
+      "finding_ids": [
+        "CH-0043"
+      ],
+      "disposition": "findings",
+      "bytes": 6350,
+      "sha256": "3e8666b23c8cd2c58cdfdc8cf58e5353d3f1686caa87b33e1a55c6503942e40d"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/javascript/services/_js_style_rules.py",
+      "completed_at": "2026-08-16T07:31:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6884,
+      "sha256": "6ac769c577fc447323a6b433c4ed94d72cd0688e194987666fe74e98453ffb75"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/javascript/services/js_analyzer.py",
+      "completed_at": "2026-08-16T07:31:16+00:00",
+      "finding_ids": [
+        "CH-0042"
+      ],
+      "disposition": "findings",
+      "bytes": 5248,
+      "sha256": "d2229c8a54afc9d1c65b06f4c18485f7966bcaf46c12aabaafe83fdbf2b52257"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/php/__init__.py",
+      "completed_at": "2026-08-16T07:31:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/php/models/__init__.py",
+      "completed_at": "2026-08-16T07:31:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/php/models/php_models.py",
+      "completed_at": "2026-08-16T07:31:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1416,
+      "sha256": "b973bd6b473744eb0e98f44fced4c268bd535132df41d2187084d2d83eaf5f14"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/php/services/__init__.py",
+      "completed_at": "2026-08-16T07:31:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/php/services/_php_rules.py",
+      "completed_at": "2026-08-16T07:31:16+00:00",
+      "finding_ids": [
+        "CH-0043",
+        "CH-0045"
+      ],
+      "disposition": "findings",
+      "bytes": 7919,
+      "sha256": "9016a40d1f94f98f9cece442989bd04e33784a709d261fba9f1954c04ae90fb7"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/languages/php/services/php_analyzer.py",
+      "completed_at": "2026-08-16T07:31:16+00:00",
+      "finding_ids": [
+        "CH-0042"
+      ],
+      "disposition": "findings",
+      "bytes": 2677,
+      "sha256": "2868432854711b3d546ea0c5dffeb5d4cec29381ab9da2e2b4772cdd8726d7a0"
     }
   ]
 }
