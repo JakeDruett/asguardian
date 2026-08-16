@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 6    | 53    | 0             |
+| Medium   | 5    | 54    | 0             |
 | Low      | 10   | 12    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1453,7 +1453,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0083 — Config-secrets placeholder fragments drop real credentials
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T18:16:00Z
+- **Implementation note:** Placeholder match is whole-value only; `"<"` dropped; flatten depth-capped and cycle-safe.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-693
@@ -2038,12 +2041,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 22
-- Fixed: 92
+- Open: 21
+- Fixed: 93
 - Accepted risk: 0
 - Current wave: W4
-- Next: CH-0083, CH-0084, CH-0085
-- Last commit: fec5bfd026682b
+- Next: CH-0084, CH-0085, CH-0099
+- Last commit: pending026682b
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

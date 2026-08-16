@@ -20,6 +20,7 @@ from Asgard.Heimdall.Security.models.config_secrets_models import (
     ConfigSecretsReport,
 )
 from Asgard.Heimdall.Security.services._config_secrets_helpers import (
+    MAX_FLATTEN_DEPTH,
     flatten_dict,
     is_credential_key,
     is_placeholder,
@@ -161,7 +162,7 @@ class ConfigSecretsScanner:
 
     def _scan_data(self, file_path: Path, data: Any) -> List[ConfigSecretFinding]:
         findings = []
-        for context_path, key, value in flatten_dict(data):
+        for context_path, key, value in flatten_dict(data, max_depth=MAX_FLATTEN_DEPTH):
             findings.extend(self._check_value(file_path, key, value, context_path))
         return findings
 
