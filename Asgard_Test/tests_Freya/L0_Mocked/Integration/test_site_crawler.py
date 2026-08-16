@@ -701,6 +701,43 @@ class TestHTMLReportGeneration:
         assert "https://example.com/page" in html
         assert "PASS" in html
 
+    def test_generate_html_report_escapes_script_and_javascript_url(self):
+        config = _make_config()
+        page_result = PageTestResult(
+            url="javascript:alert(1)", title='<script>alert(1)</script>',
+            tested_at=datetime.now().isoformat(), duration_ms=100,
+            accessibility_score=10.0, visual_score=10.0, responsive_score=10.0,
+            overall_score=10.0,
+            critical_issues=1, serious_issues=0, moderate_issues=0, minor_issues=0,
+            issues=[], passed=False,
+            cap_reason='<script>alert(1)</script>',
+            grade="F",
+        )
+        report = SiteCrawlReport(
+            start_url='javascript:alert(1)"><script>',
+            crawl_started=datetime.now().isoformat(),
+            crawl_completed='</title><script>alert(1)</script>',
+            total_duration_ms=1000,
+            pages_discovered=1, pages_tested=1, pages_skipped=0, pages_errored=0,
+            average_accessibility_score=10.0, average_visual_score=10.0,
+            average_responsive_score=10.0, average_overall_score=10.0,
+            site_grade="F",
+            site_cap_reason='<script>alert(1)</script> (worst page: javascript:alert(1))',
+            total_critical=1, total_serious=0, total_moderate=0, total_minor=0,
+            page_results=[page_result], worst_pages=[],
+            common_issues=[{
+                "issue": "xss",
+                "message": '<script>alert(1)</script>',
+                "count": 1,
+            }],
+            config=config,
+        )
+        html = generate_html_report(report)
+        assert "<script>alert(1)</script>" not in html
+        assert "&lt;script&gt;alert(1)&lt;/script&gt;" in html
+        assert 'href="javascript:' not in html.lower()
+        assert "</title><script>" not in html
+
 
 class TestSaveReport:
     """Test report saving."""

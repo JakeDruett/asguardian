@@ -14,6 +14,7 @@ from Asgard.Freya.Integration.models.integration_models import (
     PageTestResult,
     SiteCrawlReport,
 )
+from Asgard.Freya.Integration.services._report_escape import esc, html_link
 from Asgard.Freya.Scoring.services.epistemics import TREND_INDICATOR_NOTE
 
 _GRADE_RANK = {"F": 0, "D": 1, "C": 2, "B": 3, "A": 4}
@@ -214,10 +215,13 @@ def _grade_banner_html(report: SiteCrawlReport) -> str:
         return ""
     color = {"A": "#22c55e", "B": "#84cc16", "C": "#eab308", "D": "#f97316", "F": "#ef4444"}.get(grade, "#94a3b8")
     reason = getattr(report, "site_cap_reason", None)
-    reason_html = f'<p style="font-size: 13px; color: #94a3b8;">Capped by: {reason}</p>' if reason else ""
+    reason_html = (
+        f'<p style="font-size: 13px; color: #94a3b8;">Capped by: {esc(reason)}</p>'
+        if reason else ""
+    )
     return (
         f'<div style="margin-top: 16px;">'
-        f'<span style="font-size: 3rem; font-weight: bold; color: {color};">Grade: {grade}</span>'
+        f'<span style="font-size: 3rem; font-weight: bold; color: {color};">Grade: {esc(grade)}</span>'
         f"{reason_html}</div>"
     )
 
@@ -231,7 +235,7 @@ def generate_html_report(report: SiteCrawlReport) -> str:
         page_rows += f"""
         <tr>
             <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                <a href="{result.url}" target="_blank">{result.url}</a>
+                {html_link(result.url)}
             </td>
             <td style="text-align: center; color: {_score_color(result.overall_score)}; font-weight: bold;">
                 {result.overall_score:.0f}
@@ -248,9 +252,9 @@ def generate_html_report(report: SiteCrawlReport) -> str:
     for issue in report.common_issues[:10]:
         common_issues_html += f"""
         <tr>
-            <td>{issue['issue']}</td>
-            <td>{issue['message']}</td>
-            <td style="text-align: center; font-weight: bold;">{issue['count']}</td>
+            <td>{esc(issue['issue'])}</td>
+            <td>{esc(issue['message'])}</td>
+            <td style="text-align: center; font-weight: bold;">{esc(issue['count'])}</td>
         </tr>
         """
 
@@ -259,7 +263,7 @@ def generate_html_report(report: SiteCrawlReport) -> str:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freya Site Crawl Report - {report.start_url}</title>
+    <title>Freya Site Crawl Report - {esc(report.start_url)}</title>
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
         body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; line-height: 1.6; padding: 20px; }}
@@ -292,10 +296,10 @@ def generate_html_report(report: SiteCrawlReport) -> str:
     <div class="container">
         <div class="header">
             <h1>Freya Site Crawl Report</h1>
-            <p>{report.start_url}</p>
-            <p style="margin-top: 10px; font-size: 14px;">Generated: {report.crawl_completed} | Duration: {report.total_duration_ms / 1000:.1f}s</p>
+            <p>{esc(report.start_url)}</p>
+            <p style="margin-top: 10px; font-size: 14px;">Generated: {esc(report.crawl_completed)} | Duration: {report.total_duration_ms / 1000:.1f}s</p>
             {_grade_banner_html(report)}
-            <p style="margin-top: 10px; font-size: 12px; color: #94a3b8;">{TREND_INDICATOR_NOTE}</p>
+            <p style="margin-top: 10px; font-size: 12px; color: #94a3b8;">{esc(TREND_INDICATOR_NOTE)}</p>
             <p style="margin-top: 4px; font-size: 12px; color: #94a3b8;">Epistemic status: Lab Data / Synthetic Baseline &mdash; results reflect a single automated run, not real-user field data.</p>
         </div>
         <div class="summary-grid">

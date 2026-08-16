@@ -15,6 +15,13 @@ from Asgard.Freya.Integration.models.integration_models import (
     TestSeverity,
     UnifiedTestReport,
 )
+from Asgard.Freya.Integration.services._report_escape import (
+    esc,
+    html_link,
+    json_for_script,
+    safe_css_token,
+    safe_src,
+)
 from Asgard.Freya.Integration.services._reporter_styles import get_css, get_javascript
 from Asgard.Freya.Scoring.models.scoring_models import GradedScore
 from Asgard.Freya.Scoring.services.epistemics import LAB_DATA_DISCLAIMER
@@ -114,23 +121,26 @@ class HTMLReporter:
         rows = []
         for name, header in headers_to_show:
             if header is None:
-                rows.append(f"<tr><td>{name}</td><td>NOT CHECKED</td><td>-</td><td>-</td></tr>")
+                rows.append(
+                    f"<tr><td>{esc(name)}</td><td>NOT CHECKED</td><td>-</td><td>-</td></tr>"
+                )
                 continue
             mitigation = getattr(header, "mitigation_status", None)
             status = (mitigation.value if mitigation is not None else header.status.value)
+            status_class = safe_css_token(status)
             threat_context = getattr(header, "threat_context", None) or "-"
             manual = getattr(header, "manual_verification", None) or "-"
             rows.append(
-                f'<tr class="result-row {status}"><td>{name}</td>'
-                f'<td><span class="severity-badge {status}">{status}</span></td>'
-                f"<td>{threat_context}</td><td>{manual}</td></tr>"
+                f'<tr class="result-row {status_class}"><td>{esc(name)}</td>'
+                f'<td><span class="severity-badge {status_class}">{esc(status)}</span></td>'
+                f"<td>{esc(threat_context)}</td><td>{esc(manual)}</td></tr>"
             )
 
         scope_matrix = getattr(result, "scope_matrix", None) or []
         scope_rows = "".join(
-            f"<tr><td>{row.get('control', '')}</td>"
-            f"<td>{row.get('tool_validates', '')}</td>"
-            f"<td>{row.get('requires_manual', '')}</td></tr>"
+            f"<tr><td>{esc(row.get('control', ''))}</td>"
+            f"<td>{esc(row.get('tool_validates', ''))}</td>"
+            f"<td>{esc(row.get('requires_manual', ''))}</td></tr>"
             for row in scope_matrix
         )
         scope_section = (
@@ -147,7 +157,7 @@ class HTMLReporter:
         )
 
         critical_issues = getattr(result, "critical_issues", None) or []
-        issues_html = "".join(f"<li>{issue}</li>" for issue in critical_issues)
+        issues_html = "".join(f"<li>{esc(issue)}</li>" for issue in critical_issues)
         issues_section = (
             f"""
         <section class="results-section" id="critical-findings">
@@ -161,23 +171,23 @@ class HTMLReporter:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title}</title>
+    <title>{esc(title)}</title>
     <style>{get_css()}</style>
 </head>
 <body>
     <header>
-        <h1>{title}</h1>
+        <h1>{esc(title)}</h1>
         <div class="meta">
-            <span>URL: <a href="{getattr(result, 'url', '')}" target="_blank">{getattr(result, 'url', '')}</a></span>
+            <span>URL: {html_link(getattr(result, 'url', ''))}</span>
         </div>
     </header>
     <main>
         <section class="summary">
             <h2>Summary</h2>
-            <p class="disclaimer">{disclaimer}</p>
+            <p class="disclaimer">{esc(disclaimer)}</p>
             <div class="score-grid">
-                <div class="score-card overall"><div class="score-value">{score:.0f}</div><div class="score-label">{score_label}</div></div>
-                <div class="score-card"><div class="score-value">{grade}</div><div class="score-label">Resilience Grade</div></div>
+                <div class="score-card overall"><div class="score-value">{score:.0f}</div><div class="score-label">{esc(score_label)}</div></div>
+                <div class="score-card"><div class="score-value">{esc(grade)}</div><div class="score-label">Resilience Grade</div></div>
             </div>
         </section>
         <section class="results-section" id="mitigation-status">
@@ -226,9 +236,9 @@ class HTMLReporter:
             "color_scheme", "reduced_motion", "font_stack_hash",
         )
         fp_rows = "".join(
-            f"<tr><td>{field}</td>"
-            f"<td>{baseline_fp.get(field, 'unverified')}</td>"
-            f"<td>{current_fp.get(field, 'unverified')}</td></tr>"
+            f"<tr><td>{esc(field)}</td>"
+            f"<td>{esc(baseline_fp.get(field, 'unverified'))}</td>"
+            f"<td>{esc(current_fp.get(field, 'unverified'))}</td></tr>"
             for field in fp_fields
         )
 
@@ -244,18 +254,18 @@ class HTMLReporter:
             status_banner = f"""
             <div class="stat-card failed">
                 <div class="stat-label">INCONCLUSIVE: environment mismatch - comparison refused</div>
-                <p>Mismatched fields: {mismatched_fields}</p>
-                <p>{rationale}</p>
+                <p>Mismatched fields: {esc(mismatched_fields)}</p>
+                <p>{esc(rationale)}</p>
             </div>"""
         elif env_warning:
-            status_banner = f'<div class="stat-card">WARNING: {env_warning}</div>'
+            status_banner = f'<div class="stat-card">WARNING: {esc(env_warning)}</div>'
 
         passed = result.get("passed")
         diff_pct = result.get("difference_percentage", 0.0)
-        diff_image = result.get("diff_image_path")
+        diff_src = safe_src(result.get("diff_image_path"))
         diff_image_html = (
-            f'<img src="{diff_image}" alt="Diff image" loading="lazy" style="max-width:100%;">'
-            if diff_image else ""
+            f'<img src="{diff_src}" alt="Diff image" loading="lazy" style="max-width:100%;">'
+            if diff_src else ""
         )
 
         return f"""<!DOCTYPE html>
@@ -263,19 +273,19 @@ class HTMLReporter:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title}</title>
+    <title>{esc(title)}</title>
     <style>{get_css()}</style>
 </head>
 <body>
     <header>
-        <h1>{title}</h1>
-        <div class="meta"><span>Baseline: {baseline.get('name', '')}</span> <span>Environment status: {env_status}</span></div>
+        <h1>{esc(title)}</h1>
+        <div class="meta"><span>Baseline: {esc(baseline.get('name', ''))}</span> <span>Environment status: {esc(env_status)}</span></div>
     </header>
     <main>
         {status_banner}
         <section class="summary">
             <h2>Comparison</h2>
-            <p class="framing">{framing}</p>
+            <p class="framing">{esc(framing)}</p>
             <div class="score-grid">
                 <div class="score-card overall"><div class="score-value">{diff_pct:.2f}%</div><div class="score-label">Pixel Difference</div></div>
                 <div class="score-card"><div class="score-value">{'PASS' if passed else 'FAIL' if passed is not None else '-'}</div><div class="score-label">Result</div></div>
@@ -338,15 +348,15 @@ class HTMLReporter:
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{title}</title>
+    <title>{esc(title)}</title>
     <style>{css}</style>
 </head>
 <body>
     <header>
-        <h1>{title}</h1>
+        <h1>{esc(title)}</h1>
         <div class="meta">
-            <span>URL: <a href="{report.url}" target="_blank">{report.url}</a></span>
-            <span>Tested: {report.tested_at}</span>
+            <span>URL: {html_link(report.url)}</span>
+            <span>Tested: {esc(report.tested_at)}</span>
             <span>Duration: {report.duration_ms}ms</span>
         </div>
     </header>
@@ -380,7 +390,7 @@ class HTMLReporter:
     </main>
     <footer>
         <p>Generated by Freya - Visual Testing Framework</p>
-        <p style="font-size: 12px; opacity: 0.8;">{LAB_DATA_DISCLAIMER}</p>
+        <p style="font-size: 12px; opacity: 0.8;">{esc(LAB_DATA_DISCLAIMER)}</p>
     </footer>
     <script>{js}</script>
 </body>
@@ -395,15 +405,15 @@ class HTMLReporter:
         grade_colors = {"A": "#22c55e", "B": "#84cc16", "C": "#eab308", "D": "#f97316", "F": "#ef4444"}
         color = grade_colors.get(graded.grade.value, "#94a3b8")
         cap_html = (
-            f"<p>Grade capped by: {graded.cap_reason}</p>" if graded.cap_reason
+            f"<p>Grade capped by: {esc(graded.cap_reason)}</p>" if graded.cap_reason
             else "<p>No capping findings.</p>"
         )
         radar = self._build_radar_svg(graded.category_scores)
-        radar_json = json.dumps(graded.category_scores)
+        radar_json = json_for_script(graded.category_scores)
 
         return f"""
         <section class="results-section" id="grade">
-            <h2>Grade<span class="section-score" style="color: {color};">{graded.grade.value}</span></h2>
+            <h2>Grade<span class="section-score" style="color: {color};">{esc(graded.grade.value)}</span></h2>
             {cap_html}
             <p>Base score (trend indicator only): {graded.base_score:.0f}/100 &mdash;
                capped score: {graded.capped_score:.0f}/100. The grade is non-compensatory:
@@ -433,7 +443,7 @@ class HTMLReporter:
             labels.append(
                 f'<text x="{cx + (radius + 18) * math.cos(angle):.1f}" '
                 f'y="{cy + (radius + 18) * math.sin(angle):.1f}" '
-                f'font-size="11" text-anchor="middle" fill="#94a3b8">{category}</text>'
+                f'font-size="11" text-anchor="middle" fill="#94a3b8">{esc(category)}</text>'
             )
             score = max(0.0, min(100.0, float(category_scores[category])))
             r = radius * score / 100.0
@@ -464,13 +474,14 @@ class HTMLReporter:
         rows = []
         for finding in ordered:
             review = " (needs review)" if finding.needs_review else ""
+            severity = safe_css_token(finding.severity.value)
             rows.append(f"""
-            <tr class="result-row {finding.severity.value}">
-                <td><span class="severity-badge {finding.severity.value}">{finding.severity.value}{review}</span></td>
-                <td>{finding.category}</td>
-                <td><code>{finding.check_id}</code></td>
-                <td>{finding.message}</td>
-                <td><code>{finding.selector or '-'}</code></td>
+            <tr class="result-row {severity}">
+                <td><span class="severity-badge {severity}">{esc(finding.severity.value)}{review}</span></td>
+                <td>{esc(finding.category)}</td>
+                <td><code>{esc(finding.check_id)}</code></td>
+                <td>{esc(finding.message)}</td>
+                <td><code>{esc(finding.selector or '-')}</code></td>
             </tr>""")
 
         return f"""
@@ -492,30 +503,36 @@ class HTMLReporter:
 
         rows = []
         for result in failed:
-            severity_class = result.severity.value if result.severity else "moderate"
-            wcag_html = f'<span class="wcag">{result.wcag_reference}</span>' if result.wcag_reference else ""
+            severity_class = safe_css_token(
+                result.severity.value if result.severity else "moderate",
+                default="moderate",
+            )
+            wcag_html = (
+                f'<span class="wcag">{esc(result.wcag_reference)}</span>'
+                if result.wcag_reference else ""
+            )
             rows.append(f"""
             <tr class="result-row {severity_class}">
-                <td><span class="severity-badge {severity_class}">{severity_class}</span></td>
-                <td>{result.test_name}</td>
-                <td>{result.message} {wcag_html}</td>
-                <td><code>{result.element_selector or '-'}</code></td>
-                <td>{result.suggested_fix or '-'}</td>
+                <td><span class="severity-badge {severity_class}">{esc(severity_class)}</span></td>
+                <td>{esc(result.test_name)}</td>
+                <td>{esc(result.message)} {wcag_html}</td>
+                <td><code>{esc(result.element_selector or '-')}</code></td>
+                <td>{esc(result.suggested_fix or '-')}</td>
             </tr>""")
 
         for result in passed:
             rows.append(f"""
             <tr class="result-row passed">
                 <td><span class="severity-badge passed">pass</span></td>
-                <td>{result.test_name}</td>
-                <td>{result.message}</td>
+                <td>{esc(result.test_name)}</td>
+                <td>{esc(result.message)}</td>
                 <td>-</td>
                 <td>-</td>
             </tr>""")
 
         return f"""
-        <section class="results-section" id="{category.lower()}">
-            <h2>{category}<span class="section-score">{score:.0f}/100</span></h2>
+        <section class="results-section" id="{esc(category.lower())}">
+            <h2>{esc(category)}<span class="section-score">{score:.0f}/100</span></h2>
             <table class="results-table">
                 <thead><tr><th>Severity</th><th>Test</th><th>Message</th><th>Element</th><th>Suggested Fix</th></tr></thead>
                 <tbody>{''.join(rows)}</tbody>
@@ -529,10 +546,12 @@ class HTMLReporter:
 
         items = []
         for name, path in screenshots.items():
+            src = safe_src(path)
+            img = f'<img src="{src}" alt="{esc(name)}" loading="lazy">' if src else ""
             items.append(f"""
             <div class="screenshot-item">
-                <img src="{path}" alt="{name}" loading="lazy">
-                <div class="screenshot-label">{name}</div>
+                {img}
+                <div class="screenshot-label">{esc(name)}</div>
             </div>""")
 
         return f"""
@@ -552,20 +571,28 @@ class HTMLReporter:
         )
 
         for result in all_results:
+            name = esc(result.test_name)
+            classname = esc(result.category.value)
             if result.passed:
                 test_cases.append(
-                    f'    <testcase name="{result.test_name}" classname="{result.category.value}"/>'
+                    f'    <testcase name="{name}" classname="{classname}"/>'
                 )
             else:
-                severity = result.severity.value if result.severity else "moderate"
-                message = result.message.replace('"', '&quot;').replace('<', '&lt;').replace('>', '&gt;')
-                test_cases.append(f'''    <testcase name="{result.test_name}" classname="{result.category.value}">
-      <failure type="{severity}" message="{message}">
-{result.suggested_fix or ''}
-      </failure>
-    </testcase>''')
+                severity = esc(result.severity.value if result.severity else "moderate")
+                message = esc(result.message)
+                body = esc(result.suggested_fix or "")
+                test_cases.append(
+                    f'    <testcase name="{name}" classname="{classname}">\n'
+                    f'      <failure type="{severity}" message="{message}">\n'
+                    f"{body}\n"
+                    f"      </failure>\n"
+                    f"    </testcase>"
+                )
 
-        return f'''<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="Freya Tests" tests="{report.total_tests}" failures="{report.failed}" timestamp="{report.tested_at}">
-{chr(10).join(test_cases)}
-</testsuite>'''
+        return (
+            '<?xml version="1.0" encoding="UTF-8"?>\n'
+            f'<testsuite name="Freya Tests" tests="{int(report.total_tests)}" '
+            f'failures="{int(report.failed)}" timestamp="{esc(report.tested_at)}">\n'
+            f"{chr(10).join(test_cases)}\n"
+            "</testsuite>"
+        )

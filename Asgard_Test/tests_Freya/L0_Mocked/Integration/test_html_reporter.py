@@ -20,6 +20,12 @@ from Asgard.Freya.Integration.models.integration_models import (
 )
 from Asgard.Freya.Integration.services.html_reporter import HTMLReporter
 from Asgard.Freya.Integration.services._reporter_styles import get_css, get_javascript
+from Asgard.Freya.Scoring.models.scoring_models import (
+    Finding,
+    GradedScore,
+    QualityGrade,
+    UniversalSeverity,
+)
 
 
 @pytest.fixture
@@ -621,6 +627,133 @@ class TestHTMLReporterBuildJUnitXML:
         xml = reporter._build_junit_xml(report)
 
         assert "&quot;" in xml or "&lt;" in xml or "&gt;" in xml
+
+
+class TestHTMLReporterEscapeCH0067:
+    """Stored XSS / JUnit injection via page-controlled finding fields."""
+
+    def _report(self, **overrides):
+        config = UnifiedTestConfig(url="https://example.com")
+        result = UnifiedTestResult(
+            category=TestCategory.ACCESSIBILITY,
+            test_name='WCAG "<script>alert(1)</script>',
+            passed=False,
+            severity=TestSeverity.CRITICAL,
+            message='<script>alert(1)</script>',
+            element_selector='img"><img src=x onerror=alert(1)>',
+            suggested_fix='</failure><script>alert(1)</script>',
+            wcag_reference='1.1.1"><script>',
+        )
+        data = dict(
+            url="javascript:alert(1)",
+            tested_at='2025-01-01T00:00:00"><script>',
+            duration_ms=1000,
+            total_tests=1,
+            passed=0,
+            failed=1,
+            accessibility_results=[result],
+            visual_results=[],
+            responsive_results=[],
+            critical_count=1,
+            serious_count=0,
+            moderate_count=0,
+            minor_count=0,
+            accessibility_score=10.0,
+            visual_score=100.0,
+            responsive_score=100.0,
+            overall_score=10.0,
+            config=config,
+            screenshots={
+                'xss"><script>': "javascript:alert(1)",
+                "ok": "/path/to/test.png",
+            },
+            findings=[
+                Finding(
+                    category="accessibility",
+                    severity=UniversalSeverity.CRITICAL,
+                    check_id="wcag.1.1.1",
+                    message='<script>alert(1)</script>',
+                    selector='div[x="]"><script>',
+                    url="javascript:alert(1)",
+                )
+            ],
+            graded=GradedScore(
+                base_score=90.0,
+                capped_score=10.0,
+                grade=QualityGrade.F,
+                cap_reason='<script>alert(1)</script>',
+                category_scores={
+                    "a11y": 10.0,
+                    "visual": 80.0,
+                    "</script><script>alert(1)": 20.0,
+                },
+            ),
+        )
+        data.update(overrides)
+        return UnifiedTestReport(**data)
+
+    def test_html_escapes_script_in_finding_message(self):
+        html = HTMLReporter()._build_html(self._report(), 'Title<script>alert(1)</script>')
+        assert "<script>alert(1)</script>" not in html
+        assert "&lt;script&gt;alert(1)&lt;/script&gt;" in html
+
+    def test_html_rejects_javascript_url_href(self):
+        html = HTMLReporter()._build_html(self._report(), "Report")
+        assert 'href="javascript:' not in html.lower()
+        assert "javascript:alert(1)" in html
+
+    def test_html_rejects_javascript_screenshot_src(self):
+        html = HTMLReporter()._build_screenshots_section({
+            "evil": "javascript:alert(1)",
+            "data": "data:text/html,<script>alert(1)</script>",
+            "ok": "/path/to/test.png",
+        })
+        assert "src=\"javascript:" not in html.lower()
+        assert "src=\"data:" not in html.lower()
+        assert 'src="/path/to/test.png"' in html
+
+    def test_junit_escapes_script_and_ampersand(self):
+        xml = HTMLReporter()._build_junit_xml(self._report())
+        assert "<script>alert(1)</script>" not in xml
+        assert "&lt;script&gt;" in xml
+        assert "</failure><script>" not in xml
+        assert "&quot;" in xml
+
+    def test_radar_json_cannot_break_script(self):
+        html = HTMLReporter()._build_html(self._report(), "Report")
+        assert "</script><script>alert(1)" not in html
+        assert "\\u003c" in html
+
+    def test_security_html_rejects_javascript_url(self):
+        result = type("R", (), {})()
+        result.url = "javascript:alert(1)"
+        result.disclaimer = '<script>alert(1)</script>'
+        result.score_label = "Score"
+        result.security_score = 0
+        result.security_grade = "F"
+        result.critical_issues = ['<script>alert(1)</script>']
+        result.scope_matrix = []
+        html = HTMLReporter()._build_security_html(result, "Security")
+        assert 'href="javascript:' not in html.lower()
+        assert "&lt;script&gt;" in html
+        assert "<script>alert(1)</script>" not in html
+
+    def test_baseline_diff_src_rejects_javascript(self):
+        result = {
+            "success": True,
+            "status": "compared",
+            "passed": False,
+            "baseline": {"name": '<script>x</script>', "fingerprint": {}},
+            "current_fingerprint": {},
+            "environment_status": "none",
+            "environment_warning": None,
+            "framing": '<script>alert(1)</script>',
+            "difference_percentage": 1.0,
+            "diff_image_path": "javascript:alert(1)",
+        }
+        html = HTMLReporter()._build_baseline_comparison_html(result, "Comparison")
+        assert "src=\"javascript:" not in html.lower()
+        assert "&lt;script&gt;" in html
 
 
 class TestSecurityHtmlReport:

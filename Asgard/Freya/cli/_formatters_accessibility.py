@@ -1,4 +1,5 @@
 from Asgard.Freya.Accessibility.models.accessibility_models import ViolationSeverity
+from Asgard.Freya.Integration.services._report_escape import esc, html_link, safe_css_token
 from Asgard.Freya.Scoring.services.epistemics import (
     ACCESSIBILITY_DISCLAIMER,
     NEEDS_REVIEW_NOTE,
@@ -162,26 +163,27 @@ def format_accessibility_html(result) -> str:
 <body>
     <div class="header">
         <h1>Freya Accessibility Report</h1>
-        <p><strong>URL:</strong> {result.url}</p>
-        <p><strong>WCAG Level:</strong> {result.wcag_level}</p>
-        <p><strong>Tested At:</strong> {result.tested_at}</p>
+        <p><strong>URL:</strong> {html_link(result.url)}</p>
+        <p><strong>WCAG Level:</strong> {esc(result.wcag_level)}</p>
+        <p><strong>Tested At:</strong> {esc(result.tested_at)}</p>
     </div>
     <div class="score {score_class}">
         Accessibility Score: {result.score:.1f}%
     </div>
-    <p style="font-size: 0.9em; color: #555;"><em>{ACCESSIBILITY_DISCLAIMER}</em></p>
+    <p style="font-size: 0.9em; color: #555;"><em>{esc(ACCESSIBILITY_DISCLAIMER)}</em></p>
 """
 
     if result.has_violations:
         html += "<h2>Violations</h2>"
         for v in result.violations:
+            severity_class = safe_css_token(v.severity)
             html += f"""
-    <div class="violation {v.severity}">
-        <h3>{v.description}</h3>
-        <p><strong>Severity:</strong> {v.severity}</p>
-        <p><strong>WCAG Reference:</strong> {v.wcag_reference}</p>
-        <p><strong>Element:</strong> <code>{v.element_selector}</code></p>
-        <p><strong>Suggested Fix:</strong> {v.suggested_fix}</p>
+    <div class="violation {severity_class}">
+        <h3>{esc(v.description)}</h3>
+        <p><strong>Severity:</strong> {esc(v.severity)}</p>
+        <p><strong>WCAG Reference:</strong> {esc(v.wcag_reference)}</p>
+        <p><strong>Element:</strong> <code>{esc(v.element_selector)}</code></p>
+        <p><strong>Suggested Fix:</strong> {esc(v.suggested_fix)}</p>
     </div>
 """
 

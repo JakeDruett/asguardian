@@ -242,6 +242,30 @@ class TestAccessibilityFormatting:
         assert "Freya Accessibility Report" in output
         assert "https://example.com" in output
 
+    def test_format_accessibility_html_escapes_script_and_javascript_url(self):
+        violation = Mock()
+        violation.severity = 'critical"><script>alert(1)</script>'
+        violation.description = '<script>alert(1)</script>'
+        violation.wcag_reference = '1.1.1"><img src=x onerror=alert(1)>'
+        violation.element_selector = 'img"><script>'
+        violation.suggested_fix = '<img src=x onerror=alert(1)>'
+
+        mock_result = Mock()
+        mock_result.url = "javascript:alert(1)"
+        mock_result.wcag_level = 'AA</title><script>'
+        mock_result.score = 10.0
+        mock_result.tested_at = '2024-01-01T00:00:00</p><script>'
+        mock_result.has_violations = True
+        mock_result.violations = [violation]
+
+        output = format_accessibility_html(mock_result)
+
+        assert "<script>alert(1)</script>" not in output
+        assert "&lt;script&gt;alert(1)&lt;/script&gt;" in output
+        assert 'href="javascript:' not in output.lower()
+        assert "<img src=x" not in output
+        assert '"><script>' not in output
+
 
 class TestContrastFormatting:
     """Test color contrast report formatting."""
