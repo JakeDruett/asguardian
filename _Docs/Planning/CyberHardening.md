@@ -24,10 +24,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Planned | Accepted risk |
 |----------|------|---------|---------------|
 | Critical | 0    | 0       | 0             |
-| High     | 4    | 0       | 0             |
-| Medium   | 8    | 0       | 0             |
-| Low      | 8    | 0       | 0             |
-| Info     | 3    | 0       | 0             |
+| High     | 5    | 0       | 0             |
+| Medium   | 10   | 0       | 0             |
+| Low      | 11   | 0       | 0             |
+| Info     | 4    | 0       | 0             |
 
 ## Findings
 
@@ -280,7 +280,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 - **Confidence:** High
 - **CWE / class:** CWE-345 / CWE-20
 - **Primary file:** `Asgard/Bragi/Architecture/graph/service.py`
-- **Also on trace:** `Asgard/Bragi/Architecture/graph/propagation.py`, `Asgard/Bragi/Architecture/services/hexagonal_analyzer.py`
+- **Also on trace:** `Asgard/Bragi/Architecture/graph/propagation.py`, `Asgard/Bragi/Architecture/services/hexagonal_analyzer.py` (`analyze` / `explain_file`; live on `heimdall architecture hexagonal` and `layers --explain`)
 - **Location:** `_load_bounds_cache` / `infer` hydrate / `_save_bounds_cache`
 - **Trace:** Scan root → `.asgard_cache/bragi_arch_bounds.json` → `json.load` → if `version` + `config_hash` match, cached bounds skip `infer_levels`. Malformed bounds raise outside the load `try`.
 - **Impact:** A hostile tree or poisoned CI cache can suppress drift/layer findings (matching file hashes + fake bounds) or crash the analyzer. Default cache is on (`ASGARD_NO_CACHE` disables).
@@ -310,7 +310,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 - **Confidence:** High
 - **CWE / class:** CWE-116
 - **Primary file:** `Asgard/Bragi/Architecture/services/_arch_reporter_markdown.py`
-- **Also on trace:** `Asgard/Bragi/Architecture/services/_pattern_reporter.py`, `Asgard/Bragi/Architecture/services/_solid_reporter.py`, `Asgard/Bragi/Architecture/services/_suggester_reporter.py`, `Asgard/Bragi/Architecture/services/_generic_hexagonal_checks.py`
+- **Also on trace:** `Asgard/Bragi/Architecture/services/_pattern_reporter.py`, `Asgard/Bragi/Architecture/services/_solid_reporter.py`, `Asgard/Bragi/Architecture/services/_suggester_reporter.py`, `Asgard/Bragi/Architecture/services/_generic_hexagonal_checks.py`, `Asgard/Bragi/Coverage/services/_coverage_reporter.py`
 - **Location:** markdown table cells (`class_name`, `message`, `source_module`, `signals`)
 - **Trace:** Scanned source tokens → violation/suggestion fields → f-string MD tables → CLI `print(report)`. JSON path uses `json.dumps` (safe). Full-scan HTML escapes the text reporter.
 - **Impact:** Broken tables; if a downstream Markdown→HTML renderer does not sanitize, `|` / HTML in identifiers can inject markup. No in-repo HTML consumer of these MD reports.
@@ -378,13 +378,122 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 - **Planned fix:** Keep the ignore. Confirm GitHub secret scanning / push protection (Jake-todo). Rotate anything that was ever pasted into local instruction files. Do not commit `CLAUDE.md`.
 - **Fix wave:** W1
 
+### CH-0024 — SZZ runs `git diff` against an untrusted repo without isolating git config
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-78 / CWE-829 (untrusted git repo)
+- **Primary file:** `Asgard/Bragi/Calibration/services/szz.py`
+- **Also on trace:** `Asgard/Bragi/Calibration/services/rule_validator.py` (`compute_rule_validity_stage2`)
+- **Location:** `_run_git` → `_fix_commit_hunks` (`git diff`)
+- **Trace:** `compute_szz(repo_root)` / Stage 2 validity → `subprocess.run(["git", "-C", repo_root] + args)` with inherited env → `git diff` honors that repo’s `diff.external` / `GIT_EXTERNAL_DIFF` / pager/fsmonitor
+- **Impact:** Pointing Stage 2 at a hostile clone can execute a command from repo config or env. Not `shell=True` injection. **Not on Heimdall CLI today** (Stage 1 only); public API is live.
+- **Evidence:** argv-list git, no `--no-ext-diff`, no `-c diff.external=`, no env wipe. Timeouts set.
+- **Planned fix:** Always pass `--no-ext-diff`; prefix `-c` overrides to disable `diff.external`, `core.fsmonitor`, `core.pager`, `alias.*`. Clear `GIT_EXTERNAL_DIFF` / `GIT_PAGER` / `GIT_DIR`. Prefer `GIT_CONFIG_NOSYSTEM=1` and a blank global. Add a test that a repo with `diff.external` does not execute it. Do not hook Stage 2 to CLI until this lands.
+- **Fix wave:** W1
+
+### CH-0025 — SZZ unbounded per-hunk `git blame`
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** High
+- **CWE / class:** CWE-400
+- **Primary file:** `Asgard/Bragi/Calibration/services/szz.py`
+- **Also on trace:** `Asgard/Bragi/Calibration/services/rule_validator.py`
+- **Location:** `compute_szz` hunk loop + `_blame_inducing_commits`
+- **Trace:** `MAX_FIX_COMMITS_SCANNED=500` only; each hunk is a separate `git blame -w -C` (30s timeout)
+- **Impact:** A fix commit with thousands of hunks can spawn thousands of blame processes.
+- **Evidence:** Commit cap exists; no hunk/blame cap.
+- **Planned fix:** Cap hunks per commit and total blame calls; skip copy-detection on huge diffs; fail with `INSUFFICIENT_DATA` when over budget.
+- **Fix wave:** W4
+
+### CH-0026 — `LanguageProfileService` joins unsanitized `language` into a file path
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-22
+- **Primary file:** `Asgard/Bragi/Calibration/services/profile_service.py`
+- **Also on trace:** `Asgard/Bragi/Calibration/models/calibration_models.py` (`LanguageProfile.language` unconstrained)
+- **Location:** `_load_language` — `self.profiles_dir / f"{language}.yaml"`
+- **Trace:** CLI JSON / YAML / `resolve(language)` → path join. Absolute `language` replaces the base; `../` escapes `profiles/`. Then `yaml.safe_load` (no RCE from tags).
+- **Impact:** Arbitrary `.yaml` read into thresholds/weights, or crash on bad schema. **Latent:** no production `LanguageProfileService()` caller under `Asgard/` yet (tests + this module only).
+- **Evidence:** No allowlist / `is_relative_to`. `Path / abs` replaces the profiles dir.
+- **Planned fix:** Allowlist `language` as `^[a-z][a-z0-9_]*$` matching shipped profile stems. `resolve()` the path and require `is_relative_to(profiles_dir)`. Unknown language → generic profile.
+- **Fix wave:** W2
+
+### CH-0027 — Local calibration profile YAML is trusted without clamp or authenticity check
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-345
+- **Primary file:** `Asgard/Bragi/Calibration/services/profile_service.py`
+- **Also on trace:** `Asgard/Bragi/Calibration/services/local_calibrator.py` (`_clamp` only on generate), `.asgard_cache/bragi_local_profile.yaml`
+- **Location:** `_load_local_override`
+- **Trace:** `{project_path}/.asgard_cache/bragi_local_profile.yaml` → `safe_load` → `LanguageProfile(**data)` merged over language/generic with no re-clamp and no signature
+- **Impact:** Hand-edited or committed YAML can set extreme `fail` / weights and bypass the “cannot normalize its own rot” guard. Same class as CH-0017 (unsigned project cache).
+- **Evidence:** `_clamp` is not applied on load. Extra keys dropped; no HMAC.
+- **Planned fix:** Re-apply `_clamp` against the language/generic anchor on load. Optionally refuse cache unless produced this run. Schema-validate numerics (finite, `warn <= fail`, weight bounds).
+- **Fix wave:** W3
+
+### CH-0028 — `write_local_profile` write root is caller-controlled
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** High
+- **CWE / class:** CWE-22
+- **Primary file:** `Asgard/Bragi/Calibration/services/local_calibrator.py`
+- **Also on trace:** `Asgard/Heimdall/cli/handlers/calibration.py` (`--write` uses cwd only today)
+- **Location:** `write_local_profile(profile, project_path)`
+- **Trace:** Any `project_path` → `{path}/.asgard_cache/bragi_local_profile.yaml` (`mkdir` + truncate write)
+- **Impact:** Confined relative filename; still writes under an unsanitized root if a future caller passes a path.
+- **Evidence:** No `is_relative_to` / existence policy on `project_path`. CLI currently passes cwd.
+- **Planned fix:** Resolve and confine `project_path` to cwd or an explicit project root; refuse `..` / absolute escapes. Test a `project_path` outside the intended root.
+- **Fix wave:** W2
+
+### CH-0029 — (withdrawn — merged into CH-0019)
+
+Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` added to Also on trace). This ID is reserved so numbering stays monotonic; do not reuse.
+
+### CH-0030 — `LanguageProfile` accepts unconstrained language and numeric fields
+
+- **Status:** Open
+- **Severity:** Info
+- **Confidence:** High
+- **CWE / class:** CWE-20
+- **Primary file:** `Asgard/Bragi/Calibration/models/calibration_models.py`
+- **Also on trace:** `Asgard/Bragi/Calibration/services/profile_service.py`, `Asgard/Bragi/Ratings/services/composite_score_engine.py`
+- **Location:** `LanguageProfile.language`; `ThresholdSpec.warn`/`fail`; `category_weights`
+- **Trace:** YAML/JSON → Pydantic v2 (extra ignored) → weights copied into `CompositeScoreEngine` with no clamp
+- **Impact:** Inf/NaN/negative thresholds or zero/negative weights warp scoring. Enables CH-0026 if `language` is used as a path.
+- **Evidence:** No charset/path check on `language`; no `warn <= fail`; no finite-range validators.
+- **Planned fix:** Constrain `language` to the shipped-profile pattern; `FiniteFloat` + `warn <= fail`; clamp or reject non-positive weights.
+- **Fix wave:** W5
+
+### CH-0031 — Profile YAML `ValidationError` aborts `LanguageProfileService` construction
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** High
+- **CWE / class:** CWE-248 / availability
+- **Primary file:** `Asgard/Bragi/Calibration/services/profile_service.py`
+- **Also on trace:** `Asgard/Bragi/Calibration/models/calibration_models.py`
+- **Location:** `_load_yaml_profile` — catches `YAMLError`/`OSError` only
+- **Trace:** Poisoned `.asgard_cache/bragi_local_profile.yaml` or a bad bundled profile → `LanguageProfile(**data)` raises Pydantic `ValidationError` out of `__init__`
+- **Impact:** Availability crash of any future caller of the service. Not RCE (`safe_load`).
+- **Evidence:** Handler does not catch `ValidationError` / `TypeError`.
+- **Planned fix:** Catch validation errors, log, fall back to generic/in-code defaults. Tests for `thresholds: []` and bad enums.
+- **Fix wave:** W4
+
 ## Planned fix waves
 
-- **W1 — CI / supply chain / secrets policy (do first):** CH-0001, CH-0002, CH-0003, CH-0004, CH-0005, CH-0006, CH-00023. Pin actions, stop executing PR code on ARC, lock PyPI publish, timeouts, hook pins, keep credentials out of git.
-- **W2 — Path confinement:** CH-0007, CH-0008, CH-0010, CH-0014. Validate CLI/API paths; refuse symlinks; atomic writes.
-- **W3 — Baseline integrity:** CH-0011, CH-0012, CH-0013, CH-0015. Stop empty-message fuzzy suppression; bind match to payload; redact; stronger IDs.
-- **W4 — Analyzer robustness:** CH-0016, CH-0017, CH-0018, CH-0021, CH-0022. Size/recursion caps; cache schema; bound globs/regex.
-- **W5 — Output / template hygiene:** CH-0009, CH-0019, CH-0020. Escape markdown cells; tighten generated gitignore; schema the YAML loader.
+- **W1 — CI / supply chain / secrets policy (do first):** CH-0001, CH-0002, CH-0003, CH-0004, CH-0005, CH-0006, CH-0023, CH-0024. Pin actions, stop executing PR code on ARC, lock PyPI publish, isolate git when talking to untrusted repos, keep credentials out of git.
+- **W2 — Path confinement:** CH-0007, CH-0008, CH-0010, CH-0014, CH-0026, CH-0028. Validate CLI/API/language/profile paths; refuse symlinks; atomic writes.
+- **W3 — Baseline / cache integrity:** CH-0011, CH-0012, CH-0013, CH-0015, CH-0027. Stop empty-message fuzzy suppression; bind match to payload; redact; re-clamp local calibration YAML.
+- **W4 — Analyzer robustness:** CH-0016, CH-0017, CH-0018, CH-0021, CH-0022, CH-0025, CH-0031. Size/recursion/hunk caps; cache schema; bound globs/regex; fail soft on bad YAML.
+- **W5 — Output / template hygiene:** CH-0009, CH-0019, CH-0020, CH-0030. Escape markdown cells; tighten generated gitignore; constrain profile model fields.
 
 ## Accepted risks
 
@@ -393,8 +502,10 @@ None yet.
 ## Scan progress
 
 - Inventory init (2026-08-16): discovered=3875 remaining=3875 completed=0
-- Batch 1 merged (2026-08-16): 64 files (CI + BackendInit + Baseline + Bragi Architecture CIR/evaluators/graph/models/services cluster through `_treesitter_solid_checks.py`)
-- Last paths completed: through `Asgard/Bragi/Architecture/services/_treesitter_solid_checks.py`
-- Next batch: remaining Architecture analyzers (`architecture_analyzer.py` …) then utilities + Calibration
-- Resume pointer: remaining after batch-1 pop; `python3 scripts/cyberhardening_inventory.py status`
-- Spot-check: independently re-read `ci.yml`, `publish.yml`, `BackendInit/service.py`, `Baseline/baseline_manager.py`, `_architecture_config.py` (`yaml.safe_load`). Agent traces matched.
+- Batch 1 merged: 64 files (CI + BackendInit + Baseline + Architecture CIR/graph/services helpers)
+- Batch 2 merged (2026-08-16): Architecture analyzers + utilities + Calibration + CodeFix + Coverage core (~50 files)
+- Last paths completed: through `Asgard/Bragi/Coverage/utilities/__init__.py`
+- Next batch: Coverage extractors + Bragi Dependencies
+- Resume pointer: `python3 scripts/cyberhardening_inventory.py status` then `next`
+- Spot-check batch 2: re-read `szz.py` (`subprocess` argv-list, no `shell=True`), `profile_service.py` (`yaml.safe_load` + `language` path join), `codefix_service.py` (no writes), `solid_validator.analyze_multilang` (no per-file try). Traces matched.
+- Highest ID: CH-0031 (CH-0029 reserved/merged into CH-0019)

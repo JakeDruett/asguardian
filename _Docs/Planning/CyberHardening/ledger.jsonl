@@ -62,3 +62,53 @@
 {"path":"Asgard/Bragi/Architecture/services/_suggester_helpers.py","at":"2026-08-16T07:13:24+00:00","disposition":"clean","finding_ids":[],"summary":"Builds suggestions from AST; rendering elsewhere"}
 {"path":"Asgard/Bragi/Architecture/services/_suggester_reporter.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0019"],"summary":"Unescaped MD interpolation"}
 {"path":"Asgard/Bragi/Architecture/services/_treesitter_solid_checks.py","at":"2026-08-16T07:13:24+00:00","disposition":"findings","finding_ids":["CH-0022","CH-0021"],"summary":"Unbounded TS recursion; regex fallback hop"}
+{"path":"Asgard/Bragi/Architecture/services/architecture_analyzer.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Facade only; Path.resolve+exists; no own I/O"}
+{"path":"Asgard/Bragi/Architecture/services/hexagonal_analyzer.py","at":"2026-08-16T07:20:09+00:00","disposition":"findings","finding_ids":["CH-0017"],"summary":"Triggers unsigned bounds cache via ArchGraphService.infer"}
+{"path":"Asgard/Bragi/Architecture/services/layer_analyzer.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"AST import-direction; no cache/fnmatch/YAML"}
+{"path":"Asgard/Bragi/Architecture/services/pattern_detector.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"read_text+ast.parse; swallows per-file exceptions"}
+{"path":"Asgard/Bragi/Architecture/services/pattern_suggester.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"read_text+ast.parse smell heuristics"}
+{"path":"Asgard/Bragi/Architecture/services/solid_validator.py","at":"2026-08-16T07:20:09+00:00","disposition":"findings","finding_ids":["CH-0022","CH-0016","CH-0021"],"summary":"Generic/TS path unbounded recursion; CLI uses validate()"}
+{"path":"Asgard/Bragi/Architecture/utilities/__init__.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export facade unused in-repo"}
+{"path":"Asgard/Bragi/Architecture/utilities/_ast_class_utils.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"ast.parse+walk only; no eval"}
+{"path":"Asgard/Bragi/Architecture/utilities/_ast_method_utils.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"ast.parse imports/calls; unparse annotations"}
+{"path":"Asgard/Bragi/Architecture/utilities/ast_utils.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Barrel re-export"}
+{"path":"Asgard/Bragi/Calibration/__init__.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Empty package"}
+{"path":"Asgard/Bragi/Calibration/models/__init__.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Empty package"}
+{"path":"Asgard/Bragi/Calibration/models/calibration_models.py","at":"2026-08-16T07:20:09+00:00","disposition":"findings","finding_ids":["CH-0030","CH-0026"],"summary":"Unconstrained language/numerics enable path join and weight warp"}
+{"path":"Asgard/Bragi/Calibration/profiles/cpp.yaml","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Numeric thresholds only; loaded via yaml.safe_load"}
+{"path":"Asgard/Bragi/Calibration/profiles/csharp.yaml","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Numeric thresholds only; no secrets/tags"}
+{"path":"Asgard/Bragi/Calibration/profiles/generic.yaml","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Fallback thresholds; empty severity_confidence"}
+{"path":"Asgard/Bragi/Calibration/profiles/go.yaml","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Numeric thresholds only"}
+{"path":"Asgard/Bragi/Calibration/profiles/java.yaml","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Numeric thresholds only"}
+{"path":"Asgard/Bragi/Calibration/profiles/javascript.yaml","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Numeric thresholds only"}
+{"path":"Asgard/Bragi/Calibration/profiles/php.yaml","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Numeric thresholds only"}
+{"path":"Asgard/Bragi/Calibration/profiles/python.yaml","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Numeric thresholds only"}
+{"path":"Asgard/Bragi/Calibration/profiles/ruby.yaml","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Numeric thresholds only"}
+{"path":"Asgard/Bragi/Calibration/profiles/rust.yaml","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Numeric thresholds only"}
+{"path":"Asgard/Bragi/Calibration/profiles/shell.yaml","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Numeric thresholds only"}
+{"path":"Asgard/Bragi/Calibration/profiles/typescript.yaml","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Numeric thresholds only"}
+{"path":"Asgard/Bragi/Calibration/services/__init__.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Empty package"}
+{"path":"Asgard/Bragi/Calibration/services/local_calibrator.py","at":"2026-08-16T07:20:09+00:00","disposition":"findings","finding_ids":["CH-0028","CH-0027"],"summary":"write_local_profile unsanitized root; clamp only on generate"}
+{"path":"Asgard/Bragi/Calibration/services/nb_model.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"In-process IRLS/NB2; no I/O or deser"}
+{"path":"Asgard/Bragi/Calibration/services/pca_weights.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"In-process PCA; tests only"}
+{"path":"Asgard/Bragi/Calibration/services/profile_service.py","at":"2026-08-16T07:20:09+00:00","disposition":"findings","finding_ids":["CH-0026","CH-0027","CH-0031"],"summary":"language path join; unsigned local YAML; ValidationError crash"}
+{"path":"Asgard/Bragi/Calibration/services/rule_validator.py","at":"2026-08-16T07:20:09+00:00","disposition":"findings","finding_ids":["CH-0024"],"summary":"Stage 2 hops to szz; CLI is Stage 1 only"}
+{"path":"Asgard/Bragi/Calibration/services/szz.py","at":"2026-08-16T07:20:09+00:00","disposition":"findings","finding_ids":["CH-0024","CH-0025"],"summary":"git -C untrusted repo without --no-ext-diff; unbounded blame"}
+{"path":"Asgard/Bragi/CodeFix/__init__.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export"}
+{"path":"Asgard/Bragi/CodeFix/models/__init__.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export"}
+{"path":"Asgard/Bragi/CodeFix/models/codefix_models.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"DTOs; no writes"}
+{"path":"Asgard/Bragi/CodeFix/services/__init__.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export"}
+{"path":"Asgard/Bragi/CodeFix/services/_codefix_builders.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"String templates only; no apply/eval"}
+{"path":"Asgard/Bragi/CodeFix/services/codefix_service.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Suggestion dispatch; no FS/apply"}
+{"path":"Asgard/Bragi/Coverage/__init__.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export"}
+{"path":"Asgard/Bragi/Coverage/models/__init__.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export"}
+{"path":"Asgard/Bragi/Coverage/models/coverage_models.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Dataclasses; no parse/I/O"}
+{"path":"Asgard/Bragi/Coverage/services/__init__.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export"}
+{"path":"Asgard/Bragi/Coverage/services/_coverage_reporter.py","at":"2026-08-16T07:20:09+00:00","disposition":"findings","finding_ids":["CH-0019"],"summary":"Unescaped MD interpolation of scan identifiers"}
+{"path":"Asgard/Bragi/Coverage/services/_gap_analysis_helpers.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"scan+read_text+ast; no XML/eval"}
+{"path":"Asgard/Bragi/Coverage/services/_multilang_gap_helpers.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"scan+read_text; tree-sitter hop; no XML"}
+{"path":"Asgard/Bragi/Coverage/services/_suggestion_builders.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"String skeletons; not written/executed"}
+{"path":"Asgard/Bragi/Coverage/services/coverage_analyzer.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"resolve+exists; report string only"}
+{"path":"Asgard/Bragi/Coverage/services/gap_analyzer.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Walk+read_text; no coverage.xml parse"}
+{"path":"Asgard/Bragi/Coverage/services/suggestion_engine.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"In-memory ranking"}
+{"path":"Asgard/Bragi/Coverage/utilities/__init__.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export extractors"}
