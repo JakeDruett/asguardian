@@ -1,8 +1,11 @@
 """Linter Initializer Service - detects project type and generates linting configuration files."""
 
 import json
+import re
 from pathlib import Path
 from typing import Optional
+
+_PROJECT_NAME_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_-]*$")
 
 from Asgard.Shared.Init._linter_tool_checker import (
     check_tools as _check_tools,
@@ -39,7 +42,13 @@ class LinterInitializer:
 
     def __init__(self, project_path: Path, project_name: Optional[str] = None, force: bool = False):
         self.project_path = project_path.resolve()
-        self.project_name = project_name or self.project_path.name
+        name = project_name or self.project_path.name
+        if not _PROJECT_NAME_RE.fullmatch(name):
+            raise ValueError(
+                "project_name must match ^[A-Za-z_][A-Za-z0-9_-]*$ "
+                "(refusing names that can break TOML/YAML/hook entries)"
+            )
+        self.project_name = name
         self.force = force
 
     def detect_project_type(self) -> tuple[bool, bool]:

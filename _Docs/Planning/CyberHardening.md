@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 14   | 14    | 0             |
-| Medium   | 54   | 5     | 0             |
+| Medium   | 53   | 6     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
 
@@ -1498,7 +1498,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0096 — `init-linter` interpolates unsanitized `project_name` into TOML/YAML/hook entry
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T11:08:00Z
+- **Implementation note:** Restrict project_name to ^[A-Za-z_][A-Za-z0-9_-]*$.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-77 / CWE-94
@@ -1819,12 +1822,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 95
-- Fixed: 19
+- Open: 94
+- Fixed: 20
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0066, CH-0004, CH-0005, CH-0033
-- Last commit: 7f92539
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
