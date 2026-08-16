@@ -179,6 +179,56 @@ class TestActionPins:
         assert not is_sha_pinned("a/b@v4")
         assert not is_sha_pinned("a/b")
 
+    def test_pypi_publish_tag_resolves_to_sha(self):
+        ref, version = resolve_action_ref("pypa/gh-action-pypi-publish@release/v1")
+        assert SHA_RE.search(ref)
+        assert version == "v1.14.2"
+
+
+class TestRepoWorkflowPins:
+    """Live repo workflows must use SHA-pinned actions (CH-0001)."""
+
+    _REPO_ROOT = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..")
+    )
+    _WORKFLOWS = (
+        os.path.join(_REPO_ROOT, ".github", "workflows"),
+        os.path.join(
+            _REPO_ROOT,
+            "_FutureItems-Security",
+            "Tools_Security",
+            ".github",
+            "workflows",
+        ),
+    )
+    _USES_RE = re.compile(r"(?:^|\s)uses:\s*(\S+)")
+
+    def test_every_live_uses_is_sha_pinned(self):
+        scanned = 0
+        for folder in self._WORKFLOWS:
+            if not os.path.isdir(folder):
+                continue
+            for name in os.listdir(folder):
+                if not name.endswith((".yml", ".yaml")):
+                    continue
+                path = os.path.join(folder, name)
+                text = open(path, encoding="utf-8").read()
+                for line in text.splitlines():
+                    match = self._USES_RE.search(line)
+                    if not match:
+                        continue
+                    uses = match.group(1)
+                    scanned += 1
+                    assert is_sha_pinned(uses), f"{path}: unpinned {uses}"
+
+        assert scanned >= 10
+
+    def test_pin_updaters_exist(self):
+        assert os.path.isfile(os.path.join(self._REPO_ROOT, "renovate.json"))
+        assert os.path.isfile(
+            os.path.join(self._REPO_ROOT, ".github", "dependabot.yml")
+        )
+
 
 class TestInjectionImmunity:
     def test_adversarial_issue_title_is_rewritten(self, generator):

@@ -1,6 +1,6 @@
 # CyberHardening Plan
 
-Status: INVENTORY COMPLETE — FIXES NOT YET APPLIED
+Status: INVENTORY COMPLETE — FIXES IN PROGRESS
 Started: 2026-08-16
 Completed inventory: 2026-08-16
 Repo: Asgard
@@ -22,13 +22,13 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ## Summary
 
-| Severity | Open | Planned | Accepted risk |
-|----------|------|---------|---------------|
-| Critical | 0    | 0       | 0             |
-| High     | 28   | 0       | 0             |
-| Medium   | 59   | 0       | 0             |
-| Low      | 22   | 0       | 0             |
-| Info     | 5    | 0       | 0             |
+| Severity | Open | Fixed | Accepted risk |
+|----------|------|-------|---------------|
+| Critical | 0    | 0     | 0             |
+| High     | 27   | 1     | 0             |
+| Medium   | 59   | 0     | 0             |
+| Low      | 22   | 0     | 0             |
+| Info     | 5    | 0     | 0             |
 
 ## Findings
 
@@ -36,7 +36,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0001 — GitHub Actions pinned to mutable tags
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 0e541c0
+- **Fixed at:** 2026-08-16T09:47:50Z
+- **Implementation note:** SHA-pinned every live `uses:` (KNOWN_ACTION_PINS + pypa/codeql); added Dependabot and Renovate pin updaters.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-829 / supply chain
@@ -1759,6 +1762,16 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ## Accepted risks
 
 None yet.
+
+## Implementation progress
+
+- Open: 113
+- Fixed: 1
+- Accepted risk: 0
+- Current wave: W1
+- Next: CH-0002, CH-0003, CH-0024, CH-0049
+- Last commit: 0e541c0
+- Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
 

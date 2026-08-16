@@ -39,6 +39,18 @@ KNOWN_ACTION_PINS: Dict[str, Tuple[str, str]] = {
     "hashicorp/vault-action@v3": ("7709c609789c5e27b757a85817483caadbb5939a", "v3.3.0"),
     "step-security/harden-runner@v2": ("0634a2670c59f64b4a01f0f96f84700a4088b9f0", "v2.12.0"),
     "anchore/sbom-action@v0": ("e11c554f704a0b820cbf8c51673f6945e0731532", "v0.20.0"),
+    "pypa/gh-action-pypi-publish@release/v1": (
+        "dc37677b2e1c63e2034f94d8a5b11f265b73ba33",
+        "v1.14.2",
+    ),
+    "pypa/gh-action-pypi-publish@v1": (
+        "dc37677b2e1c63e2034f94d8a5b11f265b73ba33",
+        "v1.14.2",
+    ),
+    "github/codeql-action/upload-sarif@v3": (
+        "f3712979fa5f215279b101dd0a2e3bdfb4353324",
+        "v3.37.7",
+    ),
 }
 
 _SHA_RE = re.compile(r"^[0-9a-f]{40}$")
