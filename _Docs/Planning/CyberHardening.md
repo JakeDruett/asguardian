@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
-| Medium   | 42   | 17    | 0             |
+| Medium   | 41   | 18    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -441,7 +441,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0026 — `LanguageProfileService` joins unsanitized `language` into a file path
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T13:22:00Z
+- **Implementation note:** Allowlist language `^[a-z][a-z0-9_]*$`; resolve under profiles_dir; invalid/unknown falls back to generic.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-22
@@ -1885,12 +1888,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 73
-- Fixed: 41
+- Open: 72
+- Fixed: 42
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0026, CH-0040, CH-0042, CH-0057
-- Last commit: 55cc51f
+- Next: CH-0040, CH-0042, CH-0057, CH-0065
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

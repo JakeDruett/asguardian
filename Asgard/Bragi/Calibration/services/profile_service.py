@@ -19,6 +19,7 @@ from typing import Dict, Optional
 import yaml
 
 from Asgard.Bragi.Calibration.models.calibration_models import (
+    LANGUAGE_ID_RE,
     LanguageProfile,
     ThresholdSpec,
 )
@@ -67,7 +68,15 @@ class LanguageProfileService:
     def _load_language(self, language: str) -> Optional[LanguageProfile]:
         if language in self._cache:
             return self._cache[language]
-        path = self.profiles_dir / f"{language}.yaml"
+        if not isinstance(language, str) or not LANGUAGE_ID_RE.fullmatch(language):
+            return None
+        try:
+            root = Path(self.profiles_dir).resolve()
+            path = (Path(self.profiles_dir) / f"{language}.yaml").resolve()
+        except (OSError, ValueError):
+            return None
+        if not path.is_relative_to(root):
+            return None
         profile = _load_yaml_profile(path)
         if profile is not None:
             self._cache[language] = profile

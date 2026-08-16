@@ -100,3 +100,52 @@ class TestLocalOverride:
         service = LanguageProfileService(project_path=tmp_path)
         profile = service.resolve("python")
         assert profile.thresholds["cyclomatic_complexity"].warn == 10
+
+
+class TestLanguagePathJail:
+    """CH-0026: language is an allowlisted stem, never a path join operand."""
+
+    def _jail_service(self, tmp_path):
+        profiles = tmp_path / "profiles"
+        profiles.mkdir()
+        (profiles / "generic.yaml").write_text(textwrap.dedent("""\
+            language: generic
+            provenance: test-generic
+            thresholds:
+              cyclomatic_complexity: {warn: 10, fail: 20}
+        """))
+        (profiles / "python.yaml").write_text(textwrap.dedent("""\
+            language: python
+            provenance: test-python
+            thresholds:
+              cyclomatic_complexity: {warn: 10, fail: 20}
+        """))
+        poison = tmp_path / "x.yaml"
+        poison.write_text(textwrap.dedent("""\
+            language: pwned
+            provenance: poison
+            thresholds:
+              cyclomatic_complexity: {warn: 1, fail: 2}
+        """))
+        service = LanguageProfileService(project_path=tmp_path, profiles_dir=profiles)
+        return service, poison
+
+    def test_relative_traversal_falls_back_to_generic(self, tmp_path):
+        service, _poison = self._jail_service(tmp_path)
+        profile = service.resolve("../x")
+        assert profile.thresholds["cyclomatic_complexity"].warn == 10
+        assert profile.provenance != "poison"
+
+    def test_absolute_path_falls_back_to_generic(self, tmp_path):
+        service, poison = self._jail_service(tmp_path)
+        profile = service.resolve("/tmp/x")
+        assert profile.thresholds["cyclomatic_complexity"].warn == 10
+        outside = service.resolve(str(poison.with_suffix("")))
+        assert outside.thresholds["cyclomatic_complexity"].warn == 10
+        assert outside.provenance != "poison"
+
+    def test_valid_shipped_language_still_loads(self):
+        service = LanguageProfileService()
+        profile = service.resolve("python")
+        assert profile.language == "python"
+        assert profile.thresholds["cyclomatic_complexity"].warn == 10

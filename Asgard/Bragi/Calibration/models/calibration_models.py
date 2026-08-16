@@ -5,11 +5,16 @@ Pydantic models backing the language-profile plane, the local percentile
 calibrator, and the (opt-in) rule-validity scorer.
 """
 
+import re
 from datetime import datetime
 from enum import Enum
 from typing import Dict, List, Optional
 
 from pydantic import BaseModel, Field
+
+# Filename stem for `Bragi/Calibration/profiles/<language>.yaml`.
+# Rejects path separators, `..`, and absolute paths (CH-0026).
+LANGUAGE_ID_RE = re.compile(r"^[a-z][a-z0-9_]*$")
 
 
 class ThresholdSpec(BaseModel):
@@ -33,7 +38,10 @@ class LanguageProfile(BaseModel):
     profile at `.asgard_cache/bragi_local_profile.yaml` (Phase B) can
     override individual thresholds while carrying its own provenance.
     """
-    language: str = Field(..., description="Language this profile governs, e.g. 'python'")
+    language: str = Field(
+        ...,
+        description="Language this profile governs, e.g. 'python' (path stem ^[a-z][a-z0-9_]*$)",
+    )
     provenance: str = Field(
         "", description="Where the numbers came from and when (time-stamped validity bounds)"
     )
