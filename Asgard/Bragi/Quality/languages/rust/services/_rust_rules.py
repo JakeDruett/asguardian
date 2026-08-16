@@ -5,6 +5,7 @@ from typing import List
 from Asgard.Bragi.Quality.languages.rust.models.rust_models import (
     RustFinding, RustRuleCategory, RustSeverity,
 )
+from Asgard.Bragi.Quality.utilities.secret_snippet import mask_quoted_literals
 
 
 def _finding(file_path, line_number, rule_id, category, severity, title, description, snippet="", fix=""):
@@ -94,7 +95,7 @@ def check_hardcoded_credentials(file_path: str, lines: List[str], enabled: bool 
         _finding(file_path, i + 1, "rust.hardcoded-credentials", RustRuleCategory.SECURITY, RustSeverity.ERROR,
                  "Hardcoded Credential",
                  "Credentials stored directly in source code are a security risk.",
-                 line, "Read credentials from environment variables or a secrets manager at runtime.")
+                 mask_quoted_literals(line), "Read credentials from environment variables or a secrets manager at runtime.")
         for i, line in enumerate(lines) if pattern.search(line)
     ]
 

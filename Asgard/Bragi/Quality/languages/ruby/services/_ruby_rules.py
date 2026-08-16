@@ -5,6 +5,7 @@ from typing import List
 from Asgard.Bragi.Quality.languages.ruby.models.ruby_models import (
     RubyFinding, RubyRuleCategory, RubySeverity,
 )
+from Asgard.Bragi.Quality.utilities.secret_snippet import mask_quoted_literals
 
 
 def _finding(file_path, line_number, rule_id, category, severity, title, description, snippet="", fix=""):
@@ -120,7 +121,7 @@ def check_no_hardcoded_credentials(file_path: str, lines: List[str], enabled: bo
                 RubyRuleCategory.SECURITY, RubySeverity.ERROR,
                 "Hardcoded Credential or Weak Password Hashing",
                 "Credentials in source code or MD5 password hashing are security risks.",
-                line, "Use ENV[] or Rails credentials; use bcrypt for passwords."))
+                mask_quoted_literals(line), "Use ENV[] or Rails credentials; use bcrypt for passwords."))
     return findings
 
 

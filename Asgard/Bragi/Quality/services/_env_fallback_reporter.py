@@ -7,12 +7,26 @@ from an EnvFallbackReport. Accepts the report as an explicit parameter.
 
 import json
 import os
+from typing import Optional
 
 from Asgard.Bragi.Quality.models.env_fallback_models import (
     EnvFallbackReport,
     EnvFallbackSeverity,
     EnvFallbackType,
+    EnvFallbackViolation,
 )
+from Asgard.Bragi.Quality.utilities.secret_snippet import (
+    mask_stored_secret,
+    redact_secret_in_text,
+)
+
+
+def _masked_snippet(violation: EnvFallbackViolation) -> str:
+    return redact_secret_in_text(violation.code_snippet, violation.default_value)
+
+
+def _masked_default(violation: EnvFallbackViolation) -> Optional[str]:
+    return mask_stored_secret(violation.default_value)
 
 
 def generate_text_report(report: EnvFallbackReport) -> str:
@@ -62,11 +76,12 @@ def generate_text_report(report: EnvFallbackReport) -> str:
                 lines.extend(["", f"[{severity.value.upper()}]"])
                 for violation in severity_violations:
                     lines.append(f"  {violation.location}")
-                    lines.append(f"    Code: {violation.code_snippet}")
+                    lines.append(f"    Code: {_masked_snippet(violation)}")
                     if violation.variable_name:
                         lines.append(f"    Variable: {violation.variable_name}")
-                    if violation.default_value:
-                        lines.append(f"    Default: {violation.default_value}")
+                    default_value = _masked_default(violation)
+                    if default_value:
+                        lines.append(f"    Default: {default_value}")
                     lines.append(f"    Context: {violation.context_description}")
                     lines.append(f"    Fix: {violation.remediation}")
                     lines.append("")
@@ -84,9 +99,9 @@ def generate_json_report(report: EnvFallbackReport) -> str:
             "relative_path": v.relative_path,
             "line_number": v.line_number,
             "column": v.column,
-            "code_snippet": v.code_snippet,
+            "code_snippet": _masked_snippet(v),
             "variable_name": v.variable_name,
-            "default_value": v.default_value,
+            "default_value": _masked_default(v),
             "fallback_type": v.fallback_type if isinstance(v.fallback_type, str) else v.fallback_type.value,
             "severity": v.severity if isinstance(v.severity, str) else v.severity.value,
             "containing_function": v.containing_function,
@@ -177,13 +192,14 @@ def generate_markdown_report(report: EnvFallbackReport) -> str:
                     lines.extend([
                         f"#### `{filename}:{v.line_number}`",
                         "",
-                        f"**Code:** `{v.code_snippet}`",
+                        f"**Code:** `{_masked_snippet(v)}`",
                         "",
                     ])
                     if v.variable_name:
                         lines.append(f"**Variable:** `{v.variable_name}`")
-                    if v.default_value:
-                        lines.append(f"**Default Value:** `{v.default_value}`")
+                    default_value = _masked_default(v)
+                    if default_value:
+                        lines.append(f"**Default Value:** `{default_value}`")
                     lines.extend([
                         "",
                         f"**Context:** {v.context_description}",

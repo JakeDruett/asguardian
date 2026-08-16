@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 21   | 38    | 0             |
+| Medium   | 20   | 39    | 0             |
 | Low      | 12   | 10    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -739,7 +739,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0043 — Hardcoded-credential rules copy the secret into `code_snippet`
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T16:47:00Z
+- **Implementation note:** JS/PHP/Ruby/Rust credential snippets and env-fallback defaults use last-2/length-only mask; CLI remasks before print/JSON.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-532
@@ -1987,12 +1990,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 39
-- Fixed: 75
+- Open: 38
+- Fixed: 76
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0043, CH-0047, CH-0048
-- Last commit: db1a2c3
+- Next: CH-0047, CH-0048, CH-0052
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

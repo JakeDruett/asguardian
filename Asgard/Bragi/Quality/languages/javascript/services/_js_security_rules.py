@@ -8,6 +8,7 @@ from Asgard.Bragi.Quality.languages.javascript.models.js_models import (
     JSRuleCategory,
     JSSeverity,
 )
+from Asgard.Bragi.Quality.utilities.secret_snippet import mask_quoted_literals
 
 
 def _make_finding(
@@ -63,7 +64,7 @@ def check_hardcoded_credentials(file_path: str, lines: List[str], enabled: bool 
             JSRuleCategory.SECURITY, JSSeverity.ERROR,
             "Hardcoded Credential",
             "Credentials in source code are a security risk.",
-            line, "Use environment variables (process.env.SECRET) instead."
+            mask_quoted_literals(line), "Use environment variables (process.env.SECRET) instead."
         )
         for i, line in enumerate(lines) if pattern.search(line)
     ]

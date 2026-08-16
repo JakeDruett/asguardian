@@ -8,6 +8,23 @@ from Asgard.Bragi.Quality.languages.javascript.services.js_analyzer import JSAna
 from Asgard.Bragi.Quality.languages.typescript.services.ts_analyzer import TSAnalyzer
 from Asgard.Bragi.Quality.languages.shell.models.shell_models import ShellAnalysisConfig
 from Asgard.Bragi.Quality.languages.shell.services.shell_analyzer import ShellAnalyzer
+from Asgard.Bragi.Quality.utilities.secret_snippet import mask_quoted_literals
+
+
+def _finding_snippet_for_output(finding) -> str:
+    snippet = getattr(finding, "code_snippet", "") or ""
+    rule_id = (getattr(finding, "rule_id", "") or "").lower()
+    if "credential" in rule_id:
+        return mask_quoted_literals(snippet)
+    return snippet
+
+
+def _report_as_json(report) -> str:
+    payload = report.dict()
+    for item in payload.get("findings") or []:
+        if "credential" in (item.get("rule_id") or "").lower():
+            item["code_snippet"] = mask_quoted_literals(item.get("code_snippet") or "")
+    return json.dumps(payload, default=str, indent=2)
 
 
 def run_js_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
@@ -38,7 +55,7 @@ def run_js_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
 
         output_format = getattr(args, "format", "text")
         if output_format == "json":
-            print(json.dumps(report.dict(), default=str, indent=2))
+            print(_report_as_json(report))
             return 1 if report.error_count > 0 else 0
 
         out_lines = [
@@ -61,8 +78,9 @@ def run_js_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
                 severity_label = str(finding.severity).upper()
                 out_lines.append(f"  [{severity_label}] {finding.rule_id}: {finding.title}")
                 out_lines.append(f"  File: {finding.file_path}:{finding.line_number}")
-                if finding.code_snippet:
-                    out_lines.append(f"  Code: {finding.code_snippet.strip()}")
+                snippet = _finding_snippet_for_output(finding).strip()
+                if snippet:
+                    out_lines.append(f"  Code: {snippet}")
                 if verbose:
                     out_lines.append(f"  Description: {finding.description}")
                     if finding.fix_suggestion:
@@ -109,7 +127,7 @@ def run_ts_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
 
         output_format = getattr(args, "format", "text")
         if output_format == "json":
-            print(json.dumps(report.dict(), default=str, indent=2))
+            print(_report_as_json(report))
             return 1 if report.error_count > 0 else 0
 
         out_lines = [
@@ -132,8 +150,9 @@ def run_ts_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
                 severity_label = str(finding.severity).upper()
                 out_lines.append(f"  [{severity_label}] {finding.rule_id}: {finding.title}")
                 out_lines.append(f"  File: {finding.file_path}:{finding.line_number}")
-                if finding.code_snippet:
-                    out_lines.append(f"  Code: {finding.code_snippet.strip()}")
+                snippet = _finding_snippet_for_output(finding).strip()
+                if snippet:
+                    out_lines.append(f"  Code: {snippet}")
                 if verbose:
                     out_lines.append(f"  Description: {finding.description}")
                     if finding.fix_suggestion:
@@ -174,7 +193,7 @@ def run_shell_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
 
         output_format = getattr(args, "format", "text")
         if output_format == "json":
-            print(json.dumps(report.dict(), default=str, indent=2))
+            print(_report_as_json(report))
             return 1 if report.error_count > 0 else 0
 
         out_lines = [
@@ -197,8 +216,9 @@ def run_shell_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
                 severity_label = str(finding.severity).upper()
                 out_lines.append(f"  [{severity_label}] {finding.rule_id}: {finding.title}")
                 out_lines.append(f"  File: {finding.file_path}:{finding.line_number}")
-                if finding.code_snippet:
-                    out_lines.append(f"  Code: {finding.code_snippet.strip()}")
+                snippet = _finding_snippet_for_output(finding).strip()
+                if snippet:
+                    out_lines.append(f"  Code: {snippet}")
                 if verbose:
                     out_lines.append(f"  Description: {finding.description}")
                     if finding.fix_suggestion:

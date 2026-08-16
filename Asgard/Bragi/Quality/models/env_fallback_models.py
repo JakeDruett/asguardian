@@ -19,7 +19,13 @@ from enum import Enum
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
+
+from Asgard.Bragi.Quality.utilities.secret_snippet import (
+    mask_stored_secret,
+    redact_secret_in_text,
+    unwrap_quoted,
+)
 
 
 class EnvFallbackType(str, Enum):
@@ -70,6 +76,16 @@ class EnvFallbackViolation(BaseModel):
 
     class Config:
         use_enum_values = True
+
+    @model_validator(mode="after")
+    def _mask_stored_secrets(self) -> "EnvFallbackViolation":
+        default = self.default_value
+        if default:
+            raw = unwrap_quoted(default)
+            if raw and self.code_snippet and raw in self.code_snippet:
+                self.code_snippet = redact_secret_in_text(self.code_snippet, default)
+            self.default_value = mask_stored_secret(default)
+        return self
 
     @property
     def location(self) -> str:
