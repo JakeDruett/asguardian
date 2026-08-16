@@ -8,4 +8,4 @@
 {"id":"CH-0102","at":"2026-08-16T10:02:33Z","commit":"882c7b8","wave":"W1","summary":"Refuse Dockerfile field injection; pin Trivy; no docker.sock by default"}
 {"id":"CH-0103","at":"2026-08-16T10:03:41Z","commit":"5f79ace","wave":"W1","summary":"Jenkins harden_steps + quoted sh; refuse triple-quote breakout"}
 {"id":"CH-0024","at":"2026-08-16T10:04:31Z","commit":"dd664de","wave":"W1","summary":"Isolate git config/env for SZZ and other caller-supplied repos"}
-{"id":"CH-0060","at":"2026-08-16T10:33:00Z","commit":"PENDING","wave":"W1","summary":"GraphQL introspection URL allowlist, internal block, safe redirects"}
+{"id":"CH-0060","at":"2026-08-16T10:04:43Z","commit":"37214ee","wave":"W1","summary":"GraphQL introspection URL allowlist, internal block, safe redirects"}

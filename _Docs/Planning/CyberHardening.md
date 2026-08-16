@@ -923,7 +923,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0060 — GraphQL introspection `urlopen` is unauthenticated SSRF
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 37214ee
 - **Fixed at:** 2026-08-16T10:33:00Z
 - **Implementation note:** http(s) only; block RFC1918/loopback/link-local unless --allow-internal; re-validate redirects; no file/ftp handlers.
 - **Severity:** High
@@ -1800,7 +1800,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0066
-- Last commit: PENDING
+- Last commit: 37214ee
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
