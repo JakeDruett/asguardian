@@ -1493,7 +1493,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0088 — Ratings/gate/compliance CLIs fail-open on exit status
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** f2fa8e9
 - **Fixed at:** 2026-08-16T16:40:00Z
 - **Implementation note:** Ratings exit 1 on D/E/N/A/NOT_MEASURED; gate NOT_EVALUATED and compliance findings fail; diff-gate exceptions no longer swallowed.
 - **Severity:** Medium
@@ -1989,7 +1989,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0036, CH-0043, CH-0047
-- Last commit: pending
+- Last commit: f2fa8e9
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
