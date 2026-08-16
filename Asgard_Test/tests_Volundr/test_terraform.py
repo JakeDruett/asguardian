@@ -534,7 +534,7 @@ class TestModuleBuilder:
 
         config.suppressions = [
             Suppression(
-                rule="VOL-TF-0005", target="*",
+                rule="VOL-TF-0005", target="main",
                 reason="reviewed: restricted to internal VPC ranges only",
             )
         ]

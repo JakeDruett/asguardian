@@ -23,7 +23,10 @@ from Asgard.Volundr.Validation.models.rule_registry import (
     RuleRegistry,
     default_registry,
 )
-from Asgard.Volundr.Validation.models.suppression_models import SuppressionSet
+from Asgard.Volundr.Validation.models.suppression_models import (
+    SuppressionSet,
+    running_in_ci,
+)
 from Asgard.Volundr.Validation.models.validation_models import (
     FileValidationSummary,
     ValidationCategory,
@@ -227,7 +230,8 @@ class ValidationEngine:
         start: float,
     ) -> ValidationReport:
         # Legacy deprecated ignore_rules (kept one minor version).
-        if self.context.ignore_rules:
+        # In CI the list is an unsigned drop — fail-closed (CH-0107).
+        if self.context.ignore_rules and not running_in_ci():
             ignored = set(self.context.ignore_rules)
             results = [r for r in results if r.rule_id not in ignored]
 

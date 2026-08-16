@@ -258,7 +258,7 @@ class TestSuppressionsAndPresets:
         assert PROFILE_PRESET_RULES[SecurityProfile.ZERO_TRUST] == []
 
     def test_preset_reasons_are_marked(self):
-        for s in preset_suppressions(SecurityProfile.BASIC):
+        for s in preset_suppressions(SecurityProfile.BASIC, "hardened-app"):
             assert s.reason.startswith("preset:basic")
 
     def test_basic_preset_annihilates_digest_finding_with_receipt(self):

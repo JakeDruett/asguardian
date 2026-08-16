@@ -26,6 +26,7 @@ from Asgard.Volundr.Validation.models.rule_registry import (
 from Asgard.Volundr.Validation.models.suppression_models import (
     Suppression,
     SuppressionSet,
+    is_unrestricted_target,
 )
 from Asgard.Volundr.Validation.models.validation_models import (
     ValidationCategory,
@@ -85,6 +86,9 @@ class SuppressionEngine:
     def _matches(self, suppression: Suppression, result: ValidationResult) -> bool:
         if suppression.rule != result.rule_id:
             return False
+        # Unrestricted '*' must never annihilate a finding (CH-0107).
+        if is_unrestricted_target(suppression.target):
+            return False
         return any(
             fnmatchcase(target, suppression.target)
             for target in _targets_of(result)
@@ -114,6 +118,17 @@ class SuppressionEngine:
                         f"Suppression of '{suppression.rule}' for "
                         f"'{suppression.target}' expired on "
                         f"{suppression.expires} — reason was: {suppression.reason}"
+                    ),
+                    severity=ValidationSeverity.ERROR,
+                    category=ValidationCategory.SECURITY,
+                ))
+                continue
+            if is_unrestricted_target(suppression.target):
+                hygiene.append(ValidationResult(
+                    rule_id="VOL-SUPPRESS-WILDCARD-TARGET",
+                    message=(
+                        f"Suppression of '{suppression.rule}' uses unrestricted "
+                        f"target '{suppression.target}' — exact target required"
                     ),
                     severity=ValidationSeverity.ERROR,
                     category=ValidationCategory.SECURITY,

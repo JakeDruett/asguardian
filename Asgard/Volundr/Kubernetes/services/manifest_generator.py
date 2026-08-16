@@ -64,15 +64,23 @@ PROFILE_PRESET_RULES: Dict[SecurityProfile, List[str]] = {
 }
 
 
-def preset_suppressions(profile: SecurityProfile) -> List[Suppression]:
+def preset_suppressions(
+    profile: SecurityProfile, target: str = "",
+) -> List[Suppression]:
     """A SecurityProfile reified as a suppression preset (DEEPTHINK_02)."""
+    rules = PROFILE_PRESET_RULES.get(profile, [])
+    if not rules:
+        return []
+    name = (target or "").strip()
+    if not name:
+        raise ValueError("preset suppressions require an exact target")
     return [
         Suppression(
             rule=rule,
-            target="*",
+            target=name,
             reason=f"preset:{profile.value} — profile-level acceptance of this completeness gap",
         )
-        for rule in PROFILE_PRESET_RULES.get(profile, [])
+        for rule in rules
     ]
 
 
@@ -192,7 +200,7 @@ class ManifestGenerator:
         user_outcome = user_engine.apply(findings)
         # 2) profile preset: hygiene discarded (presets are static code, a
         #    non-firing preset rule is expected, not stale).
-        preset = preset_suppressions(config.security_profile)
+        preset = preset_suppressions(config.security_profile, config.name)
         preset_engine = SuppressionEngine(SuppressionSet(suppressions=preset))
         preset_outcome = preset_engine.apply(user_outcome.results)
 

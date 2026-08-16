@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 13   | 46    | 0             |
+| Medium   | 12   | 47    | 0             |
 | Low      | 11   | 11    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1846,7 +1846,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0107 — Volundr suppressions are unsigned YAML that delete findings
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T17:42:00Z
+- **Implementation note:** YAML rejects `*`/globs and requires expiry; CI fail-closed unless HMAC verifies; `ignore_rules` cannot drop in CI.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-345
@@ -2014,12 +2017,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 30
-- Fixed: 84
+- Open: 29
+- Fixed: 85
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0107, CH-0114
-- Last commit: 472088e
+- Next: CH-0114
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

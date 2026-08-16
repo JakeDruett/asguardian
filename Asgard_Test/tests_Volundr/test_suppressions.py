@@ -82,7 +82,8 @@ class TestSuppressionSchema:
             "  - rule: VOL-K8S-0001\n"
             "    target: legacy-backend\n"
             "    reason: 'JIRA-4092: vendor image hardcoded to root'\n"
-            "    expires: 2099-12-31\n"
+            "    expires: 2099-12-31\n",
+            require_signature=False,
         )
         assert len(ss) == 1
         assert ss.suppressions[0].expires == date(2099, 12, 31)
@@ -90,6 +91,8 @@ class TestSuppressionSchema:
     def test_bare_list_yaml_parses(self):
         ss = SuppressionSet.from_yaml(
             "- rule: VOL-K8S-0001\n  target: app\n  reason: why\n"
+            "  expires: 2099-12-31\n",
+            require_signature=False,
         )
         assert len(ss) == 1
 

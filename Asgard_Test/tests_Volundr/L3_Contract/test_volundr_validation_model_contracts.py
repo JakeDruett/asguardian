@@ -355,11 +355,14 @@ class TestSuppressionSetContract:
             "  - rule: VOL-K8S-0001\n"
             "    target: web\n"
             "    reason: ticket-42\n"
+            "    expires: 2099-12-31\n"
         )
-        supp_set = SuppressionSet.from_yaml(yaml_doc)
+        supp_set = SuppressionSet.from_yaml(yaml_doc, require_signature=False)
         assert len(supp_set) == 1
         bare = SuppressionSet.from_yaml(
             "- rule: VOL-K8S-0002\n  target: db\n  reason: ticket-43\n"
+            "  expires: 2099-12-31\n",
+            require_signature=False,
         )
         assert len(bare) == 1
 
