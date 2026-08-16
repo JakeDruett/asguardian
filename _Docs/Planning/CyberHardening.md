@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 13   | 15    | 0             |
 | Medium   | 46   | 13    | 0             |
-| Low      | 21   | 1     | 0             |
+| Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -1291,7 +1291,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0082 — Opt-in Claude triage sends finding text and code to a third party
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T12:25:00Z
+- **Implementation note:** Redact secret-like spans; cap code_context to 4000; system/user prompt split; untrusted model JSON; document data leaving host.
 - **Severity:** Low
 - **Confidence:** High
 - **CWE / class:** CWE-359 / CWE-74
@@ -1852,11 +1855,11 @@ None yet.
 
 ## Implementation progress
 
-- Open: 84
-- Fixed: 30
+- Open: 83
+- Fixed: 31
 - Accepted risk: 0
-- Current wave: W1
-- Next: CH-0082
+- Current wave: W2
+- Next: CH-0035, CH-0050, CH-0058, CH-0059
 - Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 

@@ -24,6 +24,7 @@ from Asgard.Heimdall.Security.triage.models.triage_models import TriageLabel, Tr
 from Asgard.Heimdall.Security.triage.services.triage_adapter import (
     MockTriageAdapter,
     TriageAdapter,
+    cap_code_context,
 )
 from Asgard.Heimdall.Security.triage.services.triage_cache import TriageCache, fingerprint
 
@@ -120,7 +121,9 @@ def triage_findings(
             results.append(finding)
             continue
 
-        code_context = code_reader(finding) if code_reader else (getattr(finding, "code_snippet", "") or "")
+        code_context = cap_code_context(
+            code_reader(finding) if code_reader else (getattr(finding, "code_snippet", "") or "")
+        )
         key = fingerprint(finding, code_context)
 
         cached_verdict = active_cache.get(key)
