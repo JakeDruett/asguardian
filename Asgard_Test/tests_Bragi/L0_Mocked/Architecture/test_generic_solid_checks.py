@@ -175,3 +175,42 @@ class TestOCPTypeChecking:
         lines = _JAVA_NO_INSTANCEOF.splitlines()
         violations = check_ocp_type_checking("ShapeRenderer.java", lines, "java")
         assert violations == []
+
+
+class TestSolidRegexBoundsCH0021:
+    def test_js_method_still_counted(self):
+        lines = [
+            "class Greeter {",
+            "  hello() {",
+            "    return 1;",
+            "  }",
+            "  world = () => {",
+            "    return 2;",
+            "  }",
+            "}",
+        ]
+        assert check_srp_method_count("g.js", lines, "javascript", threshold=1)
+
+    def test_overlong_line_skipped(self):
+        from Asgard.Bragi.Architecture.services._generic_solid_checks import (
+            MAX_SOLID_REGEX_LINE,
+        )
+
+        huge = "  foo(" + ("x" * (MAX_SOLID_REGEX_LINE + 50)) + ") {"
+        assert check_srp_method_count("g.js", [huge], "javascript", threshold=0) == []
+
+    def test_long_non_match_finishes_quickly(self):
+        import time
+
+        from Asgard.Bragi.Architecture.services._generic_solid_checks import (
+            _METHOD_PATTERNS,
+        )
+
+        blob = "  foo(" + ("x" * 50_000)
+        pat = _METHOD_PATTERNS["javascript"]
+        start = time.perf_counter()
+        pat.search(blob)
+        assert time.perf_counter() - start < 0.25
+        start = time.perf_counter()
+        check_srp_method_count("g.js", [blob], "javascript", threshold=0)
+        assert time.perf_counter() - start < 0.25

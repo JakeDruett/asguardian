@@ -24,6 +24,13 @@ from Asgard.Bragi.Architecture.models.architecture_models import (
     ViolationSeverity,
 )
 
+# Skip minified/hostile lines so JS/TS `(.{0,200})` stays linear (CH-0021).
+MAX_SOLID_REGEX_LINE = 4096
+
+
+def _usable_line(line: str) -> bool:
+    return bool(line) and len(line) <= MAX_SOLID_REGEX_LINE
+
 # ---------------------------------------------------------------------------
 # SRP: count public method definitions per language
 # ---------------------------------------------------------------------------
@@ -34,8 +41,12 @@ _METHOD_PATTERNS: dict = {
     "csharp":     re.compile(r"\bpublic\s+\w[\w<>\[\]]*\s+\w+\s*\("),
     "go":         re.compile(r"^func\s+\(\s*\w+\s+\*?\w+\s*\)\s+\w+\s*\("),
     "ruby":       re.compile(r"^\s+def\s+[a-z_][a-zA-Z0-9_]*"),
-    "javascript": re.compile(r"^\s+(?:\w+)\s*\(.*\)\s*\{|^\s+\w+\s*=\s*(?:async\s*)?\(.*\)\s*=>"),
-    "typescript": re.compile(r"^\s+(?:\w+)\s*\(.*\)\s*\{|^\s+\w+\s*=\s*(?:async\s*)?\(.*\)\s*=>"),
+    "javascript": re.compile(
+        r"^\s+(?:\w+)\s*\(.{0,200}\)\s*\{|^\s+\w+\s*=\s*(?:async\s*)?\(.{0,200}\)\s*=>"
+    ),
+    "typescript": re.compile(
+        r"^\s+(?:\w+)\s*\(.{0,200}\)\s*\{|^\s+\w+\s*=\s*(?:async\s*)?\(.{0,200}\)\s*=>"
+    ),
     "php":        re.compile(r"\bpublic\s+function\s+\w+\s*\("),
 }
 
@@ -62,7 +73,7 @@ def check_srp_method_count(
     if pattern is None:
         return []
 
-    count = sum(1 for line in lines if pattern.search(line))
+    count = sum(1 for line in lines if _usable_line(line) and pattern.search(line))
     if count > threshold:
         return [
             SOLIDViolation(
@@ -147,6 +158,8 @@ def check_isp_interface_size(
     start_line = 1
 
     for i, line in enumerate(lines, start=1):
+        if not _usable_line(line):
+            continue
         if not in_interface:
             m = start_pat.search(line)
             if m:
@@ -216,6 +229,8 @@ def check_dip_concrete_instantiation(
 
     violations: List[SOLIDViolation] = []
     for i, line in enumerate(lines, start=1):
+        if not _usable_line(line):
+            continue
         m = pattern.search(line)
         if m:
             concrete = m.group(0).strip()
@@ -274,7 +289,7 @@ def check_ocp_type_checking(
 
     violations: List[SOLIDViolation] = []
     for i, line in enumerate(lines, start=1):
-        if pattern.search(line):
+        if _usable_line(line) and pattern.search(line):
             violations.append(
                 SOLIDViolation(
                     principle=SOLIDPrinciple.OCP,
