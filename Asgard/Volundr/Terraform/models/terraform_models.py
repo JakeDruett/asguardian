@@ -9,8 +9,12 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
+from Asgard.Volundr.Terraform.models._hcl_safety import (
+    require_hcl_identifier,
+    require_module_name,
+)
 from Asgard.Volundr.Validation.models.score_models import ScoreReport
 from Asgard.Volundr.Validation.models.suppression_models import Suppression
 
@@ -48,6 +52,11 @@ class ModuleComplexity(str, Enum):
 class VariableConfig(BaseModel):
     """Terraform variable configuration."""
     name: str = Field(description="Variable name")
+
+    @field_validator("name")
+    @classmethod
+    def _variable_name_safe(cls, value: str) -> str:
+        return require_hcl_identifier(value, kind="variable name")
     type: str = Field(default="string", description="Variable type (string, number, bool, list, map, object)")
     description: str = Field(default="", description="Variable description")
     default: Optional[Any] = Field(default=None, description="Default value")
@@ -58,6 +67,11 @@ class VariableConfig(BaseModel):
 class OutputConfig(BaseModel):
     """Terraform output configuration."""
     name: str = Field(description="Output name")
+
+    @field_validator("name")
+    @classmethod
+    def _output_name_safe(cls, value: str) -> str:
+        return require_hcl_identifier(value, kind="output name")
     description: str = Field(description="Output description")
     value: str = Field(description="Output value expression")
     sensitive: bool = Field(default=False, description="Mark as sensitive")
@@ -66,6 +80,11 @@ class OutputConfig(BaseModel):
 class ModuleConfig(BaseModel):
     """Configuration for generating Terraform modules."""
     name: str = Field(description="Module name")
+
+    @field_validator("name")
+    @classmethod
+    def _module_name_safe(cls, value: str) -> str:
+        return require_module_name(value)
     provider: CloudProvider = Field(description="Cloud provider")
     category: ResourceCategory = Field(description="Resource category")
     complexity: ModuleComplexity = Field(default=ModuleComplexity.SIMPLE, description="Module complexity")

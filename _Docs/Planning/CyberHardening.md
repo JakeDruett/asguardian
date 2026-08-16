@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 13   | 15    | 0             |
-| Medium   | 48   | 11    | 0             |
+| Medium   | 47   | 12    | 0             |
 | Low      | 21   | 1     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1708,7 +1708,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0108 — Terraform module builder emits `0.0.0.0/0` egress and unsanitized HCL
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T12:12:00Z
+- **Implementation note:** SG egress defaults to self=true; allowlist module/variable/output names; escape HCL string literals (`"`, `${`).
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-284 / CWE-94
@@ -1846,12 +1849,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 86
-- Fixed: 28
+- Open: 85
+- Fixed: 29
 - Accepted risk: 0
 - Current wave: W1
-- Next: CH-0108, CH-0112, CH-0082
-- Last commit: 405ffdf
+- Next: CH-0112, CH-0082
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

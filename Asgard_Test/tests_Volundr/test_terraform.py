@@ -430,12 +430,38 @@ class TestModuleBuilder:
         result = builder.generate(config)
         main_tf = result.module_files["main.tf"]
         assert "aws_security_group" in main_tf
-        # The template uses a variable for ingress CIDRs, not a hardcoded
-        # 0.0.0.0/0 default -- egress is intentionally open and out of scope.
-        # (The rule-id explanation comment legitimately mentions the string
-        # as prose, so check the actual cidr_blocks assignment line only.)
         ingress_block = main_tf.split("egress {")[0]
         assert 'cidr_blocks = ["0.0.0.0/0"]' not in ingress_block
+        assert "self        = true" in main_tf
+        assert 'cidr_blocks = ["0.0.0.0/0"]' not in main_tf
+
+    def test_quote_in_module_name_is_rejected(self):
+        with pytest.raises(ValueError, match="module name"):
+            ModuleConfig(
+                name='foo"bar',
+                provider=CloudProvider.AWS,
+                category=ResourceCategory.NETWORKING,
+            )
+
+    def test_hcl_specials_in_strings_are_escaped(self, builder):
+        config = ModuleConfig(
+            name="vpc",
+            provider=CloudProvider.AWS,
+            category=ResourceCategory.NETWORKING,
+            resources=["aws_vpc"],
+            variables=[
+                VariableConfig(
+                    name="note",
+                    type="string",
+                    description='say "hi" ${var.x}',
+                    default='a"b',
+                )
+            ],
+        )
+        result = builder.generate(config)
+        variables_tf = result.module_files["variables.tf"]
+        assert r'say \"hi\" $${var.x}' in variables_tf
+        assert r'default     = "a\"b"' in variables_tf
 
     def test_score_report_attached(self, builder):
         """Generated modules must carry a full composite ScoreReport, not

@@ -8,6 +8,7 @@ from Asgard.Volundr.Terraform.models.terraform_models import (
     ModuleComplexity,
     ModuleConfig,
 )
+from Asgard.Volundr.Terraform.models._hcl_safety import hcl_quoted, require_hcl_identifier
 
 PROVIDER_SOURCES = {
     CloudProvider.AWS: ("hashicorp/aws", ">= 5.0"),
@@ -144,10 +145,11 @@ def generate_resource_block(resource: str, config: ModuleConfig) -> List[str]:
                 "    protocol    = var.ingress_protocol",
                 "    cidr_blocks = var.ingress_cidr_blocks", "  }", "",
                 "  egress {",
+                "    description = \"self-only default (no 0.0.0.0/0)\"",
                 "    from_port   = 0",
                 "    to_port     = 0",
                 "    protocol    = \"-1\"",
-                "    cidr_blocks = [\"0.0.0.0/0\"]", "  }", "",
+                "    self        = true", "  }", "",
                 f"  tags = {tags_ref}", "}",
             ])
         elif "vpc" in resource.lower():
@@ -218,32 +220,36 @@ def generate_resource_block(resource: str, config: ModuleConfig) -> List[str]:
 def generate_examples(config: ModuleConfig) -> Dict[str, str]:
     examples: Dict[str, str] = {}
     basic_example: List[str] = [
-        f'module "{config.name}_basic" {{', '  source = "../../"', "",
+        f"module {hcl_quoted(f'{config.name}_basic')} {{", '  source = "../../"', "",
     ]
     for var in config.variables:
+        ident = require_hcl_identifier(var.name, kind="variable name")
         if var.default is None:
             if "name" in var.name.lower():
-                basic_example.append(f'  {var.name} = "example-{config.name}"')
+                basic_example.append(f"  {ident} = {hcl_quoted(f'example-{config.name}')}")
             elif var.type == "string":
-                basic_example.append(f'  {var.name} = "example-value"')
+                basic_example.append(f"  {ident} = {hcl_quoted('example-value')}")
             elif var.type == "number":
-                basic_example.append(f"  {var.name} = 1")
+                basic_example.append(f"  {ident} = 1")
             elif var.type == "bool":
-                basic_example.append(f"  {var.name} = true")
+                basic_example.append(f"  {ident} = true")
     basic_example.append("}")
     examples["basic"] = "\n".join(basic_example)
     if config.complexity in [ModuleComplexity.COMPLEX, ModuleComplexity.ENTERPRISE]:
         advanced_example: List[str] = [
-            f'module "{config.name}_advanced" {{', '  source = "../../"', "",
+            f"module {hcl_quoted(f'{config.name}_advanced')} {{", '  source = "../../"', "",
         ]
         for var in config.variables:
+            ident = require_hcl_identifier(var.name, kind="variable name")
             if var.default is not None:
                 if isinstance(var.default, str):
-                    advanced_example.append(f'  {var.name} = "advanced-{var.default}"')
+                    advanced_example.append(
+                        f"  {ident} = {hcl_quoted(f'advanced-{var.default}')}"
+                    )
                 else:
-                    advanced_example.append(f"  {var.name} = {json.dumps(var.default)}")
+                    advanced_example.append(f"  {ident} = {json.dumps(var.default)}")
             else:
-                advanced_example.append(f'  {var.name} = "advanced-example"')
+                advanced_example.append(f"  {ident} = {hcl_quoted('advanced-example')}")
         advanced_example.append("}")
         examples["advanced"] = "\n".join(advanced_example)
     return examples

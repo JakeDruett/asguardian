@@ -6,6 +6,10 @@ from typing import Dict, List
 from Asgard.Volundr.Terraform.models.terraform_models import (
     ModuleConfig,
 )
+from Asgard.Volundr.Terraform.models._hcl_safety import (
+    hcl_quoted,
+    require_hcl_identifier,
+)
 from Asgard.Volundr.Terraform.services._module_builder_blocks import (
     PROVIDER_SOURCES,
     generate_data_source_block,
@@ -19,10 +23,11 @@ def generate_main_tf(config: ModuleConfig) -> str:
     if config.locals:
         content.append("locals {")
         for key, value in config.locals.items():
+            ident = require_hcl_identifier(key, kind="local name")
             if isinstance(value, str):
-                content.append(f'  {key} = "{value}"')
+                content.append(f"  {ident} = {hcl_quoted(value)}")
             else:
-                content.append(f"  {key} = {json.dumps(value)}")
+                content.append(f"  {ident} = {json.dumps(value)}")
         content.append("}")
         content.append("")
 
@@ -41,22 +46,26 @@ def generate_variables_tf(config: ModuleConfig) -> str:
     content: List[str] = []
 
     for var in config.variables:
-        content.append(f'variable "{var.name}" {{')
-        content.append(f'  description = "{var.description}"')
+        content.append(f"variable {hcl_quoted(var.name)} {{")
+        content.append(f"  description = {hcl_quoted(var.description)}")
         content.append(f"  type        = {var.type}")
 
         if var.default is not None:
             if isinstance(var.default, str):
-                content.append(f'  default     = "{var.default}"')
+                content.append(f"  default     = {hcl_quoted(var.default)}")
             elif isinstance(var.default, bool):
                 content.append(f"  default     = {str(var.default).lower()}")
             else:
                 content.append(f"  default     = {json.dumps(var.default)}")
 
         if var.validation:
+            if "\n" in var.validation or "\r" in var.validation:
+                raise ValueError("validation condition must be a single-line expression")
             content.append("  validation {")
             content.append(f"    condition     = {var.validation}")
-            content.append(f'    error_message = "Invalid value for {var.name}."')
+            content.append(
+                f"    error_message = {hcl_quoted(f'Invalid value for {var.name}.')}"
+            )
             content.append("  }")
 
         if var.sensitive:
@@ -72,8 +81,10 @@ def generate_outputs_tf(config: ModuleConfig) -> str:
     content: List[str] = []
 
     for output in config.outputs:
-        content.append(f'output "{output.name}" {{')
-        content.append(f'  description = "{output.description}"')
+        if "\n" in output.value or "\r" in output.value:
+            raise ValueError("output value must be a single-line expression")
+        content.append(f"output {hcl_quoted(output.name)} {{")
+        content.append(f"  description = {hcl_quoted(output.description)}")
         content.append(f"  value       = {output.value}")
 
         if output.sensitive:
@@ -89,20 +100,21 @@ def generate_versions_tf(config: ModuleConfig) -> str:
     content: List[str] = []
 
     content.append("terraform {")
-    content.append(f'  required_version = "{config.terraform_version}"')
+    content.append(f"  required_version = {hcl_quoted(config.terraform_version)}")
     content.append("")
     content.append("  required_providers {")
 
     source, version = PROVIDER_SOURCES.get(config.provider, ("hashicorp/null", ">= 3.0"))
     content.append(f"    {config.provider.value} = {{")
-    content.append(f'      source  = "{source}"')
-    content.append(f'      version = "{version}"')
+    content.append(f"      source  = {hcl_quoted(source)}")
+    content.append(f"      version = {hcl_quoted(version)}")
     content.append("    }")
 
     for provider, version in config.required_providers.items():
-        content.append(f"    {provider} = {{")
-        content.append(f'      source  = "hashicorp/{provider}"')
-        content.append(f'      version = "{version}"')
+        ident = require_hcl_identifier(provider, kind="provider name")
+        content.append(f"    {ident} = {{")
+        content.append(f"      source  = {hcl_quoted(f'hashicorp/{ident}')}")
+        content.append(f"      version = {hcl_quoted(version)}")
         content.append("    }")
 
     content.append("  }")
@@ -119,16 +131,17 @@ def generate_locals_tf(config: ModuleConfig) -> str:
     if config.tags:
         content.append("  common_tags = {")
         for key, value in config.tags.items():
-            content.append(f'    "{key}" = "{value}"')
+            content.append(f"    {hcl_quoted(key)} = {hcl_quoted(value)}")
         content.append("  }")
         content.append("")
 
     for key, value in config.locals.items():
         if key != "common_tags":
+            ident = require_hcl_identifier(key, kind="local name")
             if isinstance(value, str):
-                content.append(f'  {key} = "{value}"')
+                content.append(f"  {ident} = {hcl_quoted(value)}")
             else:
-                content.append(f"  {key} = {json.dumps(value, indent=2)}")
+                content.append(f"  {ident} = {json.dumps(value, indent=2)}")
 
     content.append("}")
 
@@ -151,19 +164,20 @@ def generate_documentation(config: ModuleConfig) -> str:
         "## Usage",
         "",
         "```hcl",
-        f'module "{config.name}" {{',
-        f'  source = "./{config.name}"',
+        f"module {hcl_quoted(config.name)} {{",
+        f"  source = {hcl_quoted(f'./{config.name}')}",
         "",
     ])
 
     for var in config.variables[:5]:
+        ident = require_hcl_identifier(var.name, kind="variable name")
         if var.default is not None:
             if isinstance(var.default, str):
-                content.append(f'  {var.name} = "{var.default}"')
+                content.append(f"  {ident} = {hcl_quoted(var.default)}")
             else:
-                content.append(f"  {var.name} = {json.dumps(var.default)}")
+                content.append(f"  {ident} = {json.dumps(var.default)}")
         else:
-            content.append(f'  {var.name} = "your-value-here"')
+            content.append(f"  {ident} = {hcl_quoted('your-value-here')}")
 
     content.extend([
         "}",
