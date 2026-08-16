@@ -87,7 +87,12 @@ class RatingsCalculator:
         # not scored, not counted, not diluting the risk profile. Bundles
         # default to context="production" so this is a no-op unless an
         # upstream extractor stamps context (backward compatible).
-        file_bundles = [b for b in file_bundles if not excluded_from_denominators(b.context)]
+        # Security blocker/critical findings stay in the file list so a
+        # generated-path match cannot drop the cap from the risk profile.
+        file_bundles = [
+            b for b in file_bundles
+            if not excluded_from_denominators(b.context) or b.has_blocker_issue
+        ]
         file_scores = [self.engine.score_file(bundle) for bundle in file_bundles]
         for fs in file_scores:
             fs.roi_actions = compute_roi_actions(fs)
@@ -116,19 +121,28 @@ class RatingsCalculator:
             roi_actions=roi_actions,
         )
 
+    def _unmeasured_dimension(self, dimension: RatingDimension, rationale: str) -> DimensionRating:
+        """N/A letter for a dimension that was not measured (never a silent A)."""
+        return DimensionRating(
+            dimension=dimension,
+            rating=LetterRating.NA,
+            score=0.0,
+            rationale=rationale,
+            issues_count=0,
+            confidence=MeasurementConfidence.NOT_MEASURED,
+        )
+
     def _calculate_maintainability(self, debt_report) -> DimensionRating:
         """Derive maintainability rating from a DebtReport."""
-        if debt_report is None or not self.config.enable_maintainability:
-            return DimensionRating(
-                dimension=RatingDimension.MAINTAINABILITY,
-                rating=LetterRating.A,
-                score=0.0,
-                rationale=(
-                    "No debt report provided; defaulting to A "
-                    "(not assessed - this default is not evidence of quality)"
-                ),
-                issues_count=0,
-                confidence=MeasurementConfidence.NOT_MEASURED,
+        if not self.config.enable_maintainability:
+            return self._unmeasured_dimension(
+                RatingDimension.MAINTAINABILITY,
+                "Maintainability rating disabled (not assessed)",
+            )
+        if debt_report is None:
+            return self._unmeasured_dimension(
+                RatingDimension.MAINTAINABILITY,
+                "No debt report provided; not assessed (N/A is not evidence of quality)",
             )
 
         issues_count = getattr(debt_report, "total_debt_items", 0) or 0
@@ -180,26 +194,15 @@ class RatingsCalculator:
     def _calculate_reliability(self, quality_report, debt_report) -> DimensionRating:
         """Derive reliability rating from quality/debt report objects."""
         if not self.config.enable_reliability:
-            return DimensionRating(
-                dimension=RatingDimension.RELIABILITY,
-                rating=LetterRating.A,
-                score=0.0,
-                rationale="Reliability rating disabled",
-                issues_count=0,
-                confidence=MeasurementConfidence.NOT_MEASURED,
+            return self._unmeasured_dimension(
+                RatingDimension.RELIABILITY,
+                "Reliability rating disabled (not assessed)",
             )
 
         if quality_report is None and debt_report is None:
-            return DimensionRating(
-                dimension=RatingDimension.RELIABILITY,
-                rating=LetterRating.A,
-                score=0.0,
-                rationale=(
-                    "No bugs or quality issues detected - no quality/debt report "
-                    "supplied (not assessed; defaulting to A)"
-                ),
-                issues_count=0,
-                confidence=MeasurementConfidence.NOT_MEASURED,
+            return self._unmeasured_dimension(
+                RatingDimension.RELIABILITY,
+                "No quality/debt report supplied (not assessed)",
             )
 
         worst_severity = None
@@ -210,9 +213,8 @@ class RatingsCalculator:
             debt_items = getattr(debt_report, "debt_items", []) or []
             issues_count = len(debt_items)
             for item in debt_items:
-                severity = getattr(item, "severity", None)
-                if severity is not None:
-                    sev_str = str(severity).lower()
+                sev_str = self._severity_text(getattr(item, "severity", None))
+                if sev_str:
                     worst_severity = self._worst_severity(worst_severity, sev_str)
 
         # Check quality report if available
@@ -220,9 +222,8 @@ class RatingsCalculator:
             report_issues = getattr(quality_report, "detected_smells", []) or []
             issues_count += len(report_issues)
             for issue in report_issues:
-                severity = getattr(issue, "severity", None)
-                if severity is not None:
-                    sev_str = str(severity).lower()
+                sev_str = self._severity_text(getattr(issue, "severity", None))
+                if sev_str:
                     worst_severity = self._worst_severity(worst_severity, sev_str)
 
         rating = self._severity_to_rating(worst_severity)
@@ -242,19 +243,24 @@ class RatingsCalculator:
             confidence=confidence,
         )
 
+    def _severity_text(self, severity) -> str:
+        """Normalize a severity attribute to a lowercase label."""
+        if severity is None:
+            return ""
+        text = severity.value if hasattr(severity, "value") else severity
+        return str(text).lower()
+
     def _calculate_security(self, security_report) -> DimensionRating:
         """Derive security rating from a SecurityReport."""
-        if security_report is None or not self.config.enable_security:
-            return DimensionRating(
-                dimension=RatingDimension.SECURITY,
-                rating=LetterRating.A,
-                score=0.0,
-                rationale=(
-                    "No security report provided; defaulting to A "
-                    "(not assessed - this default is not evidence of security)"
-                ),
-                issues_count=0,
-                confidence=MeasurementConfidence.NOT_MEASURED,
+        if not self.config.enable_security:
+            return self._unmeasured_dimension(
+                RatingDimension.SECURITY,
+                "Security rating disabled (not assessed)",
+            )
+        if security_report is None:
+            return self._unmeasured_dimension(
+                RatingDimension.SECURITY,
+                "No security report provided; not assessed (N/A is not evidence of security)",
             )
 
         worst_severity = None
@@ -266,9 +272,9 @@ class RatingsCalculator:
             if findings:
                 total_findings += len(findings)
                 for finding in findings:
-                    sev = getattr(finding, "severity", None)
-                    if sev is not None:
-                        worst_severity = self._worst_severity(worst_severity, str(sev).lower())
+                    sev = self._severity_text(getattr(finding, "severity", None))
+                    if sev:
+                        worst_severity = self._worst_severity(worst_severity, sev)
                 break
 
         # Also check VulnerabilityReport if nested
@@ -279,9 +285,9 @@ class RatingsCalculator:
                 if findings:
                     total_findings += len(findings)
                     for finding in findings:
-                        sev = getattr(finding, "severity", None)
-                        if sev is not None:
-                            worst_severity = self._worst_severity(worst_severity, str(sev).lower())
+                        sev = self._severity_text(getattr(finding, "severity", None))
+                        if sev:
+                            worst_severity = self._worst_severity(worst_severity, sev)
                     break
 
         # Check secrets report
@@ -290,9 +296,9 @@ class RatingsCalculator:
             secrets = getattr(secrets_report, "findings", []) or []
             total_findings += len(secrets)
             for secret in secrets:
-                sev = getattr(secret, "severity", None)
-                if sev is not None:
-                    worst_severity = self._worst_severity(worst_severity, str(sev).lower())
+                sev = self._severity_text(getattr(secret, "severity", None))
+                if sev:
+                    worst_severity = self._worst_severity(worst_severity, sev)
 
         rating = self._severity_to_rating(worst_severity)
         rationale = self._security_rationale(worst_severity, total_findings)
@@ -318,7 +324,7 @@ class RatingsCalculator:
 
     def _worst_severity(self, current: Optional[str], candidate: str) -> str:
         """Return the worse of two severity strings."""
-        order = {"critical": 5, "high": 4, "medium": 3, "low": 2, "info": 1}
+        order = {"blocker": 6, "critical": 5, "high": 4, "medium": 3, "low": 2, "info": 1}
         current_val = order.get(current or "", 0)
         candidate_val = order.get(candidate, 0)
         if candidate_val > current_val:
@@ -330,7 +336,7 @@ class RatingsCalculator:
         if severity is None:
             return LetterRating.A
         sev_lower = severity.lower()
-        if sev_lower == "critical":
+        if sev_lower in ("blocker", "critical"):
             return LetterRating.E
         elif sev_lower == "high":
             return LetterRating.D
@@ -359,26 +365,53 @@ class RatingsCalculator:
             f"({total_findings} total finding(s))"
         )
 
+    @staticmethod
+    def _is_unmeasured_letter(rating) -> bool:
+        if rating is None:
+            return True
+        text = rating.value if isinstance(rating, LetterRating) else str(rating)
+        return text.upper() in {"N/A", "NA"}
+
     def _derive_overall_rating(
         self,
         maintainability: LetterRating,
         reliability: LetterRating,
         security: LetterRating,
     ) -> LetterRating:
-        """Derive overall rating as the worst of the three dimension ratings."""
+        """
+        Worst of the measured dimension letters.
+
+        Unmeasured (N/A) dimensions are excluded. If any dimension is
+        unmeasured the overall grade is N/A — a skipped security scan
+        must never print as A.
+        """
+        letters = (maintainability, reliability, security)
+        if any(self._is_unmeasured_letter(r) for r in letters):
+            return LetterRating.NA
+
         order = {
             LetterRating.A: 1,
             LetterRating.B: 2,
             LetterRating.C: 3,
             LetterRating.D: 4,
             LetterRating.E: 5,
+            "A": 1,
+            "B": 2,
+            "C": 3,
+            "D": 4,
+            "E": 5,
         }
 
         def _val(r):
+            if r in order:
+                return order[r]
             if isinstance(r, LetterRating):
                 return order.get(r, 1)
-            return order.get(LetterRating(r), 1)
+            try:
+                return order.get(LetterRating(r), 1)
+            except ValueError:
+                return 1
 
         worst_val = max(_val(maintainability), _val(reliability), _val(security))
-        reverse = {v: k for k, v in order.items()}
+        reverse = {1: LetterRating.A, 2: LetterRating.B, 3: LetterRating.C, 4: LetterRating.D, 5: LetterRating.E}
         return reverse[worst_val]

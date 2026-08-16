@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 29   | 30    | 0             |
+| Medium   | 28   | 31    | 0             |
 | Low      | 13   | 9     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -904,7 +904,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0054 — Unmeasured Ratings dimensions default to letter A
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T16:00:00Z
+- **Implementation note:** Unmeasured dimensions are N/A and fail overall; blocker maps to E. Lazy-import Heimdall test_context in context_classifier so Ratings can load.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-693 / fail-open scoring
@@ -1960,12 +1963,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 48
-- Fixed: 66
+- Open: 47
+- Fixed: 67
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0013, CH-0032, CH-0036
-- Last commit: ef426af
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

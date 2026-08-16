@@ -323,6 +323,8 @@ class TestConfidence:
         assert ratings.security.confidence == MeasurementConfidence.NOT_MEASURED.value
         assert ratings.maintainability.confidence == MeasurementConfidence.NOT_MEASURED.value
         assert ratings.reliability.confidence == MeasurementConfidence.NOT_MEASURED.value
+        assert ratings.security.rating == "N/A"
+        assert ratings.overall_rating != "A"
         # Nothing measured -> no composite score is invented.
         assert ratings.composite_score is None
         assert ratings.confidence is not None
@@ -416,6 +418,13 @@ class TestExtractors:
         assert project.has_blocker_issue is True
         assert "critical" in project.blocker_description
 
+    def test_blocker_severity_sets_blocker_cap(self):
+        report = SimpleNamespace(findings=[
+            SimpleNamespace(severity="blocker", file_path="s.py", description="RCE")])
+        bundles, project = extract_bundles(security_report=report)
+        assert project.has_blocker_issue is True
+        assert bundles[0].has_blocker_issue is True
+
     def test_grade_thresholds(self):
         assert score_to_grade(0.95) == "A"
         assert score_to_grade(0.85) == "B"
@@ -452,6 +461,20 @@ class TestAdversarialReviewRegressions:
         bundles, project = extract_bundles(security_report=report)
         assert project.has_blocker_issue is True
         assert bundles[0].has_blocker_issue is True
+
+    def test_generated_path_blocker_stays_in_file_scores(self):
+        """Generated-path regex must not drop a security blocker tally."""
+        calc = RatingsCalculator()
+        report = SimpleNamespace(findings=[
+            SimpleNamespace(
+                severity="blocker",
+                file_path="generated/proto_pb2.py",
+                description="hardcoded secret",
+            )
+        ])
+        ratings = calc.calculate_from_reports(scan_path=".", security_report=report)
+        assert ratings.security.rating == "E"
+        assert any(fs.cap.applied for fs in ratings.file_scores)
 
     def test_file_splitting_cannot_launder_grade(self):
         """BLOCKER-5: 400 medium bugs split across 400 files must grade like

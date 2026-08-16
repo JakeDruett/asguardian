@@ -5,7 +5,7 @@ Standalone utilities for gate evaluation: value comparison, default gate
 construction, metric extraction from report objects.
 """
 
-from typing import Dict, List, Union
+from typing import Dict, List, Optional, Union
 
 from Asgard.Bragi.QualityGate.models.quality_gate_models import (
     METRIC_DETERMINISM,
@@ -18,8 +18,11 @@ from Asgard.Bragi.QualityGate.models.quality_gate_models import (
 )
 
 
-# Letter rating ordering for comparison (lower ordinal = better)
+# Letter rating ordering for comparison (lower ordinal = better).
+# Unmeasured "N/A" is omitted from extract, never ranked as A.
 RATING_ORDER = {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5}
+_UNMEASURED_RATINGS = frozenset({"N/A", "NA", "n/a"})
+_NOT_MEASURED = frozenset({"not_measured", "MeasurementConfidence.NOT_MEASURED"})
 
 
 def build_asgard_way_gate() -> QualityGate:
@@ -225,6 +228,8 @@ def compare_values(
     """
     if isinstance(threshold, str) and threshold.upper() in RATING_ORDER:
         actual_str = str(actual).upper() if actual is not None else "E"
+        if actual_str in _UNMEASURED_RATINGS:
+            actual_str = "E"
         actual_ord = RATING_ORDER.get(actual_str, 5)
         threshold_ord = RATING_ORDER.get(threshold.upper(), 5)
         if operator == GateOperator.LESS_THAN:
@@ -262,6 +267,38 @@ def compare_values(
     return False
 
 
+def _finding_severity(finding) -> str:
+    """Normalize a finding severity label (enum or string)."""
+    sev = getattr(finding, "severity", None)
+    if sev is None:
+        return ""
+    text = sev.value if hasattr(sev, "value") else sev
+    return str(text).lower()
+
+
+def _measured_letter_rating(dimension) -> Optional[str]:
+    """
+    Return an A-E letter only when the dimension was actually measured.
+
+    Unmeasured/N/A ratings are omitted so the gate condition stays
+    NOT_EVALUATED instead of silently passing as A.
+    """
+    if dimension is None:
+        return None
+    rating = getattr(dimension, "rating", None)
+    if rating is None:
+        return None
+    text = str(rating.value if hasattr(rating, "value") else rating)
+    if text.upper() in _UNMEASURED_RATINGS:
+        return None
+    confidence = getattr(dimension, "confidence", None)
+    if confidence is not None and str(
+        confidence.value if hasattr(confidence, "value") else confidence
+    ) in _NOT_MEASURED:
+        return None
+    return text
+
+
 def extract_metrics_from_reports(
     ratings=None,
     duplication_result=None,
@@ -281,18 +318,15 @@ def extract_metrics_from_reports(
         reliability = getattr(ratings, "reliability", None)
         security_dim = getattr(ratings, "security", None)
 
-        if maintainability is not None:
-            metrics[MetricType.MAINTAINABILITY_RATING] = str(
-                getattr(maintainability, "rating", "A")
-            )
-        if reliability is not None:
-            metrics[MetricType.RELIABILITY_RATING] = str(
-                getattr(reliability, "rating", "A")
-            )
-        if security_dim is not None:
-            metrics[MetricType.SECURITY_RATING] = str(
-                getattr(security_dim, "rating", "A")
-            )
+        maintainability_letter = _measured_letter_rating(maintainability)
+        if maintainability_letter is not None:
+            metrics[MetricType.MAINTAINABILITY_RATING] = maintainability_letter
+        reliability_letter = _measured_letter_rating(reliability)
+        if reliability_letter is not None:
+            metrics[MetricType.RELIABILITY_RATING] = reliability_letter
+        security_letter = _measured_letter_rating(security_dim)
+        if security_letter is not None:
+            metrics[MetricType.SECURITY_RATING] = security_letter
 
     if duplication_result is not None:
         dup_pct = getattr(duplication_result, "duplication_percentage", None)
@@ -321,8 +355,8 @@ def extract_metrics_from_reports(
             findings = getattr(security_report, attr, None) or []
             if findings:
                 for finding in findings:
-                    sev = str(getattr(finding, "severity", "")).lower()
-                    if sev == "critical":
+                    sev = _finding_severity(finding)
+                    if sev in ("critical", "blocker"):
                         critical_count += 1
                     elif sev == "high":
                         high_count += 1
@@ -334,8 +368,8 @@ def extract_metrics_from_reports(
                 findings = getattr(vuln_report, attr, None) or []
                 if findings:
                     for finding in findings:
-                        sev = str(getattr(finding, "severity", "")).lower()
-                        if sev == "critical":
+                        sev = _finding_severity(finding)
+                        if sev in ("critical", "blocker"):
                             critical_count += 1
                         elif sev == "high":
                             high_count += 1

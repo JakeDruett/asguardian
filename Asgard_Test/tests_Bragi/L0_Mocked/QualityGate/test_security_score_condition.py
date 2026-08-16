@@ -46,6 +46,41 @@ class TestSecurityScoreMetric:
         metrics = extract_metrics_from_reports(security_report=report)
         assert MetricType.SECURITY_SCORE not in metrics
 
+    def test_unmeasured_letter_ratings_are_omitted(self):
+        """N/A / NOT_MEASURED dimensions must not extract as A."""
+        from Asgard.Bragi.Ratings.models.ratings_models import (
+            DimensionRating,
+            LetterRating,
+            ProjectRatings,
+            RatingDimension,
+        )
+        from Asgard.Bragi.Ratings.models._scoring_models import MeasurementConfidence
+
+        na = DimensionRating(
+            dimension=RatingDimension.SECURITY,
+            rating=LetterRating.NA,
+            confidence=MeasurementConfidence.NOT_MEASURED,
+        )
+        measured = DimensionRating(
+            dimension=RatingDimension.MAINTAINABILITY,
+            rating=LetterRating.B,
+        )
+        ratings = ProjectRatings(
+            maintainability=measured,
+            reliability=na,
+            security=na,
+            overall_rating=LetterRating.NA,
+        )
+        metrics = extract_metrics_from_reports(ratings=ratings)
+        assert MetricType.SECURITY_RATING not in metrics
+        assert MetricType.RELIABILITY_RATING not in metrics
+        assert metrics[MetricType.MAINTAINABILITY_RATING] == "B"
+
+    def test_blocker_finding_counts_as_critical(self):
+        report = SimpleNamespace(findings=[SimpleNamespace(severity="blocker")])
+        metrics = extract_metrics_from_reports(security_report=report)
+        assert metrics[MetricType.CRITICAL_VULNERABILITIES] == 1.0
+
 
 class TestSecurityScoreEvaluation:
     def _evaluate(self, metrics):

@@ -29,6 +29,7 @@ class TestLetterRating:
         assert LetterRating.C.value == "C"
         assert LetterRating.D.value == "D"
         assert LetterRating.E.value == "E"
+        assert LetterRating.NA.value == "N/A"
 
     def test_letter_rating_is_string_enum(self):
         """Test that LetterRating members compare as strings."""
@@ -37,10 +38,11 @@ class TestLetterRating:
         assert LetterRating.C == "C"
         assert LetterRating.D == "D"
         assert LetterRating.E == "E"
+        assert LetterRating.NA == "N/A"
 
-    def test_all_five_ratings_exist(self):
-        """Test that exactly five ratings exist."""
-        assert len(LetterRating) == 5
+    def test_all_six_ratings_exist(self):
+        """Test that A-E plus N/A exist."""
+        assert len(LetterRating) == 6
 
     def test_rating_ordering_via_calculator(self):
         """Test that the calculator treats A as best and E as worst."""
@@ -86,14 +88,15 @@ class TestRatingsCalculator:
         assert calculator.thresholds.b_max == 8.0
 
     def test_calculate_from_reports_no_reports(self):
-        """Test that no reports provided defaults to all A ratings."""
+        """Missing reports are N/A, never silent A."""
         calculator = RatingsCalculator()
         ratings = calculator.calculate_from_reports(scan_path="./src")
 
-        assert ratings.maintainability.rating == "A"
-        assert ratings.reliability.rating == "A"
-        assert ratings.security.rating == "A"
-        assert ratings.overall_rating == "A"
+        assert ratings.maintainability.rating == "N/A"
+        assert ratings.reliability.rating == "N/A"
+        assert ratings.security.rating == "N/A"
+        assert ratings.overall_rating == "N/A"
+        assert ratings.overall_rating != "A"
 
     def test_calculate_from_reports_returns_project_ratings(self):
         """Test that calculate_from_reports returns a ProjectRatings instance."""
@@ -202,16 +205,17 @@ class TestMaintainabilityRating:
 
         assert abs(ratings.maintainability.score - 15.0) < 0.1
 
-    def test_maintainability_none_report_returns_a(self):
-        """Test that None debt_report yields A rating."""
+    def test_maintainability_none_report_returns_na(self):
+        """Test that None debt_report yields N/A, not A."""
         calculator = RatingsCalculator()
         dim = calculator._calculate_maintainability(None)
 
-        assert dim.rating == "A"
+        assert dim.rating == "N/A"
         assert dim.score == 0.0
+        assert str(getattr(dim.confidence, "value", dim.confidence)) == "not_measured"
 
-    def test_maintainability_disabled_returns_a(self):
-        """Test that disabled maintainability check returns A."""
+    def test_maintainability_disabled_returns_na(self):
+        """Test that disabled maintainability check returns N/A."""
         config = RatingsConfig(enable_maintainability=False)
         calculator = RatingsCalculator(config)
         debt_report = SimpleNamespace(
@@ -222,7 +226,7 @@ class TestMaintainabilityRating:
         )
         dim = calculator._calculate_maintainability(debt_report)
 
-        assert dim.rating == "A"
+        assert dim.rating == "N/A"
 
     def test_debt_ratio_boundary_exactly_5_percent(self):
         """Test the exact boundary at 5% is still rated A."""
@@ -267,9 +271,22 @@ class TestReliabilityRating:
         return item
 
     def test_reliability_rating_a_no_bugs(self):
-        """Test rating A when there are no bugs."""
+        """Test rating A when reports are present and contain no bugs."""
         calculator = RatingsCalculator()
-        ratings = calculator.calculate_from_reports(scan_path=".")
+        debt_report = SimpleNamespace(
+            total_debt_hours=0.0,
+            total_lines_of_code=100,
+            total_debt_items=0,
+            debt_items=[],
+        )
+        quality_report = SimpleNamespace(detected_smells=[])
+        security_report = SimpleNamespace(findings=[])
+        ratings = calculator.calculate_from_reports(
+            scan_path=".",
+            debt_report=debt_report,
+            quality_report=quality_report,
+            security_report=security_report,
+        )
 
         assert ratings.reliability.rating == "A"
 
@@ -369,8 +386,8 @@ class TestReliabilityRating:
 
         assert ratings.reliability.rating == "E"
 
-    def test_reliability_disabled_returns_a(self):
-        """Test that disabled reliability check returns A."""
+    def test_reliability_disabled_returns_na(self):
+        """Test that disabled reliability check returns N/A."""
         config = RatingsConfig(enable_reliability=False)
         calculator = RatingsCalculator(config)
         debt_report = SimpleNamespace(
@@ -381,7 +398,7 @@ class TestReliabilityRating:
         )
         ratings = calculator.calculate_from_reports(scan_path=".", debt_report=debt_report)
 
-        assert ratings.reliability.rating == "A"
+        assert ratings.reliability.rating == "N/A"
 
     def test_reliability_rationale_no_bugs(self):
         """Test rationale text when no bugs found."""
@@ -416,19 +433,22 @@ class TestSecurityRating:
         return report
 
     def test_security_rating_a_no_vulnerabilities(self):
-        """Test rating A when no vulnerabilities found."""
+        """Test rating A when a security report is present and clean."""
         calculator = RatingsCalculator()
-        ratings = calculator.calculate_from_reports(scan_path=".")
+        ratings = calculator.calculate_from_reports(
+            scan_path=".", security_report=self._make_security_report([])
+        )
 
         assert ratings.security.rating == "A"
 
-    def test_security_rating_a_none_report(self):
-        """Test rating A when security report is None."""
+    def test_security_rating_na_none_report(self):
+        """Missing security report is N/A, not A."""
         calculator = RatingsCalculator()
         dim = calculator._calculate_security(None)
 
-        assert dim.rating == "A"
+        assert dim.rating == "N/A"
         assert dim.score == 0.0
+        assert str(getattr(dim.confidence, "value", dim.confidence)) == "not_measured"
 
     def test_security_rating_b_low_vulnerability(self):
         """Test rating B with only low severity vulnerability."""
@@ -523,14 +543,45 @@ class TestSecurityRating:
 
         assert dim.rating == "D"
 
-    def test_security_disabled_returns_a(self):
-        """Test that disabled security check returns A."""
+    def test_security_disabled_returns_na(self):
+        """Test that disabled security check returns N/A."""
         config = RatingsConfig(enable_security=False)
         calculator = RatingsCalculator(config)
         security_report = SimpleNamespace(findings=[SimpleNamespace(severity="critical")])
         dim = calculator._calculate_security(security_report)
 
-        assert dim.rating == "A"
+        assert dim.rating == "N/A"
+
+    def test_blocker_severity_maps_to_e(self):
+        """Blocker findings are the worst band (E), not A."""
+        calculator = RatingsCalculator()
+        security_report = self._make_security_report(["blocker"])
+        ratings = calculator.calculate_from_reports(
+            scan_path=".", security_report=security_report
+        )
+
+        assert ratings.security.rating == "E"
+        assert calculator._severity_to_rating("blocker") == LetterRating.E
+        assert calculator._severity_to_rating("BLOCKER") == LetterRating.E
+
+    def test_missing_security_report_does_not_yield_overall_a(self):
+        """A scan that skipped security must not print overall A."""
+        calculator = RatingsCalculator()
+        debt_report = SimpleNamespace(
+            total_debt_hours=0.0,
+            total_lines_of_code=1000,
+            total_debt_items=0,
+            debt_items=[],
+            tdr_percent=0.0,
+        )
+        ratings = calculator.calculate_from_reports(
+            scan_path=".", debt_report=debt_report
+        )
+
+        assert ratings.security.rating == "N/A"
+        assert ratings.maintainability.rating == "A"
+        assert ratings.overall_rating == "N/A"
+        assert ratings.overall_rating != "A"
 
 
 class TestOverallRating:
@@ -579,14 +630,19 @@ class TestOverallRating:
     def test_overall_from_full_calculation(self):
         """Test overall rating in end-to-end calculation."""
         calculator = RatingsCalculator()
-        # Force maintainability to E, others to A
+        # Force maintainability to E; supply empty reports so others are measured A
         debt_report = SimpleNamespace(
             total_debt_hours=100.0,
             total_lines_of_code=100,
             total_debt_items=0,
             debt_items=[],
         )
-        ratings = calculator.calculate_from_reports(scan_path=".", debt_report=debt_report)
+        ratings = calculator.calculate_from_reports(
+            scan_path=".",
+            debt_report=debt_report,
+            quality_report=SimpleNamespace(detected_smells=[]),
+            security_report=SimpleNamespace(findings=[]),
+        )
 
         assert ratings.overall_rating == "E"
 
@@ -596,6 +652,17 @@ class TestOverallRating:
         result = calculator._derive_overall_rating("A", "C", "B")
         assert result == LetterRating.C
 
+    def test_overall_na_when_any_dimension_unmeasured(self):
+        """N/A dimensions are excluded; incomplete sets are not a letter A."""
+        calculator = RatingsCalculator()
+        assert calculator._derive_overall_rating(
+            LetterRating.A, LetterRating.B, LetterRating.NA
+        ) == LetterRating.NA
+        assert calculator._derive_overall_rating("A", "A", "N/A") == LetterRating.NA
+        assert calculator._derive_overall_rating(
+            LetterRating.NA, LetterRating.NA, LetterRating.NA
+        ) == LetterRating.NA
+
 
 class TestWorstSeverityHelper:
     """Tests for the internal _worst_severity helper method."""
@@ -604,6 +671,11 @@ class TestWorstSeverityHelper:
         """Test critical beats high severity."""
         calculator = RatingsCalculator()
         assert calculator._worst_severity("high", "critical") == "critical"
+
+    def test_blocker_beats_critical(self):
+        """Test blocker beats critical severity."""
+        calculator = RatingsCalculator()
+        assert calculator._worst_severity("critical", "blocker") == "blocker"
 
     def test_high_beats_medium(self):
         """Test high beats medium severity."""
@@ -668,8 +740,14 @@ class TestSeverityToRatingHelper:
         calculator = RatingsCalculator()
         assert calculator._severity_to_rating("critical") == LetterRating.E
 
+    def test_blocker_returns_e(self):
+        """Test 'blocker' severity returns E (same band as critical)."""
+        calculator = RatingsCalculator()
+        assert calculator._severity_to_rating("blocker") == LetterRating.E
+
     def test_uppercase_severity_handled(self):
         """Test uppercase severity strings are normalised correctly."""
         calculator = RatingsCalculator()
         assert calculator._severity_to_rating("CRITICAL") == LetterRating.E
         assert calculator._severity_to_rating("HIGH") == LetterRating.D
+        assert calculator._severity_to_rating("BLOCKER") == LetterRating.E

@@ -31,11 +31,6 @@ from enum import Enum
 from pathlib import Path
 from typing import Optional, Sequence
 
-from Asgard.Heimdall.Security.context.test_context import (
-    ContextTag as _HeimdallContextTag,
-    classify_file_context as _heimdall_classify_file_context,
-)
-
 
 class CodeContext(str, Enum):
     """Code context a file (or scope) belongs to."""
@@ -165,6 +160,10 @@ def classify(
     metrics the way GENERATED production code is.
     """
     str_path = _norm(str(path))
+    from Asgard.Heimdall.Security.context.test_context import (
+        ContextTag as _HeimdallContextTag,
+        classify_file_context as _heimdall_classify_file_context,
+    )
     heimdall_tag = _heimdall_classify_file_context(str_path, strict_scan_paths=strict_scan_paths)
     if heimdall_tag is not _HeimdallContextTag.PRODUCTION:
         return CodeContext.TEST

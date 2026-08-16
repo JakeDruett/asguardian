@@ -32,12 +32,13 @@ from Asgard.Bragi.Ratings.models._scoring_models import (
 
 
 class LetterRating(str, Enum):
-    """A-E letter rating."""
+    """A-E letter rating, or N/A when the dimension was not measured."""
     A = "A"
     B = "B"
     C = "C"
     D = "D"
     E = "E"
+    NA = "N/A"
 
 
 class RatingDimension(str, Enum):
@@ -50,7 +51,7 @@ class RatingDimension(str, Enum):
 class DimensionRating(BaseModel):
     """Rating result for a single quality dimension."""
     dimension: RatingDimension = Field(..., description="The quality dimension being rated")
-    rating: LetterRating = Field(..., description="The A-E letter rating")
+    rating: LetterRating = Field(..., description="The A-E letter rating, or N/A if unmeasured")
     score: float = Field(0.0, description="Numeric score used to derive the rating")
     rationale: str = Field("", description="Explanation of how the rating was determined")
     issues_count: int = Field(0, description="Number of issues contributing to this rating")
@@ -128,7 +129,10 @@ class ProjectRatings(BaseModel):
     )
     overall_rating: LetterRating = Field(
         ...,
-        description="Overall project rating (worst of the three dimensions)"
+        description=(
+            "Overall project rating (worst of measured dimensions). "
+            "N/A when any dimension is unmeasured — never a silent A."
+        ),
     )
     scan_path: str = Field("", description="Root path that was rated")
     scanned_at: datetime = Field(default_factory=datetime.now, description="When rating was calculated")
