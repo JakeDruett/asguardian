@@ -86,4 +86,4 @@
 {"id":"CH-0114","at":"2026-08-16T17:44:00Z","commit":"bbc7e09","wave":"W3","summary":"SecurityAPI loader precedence + fail-closed scan_all"}
 {"id":"CH-0017","at":"2026-08-16T17:50:00Z","commit":"4cec2a8","wave":"W4","summary":"HMAC/schema architecture bounds cache; hydrate fail is miss"}
 {"id":"CH-0022","at":"2026-08-16T18:00:00Z","commit":"f4f18d8","wave":"W4","summary":"Iterative TS SOLID walk with depth/node/size caps"}
-{"id":"CH-0053","at":"2026-08-16T18:02:00Z","commit":"pending","wave":"W4","summary":"ParallelScanner spawn + named worker; timeout kills; cap 32"}
+{"id":"CH-0053","at":"2026-08-16T18:02:00Z","commit":"8bc755e","wave":"W4","summary":"ParallelScanner spawn + named worker; timeout kills; cap 32"}
