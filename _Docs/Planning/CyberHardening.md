@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 8    | 51    | 0             |
+| Medium   | 7    | 52    | 0             |
 | Low      | 10   | 12    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1219,7 +1219,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0070 — Accessibility `page.evaluate` interpolates DOM IDs into JS
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T18:12:00Z
+- **Implementation note:** `getElementById` uses a static evaluate function; `id_ref` is an argument, not source.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-95
@@ -2032,12 +2035,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 24
-- Fixed: 90
+- Open: 23
+- Fixed: 91
 - Accepted risk: 0
 - Current wave: W4
-- Next: CH-0070, CH-0074, CH-0083
-- Last commit: 9ee99f1
+- Next: CH-0074, CH-0083, CH-0084
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

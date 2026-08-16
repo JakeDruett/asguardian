@@ -17,6 +17,9 @@ from Asgard.Freya.Accessibility.services._aria_validator_checks import (
     get_selector,
 )
 
+# Static evaluate body. Page IDs are the argument, never source (CH-0070).
+_ID_EXISTS_JS = "(id) => document.getElementById(id) !== null"
+
 
 async def validate_hidden_focusable(page: Page) -> List[ARIAViolation]:
     """Validate that aria-hidden elements don't contain focusable content."""
@@ -66,9 +69,7 @@ async def validate_aria_ids(page: Page) -> List[ARIAViolation]:
                     continue
 
                 for id_ref in id_refs.split():
-                    exists = await page.evaluate(f"""
-                        () => document.getElementById("{id_ref}") !== null
-                    """)
+                    exists = await page.evaluate(_ID_EXISTS_JS, id_ref)
 
                     if not exists:
                         selector = await get_selector(page, elem)
