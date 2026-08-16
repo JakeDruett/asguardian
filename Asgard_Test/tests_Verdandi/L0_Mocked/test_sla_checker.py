@@ -145,10 +145,14 @@ class TestSLAChecker:
         assert compliance_rate == pytest.approx(66.67, abs=0.1)
 
     def test_calculate_compliance_rate_empty(self):
-        """Test compliance rate with no results."""
+        """Empty window set is not 100% compliant."""
         compliance_rate = self.checker.calculate_compliance_rate([])
 
-        assert compliance_rate == 100.0
+        assert compliance_rate == 0.0
+
+    def test_non_finite_samples_are_breached(self):
+        result = self.checker.check([float("nan"), float("nan"), float("nan")])
+        assert result.status == SLAStatus.BREACHED
 
     def test_violations_list(self):
         """Test that violations are properly listed."""

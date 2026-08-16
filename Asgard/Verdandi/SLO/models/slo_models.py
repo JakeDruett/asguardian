@@ -347,5 +347,5 @@ class SLOReport(BaseModel):
     def compliance_percentage(self) -> float:
         """Calculate percentage of SLOs in compliance."""
         if self.total_slos == 0:
-            return 100.0
+            return 0.0
         return (self.slos_compliant / self.total_slos) * 100.0

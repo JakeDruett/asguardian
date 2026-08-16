@@ -529,7 +529,7 @@ class TestSLOReport:
             slos_compliant=0,
         )
 
-        assert report.compliance_percentage == 100.0  # Default when no SLOs
+        assert report.compliance_percentage == 0.0  # Empty window is not 100%
 
     def test_slo_report_compliance_breakdown(self):
         """Test SLO compliance breakdown in report."""

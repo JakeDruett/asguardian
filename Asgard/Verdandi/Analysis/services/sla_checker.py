@@ -86,7 +86,10 @@ class SLAChecker:
         violations = []
         status = SLAStatus.COMPLIANT
 
-        if percentile_value > self.config.threshold_ms:
+        if not math.isfinite(percentile_value) or not math.isfinite(margin):
+            violations.append("Non-finite percentile or margin; treating window as BREACHED")
+            status = SLAStatus.BREACHED
+        elif percentile_value > self.config.threshold_ms:
             violations.append(
                 f"P{self.config.target_percentile} response time {percentile_value:.1f}ms "
                 f"exceeds threshold {self.config.threshold_ms}ms"
@@ -95,14 +98,14 @@ class SLAChecker:
         elif margin < (100 - self.config.warning_threshold_percent):
             status = SLAStatus.WARNING
 
-        if availability is not None and self.config.availability_target:
+        if availability is not None and self.config.availability_target is not None:
             if availability < self.config.availability_target:
                 violations.append(
                     f"Availability {availability:.2f}% below target {self.config.availability_target}%"
                 )
                 status = SLAStatus.BREACHED
 
-        if error_rate is not None and self.config.error_rate_threshold:
+        if error_rate is not None and self.config.error_rate_threshold is not None:
             if error_rate > self.config.error_rate_threshold:
                 violations.append(
                     f"Error rate {error_rate:.2f}% exceeds threshold {self.config.error_rate_threshold}%"
@@ -229,7 +232,7 @@ class SLAChecker:
             Percentage of windows that were compliant (0-100)
         """
         if not results:
-            return 100.0
+            return 0.0
 
         compliant = sum(1 for r in results if r.status == SLAStatus.COMPLIANT)
         return (compliant / len(results)) * 100
