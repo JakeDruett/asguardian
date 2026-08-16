@@ -529,6 +529,31 @@ JENKINS_PROVENANCE_ERROR = (
 )
 
 
+def _jenkins_safe_script(script: str) -> str:
+    if "'''" in script or "\r" in script:
+        raise ValueError(
+            "Refusing Jenkins run script: contains ''' or CR that would break Groovy"
+        )
+    return script
+
+
+def _jenkins_stage_name(name: str) -> str:
+    if "'" in name or "\n" in name or "\r" in name:
+        raise ValueError("Refusing Jenkins stage name: contains quote or newline")
+    return name
+
+
+def _jenkins_groovy_string(value: str, field: str) -> str:
+    """Single-quoted Groovy string; refuse triple-quote breakout."""
+    text = str(value)
+    if "'''" in text or "\r" in text:
+        raise ValueError(
+            f"Refusing Jenkins {field}: contains ''' or CR that would break Groovy"
+        )
+    escaped = text.replace("\\", "\\\\").replace("'", "\\'")
+    return f"'{escaped}'"
+
+
 def generate_jenkins(config: PipelineConfig) -> str:
     if config.provenance:
         raise ValueError(JENKINS_PROVENANCE_ERROR)
@@ -551,14 +576,14 @@ def generate_jenkins(config: PipelineConfig) -> str:
     if config.env:
         lines.append("    environment {")
         for key, value in config.env.items():
-            lines.append(f"        {key} = '{value}'")
+            lines.append(f"        {key} = {_jenkins_groovy_string(value, 'env')}")
         lines.append("    }")
         lines.append("")
 
     lines.append("    stages {")
 
     for stage in config.stages:
-        lines.append(f"        stage('{stage.name}') {{")
+        lines.append(f"        stage('{_jenkins_stage_name(stage.name)}') {{")
         lines.append("            options {")
         lines.append(
             f"                timeout(time: {stage.timeout_minutes or DEFAULT_TIMEOUT_MINUTES}, unit: 'MINUTES')"
@@ -566,9 +591,10 @@ def generate_jenkins(config: PipelineConfig) -> str:
         lines.append("            }")
         lines.append("            steps {")
 
-        for step in stage.steps:
+        for step in harden_steps(stage.steps):
             if step.run:
-                lines.append(f"                sh '''{step.run}'''")
+                script = _jenkins_safe_script(step.run)
+                lines.append(f"                sh({_jenkins_groovy_string(script, 'run')})")
 
         lines.append("            }")
         lines.append("        }")

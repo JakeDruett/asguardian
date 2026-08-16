@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 20   | 8     | 0             |
+| High     | 19   | 9     | 0             |
 | Medium   | 59   | 0     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
@@ -1579,7 +1579,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0103 — Jenkins emitter interpolates `run`/`env` without hardening
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T10:28:00Z
+- **Implementation note:** harden_steps; quoted sh(); refuse ''' breakout in run/env.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-94 / CWE-78
@@ -1786,12 +1789,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 106
-- Fixed: 8
+- Open: 105
+- Fixed: 9
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0066
-- Last commit: 882c7b8
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

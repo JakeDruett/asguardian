@@ -452,6 +452,31 @@ class TestProvenanceAndSBOM:
             PipelineGenerator().generate(config)
         assert "Tekton Chains" in JENKINS_PROVENANCE_ERROR
 
+    def test_jenkins_refuses_triple_quote_breakout(self):
+        config = PipelineConfig(
+            name="CI",
+            platform=CICDPlatform.JENKINS,
+            stages=[PipelineStage(
+                name="Build",
+                steps=[StepConfig(name="x", run="'''; sh 'id")],
+            )],
+        )
+        with pytest.raises(ValueError, match="'''"):
+            generate_jenkins(config)
+
+    def test_jenkins_emits_quoted_sh_not_raw_triple_quotes(self):
+        config = PipelineConfig(
+            name="CI",
+            platform=CICDPlatform.JENKINS,
+            stages=[PipelineStage(
+                name="Build",
+                steps=[StepConfig(name="x", run="make test")],
+            )],
+        )
+        rendered = generate_jenkins(config)
+        assert "sh('make test')" in rendered
+        assert "sh '''" not in rendered
+
     def test_gitlab_provenance_variable(self, generator):
         config = PipelineConfig(
             name="CI", platform=CICDPlatform.GITLAB_CI,
