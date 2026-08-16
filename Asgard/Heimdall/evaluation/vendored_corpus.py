@@ -36,6 +36,7 @@ import yaml
 from Asgard.Heimdall.evaluation.corpus import (
     GroundTruthInstance,
     ReportedFinding,
+    confine_eval_path,
     finding_from_taint_flow,
     ground_truth_from_taint_manifest,
 )
@@ -85,7 +86,10 @@ def _corpus_total_loc(corpus_dir: Path, cases: Sequence[dict]) -> int:
     files = {c["file"] for c in cases}
     total = 0
     for name in files:
-        path = corpus_dir / name
+        try:
+            path = confine_eval_path(corpus_dir, name)
+        except ValueError:
+            continue
         if path.exists():
             total += max(1, len(path.read_text(encoding="utf-8").splitlines()))
     return total
@@ -140,7 +144,10 @@ def scan_vendored_corpus(corpus_root: Path) -> VendoredCorpusScan:
         cwe_coverage.update(c["cwe"] for c in cases if c.get("cwe"))
         total_loc += _corpus_total_loc(lang_dir, cases)
         for case in cases:
-            fixture_path = lang_dir / case["file"]
+            try:
+                fixture_path = confine_eval_path(lang_dir, case["file"])
+            except ValueError:
+                continue
             if not fixture_path.exists():
                 continue
             result = engine.scan_file(fixture_path)

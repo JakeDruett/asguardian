@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
-| Medium   | 39   | 20    | 0             |
+| Medium   | 38   | 21    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1468,7 +1468,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0091 — Evaluation corpus manifest paths are unjailed
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T13:35:00Z
+- **Implementation note:** confine_eval_path rejects abs/`..`; vendored/taint/CVE holdout joins must stay under corpus/checkout root.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-22
@@ -1894,11 +1897,11 @@ None yet.
 
 ## Implementation progress
 
-- Open: 70
-- Fixed: 44
+- Open: 69
+- Fixed: 45
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0042, CH-0057, CH-0065, CH-0091
+- Next: CH-0042, CH-0057, CH-0065
 - Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 

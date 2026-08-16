@@ -114,9 +114,21 @@ class CorpusManifest:
         instances: List[GroundTruthInstance] = []
         for entry in self.cve_holdouts:
             repo_rel = entry["repo_path"]
-            base = (Path(checkout_root) / repo_rel) if checkout_root else Path(repo_rel)
+            try:
+                if checkout_root is not None:
+                    base = confine_eval_path(Path(checkout_root), repo_rel)
+                else:
+                    raw = Path(repo_rel)
+                    if raw.is_absolute() or ".." in raw.parts:
+                        continue
+                    base = raw
+            except ValueError:
+                continue
             for i, patch in enumerate(entry.get("patch_spans", [])):
-                file_path = str(base / patch["file"])
+                try:
+                    file_path = str(confine_eval_path(base, patch["file"]))
+                except ValueError:
+                    continue
                 span = ASTSpan(
                     file_path=file_path,
                     start_line=patch["start_line"],
@@ -132,6 +144,18 @@ class CorpusManifest:
                     )
                 )
         return instances
+
+
+def confine_eval_path(root: Path, rel: str) -> Path:
+    """Resolve *rel* under *root*; reject absolute and ``..`` paths."""
+    raw = Path(rel)
+    if raw.is_absolute() or ".." in raw.parts:
+        raise ValueError("evaluation corpus path must stay under the corpus root")
+    base = Path(root).resolve()
+    dest = (base / raw).resolve()
+    if not dest.is_relative_to(base):
+        raise ValueError("evaluation corpus path must stay under the corpus root")
+    return dest
 
 
 def ground_truth_from_taint_manifest(
@@ -151,7 +175,7 @@ def ground_truth_from_taint_manifest(
     for case in manifest_cases:
         if case.get("expect") != "flow":
             continue
-        fixture_path = corpus_dir / case["file"]
+        fixture_path = confine_eval_path(corpus_dir, case["file"])
         n_lines = max(1, len(fixture_path.read_text(encoding="utf-8").splitlines()))
         instances.append(
             GroundTruthInstance(
