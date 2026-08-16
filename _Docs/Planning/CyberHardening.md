@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 12   | 16    | 0             |
+| High     | 11   | 17    | 0             |
 | Medium   | 46   | 13    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
@@ -793,7 +793,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0050 — Pyright runner writes/unlinks config in the scan tree (symlink clobber)
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 35aa35c
+- **Fixed at:** 2026-08-16T12:34:00Z
+- **Implementation note:** Already closed by CH-0049 — invoke_pyright writes pyrightconfig.json in isolated_tool_workspace and passes --project there; test_linter_isolation covers it.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-59
@@ -1858,11 +1861,11 @@ None yet.
 
 ## Implementation progress
 
-- Open: 82
-- Fixed: 32
+- Open: 81
+- Fixed: 33
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0050, CH-0058, CH-0059, CH-0068
+- Next: CH-0058, CH-0059, CH-0068, CH-0072
 - Last commit: f6c81bb
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
