@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
-| Medium   | 38   | 21    | 0             |
+| Medium   | 37   | 22    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -916,7 +916,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0057 — Alignment config `file:` paths are not confined to `base_dir`
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T13:42:00Z
+- **Implementation note:** confine_source_path rejects abs/`..`; dest must be_relative_to(base_dir) before read_text.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-22
@@ -1897,11 +1900,11 @@ None yet.
 
 ## Implementation progress
 
-- Open: 69
-- Fixed: 45
+- Open: 68
+- Fixed: 46
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0042, CH-0057, CH-0065
+- Next: CH-0042, CH-0065
 - Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 

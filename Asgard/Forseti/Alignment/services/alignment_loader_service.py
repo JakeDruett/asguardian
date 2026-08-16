@@ -56,9 +56,23 @@ def load_config(path: str) -> AlignmentConfig:
     return AlignmentConfig.model_validate(raw)
 
 
+def confine_source_path(source_file: str, base_dir: str = "") -> str:
+    """Resolve ``source_file`` under ``base_dir``; reject empty, absolute, and ``..``."""
+    if not isinstance(source_file, str) or not source_file:
+        raise ValueError("alignment source file must stay under the base directory")
+    raw = Path(source_file)
+    if raw.is_absolute() or ".." in raw.parts:
+        raise ValueError("alignment source file must stay under the base directory")
+    root = Path(base_dir).resolve()
+    dest = (root / raw).resolve()
+    if not dest.is_relative_to(root):
+        raise ValueError("alignment source file must stay under the base directory")
+    return str(dest)
+
+
 def build_ir_record(source: EntitySource, base_dir: str = "") -> IRRecord:
     """Resolve one `EntitySource` into an `IRRecord`, dispatched by format."""
-    file_path = str(Path(base_dir) / source.file) if base_dir else source.file
+    file_path = confine_source_path(source.file, base_dir)
     fmt = infer_format(source)
     builder = IRBuilderService()
 
