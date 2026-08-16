@@ -575,3 +575,188 @@
 {"path":"Asgard/Forseti/MockServer/services/mock_data_generator.py","at":"2026-08-16T07:52:56+00:00","disposition":"clean","finding_ids":[],"summary":"Parser/models/helpers; yaml.safe_load; no eval"}
 {"path":"Asgard/Forseti/MockServer/services/mock_server_generator.py","at":"2026-08-16T07:52:56+00:00","disposition":"findings","finding_ids":["CH-0061"],"summary":"Generated mock binds 0.0.0.0 debug/no-auth"}
 {"path":"Asgard/Forseti/MockServer/services/validation_proxy_service.py","at":"2026-08-16T07:52:56+00:00","disposition":"findings","finding_ids":["CH-0062"],"summary":"Open SSRF forwarder"}
+{"path":"Asgard/Forseti/OpenAPI/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/models/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/models/_openapi_base_models.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/models/completeness_models.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/models/openapi_models.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/rules/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/rules/_rule_helpers.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/rules/docs_rules.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/rules/examples_rules.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/rules/lifecycle_rules.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/rules/security_rules.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/rules/semantics_rules.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/rules/structure_rules.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/rules/style_rules.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/services/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/services/_completeness_helpers.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/services/_spec_converter_2_to_3_helpers.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/services/_spec_converter_3_to_2_helpers.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/services/_spec_generator_helpers.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/services/_spec_parser_helpers.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/services/_spec_validator_helpers.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/services/completeness_service.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/services/spec_converter_service.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/services/spec_generator_service.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/services/spec_parser_service.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/services/spec_validator_service.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/utilities/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/utilities/_openapi_io_utils.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/utilities/_openapi_spec_utils.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/OpenAPI/utilities/openapi_utils.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Protobuf/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Protobuf/models/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Protobuf/models/_protobuf_base_models.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Protobuf/models/protobuf_models.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Protobuf/services/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Protobuf/services/_protobuf_compatibility_report_helpers.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Protobuf/services/_protobuf_compatibility_service_helpers.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Protobuf/services/_protobuf_validator_parse_helpers.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Protobuf/services/_protobuf_validator_service_helpers.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Protobuf/services/protobuf_compatibility_service.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Protobuf/services/protobuf_validator_service.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Reporting/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Reporting/models/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Reporting/models/finding_models.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Reporting/services/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Reporting/services/finding_adapter_service.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Reporting/services/legacy_report_service.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Reporting/services/reporter_service.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Reporting/utilities/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Reporting/utilities/sourcemap_loader.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Rules/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Rules/models/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Rules/models/_rule_base_models.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Rules/models/rule_models.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Rules/services/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Rules/services/_builtin_rules.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Rules/services/_suppression_helpers.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Rules/services/baseline_service.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Rules/services/profile_service.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Rules/services/rule_registry_service.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Rules/services/waiver_service.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Rules/utilities/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/Rules/utilities/rule_utils.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/__main__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/cli/__init__.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/cli/_handler_runner.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/cli/_parser.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/cli/_parser_commands.py","at":"2026-08-16T07:55:23+00:00","disposition":"findings","finding_ids":["CH-0061"],"summary":"CLI default --host 0.0.0.0 for mock proxy"}
+{"path":"Asgard/Forseti/cli/_parser_flags.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/cli/handlers_align.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/cli/handlers_async_mock_codegen.py","at":"2026-08-16T07:55:23+00:00","disposition":"findings","finding_ids":["CH-0061"],"summary":"CLI default --host 0.0.0.0 for mock proxy"}
+{"path":"Asgard/Forseti/cli/handlers_compat.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/cli/handlers_docs_proto_avro_audit.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/cli/handlers_rules_baseline.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Forseti/cli/handlers_schema.py","at":"2026-08-16T07:55:23+00:00","disposition":"clean","finding_ids":[],"summary":"OpenAPI #/ refs only; protobuf regex; reports stdout; no eval"}
+{"path":"Asgard/Freya/Accessibility/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/models/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/models/_accessibility_enums.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/models/_accessibility_report_models.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/models/accessibility_models.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/_aria_validator_checks.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/_aria_validator_checks_part2.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0070"],"summary":"page.evaluate interpolates DOM IDs"}
+{"path":"Asgard/Freya/Accessibility/services/_aria_validator_tiers.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/_color_contrast_math.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/_color_contrast_page.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/_component_criticality.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/_focus_order_spatial.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/_keyboard_nav_checks.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/_screen_reader_checks.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/_screen_reader_checks_part2.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/_wcag_checks.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/_wcag_checks_part2.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/_wcag_criteria.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/aria_validator.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/color_contrast.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/keyboard_nav.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/screen_reader.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/services/wcag_validator.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Accessibility/utilities/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Config/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Config/models/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Config/models/config_models.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Config/services/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Config/services/config_loader.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Console/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Console/models/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Console/models/console_models.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Console/services/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Console/services/_console_capture_helpers.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Console/services/console_capture.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Images/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Images/models/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Images/models/image_models.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Images/services/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Images/services/_image_scanner_checks.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Images/services/_image_scanner_checks_part2.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Images/services/_image_scanner_report.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Images/services/image_optimization_scanner.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/models/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/models/_integration_base_models.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/models/_integration_crawl_models.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/models/integration_models.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/services/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/services/_baseline_manager_helpers.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0068"],"summary":"Unconfined screenshot_path unlink/copy"}
+{"path":"Asgard/Freya/Integration/services/_crawler_checks.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/services/_crawler_discovery.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright goto / SSRF"}
+{"path":"Asgard/Freya/Integration/services/_crawler_page_tester.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright goto / SSRF"}
+{"path":"Asgard/Freya/Integration/services/_crawler_politeness.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/services/_crawler_report.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0067","CH-0069"],"summary":"Unescaped HTML plus auth_config persisted"}
+{"path":"Asgard/Freya/Integration/services/_crawler_spa.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright goto / SSRF"}
+{"path":"Asgard/Freya/Integration/services/_playwright_presets.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/services/_reporter_styles.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/services/_unified_tester_responsive.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/services/_unified_tester_runners.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/services/baseline_manager.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0068"],"summary":"Unconfined screenshot_path unlink/copy"}
+{"path":"Asgard/Freya/Integration/services/html_reporter.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0067"],"summary":"Unescaped HTML/JUnit report interpolation"}
+{"path":"Asgard/Freya/Integration/services/playwright_utils.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/services/site_crawler.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated Playwright goto / SSRF"}
+{"path":"Asgard/Freya/Integration/services/unified_tester.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Integration/utilities/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Links/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Links/models/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Links/models/link_models.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Links/services/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Links/services/_link_validator_helpers.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0071"],"summary":"HEAD extracted links without scheme allowlist"}
+{"path":"Asgard/Freya/Links/services/link_validator.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0071"],"summary":"HEAD extracted links without scheme allowlist"}
+{"path":"Asgard/Freya/Security/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Security/models/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Security/models/security_header_models.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Security/services/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Security/services/_csp_analyzer_helpers.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Security/services/_mitigation_framing.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Security/services/_security_header_analyzers.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Security/services/csp_analyzer.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/Security/services/mixed_content_checker.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated URL fetch/goto"}
+{"path":"Asgard/Freya/Security/services/security_header_scanner.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated URL fetch/goto"}
+{"path":"Asgard/Freya/Security/services/sri_checker.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0066"],"summary":"Unvalidated URL fetch/goto"}
+{"path":"Asgard/Freya/cli/__init__.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_formatters.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_formatters_accessibility.py","at":"2026-08-16T08:01:35+00:00","disposition":"findings","finding_ids":["CH-0067"],"summary":"Unescaped HTML/JUnit report interpolation"}
+{"path":"Asgard/Freya/cli/_formatters_images.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_formatters_perf_seo_security.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_formatters_performance.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_formatters_security_console_links.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_formatters_seo.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_formatters_seo_security_console_links.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_formatters_visual_responsive.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_handlers_accessibility.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_handlers_config.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_handlers_images.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_handlers_images_integration.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_handlers_integration.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_handlers_perf_seo_security.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_handlers_performance.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_handlers_seo_security_console_links.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_handlers_visual_responsive.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_parser.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_parser_flags.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_parser_subcommands_a.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_parser_subcommands_b.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_parser_subcommands_b1.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}
+{"path":"Asgard/Freya/cli/_parser_subcommands_b2.py","at":"2026-08-16T08:01:35+00:00","disposition":"clean","finding_ids":[],"summary":"A11y/CLI helpers; no eval/subprocess"}

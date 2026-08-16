@@ -24,8 +24,8 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Planned | Accepted risk |
 |----------|------|---------|---------------|
 | Critical | 0    | 0       | 0             |
-| High     | 16   | 0       | 0             |
-| Medium   | 27   | 0       | 0             |
+| High     | 20   | 0       | 0             |
+| Medium   | 29   | 0       | 0             |
 | Low      | 15   | 0       | 0             |
 | Info     | 5    | 0       | 0             |
 
@@ -997,13 +997,103 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Planned fix:** Restrict defaults to literals; use `quote_identifier`; emit parameterized Alembic. Tests with `1;DROP`.
 - **Fix wave:** W2
 
+### CH-0066 — Freya site crawler navigates unvalidated URLs (SSRF / `file:`)
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-918
+- **Primary file:** `Asgard/Freya/Integration/services/_crawler_discovery.py`
+- **Also on trace:** `site_crawler.py`, `_crawler_spa.py`, `_crawler_page_tester.py`, Freya Security/Accessibility `page.goto`
+- **Location:** `page.goto(url)`; `normalize_url` only drops javascript/mailto
+- **Trace:** `start_url` / SPA `page.url` / same-origin open redirect → Playwright follows to `file:` / RFC1918 / metadata
+- **Impact:** Crawling a hostile site (or operator URL) hits internal hosts or local files. Auth `login_url` also unvalidated.
+- **Evidence:** `should_crawl` is host-string equality only; SPA enqueue skips it.
+- **Planned fix:** Allow `http`/`https` only; re-validate after redirects; block link-local/RFC1918 unless opted in; apply `should_crawl` to SPA URLs.
+- **Fix wave:** W1
+
+### CH-0067 — Freya HTML/JUnit reports interpolate crawl strings unescaped
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-79
+- **Primary file:** `Asgard/Freya/Integration/services/html_reporter.py`
+- **Also on trace:** `_crawler_report.py`, `Asgard/Freya/cli/_formatters_accessibility.py`
+- **Location:** `url`/`title`/`message`/`selector` in HTML `href` and text; JUnit XML fields
+- **Trace:** Page-controlled WCAG/selector/message → HTML report file opened in a browser
+- **Impact:** Stored XSS; `javascript:` URLs; JUnit XML injection.
+- **Evidence:** No `html.escape`. Screenshot `path` in `src`.
+- **Planned fix:** Escape all HTML/XML; allowlist `http(s)` for href/src. Tests with `<script>` in a finding message.
+- **Fix wave:** W5
+
+### CH-0068 — Visual baseline index can delete/copy arbitrary files
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-22 / CWE-59
+- **Primary file:** `Asgard/Freya/Integration/services/baseline_manager.py`
+- **Also on trace:** `_baseline_manager_helpers.py`
+- **Location:** `delete_baseline` `Path(screenshot_path).unlink()`; `version_baseline` `shutil.copy`
+- **Trace:** Tampered `baselines.json` `screenshot_path` → unlink/copy any path
+- **Impact:** Arbitrary file delete/copy if the index is writable.
+- **Evidence:** No confinement of `screenshot_path` to the storage directory.
+- **Planned fix:** Resolve and require paths under `storage_directory`. Refuse symlinks. Tests with `../`.
+- **Fix wave:** W2
+
+### CH-0069 — Crawl reports persist `auth_config` (passwords) on disk
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-312
+- **Primary file:** `Asgard/Freya/Integration/services/_crawler_report.py`
+- **Also on trace:** `site_crawler.py`
+- **Location:** `generate_report` stores full `CrawlConfig` including `auth_config`; `save_report` writes JSON
+- **Trace:** Login username/password → `crawl_report.json` in the output directory
+- **Impact:** Credentials land on disk and in CI artifacts.
+- **Evidence:** Config dumped wholesale.
+- **Planned fix:** Redact `auth_config` (keep keys, mask values). Never write passwords. Tests that the report JSON has no password string.
+- **Fix wave:** W3
+
+### CH-0070 — Accessibility `page.evaluate` interpolates DOM IDs into JS
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-95
+- **Primary file:** `Asgard/Freya/Accessibility/services/_aria_validator_checks_part2.py`
+- **Also on trace:** none
+- **Location:** `page.evaluate(f'... getElementById("{id_ref}") ...')`
+- **Trace:** `aria-labelledby` tokens from the page → JS string → evaluate
+- **Impact:** A hostile page runs arbitrary JS in the Playwright context (fetch/DOM), not Python.
+- **Evidence:** f-string interpolation of `id_ref`.
+- **Planned fix:** Pass IDs as `evaluate` arguments, not source. Tests with a quote in an ID.
+- **Fix wave:** W4
+
+### CH-0071 — Link validator HEADs extracted links without scheme allowlist
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-918
+- **Primary file:** `Asgard/Freya/Links/services/link_validator.py`
+- **Also on trace:** `_link_validator_helpers.py`
+- **Location:** `_check_single_link` `httpx.head(current_url)`
+- **Trace:** Page links / redirect `Location` → HEAD; `file:`/`ftp:` not skipped; no private-IP block
+- **Impact:** Second-order SSRF from a scanned page’s links.
+- **Evidence:** `LinkType.OTHER` not skipped. Redirects followed with `urljoin` only.
+- **Planned fix:** Only `http`/`https`; skip private ranges; re-validate Location scheme/host.
+- **Fix wave:** W1
+
 ## Planned fix waves
 
-- **W1 — CI / supply chain / secrets policy (do first):** CH-0001–CH-0006, CH-0023, CH-0024, CH-0033, CH-0049, CH-0056, CH-0060, CH-0061, CH-0062, CH-0063. Isolate git/linters; lock mock/proxy/probe/introspection network.
-- **W2 — Path confinement:** … CH-0050, CH-0057, CH-0058, CH-0059, CH-0065. Jail `$ref` and generated SQL/Alembic.
-- **W3 — Baseline / cache / policy integrity:** CH-0011, CH-0012, CH-0013, CH-0015, CH-0027, CH-0032, CH-0036, CH-0038, CH-0043, CH-0047, CH-0048, CH-0051, CH-0052, CH-0054. Sign QualityGate baselines; fix fingerprint identity; do not grade unmeasured dimensions as A.
+- **W1 — CI / supply chain / secrets / network:** CH-0001–0006, CH-0023, CH-0024, CH-0033, CH-0049, CH-0056, CH-0060–0063, CH-0066, CH-0071. Isolate git/linters; lock crawler/link/probe/proxy fetches.
+- **W2 — Path confinement:** … CH-0059, CH-0065, CH-0068. Jail `$ref`, SQL/Alembic, Freya baseline paths.
+- **W3 — Baseline / cache / secrets in artifacts:** … CH-0051, CH-0052, CH-0054, CH-0069. Redact crawl auth; sign baselines.
 - **W4 — Analyzer robustness:** CH-0016, CH-0017, CH-0018, CH-0021, CH-0022, CH-0025, CH-0031, CH-0039, CH-0045, CH-0053. Size/recursion/hunk/regex caps; spawn-safe parallel workers.
-- **W5 — Output / template hygiene:** CH-0009, CH-0019, CH-0020, CH-0030, CH-0044, CH-0046, CH-0055, CH-0064. Escape Dashboard and Forseti docs HTML.
+- **W5 — Output / template hygiene:** … CH-0055, CH-0064, CH-0067. Escape Freya HTML/JUnit reports.
 
 ## Accepted risks
 
@@ -1020,10 +1110,16 @@ None yet.
 - Batch 6 merged (2026-08-16): Quality ruby/rust/shell/typescript + Quality models A
 - Last paths completed: through Quality services `error_handling_scanner.py` (batch 7, ~80 files)
 - Next batch: remaining Quality scanners (file_length, taint, type_checker, parallel_scanner) + QualityGate + Ratings
-- Resume pointer: `python3 scripts/cyberhardening_inventory.py status` then `next 8`
+- Resume pointer (2026-08-16): remaining=3113 completed=762 ledger=762. Next:
+  - `Asgard/Freya/Performance/__init__.py`
+  - then Freya SEO/Visual/Scoring, Heimdall, Verdandi, Volundr, Asgard_Test, `_FutureItems-Security`
+- Commands: `python3 scripts/cyberhardening_inventory.py status` / `next 8`
+- Highest ID: CH-0071
+- **Successor:** do not rebuild inventory unless todo missing. Continue `next N`. Do not implement fixes.
 - Spot-check batch 7: `_git_friction` git -C (CH-0024); HTML smell report unescaped; mypy/pyright/pylint untrusted config; pyright writes into scan tree.
 - Batch 8 merged: remaining Quality scanners + taint + QualityGate + Ratings
 - Batch 9: Dashboard + Forseti Alignment/AsyncAPI/Avro/CodeGen
 - Batch 10: Forseti Compatibility through MockServer/LiveContract
-- Highest ID: CH-0065
+- Batch 11: Freya Security/Accessibility/cli/Integration/Config/Console/Images/Links
+- Highest ID: CH-0071
 - **Successor:** do not rebuild inventory unless `todo.json` is missing. Continue `next N`. Do not implement fixes.

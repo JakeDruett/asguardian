@@ -2,905 +2,11 @@
   "version": 1,
   "repo_root": ".",
   "generated_at": "2026-08-16T07:04:47+00:00",
-  "updated_at": "2026-08-16T07:52:58+00:00",
+  "updated_at": "2026-08-16T08:01:37+00:00",
   "planning_dir": "_Docs/Planning",
   "plan_path": "_Docs/Planning/CyberHardening.md",
   "total_discovered": 3875,
   "remaining": [
-    {
-      "path": "Asgard/Forseti/OpenAPI/__init__.py",
-      "bytes": 2216,
-      "sha256": "486dcc7e8f80d6cdb2e232f42e01404cee30ccfc479eac8358735d9cf541f434",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/models/__init__.py",
-      "bytes": 1008,
-      "sha256": "7e68768b18b6da802eaff7e8d05ea769091f5baa9cc7e21070a975bd6c374201",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/models/_openapi_base_models.py",
-      "bytes": 5987,
-      "sha256": "2b903a89ac06d4e21994e591ab4fe40438e7050f6efb6aa817a27ca420132f31",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/models/completeness_models.py",
-      "bytes": 3379,
-      "sha256": "a28635a702d364356e56bec303860d7e23a2667e5339e83c0ed9822156eae921",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/models/openapi_models.py",
-      "bytes": 10977,
-      "sha256": "261c3f9d57253c4a0d0015d20b35cc459c62ad8057e96a70fdb2d178b683c610",
-      "mtime": "2026-03-20T03:27:01+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/rules/__init__.py",
-      "bytes": 514,
-      "sha256": "5975042f6f22e828fc7c72f048e8914cf9efe03ec0440ba96212b10dfb283ddc",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/rules/_rule_helpers.py",
-      "bytes": 10703,
-      "sha256": "1214b525d0b03a7d4c22583461a3c8d0df630a66ca1deecdc72c316c60412af3",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/rules/docs_rules.py",
-      "bytes": 7850,
-      "sha256": "42d823beaba67add1ae264dae47b182b9bc54217f215ce8dbab2ab638e65223f",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/rules/examples_rules.py",
-      "bytes": 6139,
-      "sha256": "5646921d58bdf0d9621fb3b3a34a6d17aa7b91ffa3c58a34fd2013cec0dec28d",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/rules/lifecycle_rules.py",
-      "bytes": 3611,
-      "sha256": "dfc75a5c35ea7b67a1ecef98915d128b2b7a54399ac2732551076398cb42d244",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/rules/security_rules.py",
-      "bytes": 12166,
-      "sha256": "183f33ab4fd7c31a7331f359002f03dc2097dc590eee3b39b2f91689a66040ad",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/rules/semantics_rules.py",
-      "bytes": 13314,
-      "sha256": "65406e5bf13ec39387715025179f2b2118216f52659b6fe53a985c789bffe992",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/rules/structure_rules.py",
-      "bytes": 11157,
-      "sha256": "e62deffad4d29fe862f3dec12141ee7aba02483ce5dcf30ccdeea4502ada49ea",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/rules/style_rules.py",
-      "bytes": 7406,
-      "sha256": "6d6a5d9e9bf0810ebec7882c9349813ea7803f8c8d2cf9ef72381f9c7c48dbc4",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/services/__init__.py",
-      "bytes": 662,
-      "sha256": "283f604b5a768b0b6525e41758aebe25f8a91a2af9e8f3e6980ff2600c972fb1",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/services/_completeness_helpers.py",
-      "bytes": 12733,
-      "sha256": "c5303206311e6afa21a4b934b5133d3001057bacee968590f2f3741380b85435",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/services/_spec_converter_2_to_3_helpers.py",
-      "bytes": 9475,
-      "sha256": "fc01ee5b77744a1ff24baaffa8753e90b38ce2289675d3231cbd25a4f4622357",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/services/_spec_converter_3_to_2_helpers.py",
-      "bytes": 6613,
-      "sha256": "7c842d9f08e2de39b22ca479aad3d9724be900e950c05eb9b13f474e80e4ee3a",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/services/_spec_generator_helpers.py",
-      "bytes": 6845,
-      "sha256": "4528e30651d0ba4c55f5477632e5d8d5e6533eca5bad66a49cb7e7e5631a88ee",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/services/_spec_parser_helpers.py",
-      "bytes": 5863,
-      "sha256": "92fbe1464ad75cb94123de61f6338ac8e7e5878b4648d642e5ccdd2f73f240df",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/services/_spec_validator_helpers.py",
-      "bytes": 11126,
-      "sha256": "b369298522877721c7d6bff02c403bb80289f4c02c6919a0410c13346384de00",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/services/completeness_service.py",
-      "bytes": 3897,
-      "sha256": "5700e6f778e5d408ee9e0c73b0d6b842aa9e49471f2346368c8f6b24b81e5549",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/services/spec_converter_service.py",
-      "bytes": 7202,
-      "sha256": "f16131556f166834ac25055c9d889f68e0e572f25eee96868662aac72e8bcdda",
-      "mtime": "2026-03-20T03:17:57+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/services/spec_generator_service.py",
-      "bytes": 3346,
-      "sha256": "f14bfe2c8e673e098cfb69171c3782be11fa8cd3a3507d7221f46f8069ee772f",
-      "mtime": "2026-03-20T03:38:56+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/services/spec_parser_service.py",
-      "bytes": 4613,
-      "sha256": "ea54a4c7cab5518e2e820d407bd9c5d8752cb76c2889052859ff1f583855ebf2",
-      "mtime": "2026-03-20T03:41:35+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/services/spec_validator_service.py",
-      "bytes": 8100,
-      "sha256": "8238922419fc49970873355efacc2cc31d90aa92cc642584f10cfae5557a34a0",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/utilities/__init__.py",
-      "bytes": 554,
-      "sha256": "4ab6c0b542509156e218fedc0a62f984dbaff64343e4e71dca949b1cbc324571",
-      "mtime": "2026-03-19T23:55:10+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/utilities/_openapi_io_utils.py",
-      "bytes": 2709,
-      "sha256": "fca3887530af0a8bcec4b349ccfd1d9497843b95d199698b78f60ee92b4cd345",
-      "mtime": "2026-03-20T03:38:34+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/utilities/_openapi_spec_utils.py",
-      "bytes": 10138,
-      "sha256": "12fcc6c4c0b6d653e85cf56210a5d50d7305461556bd5dfafda5eee90ce0f065",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/OpenAPI/utilities/openapi_utils.py",
-      "bytes": 2122,
-      "sha256": "178570df9fc2f98382e7d8bf7762e8e8519787c4e8c216f243d78d3aa8aa5328",
-      "mtime": "2026-03-20T03:38:45+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Protobuf/__init__.py",
-      "bytes": 1994,
-      "sha256": "9119c741e400df0575a934f4298883fbf0f75f951203970bfe6f169555e75ea7",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Protobuf/models/__init__.py",
-      "bytes": 858,
-      "sha256": "66a702396e7930769a6c8826c151c75ec063c43670567fca42565d7874ed6af4",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Protobuf/models/_protobuf_base_models.py",
-      "bytes": 5446,
-      "sha256": "6e2f3ce82253f88174f326ac7331fa5fa1018e2056851e22faacec29c7150cc2",
-      "mtime": "2026-03-20T03:25:09+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Protobuf/models/protobuf_models.py",
-      "bytes": 8073,
-      "sha256": "a2b4d1f88b3c19982b692803a8fe635d02578b203c8b2c90858b641ff78aeacb",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Protobuf/services/__init__.py",
-      "bytes": 390,
-      "sha256": "461292a8be8333d5458ced9440983dad584a1d8ccbd1b390a6e241bc221d50aa",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Protobuf/services/_protobuf_compatibility_report_helpers.py",
-      "bytes": 3422,
-      "sha256": "05dd9b9718d644c9b8aaba2f00634ebcc40a2c29648704bf08a61a97c13028f4",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Protobuf/services/_protobuf_compatibility_service_helpers.py",
-      "bytes": 12485,
-      "sha256": "2a8f85ea54f96d9931b531b92261cf409885d22f0116282fc8c6283fdc13f669",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Protobuf/services/_protobuf_validator_parse_helpers.py",
-      "bytes": 9134,
-      "sha256": "19e58266e53e598c1c0bc3eff3079c6eda760c87185c4cd0f26cc6a01a7d0693",
-      "mtime": "2026-03-20T02:42:02+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Protobuf/services/_protobuf_validator_service_helpers.py",
-      "bytes": 3635,
-      "sha256": "87885e5a93737b0dd7257fbc6f864240791fb10af36355f8aa4ca4eec1d237f3",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Protobuf/services/protobuf_compatibility_service.py",
-      "bytes": 8817,
-      "sha256": "3a1c56897bc75999b02f5c620c36e96c4acaf38596eadd8ebc6cdd6d95645fb7",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Protobuf/services/protobuf_validator_service.py",
-      "bytes": 16323,
-      "sha256": "99cc8ec45767a27d878690cc937a1d0a87a1e1d877665f3f0d2673c201d5f89c",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Reporting/__init__.py",
-      "bytes": 1391,
-      "sha256": "98608e523d1dc751e862cd2ebf8f03c9638b6fb523adcec79cdd657d45b603bb",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Reporting/models/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Reporting/models/finding_models.py",
-      "bytes": 3155,
-      "sha256": "fb1b22ff98431a2685a9269e3970201177febac9989e7df602fc7d97273fe2b4",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Reporting/services/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Reporting/services/finding_adapter_service.py",
-      "bytes": 3296,
-      "sha256": "2bad6309f0ebfe46f43879b5e1c5173bad708b71c019b6cf51479b2c3440b29f",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Reporting/services/legacy_report_service.py",
-      "bytes": 1822,
-      "sha256": "8325fe5aab15cdbf7e8e3405b0fae0536f4ac59818ad54722c55c6f007e23294",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Reporting/services/reporter_service.py",
-      "bytes": 9910,
-      "sha256": "10ccebac9978bdeee454f8b225639584e47cb8be6328bfc88d29f6ac3e1d277b",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Reporting/utilities/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Reporting/utilities/sourcemap_loader.py",
-      "bytes": 3717,
-      "sha256": "108309e43d1999afff9afee990546d5995e021963ff9ff10019921d5f83d349e",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Rules/__init__.py",
-      "bytes": 2554,
-      "sha256": "713b88af97b18d33ba0d082f3f104a3affca54692cafbfbece80704e8ff414dc",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Rules/models/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Rules/models/_rule_base_models.py",
-      "bytes": 1674,
-      "sha256": "45169052b15d15615f318f1c21649ab74c997763ea23287b1b981e5bb641619e",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Rules/models/rule_models.py",
-      "bytes": 5809,
-      "sha256": "d05776bd1d32b7174c5404f472ad58696d530d4bc7837e89d26e718317fce527",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Rules/services/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Rules/services/_builtin_rules.py",
-      "bytes": 13606,
-      "sha256": "75da3843f748dfd5dab95d3031ab93ca065928708ad9d1e0de6608a3c1ec60d1",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Rules/services/_suppression_helpers.py",
-      "bytes": 5186,
-      "sha256": "229801e5db5d50b7729396ac7bbff45e562fd92f69755a2a0d63139cb76816d4",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Rules/services/baseline_service.py",
-      "bytes": 3839,
-      "sha256": "24abc5a8744e167ec5394375c8e59cc850b7a87b06cdc3f6dab32d251ce948f4",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Rules/services/profile_service.py",
-      "bytes": 5733,
-      "sha256": "20a9205372dc4f92e7d13d3c51287ce0c2612935fa19c2c7ab408b936bee1018",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Rules/services/rule_registry_service.py",
-      "bytes": 4264,
-      "sha256": "d874af95d273b3b97233aa5b09afe3e892d21171fa9d70cb43dc1f7980bb0ea7",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Rules/services/waiver_service.py",
-      "bytes": 2119,
-      "sha256": "ab8ee543f52b4571cb7e07d7cb433604b59d57ef9919851daffb443b446e00bf",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Rules/utilities/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Rules/utilities/rule_utils.py",
-      "bytes": 2182,
-      "sha256": "c3299072874550463e61dfdb999844e642f4c6a9def38e7a56c96f28ac9f049f",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/__init__.py",
-      "bytes": 7765,
-      "sha256": "94b11d602921158c1cddc3e6e46bdfdaf03653f71d89d2894506528ccaec8e87",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/__main__.py",
-      "bytes": 292,
-      "sha256": "b440ce659dd51633d02a8ec6587e9bcb083bf2983a4217804416c83dd1357c30",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/cli/__init__.py",
-      "bytes": 2595,
-      "sha256": "d68a91b529ba730b3458ccbbca79a6d09b1646b0fe8f44c862cab44017da0861",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/cli/_handler_runner.py",
-      "bytes": 2626,
-      "sha256": "638da5d1dc00d11fceea131194ad141537e69ad9d1473a3b591b1e3262f5e316",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/cli/_parser.py",
-      "bytes": 3880,
-      "sha256": "10bed5f15d29bdf1d556b3b6d02cf667cd0013b093fd12b7b646f1240c8794a2",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/cli/_parser_commands.py",
-      "bytes": 22927,
-      "sha256": "3cb3fc28428064b190650339575cf1601dd449c11de0ec39929a34ad48e3ccd5",
-      "mtime": "2026-08-13T11:26:19+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/cli/_parser_flags.py",
-      "bytes": 991,
-      "sha256": "c0feaf249f2278cb375beb8e902e0ca9f9599030ae169fac7d4e1a79489f1c3e",
-      "mtime": "2026-03-20T02:07:10+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/cli/handlers_align.py",
-      "bytes": 2798,
-      "sha256": "635b1a82bacdb8e80ce7f87c639d55fbd445e94fc2aad9eeea273dde7168b98f",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/cli/handlers_async_mock_codegen.py",
-      "bytes": 10333,
-      "sha256": "6c25d79ec6556ab5cf319fc0ac6fbffdaa15bbf0d2e846decffdc263f8454dd0",
-      "mtime": "2026-08-13T11:26:19+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/cli/handlers_compat.py",
-      "bytes": 5073,
-      "sha256": "87d27de98a905a5badabe4cebf2382d97ad667bfe5d2574b0b63e573c61ea659",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/cli/handlers_docs_proto_avro_audit.py",
-      "bytes": 11148,
-      "sha256": "007f5fa16f050667c9dff7b773b6d71d0d5af89507a83c793845ce44a4d73130",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/cli/handlers_rules_baseline.py",
-      "bytes": 7647,
-      "sha256": "9508e1832f3fee4ca7e3ac0e6a82e3bfd18fea593a91790540917ce55a7cc790",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/cli/handlers_schema.py",
-      "bytes": 22484,
-      "sha256": "fb238ef5c29b754d789a579a818cf0ecfb946a99d0032fcbef6a2510eff607dd",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/__init__.py",
-      "bytes": 2326,
-      "sha256": "731b7614516b4f17edffb1fac8a4bdb900159f2fec9685dfb656ae0bf4f5ab7a",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/models/__init__.py",
-      "bytes": 885,
-      "sha256": "4543ca2f356fc18d5969c474c62b29ea19e9da7e0d2330afe4ed71eb14cb9bca",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/models/_accessibility_enums.py",
-      "bytes": 4868,
-      "sha256": "283fa7ae6b46f5eb00aceec38aa344e6d4fcba64f2a481557f75bc9d53924065",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/models/_accessibility_report_models.py",
-      "bytes": 15374,
-      "sha256": "9cbe860afac968e9b97de20f484b53341903fd84640ea6f961c37281cfba5b69",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/models/accessibility_models.py",
-      "bytes": 1592,
-      "sha256": "f1fd14fe2982b28cffdfba7f02e2ca34586f29178db193bfac3317fc5bab99cc",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/__init__.py",
-      "bytes": 636,
-      "sha256": "a944bdd1a1a594455815df8be7f1d3870595cfd63636ed0ca7ff10e0754537cd",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_aria_validator_checks.py",
-      "bytes": 11839,
-      "sha256": "88d263d7ce4532942b0b90af4c221260f3aeac09192f76829c50a2de890c3a5d",
-      "mtime": "2026-03-22T07:52:11+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_aria_validator_checks_part2.py",
-      "bytes": 3520,
-      "sha256": "b71a2c1ea6560344cba3b48ba465fb783bf92fb30193b2ae12043de2380a4dec",
-      "mtime": "2026-03-22T07:30:34+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_aria_validator_tiers.py",
-      "bytes": 13657,
-      "sha256": "8ccc20ed0bd97fd4bdc1f8857c6a7899e6e252f5e047f5b4cab6fc71a595ce82",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_color_contrast_math.py",
-      "bytes": 4041,
-      "sha256": "c816be5ed670841b23cf5bb0ff4c3f7ba1cb40c583e8ae9dc7bf54101bf464dd",
-      "mtime": "2026-03-20T03:05:48+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_color_contrast_page.py",
-      "bytes": 4574,
-      "sha256": "52d2651487356351a9f92bd54a75b0afe8e8187c5c3f256a15fa782ceca003bf",
-      "mtime": "2026-03-22T07:50:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_component_criticality.py",
-      "bytes": 6993,
-      "sha256": "1a10089e02690f5d30066942754fc5a799e204fde70c0b222ac40a8e2b3717ca",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_focus_order_spatial.py",
-      "bytes": 3777,
-      "sha256": "f1b0af46535cfc9009716289f27843de3bfa5060b59e94537d21ed9aed34a663",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_keyboard_nav_checks.py",
-      "bytes": 10743,
-      "sha256": "91e4fe7104253edcb75dfad049c6cfda1ba7cbdcbd5645fa7029b9be1376a57d",
-      "mtime": "2026-03-22T07:53:16+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_screen_reader_checks.py",
-      "bytes": 8503,
-      "sha256": "4f7b759dd7b6c76d94c50568647654832a9360e72bc1e932dc39d50feea0916d",
-      "mtime": "2026-03-22T07:31:36+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_screen_reader_checks_part2.py",
-      "bytes": 5262,
-      "sha256": "c38862949feb7c006565474f7a66f0cfcbc5538bff402f2c71434e6c50ed3674",
-      "mtime": "2026-03-22T07:31:21+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_wcag_checks.py",
-      "bytes": 8857,
-      "sha256": "a0045e59e2a3d67f223eec70cf43006d8672390dd09045a3ea8d23c55d8ba5b0",
-      "mtime": "2026-08-14T07:10:17+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_wcag_checks_part2.py",
-      "bytes": 5715,
-      "sha256": "fb53f1bf82e5da358041588808f2667b72c6e71079febb3e194d4b3301ba5d99",
-      "mtime": "2026-03-22T07:33:56+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_wcag_criteria.py",
-      "bytes": 6488,
-      "sha256": "0880f37694a6ed329098a41f1b561af304bd7cb0d6a9bc7ed9981ba484c0ddb3",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/aria_validator.py",
-      "bytes": 6897,
-      "sha256": "5b1b9fafe0accd9cc72a09649a57fc86efb1c3a62107a6e6f4360b1939437d11",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/color_contrast.py",
-      "bytes": 7760,
-      "sha256": "4b9d15764c235929f26dc61ffd9084c8021ce0cafe745f8bf4ca676849c55763",
-      "mtime": "2026-03-22T07:51:19+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/keyboard_nav.py",
-      "bytes": 5745,
-      "sha256": "a6dbdac7fe4f0a24d41fab0026460f339972e1310ec01c24f5ad6d385d88ff85",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/screen_reader.py",
-      "bytes": 4499,
-      "sha256": "28d191d6e744f6b4231088d30c30e6e130d27332edae54bdae1e6d9e88af806a",
-      "mtime": "2026-03-22T07:31:49+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/wcag_validator.py",
-      "bytes": 7862,
-      "sha256": "b9395e07715fb44c2730d980b229bd16bf8c86b6c7004471cc101cd59b1148e6",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/utilities/__init__.py",
-      "bytes": 84,
-      "sha256": "3b5683b8b71987e51b2a62c5fd7cb2333092ff90365a32bab6886835cff4581c",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Config/__init__.py",
-      "bytes": 714,
-      "sha256": "fa8702b8db0582c239db237ea51911a60184fe9b5d137ebeac16b7258026f3d3",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Config/models/__init__.py",
-      "bytes": 201,
-      "sha256": "c17376cd716ed31f7436e26b81896c5dcd4006573a8c1b8f3c3aa8fcb86e783b",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Config/models/config_models.py",
-      "bytes": 2459,
-      "sha256": "89c2cacfd062847bd958db27eec1e246fe675210db0a8ac8ba5c9c47c60bba0a",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Config/services/__init__.py",
-      "bytes": 408,
-      "sha256": "d34d28df178221f94ac3d72efbe774e887d40a478134cd4f1f74667bfb127888",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Config/services/config_loader.py",
-      "bytes": 5036,
-      "sha256": "7d5ffc26358088186f24759ff29ade27aa3fff01eb4c319d155bf65e79d3361d",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Console/__init__.py",
-      "bytes": 591,
-      "sha256": "90780bbf8c7aa57e450a6c80d0270a9d0c4094e7affd29e109c928e1f1fb441b",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Console/models/__init__.py",
-      "bytes": 450,
-      "sha256": "c1a7fd09b69f7892f41c88e35d3cb7a1ad3e504d5608a6e56cba58ce059f2643",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Console/models/console_models.py",
-      "bytes": 5624,
-      "sha256": "c121cc7986f9eacd9cb3f1ceaf1e4bacd8eeb08f1ec596aa21e4dc0ebf57818f",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Console/services/__init__.py",
-      "bytes": 189,
-      "sha256": "b83a96a780439e83631893916ed045b55e2c8bf071c90e67a2155b1a16a443c2",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Console/services/_console_capture_helpers.py",
-      "bytes": 6476,
-      "sha256": "77537e080f6075d7f740ee90a325c7493e75f8008746ff0bdfb058d7e6da06b7",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Console/services/console_capture.py",
-      "bytes": 6639,
-      "sha256": "3e1fbd0c1e27323d0d0182685063be0137c3e324edc26df4af68a6b5280c62ab",
-      "mtime": "2026-03-20T03:25:36+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Images/__init__.py",
-      "bytes": 605,
-      "sha256": "c71906c6f0db547b91cb1fa995f76ca227587f4eb8a43c9a7cead03f91536128",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Images/models/__init__.py",
-      "bytes": 428,
-      "sha256": "2b13a12aeb27a7d887acafa3ef616dee00b3da62e7e856d7917ea5940d6c9e67",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Images/models/image_models.py",
-      "bytes": 8198,
-      "sha256": "5f1eb73b5c7e69ff14bca5a5fd129c6b80fc7e9da5bfffcc932186bc4955623f",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Images/services/__init__.py",
-      "bytes": 231,
-      "sha256": "6f3a9cf19478a4345d8012fad5e8d8baef19c31ed33a8ddbc3c11888c8b104fb",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Images/services/_image_scanner_checks.py",
-      "bytes": 7942,
-      "sha256": "59cad21c83c551880a7f22a4e264447f10b126b2ecd80cae1e0855d0284e2fd9",
-      "mtime": "2026-03-22T07:33:30+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Images/services/_image_scanner_checks_part2.py",
-      "bytes": 4619,
-      "sha256": "95cf3be84996c9e756f3ccdac15a64762c26c40c6168e0fb13a6643a8373572b",
-      "mtime": "2026-03-22T07:32:57+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Images/services/_image_scanner_report.py",
-      "bytes": 4617,
-      "sha256": "7de25567f93cc75c613f910b9c3d71790d776d6301aff62cdb0f03bd9ad668cf",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Images/services/image_optimization_scanner.py",
-      "bytes": 10183,
-      "sha256": "62ca651e5577b1a2cdcf8d214636babbad68f3974f7e2ccffb97afefd1f9277b",
-      "mtime": "2026-03-22T07:33:24+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/__init__.py",
-      "bytes": 702,
-      "sha256": "fa09bc9597770350dd883684e3dc1b0053051eec699a5f9a5c5eb1fd038a57c8",
-      "mtime": "2026-03-11T07:33:22+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/models/__init__.py",
-      "bytes": 678,
-      "sha256": "bc36f2d814b6956d4055112801b01822542cbdc1dac9040af50b1363d1c5b70d",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/models/_integration_base_models.py",
-      "bytes": 12921,
-      "sha256": "3fb06ed8ca5f5b4d70b3554c52c9bbeae4899b973b768358a42591cc073e9cdc",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/models/_integration_crawl_models.py",
-      "bytes": 5286,
-      "sha256": "5f7639cca3a99a607de64226e3068cf39480e703ef3dd74ac630f1770223cca9",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/models/integration_models.py",
-      "bytes": 972,
-      "sha256": "fe41d05c4f0afbc538abe7367450ded5d8e3f4398573ed30482f8e1f22456b3d",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/__init__.py",
-      "bytes": 496,
-      "sha256": "f3c8f7d757524182ce754f9ea1b6e4ce47f8e92c6b06bc53802cca94025c3057",
-      "mtime": "2026-03-11T07:33:22+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/_baseline_manager_helpers.py",
-      "bytes": 6344,
-      "sha256": "b661ee38255a8d297336ad76c92da0c1c784b185815a2266cfe5607e9b7738f5",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/_crawler_checks.py",
-      "bytes": 9726,
-      "sha256": "835f2813276dc438f237eb6b3e59dcde8c5999370833a921bf18feeac0a30c48",
-      "mtime": "2026-03-20T02:39:50+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/_crawler_discovery.py",
-      "bytes": 5763,
-      "sha256": "f64a24e67bd1c999b6286421924fd0f0ac01323234420ee61cb65c62c2a48eb9",
-      "mtime": "2026-08-13T11:26:19+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/_crawler_page_tester.py",
-      "bytes": 5016,
-      "sha256": "42db4fdf3cab9fbe22b51b0dfaa9339e14f2890c22e101864dd4927c563c2979",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/_crawler_politeness.py",
-      "bytes": 1872,
-      "sha256": "4fc6d65dd22d65406bd0c6b3abb48e08754e361d72db91c96ce0514e6e16148f",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/_crawler_report.py",
-      "bytes": 13522,
-      "sha256": "3280a4820958bb2651ace12e7698901766a4266ff3dcbece2b08eb82e217365d",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/_crawler_spa.py",
-      "bytes": 5625,
-      "sha256": "15b4a0707ee98d5770e81cb31e1f9e05b4c7256dd9fa176f65d73953bae1f081",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/_playwright_presets.py",
-      "bytes": 3128,
-      "sha256": "2a8374eee0d3a89f8971b0915cc1b4e557e4a2b9c49c9524398db70d9895713e",
-      "mtime": "2026-03-20T03:18:56+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/_reporter_styles.py",
-      "bytes": 5234,
-      "sha256": "56eca82b4cbe52d4854fa8d3f35aa7610d55998b93ee68a9d6a87caf3aa5cf5a",
-      "mtime": "2026-03-20T02:42:18+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/_unified_tester_responsive.py",
-      "bytes": 5734,
-      "sha256": "14f52a2d7df00c3e57a9e2ab8aad2e2d5ff0619a4ec77b4f9a8712a8b1716455",
-      "mtime": "2026-03-22T07:28:12+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/_unified_tester_runners.py",
-      "bytes": 9487,
-      "sha256": "0af213a29b79163f80122a0a6da1d4b2c9f9146a30d4c45e56d41d7532a98390",
-      "mtime": "2026-08-13T11:26:19+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/baseline_manager.py",
-      "bytes": 13010,
-      "sha256": "b938ecbd567391139cbedc5853b60af6b9590fb73bc4a1804a2371e7e20dbc89",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/html_reporter.py",
-      "bytes": 23527,
-      "sha256": "05d8d4dbdb478440798d32b84173bb683fc9a69a83515a346ff07a78b17b0da3",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/playwright_utils.py",
-      "bytes": 7850,
-      "sha256": "8acf72955ce08e98f068f649e36098066ec5a2a50f173efd00ff1f492adaa15f",
-      "mtime": "2026-03-22T07:24:35+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/site_crawler.py",
-      "bytes": 7894,
-      "sha256": "1a65e8e86741a37ad0fec8885eff7b5bf073406a42f361378b4ec046d835aa93",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/unified_tester.py",
-      "bytes": 7548,
-      "sha256": "91320b0d0f78371221f264ca4a0a72d6df0372d1852fbe821a4867a6c647c1a1",
-      "mtime": "2026-08-13T11:26:19+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/utilities/__init__.py",
-      "bytes": 95,
-      "sha256": "e5702f4f2470ab09bacca6f4509c6e5cb8d85f31ae6b41eafba705b5a5c01419",
-      "mtime": "2026-03-11T07:33:22+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Links/__init__.py",
-      "bytes": 556,
-      "sha256": "3f7a3e4cca367c0ec4461876dc94e46bc14aba10988eeb95350983b88a769f52",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Links/models/__init__.py",
-      "bytes": 425,
-      "sha256": "7615a0a9d7ac23b3a9fb1b15dcce809a39f049c32a69134bdd81dd7b24104748",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Links/models/link_models.py",
-      "bytes": 6447,
-      "sha256": "8b547e69dc58ac00b43836f0de4b2c4cd649918ced4725266445db12d84a0072",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Links/services/__init__.py",
-      "bytes": 174,
-      "sha256": "bcd37f5fcd7f1f572f8e82adcfff31c0b93b0cd97884f43d3bff70a9d0620b33",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Links/services/_link_validator_helpers.py",
-      "bytes": 6848,
-      "sha256": "f19f5a7ea1f3885fd37dcb3205702bcb0af4f08ec6718eb757d527b9dde61298",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Links/services/link_validator.py",
-      "bytes": 9407,
-      "sha256": "302bf7a2d3b7fd078d30042bac2adbb8bf920b897bb192f3c47c0a7b5c368e45",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
     {
       "path": "Asgard/Freya/Performance/__init__.py",
       "bytes": 1177,
@@ -1160,72 +266,6 @@
       "mtime": "2026-07-18T04:16:04+00:00"
     },
     {
-      "path": "Asgard/Freya/Security/__init__.py",
-      "bytes": 1019,
-      "sha256": "274d17e1c2f2d64c6a79f7cb28e75cff2ae01ac40a94a2c7b28dc832c010e0c7",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Security/models/__init__.py",
-      "bytes": 734,
-      "sha256": "dd19a441df1e94a67020e2f574e79a5ea839206d4fe0e34977cac0a9c8c65438",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Security/models/security_header_models.py",
-      "bytes": 11967,
-      "sha256": "0816300996f26c50e9528d67cbf05a21a72170bea948dde326dbb047f7f42720",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Security/services/__init__.py",
-      "bytes": 558,
-      "sha256": "5bcd8fe29e1712a9740d937939ea509f026e6d4f390669d5293ce7f06202cd84",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Security/services/_csp_analyzer_helpers.py",
-      "bytes": 4943,
-      "sha256": "204de572332ddbf7df5d6a1b392ce8af325741ce5dcd33d61662211e21986347",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Security/services/_mitigation_framing.py",
-      "bytes": 8425,
-      "sha256": "40025429340fd00f2f53446efe9d2ef2d24d4485bc27d46b0bd50099156fa763",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Security/services/_security_header_analyzers.py",
-      "bytes": 10908,
-      "sha256": "7c641b93f6d72a6baa8c5f36a656ceeeaae4ade7359e06861c122c6c4845c05c",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Security/services/csp_analyzer.py",
-      "bytes": 4855,
-      "sha256": "0569a31e139d5b465eb9acbffee1a6000dea64689db228dbcc11147c8a88da74",
-      "mtime": "2026-03-22T07:35:12+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Security/services/mixed_content_checker.py",
-      "bytes": 5680,
-      "sha256": "cff174bac0b47c8354a51e5b01087186a6ec152622cd42f597869c48e19a982f",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Security/services/security_header_scanner.py",
-      "bytes": 9226,
-      "sha256": "28721acc1a89f9722c1140375ac368b9d15601519491be3f61116435ccc92951",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Security/services/sri_checker.py",
-      "bytes": 7995,
-      "sha256": "b20ca2c53c990da0bc3a97141ee6ae7fdf4b03cbe1082d5aa160dd5aa9a6bc2e",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
       "path": "Asgard/Freya/Visual/__init__.py",
       "bytes": 1911,
       "sha256": "713b4d860524e3735b4fcb7142337d94d6c40af8da90b55f102d0a05a0a89f95",
@@ -1344,156 +384,6 @@
       "bytes": 337,
       "sha256": "ec61fae9bea3e9a2129f4e3b2b6e45337dc578199bfd8a0eefd16e02edd882f4",
       "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/__init__.py",
-      "bytes": 10244,
-      "sha256": "f33cf19c66cdad873b7b7b583d75fd6f5b039a4cfd17fcef7f9e21d29566399c",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_formatters.py",
-      "bytes": 1836,
-      "sha256": "6b014a9f80642ac56a309da1e1d8a64e8cc51dd151e1f34919707be2708c53fd",
-      "mtime": "2026-03-20T01:54:11+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_formatters_accessibility.py",
-      "bytes": 13032,
-      "sha256": "8ca06bd632f1390321bf6f7c97d96a1a17f025886be3113612884439a5ca69f4",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_formatters_images.py",
-      "bytes": 5907,
-      "sha256": "3af3d2b7e010a66a7834700da0e032e86282d26166112eefc0c9a33ab8ef2677",
-      "mtime": "2026-03-20T01:54:01+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_formatters_perf_seo_security.py",
-      "bytes": 722,
-      "sha256": "df28ace2f9cc15ff9366c4f2ba457f3ed33c88f815b68e40f398069824f955f1",
-      "mtime": "2026-03-20T02:09:57+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_formatters_performance.py",
-      "bytes": 5995,
-      "sha256": "5e4e0000a5e0be3e4d6a03b15d5aab7edce14f776f917d3ca9011d1e27b2050c",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_formatters_security_console_links.py",
-      "bytes": 11446,
-      "sha256": "3ea8ef29a527e9a8ad15e03589380b896f19d0c1fb08c1ea7d7abfae7636ab97",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_formatters_seo.py",
-      "bytes": 4406,
-      "sha256": "664bc7131818033f7a74c99630f8c055a4d21393dd71b045bbbbdb19883bc1c9",
-      "mtime": "2026-03-20T02:12:26+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_formatters_seo_security_console_links.py",
-      "bytes": 538,
-      "sha256": "98220c33e0cf990dbefc12d4c4ce24de5a8cf61f2eaca5548834f8f1a56cc466",
-      "mtime": "2026-03-20T02:12:56+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_formatters_visual_responsive.py",
-      "bytes": 8946,
-      "sha256": "c56df20dafc260e2b723686136e42713e75da22f5246cf32f4dd1039d8640a48",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_handlers_accessibility.py",
-      "bytes": 4833,
-      "sha256": "9e69bbe81d7eabf02de72a886155db1aeb82921adae62b0d41dce8c1546cca86",
-      "mtime": "2026-03-20T01:45:25+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_handlers_config.py",
-      "bytes": 4051,
-      "sha256": "8f1443fdc19bd014ba532092c5e832d1e7e85c333a00c89cf5f3efe7c6fd7247",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_handlers_images.py",
-      "bytes": 2722,
-      "sha256": "b7925c8c2b3d1282976d32c23dfeb7315ff48df04721712748e3ff8bb3d26f6a",
-      "mtime": "2026-03-20T01:55:04+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_handlers_images_integration.py",
-      "bytes": 560,
-      "sha256": "ade749fb9b8f3cdcdf26a2f4894eb0aef082513d6983778a2211827f322d5c08",
-      "mtime": "2026-03-20T01:55:44+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_handlers_integration.py",
-      "bytes": 13721,
-      "sha256": "5cb460deed5656acf9145e915f60a7e8ed65c90b6f0baf5ca5bccc107d4c0f24",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_handlers_perf_seo_security.py",
-      "bytes": 816,
-      "sha256": "cb8c213e290a55c09b3d23217dc0a06d13ad3b39494c5785614d1a12049aee12",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_handlers_performance.py",
-      "bytes": 2427,
-      "sha256": "c718e6695624387c6cb1a435c49564dd5bc9f557744c1d0c275ff978cf2bd3df",
-      "mtime": "2026-03-20T02:10:04+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_handlers_seo_security_console_links.py",
-      "bytes": 9193,
-      "sha256": "38e59da0199eb5f01f1bcf13feddbe359b908f4bc9b50d62ae292072261ccf0e",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_handlers_visual_responsive.py",
-      "bytes": 6635,
-      "sha256": "4dcf216d28a9c0fc9660d73f72d418cd3615edfabef0ca4f5bd5893f05e70d56",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_parser.py",
-      "bytes": 1824,
-      "sha256": "c1cd689c0205b3aa59113ae5cb64a544b61bc4d693066ced9e74a656b0248d06",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_parser_flags.py",
-      "bytes": 1004,
-      "sha256": "9e52cf419225a867c2d95ace5afe25f719d342de2cbc4d47310c80b49fd0452d",
-      "mtime": "2026-03-20T01:50:52+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_parser_subcommands_a.py",
-      "bytes": 7035,
-      "sha256": "11f0413d1564d023c3fc3a41552b221d3f53d416e19a48f9004a51a4cbd65420",
-      "mtime": "2026-03-20T01:50:44+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_parser_subcommands_b.py",
-      "bytes": 613,
-      "sha256": "6141fd3eb4e742637bea691f07d58e764c672244cd09a4f2f27e6034082604de",
-      "mtime": "2026-03-20T02:08:31+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_parser_subcommands_b1.py",
-      "bytes": 7565,
-      "sha256": "bad85ef33d245310a182943d706b8ef4cf295db1a11e41b7e43ce73c239ff933",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Freya/cli/_parser_subcommands_b2.py",
-      "bytes": 10610,
-      "sha256": "1868033d9377a89c5bf0c409428e64c2a3e5ca380c40575da428fd5f3c3fb542",
-      "mtime": "2026-07-18T04:16:04+00:00"
     },
     {
       "path": "Asgard/Heimdall/Security/API/__init__.py",
@@ -24688,6 +23578,1521 @@
       "disposition": "findings",
       "bytes": 6537,
       "sha256": "1f5f95514a59a52ffe1021f588988069f24dbb1dd0b5b9f6a9b8607f730a1610"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/__init__.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2216,
+      "sha256": "486dcc7e8f80d6cdb2e232f42e01404cee30ccfc479eac8358735d9cf541f434"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/models/__init__.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1008,
+      "sha256": "7e68768b18b6da802eaff7e8d05ea769091f5baa9cc7e21070a975bd6c374201"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/models/_openapi_base_models.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5987,
+      "sha256": "2b903a89ac06d4e21994e591ab4fe40438e7050f6efb6aa817a27ca420132f31"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/models/completeness_models.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3379,
+      "sha256": "a28635a702d364356e56bec303860d7e23a2667e5339e83c0ed9822156eae921"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/models/openapi_models.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10977,
+      "sha256": "261c3f9d57253c4a0d0015d20b35cc459c62ad8057e96a70fdb2d178b683c610"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/rules/__init__.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 514,
+      "sha256": "5975042f6f22e828fc7c72f048e8914cf9efe03ec0440ba96212b10dfb283ddc"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/rules/_rule_helpers.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10703,
+      "sha256": "1214b525d0b03a7d4c22583461a3c8d0df630a66ca1deecdc72c316c60412af3"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/rules/docs_rules.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7850,
+      "sha256": "42d823beaba67add1ae264dae47b182b9bc54217f215ce8dbab2ab638e65223f"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/rules/examples_rules.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6139,
+      "sha256": "5646921d58bdf0d9621fb3b3a34a6d17aa7b91ffa3c58a34fd2013cec0dec28d"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/rules/lifecycle_rules.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3611,
+      "sha256": "dfc75a5c35ea7b67a1ecef98915d128b2b7a54399ac2732551076398cb42d244"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/rules/security_rules.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 12166,
+      "sha256": "183f33ab4fd7c31a7331f359002f03dc2097dc590eee3b39b2f91689a66040ad"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/rules/semantics_rules.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 13314,
+      "sha256": "65406e5bf13ec39387715025179f2b2118216f52659b6fe53a985c789bffe992"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/rules/structure_rules.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11157,
+      "sha256": "e62deffad4d29fe862f3dec12141ee7aba02483ce5dcf30ccdeea4502ada49ea"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/rules/style_rules.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7406,
+      "sha256": "6d6a5d9e9bf0810ebec7882c9349813ea7803f8c8d2cf9ef72381f9c7c48dbc4"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/services/__init__.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 662,
+      "sha256": "283f604b5a768b0b6525e41758aebe25f8a91a2af9e8f3e6980ff2600c972fb1"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/services/_completeness_helpers.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 12733,
+      "sha256": "c5303206311e6afa21a4b934b5133d3001057bacee968590f2f3741380b85435"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/services/_spec_converter_2_to_3_helpers.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9475,
+      "sha256": "fc01ee5b77744a1ff24baaffa8753e90b38ce2289675d3231cbd25a4f4622357"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/services/_spec_converter_3_to_2_helpers.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6613,
+      "sha256": "7c842d9f08e2de39b22ca479aad3d9724be900e950c05eb9b13f474e80e4ee3a"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/services/_spec_generator_helpers.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6845,
+      "sha256": "4528e30651d0ba4c55f5477632e5d8d5e6533eca5bad66a49cb7e7e5631a88ee"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/services/_spec_parser_helpers.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5863,
+      "sha256": "92fbe1464ad75cb94123de61f6338ac8e7e5878b4648d642e5ccdd2f73f240df"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/services/_spec_validator_helpers.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11126,
+      "sha256": "b369298522877721c7d6bff02c403bb80289f4c02c6919a0410c13346384de00"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/services/completeness_service.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3897,
+      "sha256": "5700e6f778e5d408ee9e0c73b0d6b842aa9e49471f2346368c8f6b24b81e5549"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/services/spec_converter_service.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7202,
+      "sha256": "f16131556f166834ac25055c9d889f68e0e572f25eee96868662aac72e8bcdda"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/services/spec_generator_service.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3346,
+      "sha256": "f14bfe2c8e673e098cfb69171c3782be11fa8cd3a3507d7221f46f8069ee772f"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/services/spec_parser_service.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4613,
+      "sha256": "ea54a4c7cab5518e2e820d407bd9c5d8752cb76c2889052859ff1f583855ebf2"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/services/spec_validator_service.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8100,
+      "sha256": "8238922419fc49970873355efacc2cc31d90aa92cc642584f10cfae5557a34a0"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/utilities/__init__.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 554,
+      "sha256": "4ab6c0b542509156e218fedc0a62f984dbaff64343e4e71dca949b1cbc324571"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/utilities/_openapi_io_utils.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2709,
+      "sha256": "fca3887530af0a8bcec4b349ccfd1d9497843b95d199698b78f60ee92b4cd345"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/utilities/_openapi_spec_utils.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10138,
+      "sha256": "12fcc6c4c0b6d653e85cf56210a5d50d7305461556bd5dfafda5eee90ce0f065"
+    },
+    {
+      "path": "Asgard/Forseti/OpenAPI/utilities/openapi_utils.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2122,
+      "sha256": "178570df9fc2f98382e7d8bf7762e8e8519787c4e8c216f243d78d3aa8aa5328"
+    },
+    {
+      "path": "Asgard/Forseti/Protobuf/__init__.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1994,
+      "sha256": "9119c741e400df0575a934f4298883fbf0f75f951203970bfe6f169555e75ea7"
+    },
+    {
+      "path": "Asgard/Forseti/Protobuf/models/__init__.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 858,
+      "sha256": "66a702396e7930769a6c8826c151c75ec063c43670567fca42565d7874ed6af4"
+    },
+    {
+      "path": "Asgard/Forseti/Protobuf/models/_protobuf_base_models.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5446,
+      "sha256": "6e2f3ce82253f88174f326ac7331fa5fa1018e2056851e22faacec29c7150cc2"
+    },
+    {
+      "path": "Asgard/Forseti/Protobuf/models/protobuf_models.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8073,
+      "sha256": "a2b4d1f88b3c19982b692803a8fe635d02578b203c8b2c90858b641ff78aeacb"
+    },
+    {
+      "path": "Asgard/Forseti/Protobuf/services/__init__.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 390,
+      "sha256": "461292a8be8333d5458ced9440983dad584a1d8ccbd1b390a6e241bc221d50aa"
+    },
+    {
+      "path": "Asgard/Forseti/Protobuf/services/_protobuf_compatibility_report_helpers.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3422,
+      "sha256": "05dd9b9718d644c9b8aaba2f00634ebcc40a2c29648704bf08a61a97c13028f4"
+    },
+    {
+      "path": "Asgard/Forseti/Protobuf/services/_protobuf_compatibility_service_helpers.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 12485,
+      "sha256": "2a8f85ea54f96d9931b531b92261cf409885d22f0116282fc8c6283fdc13f669"
+    },
+    {
+      "path": "Asgard/Forseti/Protobuf/services/_protobuf_validator_parse_helpers.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9134,
+      "sha256": "19e58266e53e598c1c0bc3eff3079c6eda760c87185c4cd0f26cc6a01a7d0693"
+    },
+    {
+      "path": "Asgard/Forseti/Protobuf/services/_protobuf_validator_service_helpers.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3635,
+      "sha256": "87885e5a93737b0dd7257fbc6f864240791fb10af36355f8aa4ca4eec1d237f3"
+    },
+    {
+      "path": "Asgard/Forseti/Protobuf/services/protobuf_compatibility_service.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8817,
+      "sha256": "3a1c56897bc75999b02f5c620c36e96c4acaf38596eadd8ebc6cdd6d95645fb7"
+    },
+    {
+      "path": "Asgard/Forseti/Protobuf/services/protobuf_validator_service.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 16323,
+      "sha256": "99cc8ec45767a27d878690cc937a1d0a87a1e1d877665f3f0d2673c201d5f89c"
+    },
+    {
+      "path": "Asgard/Forseti/Reporting/__init__.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1391,
+      "sha256": "98608e523d1dc751e862cd2ebf8f03c9638b6fb523adcec79cdd657d45b603bb"
+    },
+    {
+      "path": "Asgard/Forseti/Reporting/models/__init__.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Forseti/Reporting/models/finding_models.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3155,
+      "sha256": "fb1b22ff98431a2685a9269e3970201177febac9989e7df602fc7d97273fe2b4"
+    },
+    {
+      "path": "Asgard/Forseti/Reporting/services/__init__.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Forseti/Reporting/services/finding_adapter_service.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3296,
+      "sha256": "2bad6309f0ebfe46f43879b5e1c5173bad708b71c019b6cf51479b2c3440b29f"
+    },
+    {
+      "path": "Asgard/Forseti/Reporting/services/legacy_report_service.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1822,
+      "sha256": "8325fe5aab15cdbf7e8e3405b0fae0536f4ac59818ad54722c55c6f007e23294"
+    },
+    {
+      "path": "Asgard/Forseti/Reporting/services/reporter_service.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9910,
+      "sha256": "10ccebac9978bdeee454f8b225639584e47cb8be6328bfc88d29f6ac3e1d277b"
+    },
+    {
+      "path": "Asgard/Forseti/Reporting/utilities/__init__.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Forseti/Reporting/utilities/sourcemap_loader.py",
+      "completed_at": "2026-08-16T07:55:23+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3717,
+      "sha256": "108309e43d1999afff9afee990546d5995e021963ff9ff10019921d5f83d349e"
+    },
+    {
+      "path": "Asgard/Forseti/Rules/__init__.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2554,
+      "sha256": "713b88af97b18d33ba0d082f3f104a3affca54692cafbfbece80704e8ff414dc"
+    },
+    {
+      "path": "Asgard/Forseti/Rules/models/__init__.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Forseti/Rules/models/_rule_base_models.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1674,
+      "sha256": "45169052b15d15615f318f1c21649ab74c997763ea23287b1b981e5bb641619e"
+    },
+    {
+      "path": "Asgard/Forseti/Rules/models/rule_models.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5809,
+      "sha256": "d05776bd1d32b7174c5404f472ad58696d530d4bc7837e89d26e718317fce527"
+    },
+    {
+      "path": "Asgard/Forseti/Rules/services/__init__.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Forseti/Rules/services/_builtin_rules.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 13606,
+      "sha256": "75da3843f748dfd5dab95d3031ab93ca065928708ad9d1e0de6608a3c1ec60d1"
+    },
+    {
+      "path": "Asgard/Forseti/Rules/services/_suppression_helpers.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5186,
+      "sha256": "229801e5db5d50b7729396ac7bbff45e562fd92f69755a2a0d63139cb76816d4"
+    },
+    {
+      "path": "Asgard/Forseti/Rules/services/baseline_service.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3839,
+      "sha256": "24abc5a8744e167ec5394375c8e59cc850b7a87b06cdc3f6dab32d251ce948f4"
+    },
+    {
+      "path": "Asgard/Forseti/Rules/services/profile_service.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5733,
+      "sha256": "20a9205372dc4f92e7d13d3c51287ce0c2612935fa19c2c7ab408b936bee1018"
+    },
+    {
+      "path": "Asgard/Forseti/Rules/services/rule_registry_service.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4264,
+      "sha256": "d874af95d273b3b97233aa5b09afe3e892d21171fa9d70cb43dc1f7980bb0ea7"
+    },
+    {
+      "path": "Asgard/Forseti/Rules/services/waiver_service.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2119,
+      "sha256": "ab8ee543f52b4571cb7e07d7cb433604b59d57ef9919851daffb443b446e00bf"
+    },
+    {
+      "path": "Asgard/Forseti/Rules/utilities/__init__.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Forseti/Rules/utilities/rule_utils.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2182,
+      "sha256": "c3299072874550463e61dfdb999844e642f4c6a9def38e7a56c96f28ac9f049f"
+    },
+    {
+      "path": "Asgard/Forseti/__init__.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7765,
+      "sha256": "94b11d602921158c1cddc3e6e46bdfdaf03653f71d89d2894506528ccaec8e87"
+    },
+    {
+      "path": "Asgard/Forseti/__main__.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 292,
+      "sha256": "b440ce659dd51633d02a8ec6587e9bcb083bf2983a4217804416c83dd1357c30"
+    },
+    {
+      "path": "Asgard/Forseti/cli/__init__.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2595,
+      "sha256": "d68a91b529ba730b3458ccbbca79a6d09b1646b0fe8f44c862cab44017da0861"
+    },
+    {
+      "path": "Asgard/Forseti/cli/_handler_runner.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2626,
+      "sha256": "638da5d1dc00d11fceea131194ad141537e69ad9d1473a3b591b1e3262f5e316"
+    },
+    {
+      "path": "Asgard/Forseti/cli/_parser.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3880,
+      "sha256": "10bed5f15d29bdf1d556b3b6d02cf667cd0013b093fd12b7b646f1240c8794a2"
+    },
+    {
+      "path": "Asgard/Forseti/cli/_parser_commands.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [
+        "CH-0061"
+      ],
+      "disposition": "findings",
+      "bytes": 22927,
+      "sha256": "3cb3fc28428064b190650339575cf1601dd449c11de0ec39929a34ad48e3ccd5"
+    },
+    {
+      "path": "Asgard/Forseti/cli/_parser_flags.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 991,
+      "sha256": "c0feaf249f2278cb375beb8e902e0ca9f9599030ae169fac7d4e1a79489f1c3e"
+    },
+    {
+      "path": "Asgard/Forseti/cli/handlers_align.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2798,
+      "sha256": "635b1a82bacdb8e80ce7f87c639d55fbd445e94fc2aad9eeea273dde7168b98f"
+    },
+    {
+      "path": "Asgard/Forseti/cli/handlers_async_mock_codegen.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [
+        "CH-0061"
+      ],
+      "disposition": "findings",
+      "bytes": 10333,
+      "sha256": "6c25d79ec6556ab5cf319fc0ac6fbffdaa15bbf0d2e846decffdc263f8454dd0"
+    },
+    {
+      "path": "Asgard/Forseti/cli/handlers_compat.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5073,
+      "sha256": "87d27de98a905a5badabe4cebf2382d97ad667bfe5d2574b0b63e573c61ea659"
+    },
+    {
+      "path": "Asgard/Forseti/cli/handlers_docs_proto_avro_audit.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11148,
+      "sha256": "007f5fa16f050667c9dff7b773b6d71d0d5af89507a83c793845ce44a4d73130"
+    },
+    {
+      "path": "Asgard/Forseti/cli/handlers_rules_baseline.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7647,
+      "sha256": "9508e1832f3fee4ca7e3ac0e6a82e3bfd18fea593a91790540917ce55a7cc790"
+    },
+    {
+      "path": "Asgard/Forseti/cli/handlers_schema.py",
+      "completed_at": "2026-08-16T07:55:24+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 22484,
+      "sha256": "fb238ef5c29b754d789a579a818cf0ecfb946a99d0032fcbef6a2510eff607dd"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/__init__.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2326,
+      "sha256": "731b7614516b4f17edffb1fac8a4bdb900159f2fec9685dfb656ae0bf4f5ab7a"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/models/__init__.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 885,
+      "sha256": "4543ca2f356fc18d5969c474c62b29ea19e9da7e0d2330afe4ed71eb14cb9bca"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/models/_accessibility_enums.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4868,
+      "sha256": "283fa7ae6b46f5eb00aceec38aa344e6d4fcba64f2a481557f75bc9d53924065"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/models/_accessibility_report_models.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 15374,
+      "sha256": "9cbe860afac968e9b97de20f484b53341903fd84640ea6f961c37281cfba5b69"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/models/accessibility_models.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1592,
+      "sha256": "f1fd14fe2982b28cffdfba7f02e2ca34586f29178db193bfac3317fc5bab99cc"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/__init__.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 636,
+      "sha256": "a944bdd1a1a594455815df8be7f1d3870595cfd63636ed0ca7ff10e0754537cd"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_aria_validator_checks.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11839,
+      "sha256": "88d263d7ce4532942b0b90af4c221260f3aeac09192f76829c50a2de890c3a5d"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_aria_validator_checks_part2.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [
+        "CH-0070"
+      ],
+      "disposition": "findings",
+      "bytes": 3520,
+      "sha256": "b71a2c1ea6560344cba3b48ba465fb783bf92fb30193b2ae12043de2380a4dec"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_aria_validator_tiers.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 13657,
+      "sha256": "8ccc20ed0bd97fd4bdc1f8857c6a7899e6e252f5e047f5b4cab6fc71a595ce82"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_color_contrast_math.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4041,
+      "sha256": "c816be5ed670841b23cf5bb0ff4c3f7ba1cb40c583e8ae9dc7bf54101bf464dd"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_color_contrast_page.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4574,
+      "sha256": "52d2651487356351a9f92bd54a75b0afe8e8187c5c3f256a15fa782ceca003bf"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_component_criticality.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6993,
+      "sha256": "1a10089e02690f5d30066942754fc5a799e204fde70c0b222ac40a8e2b3717ca"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_focus_order_spatial.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3777,
+      "sha256": "f1b0af46535cfc9009716289f27843de3bfa5060b59e94537d21ed9aed34a663"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_keyboard_nav_checks.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10743,
+      "sha256": "91e4fe7104253edcb75dfad049c6cfda1ba7cbdcbd5645fa7029b9be1376a57d"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_screen_reader_checks.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8503,
+      "sha256": "4f7b759dd7b6c76d94c50568647654832a9360e72bc1e932dc39d50feea0916d"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_screen_reader_checks_part2.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5262,
+      "sha256": "c38862949feb7c006565474f7a66f0cfcbc5538bff402f2c71434e6c50ed3674"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_wcag_checks.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8857,
+      "sha256": "a0045e59e2a3d67f223eec70cf43006d8672390dd09045a3ea8d23c55d8ba5b0"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_wcag_checks_part2.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5715,
+      "sha256": "fb53f1bf82e5da358041588808f2667b72c6e71079febb3e194d4b3301ba5d99"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_wcag_criteria.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6488,
+      "sha256": "0880f37694a6ed329098a41f1b561af304bd7cb0d6a9bc7ed9981ba484c0ddb3"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/aria_validator.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6897,
+      "sha256": "5b1b9fafe0accd9cc72a09649a57fc86efb1c3a62107a6e6f4360b1939437d11"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/color_contrast.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7760,
+      "sha256": "4b9d15764c235929f26dc61ffd9084c8021ce0cafe745f8bf4ca676849c55763"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/keyboard_nav.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5745,
+      "sha256": "a6dbdac7fe4f0a24d41fab0026460f339972e1310ec01c24f5ad6d385d88ff85"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/screen_reader.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4499,
+      "sha256": "28d191d6e744f6b4231088d30c30e6e130d27332edae54bdae1e6d9e88af806a"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/wcag_validator.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7862,
+      "sha256": "b9395e07715fb44c2730d980b229bd16bf8c86b6c7004471cc101cd59b1148e6"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/utilities/__init__.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 84,
+      "sha256": "3b5683b8b71987e51b2a62c5fd7cb2333092ff90365a32bab6886835cff4581c"
+    },
+    {
+      "path": "Asgard/Freya/Config/__init__.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 714,
+      "sha256": "fa8702b8db0582c239db237ea51911a60184fe9b5d137ebeac16b7258026f3d3"
+    },
+    {
+      "path": "Asgard/Freya/Config/models/__init__.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 201,
+      "sha256": "c17376cd716ed31f7436e26b81896c5dcd4006573a8c1b8f3c3aa8fcb86e783b"
+    },
+    {
+      "path": "Asgard/Freya/Config/models/config_models.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2459,
+      "sha256": "89c2cacfd062847bd958db27eec1e246fe675210db0a8ac8ba5c9c47c60bba0a"
+    },
+    {
+      "path": "Asgard/Freya/Config/services/__init__.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 408,
+      "sha256": "d34d28df178221f94ac3d72efbe774e887d40a478134cd4f1f74667bfb127888"
+    },
+    {
+      "path": "Asgard/Freya/Config/services/config_loader.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5036,
+      "sha256": "7d5ffc26358088186f24759ff29ade27aa3fff01eb4c319d155bf65e79d3361d"
+    },
+    {
+      "path": "Asgard/Freya/Console/__init__.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 591,
+      "sha256": "90780bbf8c7aa57e450a6c80d0270a9d0c4094e7affd29e109c928e1f1fb441b"
+    },
+    {
+      "path": "Asgard/Freya/Console/models/__init__.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 450,
+      "sha256": "c1a7fd09b69f7892f41c88e35d3cb7a1ad3e504d5608a6e56cba58ce059f2643"
+    },
+    {
+      "path": "Asgard/Freya/Console/models/console_models.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5624,
+      "sha256": "c121cc7986f9eacd9cb3f1ceaf1e4bacd8eeb08f1ec596aa21e4dc0ebf57818f"
+    },
+    {
+      "path": "Asgard/Freya/Console/services/__init__.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 189,
+      "sha256": "b83a96a780439e83631893916ed045b55e2c8bf071c90e67a2155b1a16a443c2"
+    },
+    {
+      "path": "Asgard/Freya/Console/services/_console_capture_helpers.py",
+      "completed_at": "2026-08-16T08:01:35+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6476,
+      "sha256": "77537e080f6075d7f740ee90a325c7493e75f8008746ff0bdfb058d7e6da06b7"
+    },
+    {
+      "path": "Asgard/Freya/Console/services/console_capture.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6639,
+      "sha256": "3e1fbd0c1e27323d0d0182685063be0137c3e324edc26df4af68a6b5280c62ab"
+    },
+    {
+      "path": "Asgard/Freya/Images/__init__.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 605,
+      "sha256": "c71906c6f0db547b91cb1fa995f76ca227587f4eb8a43c9a7cead03f91536128"
+    },
+    {
+      "path": "Asgard/Freya/Images/models/__init__.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 428,
+      "sha256": "2b13a12aeb27a7d887acafa3ef616dee00b3da62e7e856d7917ea5940d6c9e67"
+    },
+    {
+      "path": "Asgard/Freya/Images/models/image_models.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8198,
+      "sha256": "5f1eb73b5c7e69ff14bca5a5fd129c6b80fc7e9da5bfffcc932186bc4955623f"
+    },
+    {
+      "path": "Asgard/Freya/Images/services/__init__.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 231,
+      "sha256": "6f3a9cf19478a4345d8012fad5e8d8baef19c31ed33a8ddbc3c11888c8b104fb"
+    },
+    {
+      "path": "Asgard/Freya/Images/services/_image_scanner_checks.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7942,
+      "sha256": "59cad21c83c551880a7f22a4e264447f10b126b2ecd80cae1e0855d0284e2fd9"
+    },
+    {
+      "path": "Asgard/Freya/Images/services/_image_scanner_checks_part2.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4619,
+      "sha256": "95cf3be84996c9e756f3ccdac15a64762c26c40c6168e0fb13a6643a8373572b"
+    },
+    {
+      "path": "Asgard/Freya/Images/services/_image_scanner_report.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4617,
+      "sha256": "7de25567f93cc75c613f910b9c3d71790d776d6301aff62cdb0f03bd9ad668cf"
+    },
+    {
+      "path": "Asgard/Freya/Images/services/image_optimization_scanner.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10183,
+      "sha256": "62ca651e5577b1a2cdcf8d214636babbad68f3974f7e2ccffb97afefd1f9277b"
+    },
+    {
+      "path": "Asgard/Freya/Integration/__init__.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 702,
+      "sha256": "fa09bc9597770350dd883684e3dc1b0053051eec699a5f9a5c5eb1fd038a57c8"
+    },
+    {
+      "path": "Asgard/Freya/Integration/models/__init__.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 678,
+      "sha256": "bc36f2d814b6956d4055112801b01822542cbdc1dac9040af50b1363d1c5b70d"
+    },
+    {
+      "path": "Asgard/Freya/Integration/models/_integration_base_models.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 12921,
+      "sha256": "3fb06ed8ca5f5b4d70b3554c52c9bbeae4899b973b768358a42591cc073e9cdc"
+    },
+    {
+      "path": "Asgard/Freya/Integration/models/_integration_crawl_models.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5286,
+      "sha256": "5f7639cca3a99a607de64226e3068cf39480e703ef3dd74ac630f1770223cca9"
+    },
+    {
+      "path": "Asgard/Freya/Integration/models/integration_models.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 972,
+      "sha256": "fe41d05c4f0afbc538abe7367450ded5d8e3f4398573ed30482f8e1f22456b3d"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/__init__.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 496,
+      "sha256": "f3c8f7d757524182ce754f9ea1b6e4ce47f8e92c6b06bc53802cca94025c3057"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/_baseline_manager_helpers.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [
+        "CH-0068"
+      ],
+      "disposition": "findings",
+      "bytes": 6344,
+      "sha256": "b661ee38255a8d297336ad76c92da0c1c784b185815a2266cfe5607e9b7738f5"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/_crawler_checks.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9726,
+      "sha256": "835f2813276dc438f237eb6b3e59dcde8c5999370833a921bf18feeac0a30c48"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/_crawler_discovery.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [
+        "CH-0066"
+      ],
+      "disposition": "findings",
+      "bytes": 5763,
+      "sha256": "f64a24e67bd1c999b6286421924fd0f0ac01323234420ee61cb65c62c2a48eb9"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/_crawler_page_tester.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [
+        "CH-0066"
+      ],
+      "disposition": "findings",
+      "bytes": 5016,
+      "sha256": "42db4fdf3cab9fbe22b51b0dfaa9339e14f2890c22e101864dd4927c563c2979"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/_crawler_politeness.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1872,
+      "sha256": "4fc6d65dd22d65406bd0c6b3abb48e08754e361d72db91c96ce0514e6e16148f"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/_crawler_report.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [
+        "CH-0067",
+        "CH-0069"
+      ],
+      "disposition": "findings",
+      "bytes": 13522,
+      "sha256": "3280a4820958bb2651ace12e7698901766a4266ff3dcbece2b08eb82e217365d"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/_crawler_spa.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [
+        "CH-0066"
+      ],
+      "disposition": "findings",
+      "bytes": 5625,
+      "sha256": "15b4a0707ee98d5770e81cb31e1f9e05b4c7256dd9fa176f65d73953bae1f081"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/_playwright_presets.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3128,
+      "sha256": "2a8374eee0d3a89f8971b0915cc1b4e557e4a2b9c49c9524398db70d9895713e"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/_reporter_styles.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5234,
+      "sha256": "56eca82b4cbe52d4854fa8d3f35aa7610d55998b93ee68a9d6a87caf3aa5cf5a"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/_unified_tester_responsive.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5734,
+      "sha256": "14f52a2d7df00c3e57a9e2ab8aad2e2d5ff0619a4ec77b4f9a8712a8b1716455"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/_unified_tester_runners.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9487,
+      "sha256": "0af213a29b79163f80122a0a6da1d4b2c9f9146a30d4c45e56d41d7532a98390"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/baseline_manager.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [
+        "CH-0068"
+      ],
+      "disposition": "findings",
+      "bytes": 13010,
+      "sha256": "b938ecbd567391139cbedc5853b60af6b9590fb73bc4a1804a2371e7e20dbc89"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/html_reporter.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [
+        "CH-0067"
+      ],
+      "disposition": "findings",
+      "bytes": 23527,
+      "sha256": "05d8d4dbdb478440798d32b84173bb683fc9a69a83515a346ff07a78b17b0da3"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/playwright_utils.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7850,
+      "sha256": "8acf72955ce08e98f068f649e36098066ec5a2a50f173efd00ff1f492adaa15f"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/site_crawler.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [
+        "CH-0066"
+      ],
+      "disposition": "findings",
+      "bytes": 7894,
+      "sha256": "1a65e8e86741a37ad0fec8885eff7b5bf073406a42f361378b4ec046d835aa93"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/unified_tester.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7548,
+      "sha256": "91320b0d0f78371221f264ca4a0a72d6df0372d1852fbe821a4867a6c647c1a1"
+    },
+    {
+      "path": "Asgard/Freya/Integration/utilities/__init__.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 95,
+      "sha256": "e5702f4f2470ab09bacca6f4509c6e5cb8d85f31ae6b41eafba705b5a5c01419"
+    },
+    {
+      "path": "Asgard/Freya/Links/__init__.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 556,
+      "sha256": "3f7a3e4cca367c0ec4461876dc94e46bc14aba10988eeb95350983b88a769f52"
+    },
+    {
+      "path": "Asgard/Freya/Links/models/__init__.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 425,
+      "sha256": "7615a0a9d7ac23b3a9fb1b15dcce809a39f049c32a69134bdd81dd7b24104748"
+    },
+    {
+      "path": "Asgard/Freya/Links/models/link_models.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6447,
+      "sha256": "8b547e69dc58ac00b43836f0de4b2c4cd649918ced4725266445db12d84a0072"
+    },
+    {
+      "path": "Asgard/Freya/Links/services/__init__.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 174,
+      "sha256": "bcd37f5fcd7f1f572f8e82adcfff31c0b93b0cd97884f43d3bff70a9d0620b33"
+    },
+    {
+      "path": "Asgard/Freya/Links/services/_link_validator_helpers.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [
+        "CH-0071"
+      ],
+      "disposition": "findings",
+      "bytes": 6848,
+      "sha256": "f19f5a7ea1f3885fd37dcb3205702bcb0af4f08ec6718eb757d527b9dde61298"
+    },
+    {
+      "path": "Asgard/Freya/Links/services/link_validator.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [
+        "CH-0071"
+      ],
+      "disposition": "findings",
+      "bytes": 9407,
+      "sha256": "302bf7a2d3b7fd078d30042bac2adbb8bf920b897bb192f3c47c0a7b5c368e45"
+    },
+    {
+      "path": "Asgard/Freya/Security/__init__.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1019,
+      "sha256": "274d17e1c2f2d64c6a79f7cb28e75cff2ae01ac40a94a2c7b28dc832c010e0c7"
+    },
+    {
+      "path": "Asgard/Freya/Security/models/__init__.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 734,
+      "sha256": "dd19a441df1e94a67020e2f574e79a5ea839206d4fe0e34977cac0a9c8c65438"
+    },
+    {
+      "path": "Asgard/Freya/Security/models/security_header_models.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11967,
+      "sha256": "0816300996f26c50e9528d67cbf05a21a72170bea948dde326dbb047f7f42720"
+    },
+    {
+      "path": "Asgard/Freya/Security/services/__init__.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 558,
+      "sha256": "5bcd8fe29e1712a9740d937939ea509f026e6d4f390669d5293ce7f06202cd84"
+    },
+    {
+      "path": "Asgard/Freya/Security/services/_csp_analyzer_helpers.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4943,
+      "sha256": "204de572332ddbf7df5d6a1b392ce8af325741ce5dcd33d61662211e21986347"
+    },
+    {
+      "path": "Asgard/Freya/Security/services/_mitigation_framing.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8425,
+      "sha256": "40025429340fd00f2f53446efe9d2ef2d24d4485bc27d46b0bd50099156fa763"
+    },
+    {
+      "path": "Asgard/Freya/Security/services/_security_header_analyzers.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10908,
+      "sha256": "7c641b93f6d72a6baa8c5f36a656ceeeaae4ade7359e06861c122c6c4845c05c"
+    },
+    {
+      "path": "Asgard/Freya/Security/services/csp_analyzer.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4855,
+      "sha256": "0569a31e139d5b465eb9acbffee1a6000dea64689db228dbcc11147c8a88da74"
+    },
+    {
+      "path": "Asgard/Freya/Security/services/mixed_content_checker.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [
+        "CH-0066"
+      ],
+      "disposition": "findings",
+      "bytes": 5680,
+      "sha256": "cff174bac0b47c8354a51e5b01087186a6ec152622cd42f597869c48e19a982f"
+    },
+    {
+      "path": "Asgard/Freya/Security/services/security_header_scanner.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [
+        "CH-0066"
+      ],
+      "disposition": "findings",
+      "bytes": 9226,
+      "sha256": "28721acc1a89f9722c1140375ac368b9d15601519491be3f61116435ccc92951"
+    },
+    {
+      "path": "Asgard/Freya/Security/services/sri_checker.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [
+        "CH-0066"
+      ],
+      "disposition": "findings",
+      "bytes": 7995,
+      "sha256": "b20ca2c53c990da0bc3a97141ee6ae7fdf4b03cbe1082d5aa160dd5aa9a6bc2e"
+    },
+    {
+      "path": "Asgard/Freya/cli/__init__.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10244,
+      "sha256": "f33cf19c66cdad873b7b7b583d75fd6f5b039a4cfd17fcef7f9e21d29566399c"
+    },
+    {
+      "path": "Asgard/Freya/cli/_formatters.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1836,
+      "sha256": "6b014a9f80642ac56a309da1e1d8a64e8cc51dd151e1f34919707be2708c53fd"
+    },
+    {
+      "path": "Asgard/Freya/cli/_formatters_accessibility.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [
+        "CH-0067"
+      ],
+      "disposition": "findings",
+      "bytes": 13032,
+      "sha256": "8ca06bd632f1390321bf6f7c97d96a1a17f025886be3113612884439a5ca69f4"
+    },
+    {
+      "path": "Asgard/Freya/cli/_formatters_images.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5907,
+      "sha256": "3af3d2b7e010a66a7834700da0e032e86282d26166112eefc0c9a33ab8ef2677"
+    },
+    {
+      "path": "Asgard/Freya/cli/_formatters_perf_seo_security.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 722,
+      "sha256": "df28ace2f9cc15ff9366c4f2ba457f3ed33c88f815b68e40f398069824f955f1"
+    },
+    {
+      "path": "Asgard/Freya/cli/_formatters_performance.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5995,
+      "sha256": "5e4e0000a5e0be3e4d6a03b15d5aab7edce14f776f917d3ca9011d1e27b2050c"
+    },
+    {
+      "path": "Asgard/Freya/cli/_formatters_security_console_links.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11446,
+      "sha256": "3ea8ef29a527e9a8ad15e03589380b896f19d0c1fb08c1ea7d7abfae7636ab97"
+    },
+    {
+      "path": "Asgard/Freya/cli/_formatters_seo.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4406,
+      "sha256": "664bc7131818033f7a74c99630f8c055a4d21393dd71b045bbbbdb19883bc1c9"
+    },
+    {
+      "path": "Asgard/Freya/cli/_formatters_seo_security_console_links.py",
+      "completed_at": "2026-08-16T08:01:36+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 538,
+      "sha256": "98220c33e0cf990dbefc12d4c4ce24de5a8cf61f2eaca5548834f8f1a56cc466"
+    },
+    {
+      "path": "Asgard/Freya/cli/_formatters_visual_responsive.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8946,
+      "sha256": "c56df20dafc260e2b723686136e42713e75da22f5246cf32f4dd1039d8640a48"
+    },
+    {
+      "path": "Asgard/Freya/cli/_handlers_accessibility.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4833,
+      "sha256": "9e69bbe81d7eabf02de72a886155db1aeb82921adae62b0d41dce8c1546cca86"
+    },
+    {
+      "path": "Asgard/Freya/cli/_handlers_config.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4051,
+      "sha256": "8f1443fdc19bd014ba532092c5e832d1e7e85c333a00c89cf5f3efe7c6fd7247"
+    },
+    {
+      "path": "Asgard/Freya/cli/_handlers_images.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2722,
+      "sha256": "b7925c8c2b3d1282976d32c23dfeb7315ff48df04721712748e3ff8bb3d26f6a"
+    },
+    {
+      "path": "Asgard/Freya/cli/_handlers_images_integration.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 560,
+      "sha256": "ade749fb9b8f3cdcdf26a2f4894eb0aef082513d6983778a2211827f322d5c08"
+    },
+    {
+      "path": "Asgard/Freya/cli/_handlers_integration.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 13721,
+      "sha256": "5cb460deed5656acf9145e915f60a7e8ed65c90b6f0baf5ca5bccc107d4c0f24"
+    },
+    {
+      "path": "Asgard/Freya/cli/_handlers_perf_seo_security.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 816,
+      "sha256": "cb8c213e290a55c09b3d23217dc0a06d13ad3b39494c5785614d1a12049aee12"
+    },
+    {
+      "path": "Asgard/Freya/cli/_handlers_performance.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2427,
+      "sha256": "c718e6695624387c6cb1a435c49564dd5bc9f557744c1d0c275ff978cf2bd3df"
+    },
+    {
+      "path": "Asgard/Freya/cli/_handlers_seo_security_console_links.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9193,
+      "sha256": "38e59da0199eb5f01f1bcf13feddbe359b908f4bc9b50d62ae292072261ccf0e"
+    },
+    {
+      "path": "Asgard/Freya/cli/_handlers_visual_responsive.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6635,
+      "sha256": "4dcf216d28a9c0fc9660d73f72d418cd3615edfabef0ca4f5bd5893f05e70d56"
+    },
+    {
+      "path": "Asgard/Freya/cli/_parser.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1824,
+      "sha256": "c1cd689c0205b3aa59113ae5cb64a544b61bc4d693066ced9e74a656b0248d06"
+    },
+    {
+      "path": "Asgard/Freya/cli/_parser_flags.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1004,
+      "sha256": "9e52cf419225a867c2d95ace5afe25f719d342de2cbc4d47310c80b49fd0452d"
+    },
+    {
+      "path": "Asgard/Freya/cli/_parser_subcommands_a.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7035,
+      "sha256": "11f0413d1564d023c3fc3a41552b221d3f53d416e19a48f9004a51a4cbd65420"
+    },
+    {
+      "path": "Asgard/Freya/cli/_parser_subcommands_b.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 613,
+      "sha256": "6141fd3eb4e742637bea691f07d58e764c672244cd09a4f2f27e6034082604de"
+    },
+    {
+      "path": "Asgard/Freya/cli/_parser_subcommands_b1.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7565,
+      "sha256": "bad85ef33d245310a182943d706b8ef4cf295db1a11e41b7e43ce73c239ff933"
+    },
+    {
+      "path": "Asgard/Freya/cli/_parser_subcommands_b2.py",
+      "completed_at": "2026-08-16T08:01:37+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10610,
+      "sha256": "1868033d9377a89c5bf0c409428e64c2a3e5ca380c40575da428fd5f3c3fb542"
     }
   ]
 }
