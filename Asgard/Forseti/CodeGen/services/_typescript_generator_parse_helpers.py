@@ -11,13 +11,14 @@ from Asgard.Forseti.CodeGen.models.codegen_models import (
     ParameterDefinition,
     TypeDefinition,
 )
+from Asgard.Forseti.CodeGen.services._codegen_safety import sanitize_identifier
 
 
 def json_type_to_ts(schema: dict[str, Any]) -> str:
     """Convert JSON Schema type to TypeScript type."""
     if "$ref" in schema:
         ref = cast(str, schema["$ref"])
-        return ref.split("/")[-1]
+        return sanitize_identifier(ref.split("/")[-1])
 
     schema_type = schema.get("type", "any")
 

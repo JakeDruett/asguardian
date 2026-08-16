@@ -10,13 +10,14 @@ from Asgard.Forseti.CodeGen.models.codegen_models import (
     MethodDefinition,
     ParameterDefinition,
 )
+from Asgard.Forseti.CodeGen.services._codegen_safety import sanitize_identifier
 
 
 def json_type_to_python(schema: dict[str, Any]) -> str:
     """Convert JSON Schema type to Python type."""
     if "$ref" in schema:
         ref = cast(str, schema["$ref"])
-        return ref.split("/")[-1]
+        return sanitize_identifier(ref.split("/")[-1])
 
     schema_type = schema.get("type", "Any")
 

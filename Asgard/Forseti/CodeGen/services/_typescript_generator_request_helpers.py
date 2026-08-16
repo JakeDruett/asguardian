@@ -9,6 +9,7 @@ from Asgard.Forseti.CodeGen.models.codegen_models import (
     HttpClientType,
     MethodDefinition,
 )
+from Asgard.Forseti.CodeGen.services._codegen_safety import sanitize_identifier
 
 
 def generate_method_params(method: MethodDefinition) -> str:
@@ -17,7 +18,8 @@ def generate_method_params(method: MethodDefinition) -> str:
 
     for param in method.parameters:
         optional = "" if param.required else "?"
-        params.append(f"{param.name}{optional}: {param.type_name}")
+        ident = sanitize_identifier(param.name)
+        params.append(f"{ident}{optional}: {param.type_name}")
 
     if method.request_body_type:
         params.append(f"data: {method.request_body_type}")

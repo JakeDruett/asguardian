@@ -23,6 +23,10 @@ from Asgard.Forseti.CodeGen.models.codegen_models import (
     TargetLanguage,
     TypeDefinition,
 )
+from Asgard.Forseti.CodeGen.services._codegen_safety import (
+    confine_output_path,
+    sanitize_identifier,
+)
 from Asgard.Forseti.CodeGen.services._golang_generator_client_helpers import (
     generate_go_client_file,
 )
@@ -144,7 +148,7 @@ class GolangGeneratorService:
                 continue
 
             type_def = self._schema_to_type(schema_name, schema_data, warnings)
-            types[schema_name] = type_def
+            types[type_def.name] = type_def
 
         return types
 
@@ -155,6 +159,7 @@ class GolangGeneratorService:
         warnings: list[str]
     ) -> TypeDefinition:
         """Convert a JSON Schema to a TypeDefinition."""
+        name = sanitize_identifier(name)
         if "enum" in schema:
             return TypeDefinition(
                 name=name,
@@ -248,18 +253,21 @@ class GolangGeneratorService:
     def _to_pascal_case(self, name: str) -> str:
         """Convert a name to PascalCase."""
         parts = re.split(r"[-_]", name)
-        return "".join(p.capitalize() for p in parts)
+        return sanitize_identifier("".join(p.capitalize() for p in parts))
 
     def _to_camel_case(self, name: str) -> str:
         """Convert a name to camelCase."""
         pascal = self._to_pascal_case(name)
-        return pascal[0].lower() + pascal[1:] if pascal else ""
+        if not pascal:
+            return sanitize_identifier(name)
+        return sanitize_identifier(pascal[0].lower() + pascal[1:])
 
     def _write_files(self, files: list[GeneratedFile], output_dir: Path) -> None:
         """Write generated files to disk."""
-        output_dir.mkdir(parents=True, exist_ok=True)
+        root = output_dir.resolve()
+        root.mkdir(parents=True, exist_ok=True)
 
         for file in files:
-            file_path = output_dir / file.path
-            file_path.parent.mkdir(parents=True, exist_ok=True)
-            file_path.write_text(file.content, encoding="utf-8")
+            dest = confine_output_path(root, file.path)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(file.content, encoding="utf-8")

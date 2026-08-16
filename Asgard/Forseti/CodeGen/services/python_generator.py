@@ -23,6 +23,10 @@ from Asgard.Forseti.CodeGen.models.codegen_models import (
     TargetLanguage,
     TypeDefinition,
 )
+from Asgard.Forseti.CodeGen.services._codegen_safety import (
+    confine_output_path,
+    sanitize_identifier,
+)
 from Asgard.Forseti.CodeGen.services._python_generator_helpers import (
     generate_client_file,
     generate_models_file,
@@ -148,7 +152,7 @@ class PythonGeneratorService:
                 continue
 
             type_def = self._schema_to_type(schema_name, schema_data, warnings)
-            types[schema_name] = type_def
+            types[type_def.name] = type_def
 
         return types
 
@@ -159,6 +163,7 @@ class PythonGeneratorService:
         warnings: list[str]
     ) -> TypeDefinition:
         """Convert a JSON Schema to a TypeDefinition."""
+        name = sanitize_identifier(name)
         if "enum" in schema:
             return TypeDefinition(
                 name=name,
@@ -253,7 +258,7 @@ class PythonGeneratorService:
         """Convert a name to snake_case."""
         name = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1_\2", name)
         name = re.sub(r"([a-z\d])([A-Z])", r"\1_\2", name)
-        return name.replace("-", "_").lower()
+        return sanitize_identifier(name.replace("-", "_").lower())
 
     def _generate_init_file(self, generated_files: list[GeneratedFile]) -> GeneratedFile:
         """Generate the __init__.py file."""
@@ -285,9 +290,10 @@ class PythonGeneratorService:
 
     def _write_files(self, files: list[GeneratedFile], output_dir: Path) -> None:
         """Write generated files to disk."""
-        output_dir.mkdir(parents=True, exist_ok=True)
+        root = output_dir.resolve()
+        root.mkdir(parents=True, exist_ok=True)
 
         for file in files:
-            file_path = output_dir / file.path
-            file_path.parent.mkdir(parents=True, exist_ok=True)
-            file_path.write_text(file.content, encoding="utf-8")
+            dest = confine_output_path(root, file.path)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            dest.write_text(file.content, encoding="utf-8")

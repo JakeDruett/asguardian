@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 8    | 20    | 0             |
+| High     | 7    | 21    | 0             |
 | Medium   | 44   | 15    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
@@ -925,7 +925,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0058 — CodeGen interpolates untrusted OpenAPI strings into generated source
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T13:05:00Z
+- **Implementation note:** JSON-encode path templates; sanitize identifiers; escape comments; jail _write_files under output_dir. `{__import__('os')}` is data, not an f-string.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-94
@@ -1876,12 +1879,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 76
-- Fixed: 38
+- Open: 75
+- Fixed: 39
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0058
-- Last commit: 93529c8
+- Next: CH-0026, CH-0040, CH-0042, CH-0057
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
