@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 2    | 26    | 0             |
+| High     | 1    | 27    | 0             |
 | Medium   | 2    | 57    | 0             |
 | Low      | 1    | 21    | 0             |
 | Info     | 4    | 1     | 0             |
@@ -976,7 +976,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0055 — Dashboard HTML interpolates request path and issue fields unescaped
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 869496e
+- **Fixed at:** 2026-08-16T13:50:00Z
+- **Implementation note:** html.escape all interpolated dashboard fields; allowlist badge CSS classes. 404 path and issue file_path escaped.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-79
@@ -2077,12 +2080,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 9
-- Fixed: 105
+- Open: 8
+- Fixed: 106
 - Accepted risk: 0
 - Current wave: W5
-- Next: CH-0055, CH-0067, CH-0046
-- Last commit: e2841e7
+- Next: CH-0067, CH-0046, CH-0064
+- Last commit: 869496e
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
