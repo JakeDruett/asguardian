@@ -9,3 +9,4 @@
 {"id":"CH-0103","at":"2026-08-16T10:03:41Z","commit":"5f79ace","wave":"W1","summary":"Jenkins harden_steps + quoted sh; refuse triple-quote breakout"}
 {"id":"CH-0024","at":"2026-08-16T10:04:31Z","commit":"dd664de","wave":"W1","summary":"Isolate git config/env for SZZ and other caller-supplied repos"}
 {"id":"CH-0060","at":"2026-08-16T10:04:43Z","commit":"37214ee","wave":"W1","summary":"GraphQL introspection URL allowlist, internal block, safe redirects"}
+{"id":"CH-0093","at":"2026-08-16T10:40:00Z","commit":"PENDING","wave":"W1","summary":"PR decorator https allowlist, quoted repo, same-origin redirects"}

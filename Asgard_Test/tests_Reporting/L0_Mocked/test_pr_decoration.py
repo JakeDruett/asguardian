@@ -75,7 +75,7 @@ class TestGitHubDecoratorSummaryComment:
             {"id": 1, "html_url": "https://github.com/test-owner/test-repo/issues/42#comment-1"}
         )
         with patch(
-            "Asgard.Reporting.PRDecoration.services.github_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.github_decorator.safe_urlopen",
             return_value=mock_response,
         ) as mock_urlopen:
             result = decorator.decorate(config, issues=[], gate_result=None, ratings=None)
@@ -93,7 +93,7 @@ class TestGitHubDecoratorSummaryComment:
             {"id": 1, "html_url": "https://github.com/test-owner/test-repo/issues/42#comment-1"}
         )
         with patch(
-            "Asgard.Reporting.PRDecoration.services.github_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.github_decorator.safe_urlopen",
             return_value=mock_response,
         ):
             result = decorator.decorate(config, issues=[], gate_result=None, ratings=None)
@@ -108,7 +108,7 @@ class TestGitHubDecoratorSummaryComment:
 
         mock_response = _make_urlopen_mock({"id": 99, "html_url": expected_url})
         with patch(
-            "Asgard.Reporting.PRDecoration.services.github_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.github_decorator.safe_urlopen",
             return_value=mock_response,
         ):
             result = decorator.decorate(config, issues=[], gate_result=None, ratings=None)
@@ -131,7 +131,7 @@ class TestGitHubDecoratorSummaryComment:
             return mock_response
 
         with patch(
-            "Asgard.Reporting.PRDecoration.services.github_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.github_decorator.safe_urlopen",
             side_effect=capture_urlopen,
         ):
             decorator.decorate(config, issues=[], gate_result=gate_result, ratings=None)
@@ -154,7 +154,7 @@ class TestGitHubDecoratorSummaryComment:
             fp=None,
         )
         with patch(
-            "Asgard.Reporting.PRDecoration.services.github_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.github_decorator.safe_urlopen",
             side_effect=http_error,
         ):
             result = decorator.decorate(config, issues=[], gate_result=None, ratings=None)
@@ -172,7 +172,7 @@ class TestGitHubDecoratorSummaryComment:
 
         url_error = URLError(reason="Connection refused")
         with patch(
-            "Asgard.Reporting.PRDecoration.services.github_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.github_decorator.safe_urlopen",
             side_effect=url_error,
         ):
             result = decorator.decorate(config, issues=[], gate_result=None, ratings=None)
@@ -210,7 +210,7 @@ class TestGitHubDecoratorInlineComments:
             return comment_response
 
         with patch(
-            "Asgard.Reporting.PRDecoration.services.github_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.github_decorator.safe_urlopen",
             side_effect=side_effect,
         ) as mock_urlopen:
             result = decorator.decorate(config, issues=issues, gate_result=None, ratings=None)
@@ -245,7 +245,7 @@ class TestGitHubDecoratorInlineComments:
             raise HTTPError(url="", code=422, msg="Unprocessable Entity", hdrs=None, fp=None)
 
         with patch(
-            "Asgard.Reporting.PRDecoration.services.github_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.github_decorator.safe_urlopen",
             side_effect=side_effect,
         ):
             result = decorator.decorate(config, issues=issues, gate_result=None, ratings=None)
@@ -263,7 +263,7 @@ class TestGitHubDecoratorResult:
         decorator = GitHubDecorator()
 
         with patch(
-            "Asgard.Reporting.PRDecoration.services.github_decorator.urllib_request.urlopen"
+            "Asgard.Reporting.PRDecoration.services.github_decorator.safe_urlopen"
         ):
             result = decorator.decorate(config, issues=[], gate_result=None, ratings=None)
 
@@ -275,7 +275,7 @@ class TestGitHubDecoratorResult:
         decorator = GitHubDecorator()
 
         with patch(
-            "Asgard.Reporting.PRDecoration.services.github_decorator.urllib_request.urlopen"
+            "Asgard.Reporting.PRDecoration.services.github_decorator.safe_urlopen"
         ):
             result = decorator.decorate(config, issues=[], gate_result=None, ratings=None)
 
@@ -294,7 +294,7 @@ class TestGitLabDecoratorSummaryNote:
             {"id": 1, "web_url": "https://gitlab.com/test-group/test-project/-/merge_requests/17#note_1"}
         )
         with patch(
-            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.safe_urlopen",
             return_value=mock_response,
         ) as mock_urlopen:
             result = decorator.decorate(config, issues=[], gate_result=None, ratings=None)
@@ -310,7 +310,7 @@ class TestGitLabDecoratorSummaryNote:
 
         mock_response = _make_urlopen_mock({"id": 1, "web_url": "https://gitlab.com/example"})
         with patch(
-            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.safe_urlopen",
             return_value=mock_response,
         ):
             result = decorator.decorate(config, issues=[], gate_result=None, ratings=None)
@@ -325,7 +325,7 @@ class TestGitLabDecoratorSummaryNote:
 
         mock_response = _make_urlopen_mock({"id": 42, "web_url": expected_url})
         with patch(
-            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.safe_urlopen",
             return_value=mock_response,
         ):
             result = decorator.decorate(config, issues=[], gate_result=None, ratings=None)
@@ -348,7 +348,7 @@ class TestGitLabDecoratorSummaryNote:
             return mock_response
 
         with patch(
-            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.safe_urlopen",
             side_effect=capture_urlopen,
         ):
             decorator.decorate(config, issues=[], gate_result=gate_result, ratings=None)
@@ -365,7 +365,7 @@ class TestGitLabDecoratorSummaryNote:
 
         http_error = HTTPError(url="", code=403, msg="Forbidden", hdrs=None, fp=None)
         with patch(
-            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.safe_urlopen",
             side_effect=http_error,
         ):
             result = decorator.decorate(config, issues=[], gate_result=None, ratings=None)
@@ -383,7 +383,7 @@ class TestGitLabDecoratorSummaryNote:
 
         url_error = URLError(reason="Network unreachable")
         with patch(
-            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.safe_urlopen",
             side_effect=url_error,
         ):
             result = decorator.decorate(config, issues=[], gate_result=None, ratings=None)
@@ -426,7 +426,7 @@ class TestGitLabDecoratorInlineDiscussions:
 
         mock_response = _make_urlopen_mock({"id": "disc1"})
         with patch(
-            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.safe_urlopen",
             return_value=mock_response,
         ) as mock_urlopen:
             result = decorator.decorate(config, issues=issues, gate_result=None, ratings=None)
@@ -455,7 +455,7 @@ class TestGitLabDecoratorInlineDiscussions:
 
         http_error = HTTPError(url="", code=400, msg="Bad Request", hdrs=None, fp=None)
         with patch(
-            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.safe_urlopen",
             side_effect=http_error,
         ):
             result = decorator.decorate(config, issues=issues, gate_result=None, ratings=None)
@@ -473,7 +473,7 @@ class TestGitLabDecoratorResult:
         decorator = GitLabDecorator()
 
         with patch(
-            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.urllib_request.urlopen"
+            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.safe_urlopen"
         ):
             result = decorator.decorate(config, issues=[], gate_result=None, ratings=None)
 
@@ -485,7 +485,7 @@ class TestGitLabDecoratorResult:
         decorator = GitLabDecorator()
 
         with patch(
-            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.urllib_request.urlopen"
+            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.safe_urlopen"
         ):
             result = decorator.decorate(config, issues=[], gate_result=None, ratings=None)
 
@@ -533,7 +533,7 @@ class TestSummaryCommentContent:
             return mock_response
 
         with patch(
-            "Asgard.Reporting.PRDecoration.services.github_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.github_decorator.safe_urlopen",
             side_effect=capture,
         ):
             decorator.decorate(config, issues=issues, gate_result=None, ratings=None)
@@ -576,7 +576,7 @@ class TestSummaryCommentContent:
             return mock_response
 
         with patch(
-            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.urllib_request.urlopen",
+            "Asgard.Reporting.PRDecoration.services.gitlab_decorator.safe_urlopen",
             side_effect=capture,
         ):
             decorator.decorate(config, issues=issues, gate_result=None, ratings=None)
@@ -586,3 +586,25 @@ class TestSummaryCommentContent:
         assert "2 total" in summary
         assert "Errors: 1" in summary
         assert "Warnings: 1" in summary
+
+
+class TestPRDecorationURLAllowlist:
+    def test_github_rejects_http_loopback_api_base(self):
+        config = _make_github_config()
+        config.github_api_url = "http://127.0.0.1"
+        result = GitHubDecorator().decorate(config, issues=[])
+        assert result.summary_posted is False
+        assert any("https" in err for err in result.errors)
+
+    def test_github_quotes_repository(self):
+        from Asgard.Reporting.PRDecoration.services._http_safety import quote_owner_repo
+
+        assert quote_owner_repo("acme/app") == "acme/app"
+        with pytest.raises(ValueError):
+            quote_owner_repo("../evil/x")
+
+    def test_gitlab_rejects_http_loopback(self):
+        config = _make_gitlab_config()
+        config.gitlab_api_url = "http://127.0.0.1"
+        with pytest.raises(ValueError, match="https"):
+            GitLabDecorator().decorate(config, issues=[])

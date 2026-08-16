@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 17   | 11    | 0             |
+| High     | 16   | 12    | 0             |
 | Medium   | 59   | 0     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
@@ -1429,7 +1429,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0093 — PR decorator `urlopen` follows redirects to a caller-controlled API base
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T10:40:00Z
+- **Implementation note:** https-only API bases; quote owner/repo; same-origin redirects; refuse token to non-allowlisted hosts.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-918
@@ -1795,12 +1798,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 103
-- Fixed: 11
+- Open: 102
+- Fixed: 12
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0066
-- Last commit: 37214ee
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

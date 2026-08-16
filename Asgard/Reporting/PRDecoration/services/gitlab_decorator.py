@@ -25,6 +25,16 @@ from Asgard.Reporting.PRDecoration.models.decoration_models import (
     PRDecorationConfig,
     PRDecorationResult,
 )
+from Asgard.Reporting.PRDecoration.services._http_safety import (
+    SameOriginHTTPSRedirectHandler,
+    normalize_https_api_base,
+    url_on_allowed_origin,
+)
+
+
+def safe_urlopen(req, timeout=30):
+    opener = urllib_request.build_opener(SameOriginHTTPSRedirectHandler)
+    return opener.open(req, timeout=timeout)
 
 
 class GitLabDecorator:
@@ -89,7 +99,8 @@ class GitLabDecorator:
         inline_count = 0
         decoration_url: Optional[str] = None
 
-        api_base = config.gitlab_api_url.rstrip("/")
+        api_base = normalize_https_api_base(config.gitlab_api_url)
+        self._allowed_base = api_base
         encoded_repo = quote(config.repository, safe="")
         headers = {
             "PRIVATE-TOKEN": config.api_token,
@@ -198,9 +209,13 @@ class GitLabDecorator:
             Tuple of (response_dict_or_None, error_string_or_None).
         """
         try:
+            allowed = getattr(self, "_allowed_base", None)
+            if allowed and not url_on_allowed_origin(url, allowed):
+                return None, "refusing request to non-allowlisted host"
+            safe = dict(headers)
             body = json.dumps(payload).encode("utf-8")
-            req = urllib_request.Request(url, data=body, headers=headers, method="POST")
-            with urllib_request.urlopen(req, timeout=30) as resp:
+            req = urllib_request.Request(url, data=body, headers=safe, method="POST")
+            with safe_urlopen(req, timeout=30) as resp:
                 response_text = resp.read().decode("utf-8")
                 if response_text:
                     return json.loads(response_text), None

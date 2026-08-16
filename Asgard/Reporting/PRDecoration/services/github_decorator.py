@@ -20,6 +20,17 @@ from Asgard.Reporting.PRDecoration.models.decoration_models import (
     PRDecorationConfig,
     PRDecorationResult,
 )
+from Asgard.Reporting.PRDecoration.services._http_safety import (
+    SameOriginHTTPSRedirectHandler,
+    github_api_base,
+    quote_owner_repo,
+    url_on_allowed_origin,
+)
+
+
+def safe_urlopen(req, timeout=30):
+    opener = urllib_request.build_opener(SameOriginHTTPSRedirectHandler)
+    return opener.open(req, timeout=timeout)
 
 _DEFAULT_GITHUB_API_BASE = "https://api.github.com"
 
@@ -70,6 +81,14 @@ class UrllibHttpClient:
     free from direct HTTP driver coupling.
     """
 
+    def __init__(self, allowed_base: str = _DEFAULT_GITHUB_API_BASE) -> None:
+        self._allowed_base = allowed_base
+
+    def _guarded_headers(self, url: str, headers: Dict[str, str]) -> Optional[Dict[str, str]]:
+        if not url_on_allowed_origin(url, self._allowed_base):
+            return None
+        return dict(headers)
+
     def post_json(
         self,
         url: str,
@@ -78,9 +97,12 @@ class UrllibHttpClient:
     ) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
         """POST JSON data to a URL and return the parsed response."""
         try:
+            safe_headers = self._guarded_headers(url, headers)
+            if safe_headers is None:
+                return None, "refusing request to non-allowlisted host"
             body = json.dumps(payload).encode("utf-8")
-            req = urllib_request.Request(url, data=body, headers=headers, method="POST")
-            with urllib_request.urlopen(req, timeout=30) as resp:
+            req = urllib_request.Request(url, data=body, headers=safe_headers, method="POST")
+            with safe_urlopen(req, timeout=30) as resp:
                 response_text = resp.read().decode("utf-8")
                 if response_text:
                     return json.loads(response_text), None
@@ -99,8 +121,11 @@ class UrllibHttpClient:
     ) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
         """GET a URL and return the parsed JSON response."""
         try:
-            req = urllib_request.Request(url, headers=headers, method="GET")
-            with urllib_request.urlopen(req, timeout=30) as resp:
+            safe_headers = self._guarded_headers(url, headers)
+            if safe_headers is None:
+                return None, "refusing request to non-allowlisted host"
+            req = urllib_request.Request(url, headers=safe_headers, method="GET")
+            with safe_urlopen(req, timeout=30) as resp:
                 response_text = resp.read().decode("utf-8")
                 return json.loads(response_text), None
         except HTTPError as exc:
@@ -148,8 +173,10 @@ class GitHubDecorator:
             http_client: HTTP client implementation. Defaults to UrllibHttpClient.
                 Inject an alternative to swap transport or use a test double (DIP).
         """
-        self._api_base = api_base
-        self._http_client: IHttpClient = http_client if http_client is not None else UrllibHttpClient()
+        self._api_base = github_api_base(api_base)
+        self._http_client: IHttpClient = (
+            http_client if http_client is not None else UrllibHttpClient(self._api_base)
+        )
 
     def decorate(
         self,
@@ -180,8 +207,20 @@ class GitHubDecorator:
         inline_count = 0
         decoration_url: Optional[str] = None
 
-        # Allow per-request API base override from config (e.g. GitHub Enterprise).
-        api_base = config.github_api_url if config.github_api_url else self._api_base
+        try:
+            api_base = github_api_base(config.github_api_url or self._api_base)
+            repo = quote_owner_repo(config.repository)
+        except ValueError as exc:
+            return PRDecorationResult(
+                platform=config.platform,
+                pr_number=config.pr_number,
+                summary_posted=False,
+                inline_comments_posted=0,
+                errors=[str(exc)],
+                decoration_url=None,
+            )
+        if isinstance(self._http_client, UrllibHttpClient):
+            self._http_client._allowed_base = api_base
 
         headers = {
             "Authorization": f"token {config.api_token}",
@@ -197,7 +236,7 @@ class GitHubDecorator:
 
         if config.post_summary:
             summary_body = self._build_summary(issues, gate_result, ratings)
-            url = f"{api_base}/repos/{config.repository}/issues/{config.pr_number}/comments"
+            url = f"{api_base}/repos/{repo}/issues/{config.pr_number}/comments"
             response_data, err = self._http_client.post_json(url, {"body": summary_body}, headers)
             if err:
                 errors.append(f"Failed to post summary comment: {err}")
@@ -210,7 +249,7 @@ class GitHubDecorator:
             limited_issues = issues[: config.max_inline_comments]
             for issue in limited_issues:
                 comment_url = (
-                    f"{api_base}/repos/{config.repository}"
+                    f"{api_base}/repos/{repo}"
                     f"/pulls/{config.pr_number}/comments"
                 )
                 body = self._format_inline_body(issue)
@@ -243,7 +282,7 @@ class GitHubDecorator:
         Returns:
             Tuple of (sha_string, error_string). One of the two will be None.
         """
-        url = f"{api_base}/repos/{config.repository}/pulls/{config.pr_number}"
+        url = f"{api_base}/repos/{quote_owner_repo(config.repository)}/pulls/{config.pr_number}"
         data, err = self._http_client.get_json(url, headers)
         if err:
             return None, err
