@@ -7,6 +7,7 @@ Text, JSON, and Markdown report generation for OOPReport.
 import json
 
 from Asgard.Bragi.OOP.models.oop_models import OOPReport
+from Asgard.Bragi.common._md_cell import md_cell
 
 
 def generate_text_report(result: OOPReport) -> str:
@@ -184,7 +185,7 @@ def generate_markdown_report(result: OOPReport) -> str:
 
         for v in result.violations:
             lines.append(
-                f"| {v.class_name} | `{v.relative_path}:{v.line_number}` | "
+                f"| {md_cell(v.class_name)} | `{md_cell(v.relative_path)}:{v.line_number}` | "
                 f"{v.cbo} | {v.dit} | {v.lcom:.2f} | {v.rfc} | {v.wmc} | "
                 f"{v.overall_severity.value.upper()} |"
             )

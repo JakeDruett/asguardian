@@ -8,6 +8,7 @@ dependency analysis reports from a DependencyReport instance.
 import json
 
 from Asgard.Bragi.Dependencies.models.dependency_models import DependencyReport
+from Asgard.Bragi.common._md_cell import md_cell
 
 
 def generate_text_report(result: DependencyReport) -> str:
@@ -150,7 +151,7 @@ def generate_markdown_report(result: DependencyReport) -> str:
 
         for cycle in result.circular_dependencies:
             lines.append(
-                f"| {cycle.as_string} | {cycle.cycle_length} | "
+                f"| {md_cell(cycle.as_string)} | {cycle.cycle_length} | "
                 f"{cycle.severity.value.upper()} |"
             )
 

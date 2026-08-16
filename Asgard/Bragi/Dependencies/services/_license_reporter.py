@@ -12,6 +12,7 @@ from Asgard.Bragi.Dependencies.models.license_models import (
     LicenseResult,
     LicenseSeverity,
 )
+from Asgard.Bragi.common._md_cell import md_cell
 
 
 def generate_text_report(result: LicenseResult) -> str:
@@ -155,8 +156,8 @@ def generate_markdown_report(result: LicenseResult) -> str:
         lines.append("|---------|---------|----------|----------|")
         for issue in result.issues:
             lines.append(
-                f"| `{issue.package_name}` | {issue.license_name} | "
-                f"{issue.issue_type.value} | {issue.severity.value.upper()} |"
+                f"| `{md_cell(issue.package_name)}` | {md_cell(issue.license_name)} | "
+                f"{md_cell(issue.issue_type.value)} | {md_cell(issue.severity.value.upper())} |"
             )
         lines.append("")
 
@@ -166,8 +167,8 @@ def generate_markdown_report(result: LicenseResult) -> str:
     lines.append("|---------|---------|---------|----------|")
     for pkg in result.packages:
         lines.append(
-            f"| `{pkg.package_name}` | {pkg.version or 'N/A'} | "
-            f"{pkg.display_license} | {pkg.category.value} |"
+            f"| `{md_cell(pkg.package_name)}` | {md_cell(pkg.version or 'N/A')} | "
+            f"{md_cell(pkg.display_license)} | {md_cell(pkg.category.value)} |"
         )
     lines.append("")
 

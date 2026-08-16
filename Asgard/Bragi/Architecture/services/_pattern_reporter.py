@@ -7,6 +7,7 @@ Report generation helpers for PatternDetector.
 import json
 
 from Asgard.Bragi.Architecture.models.architecture_models import PatternReport
+from Asgard.Bragi.common._md_cell import md_cell
 
 
 def generate_text_report(result: PatternReport) -> str:
@@ -82,8 +83,8 @@ def generate_markdown_report(result: PatternReport) -> str:
 
             for match in matches:
                 lines.append(
-                    f"| {match.class_name} | {match.file_path}:{match.line_number} | "
-                    f"{match.confidence:.0%} | {match.details} |"
+                    f"| {md_cell(match.class_name)} | {md_cell(match.file_path)}:{match.line_number} | "
+                    f"{match.confidence:.0%} | {md_cell(match.details)} |"
                 )
 
             lines.append("")

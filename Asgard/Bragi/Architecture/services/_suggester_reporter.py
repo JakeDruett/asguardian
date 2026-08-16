@@ -7,6 +7,7 @@ Report generation helpers for PatternSuggester.
 import json
 
 from Asgard.Bragi.Architecture.models.architecture_models import PatternSuggestionReport
+from Asgard.Bragi.common._md_cell import md_cell
 
 
 def generate_text_report(result: PatternSuggestionReport) -> str:
@@ -95,19 +96,19 @@ def generate_markdown_report(result: PatternSuggestionReport) -> str:
         lines.append(f"## {pattern_type.value.replace('_', ' ').title()} Candidates")
         lines.append("")
         for s in suggestions:
-            lines.append(f"### `{s.class_name}` — {s.confidence:.0%} confidence")
+            lines.append(f"### `{md_cell(s.class_name)}` — {s.confidence:.0%} confidence")
             lines.append("")
-            lines.append(f"**File:** `{s.file_path}:{s.line_number}`")
+            lines.append(f"**File:** `{md_cell(s.file_path)}:{s.line_number}`")
             lines.append("")
-            lines.append(f"**Why:** {s.rationale}")
+            lines.append(f"**Why:** {md_cell(s.rationale)}")
             lines.append("")
             if s.signals:
                 lines.append("**Signals detected:**")
                 for sig in s.signals:
-                    lines.append(f"- {sig}")
+                    lines.append(f"- {md_cell(sig)}")
                 lines.append("")
             if s.benefit:
-                lines.append(f"**Benefit:** {s.benefit}")
+                lines.append(f"**Benefit:** {md_cell(s.benefit)}")
                 lines.append("")
 
     return "\n".join(lines)

@@ -8,6 +8,7 @@ from a CoverageReport. Accepts the report as an explicit parameter.
 import json
 
 from Asgard.Bragi.Coverage.models.coverage_models import CoverageReport
+from Asgard.Bragi.common._md_cell import md_cell
 
 
 def generate_text_report(result: CoverageReport) -> str:
@@ -171,8 +172,8 @@ def generate_markdown_report(result: CoverageReport) -> str:
 
         for gap in result.gaps[:20]:
             lines.append(
-                f"| {gap.method.full_name} | {gap.file_path}:{gap.line_number} | "
-                f"{gap.severity.value.upper()} | {gap.message} |"
+                f"| {md_cell(gap.method.full_name)} | {md_cell(gap.file_path)}:{gap.line_number} | "
+                f"{md_cell(gap.severity.value.upper())} | {md_cell(gap.message)} |"
             )
 
         if len(result.gaps) > 20:
@@ -188,8 +189,8 @@ def generate_markdown_report(result: CoverageReport) -> str:
 
         for sug in result.suggestions[:15]:
             lines.append(
-                f"| {sug.test_name} | {sug.priority.value.upper()} | "
-                f"{sug.test_type} | {sug.description} |"
+                f"| {md_cell(sug.test_name)} | {md_cell(sug.priority.value.upper())} | "
+                f"{md_cell(sug.test_type)} | {md_cell(sug.description)} |"
             )
 
         lines.append("")
@@ -206,7 +207,7 @@ def generate_markdown_report(result: CoverageReport) -> str:
                 uncovered += f" +{len(cls.uncovered_methods) - 3} more"
 
             lines.append(
-                f"| {cls.class_name} | {cls.coverage_percent:.1f}% | "
+                f"| {md_cell(cls.class_name)} | {cls.coverage_percent:.1f}% | "
                 f"{cls.covered_methods}/{cls.total_methods} | {uncovered} |"
             )
 

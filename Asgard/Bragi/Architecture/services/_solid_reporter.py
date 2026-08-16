@@ -10,6 +10,7 @@ from Asgard.Bragi.Architecture.models.architecture_models import (
     SOLIDPrinciple,
     SOLIDReport,
 )
+from Asgard.Bragi.common._md_cell import md_cell
 
 
 def generate_text_report(result: SOLIDReport) -> str:
@@ -88,8 +89,8 @@ def generate_markdown_report(result: SOLIDReport) -> str:
 
             for v in violations:
                 lines.append(
-                    f"| {v.class_name} | {v.file_path}:{v.line_number} | "
-                    f"{v.message} | {v.severity.value.upper()} |"
+                    f"| {md_cell(v.class_name)} | {md_cell(v.file_path)}:{v.line_number} | "
+                    f"{md_cell(v.message)} | {md_cell(v.severity.value.upper())} |"
                 )
 
             lines.append("")

@@ -4,6 +4,7 @@ Heimdall Architecture Analyzer - Markdown report generation.
 
 from Asgard.Bragi.Architecture.models.architecture_models import ArchitectureReport
 from Asgard.Bragi.Architecture.services._arch_reporter_text import generate_recommendations
+from Asgard.Bragi.common._md_cell import md_cell
 
 
 def generate_markdown_report(result: ArchitectureReport) -> str:
@@ -35,8 +36,8 @@ def generate_markdown_report(result: ArchitectureReport) -> str:
             lines.append("|-----------|-------|---------|----------|")
             for v in result.solid_report.violations:
                 lines.append(
-                    f"| {v.principle_name[:20]} | {v.class_name} | "
-                    f"{v.message[:40]} | {v.severity.value.upper()} |"
+                    f"| {md_cell(v.principle_name, 20)} | {md_cell(v.class_name)} | "
+                    f"{md_cell(v.message, 40)} | {md_cell(v.severity.value.upper())} |"
                 )
             lines.append("")
 
@@ -53,8 +54,8 @@ def generate_markdown_report(result: ArchitectureReport) -> str:
             lines.append("|--------|--------|---------|")
             for v in result.layer_report.violations:
                 lines.append(
-                    f"| {v.source_module} ({v.source_layer}) | "
-                    f"{v.target_module} ({v.target_layer}) | {v.message} |"
+                    f"| {md_cell(v.source_module)} ({md_cell(v.source_layer)}) | "
+                    f"{md_cell(v.target_module)} ({md_cell(v.target_layer)}) | {md_cell(v.message)} |"
                 )
             lines.append("")
 
@@ -65,8 +66,8 @@ def generate_markdown_report(result: ArchitectureReport) -> str:
         lines.append("|---------|-------|------------|")
         for p in result.pattern_report.patterns:
             lines.append(
-                f"| {p.pattern_type.value.replace('_', ' ').title()} | "
-                f"{p.class_name} | {p.confidence:.0%} |"
+                f"| {md_cell(p.pattern_type.value.replace('_', ' ').title())} | "
+                f"{md_cell(p.class_name)} | {p.confidence:.0%} |"
             )
         lines.append("")
 
@@ -85,9 +86,9 @@ def generate_markdown_report(result: ArchitectureReport) -> str:
             lines.append("|----------|------------|-------------|---------|")
             for v in result.hexagonal_report.violations:
                 lines.append(
-                    f"| {v.severity.value.upper()} | "
-                    f"{v.source_zone.value} | {v.target_zone.value} | "
-                    f"{v.message[:60]} |"
+                    f"| {md_cell(v.severity.value.upper())} | "
+                    f"{md_cell(v.source_zone.value)} | {md_cell(v.target_zone.value)} | "
+                    f"{md_cell(v.message, 60)} |"
                 )
             lines.append("")
 
@@ -101,8 +102,8 @@ def generate_markdown_report(result: ArchitectureReport) -> str:
         for s in result.suggestion_report.suggestions:
             signal_str = "; ".join(s.signals[:2]) if s.signals else ""
             lines.append(
-                f"| {s.pattern_type.value.replace('_', ' ').title()} | "
-                f"{s.class_name} | {s.confidence:.0%} | {signal_str[:60]} |"
+                f"| {md_cell(s.pattern_type.value.replace('_', ' ').title())} | "
+                f"{md_cell(s.class_name)} | {s.confidence:.0%} | {md_cell(signal_str, 60)} |"
             )
         lines.append("")
 
