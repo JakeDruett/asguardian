@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 0    | 28    | 0             |
-| Medium   | 1    | 58    | 0             |
+| Medium   | 0    | 59    | 0             |
 | Low      | 1    | 21    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1141,7 +1141,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0064 — Documentation HTML interpolates title/contact/custom_css unescaped
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** de56e96
+- **Fixed at:** 2026-08-16T14:02:00Z
+- **Implementation note:** Escape title; allowlist http(s)/mailto contact hrefs; drop custom_css from HTML. javascript: URLs become #.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-79
@@ -2086,12 +2089,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 6
-- Fixed: 108
+- Open: 5
+- Fixed: 109
 - Accepted risk: 0
 - Current wave: W5
-- Next: CH-0064, CH-0019
-- Last commit: f148b2d
+- Next: CH-0019, CH-0009, CH-0020
+- Last commit: de56e96
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
