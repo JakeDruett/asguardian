@@ -1262,7 +1262,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0076 — File-integrity baseline is unsigned; `has_changes` ignores adds
 
 - **Status:** Fixed
-- **Fixed in:** 5c5873a
+- **Fixed in:** 68fac38
 - **Fixed at:** 2026-08-16T15:10:00Z
 - **Implementation note:** HMAC-SHA256 on baseline files (`ASGARD_INTEGRITY_HMAC_KEY` or sibling `.key` 0600); unsigned/rewritten hashes fail-closed; `has_changes` includes added; O_NOFOLLOW + skip file/dir symlinks.
 - **Severity:** High
@@ -1935,7 +1935,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0012, CH-0051, CH-0069, CH-0077
-- Last commit: 5c5873a
+- Last commit: 68fac38
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
