@@ -1472,7 +1472,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0084 — Injection-pattern regexes are ReDoS-prone on hostile source
 
 - **Status:** Fixed
-- **Fixed in:** 820a9f9
+- **Fixed in:** f73f5a1
 - **Fixed at:** 2026-08-16T13:00:00Z
 - **Implementation note:** Bounded nested `.*` / `[^)]*` to `{0,N}`; `_scan_file` is line-bounded with 1 MiB / 4096-char caps; 50k-char non-match test. Also bounded the other greedy patterns in the same file.
 - **Severity:** Medium
@@ -2049,7 +2049,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W4
 - Next: CH-0085, CH-0099
-- Last commit: 820a9f9
+- Last commit: f73f5a1
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
