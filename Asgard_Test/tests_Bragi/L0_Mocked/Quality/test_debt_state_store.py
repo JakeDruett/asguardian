@@ -1,9 +1,11 @@
 """Tests for the incremental debt state store (Plan 02 Phase E)."""
 
+import json
 from pathlib import Path
 
 from Asgard.Bragi.Quality.services._debt_state_store import (
     STATE_RELATIVE_PATH,
+    apply_delta,
     changed_files,
     content_hash,
     load_state,
@@ -116,3 +118,50 @@ class TestAnalyzeDelta:
             for p in cache.iterdir():
                 p.unlink()
             cache.rmdir()
+
+
+class TestSignedDebtState:
+    def test_unsigned_planted_state_is_full_rescan(self, tmp_path: Path, monkeypatch) -> None:
+        monkeypatch.setenv("ASGARD_DEBT_HMAC_KEY", "test-debt-key")
+        f = _write(tmp_path / "a.py", "x = 1\n")
+        digest = content_hash(f)
+        cache = tmp_path / STATE_RELATIVE_PATH
+        cache.parent.mkdir(parents=True)
+        cache.write_text(json.dumps({
+            "schema_version": 1,
+            "scan_root": str(tmp_path),
+            "total_debt_minutes": 0.0,
+            "files": {
+                "a.py": {
+                    "content_hash": digest,
+                    "debt_minutes": 0.0,
+                    "item_count": 0,
+                }
+            },
+        }))
+        state = load_state(tmp_path)
+        assert state.files == {}
+        assert changed_files(tmp_path, [f], state=state) == [f]
+
+    def test_rewritten_hashes_without_hmac_are_rejected(self, tmp_path: Path, monkeypatch) -> None:
+        monkeypatch.setenv("ASGARD_DEBT_HMAC_KEY", "test-debt-key")
+        f = _write(tmp_path / "a.py", "x = 1\n")
+        state = DebtState(scan_root=str(tmp_path), total_debt_minutes=0.0)
+        state.files["a.py"] = FileDebtState(content_hash=content_hash(f), debt_minutes=0.0)
+        save_state(tmp_path, state)
+        data = json.loads((tmp_path / STATE_RELATIVE_PATH).read_text())
+        data["files"]["a.py"]["content_hash"] = "0" * 64
+        data["total_debt_minutes"] = 0.0
+        (tmp_path / STATE_RELATIVE_PATH).write_text(json.dumps(data))
+        loaded = load_state(tmp_path)
+        assert loaded.files == {}
+
+    def test_escape_rel_is_not_cached(self, tmp_path: Path) -> None:
+        state = DebtState(scan_root=str(tmp_path))
+        apply_delta(
+            tmp_path,
+            state,
+            {"../outside.py": []},
+            ["../outside.py"],
+        )
+        assert "../outside.py" not in state.files

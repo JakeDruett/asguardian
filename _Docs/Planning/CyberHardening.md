@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 20   | 39    | 0             |
+| Medium   | 19   | 40    | 0             |
 | Low      | 12   | 10    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -802,7 +802,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0047 — Unsigned debt-state JSON cache can skip re-analysis
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T17:00:00Z
+- **Implementation note:** HMAC on debt-state JSON; unsigned/forged load as empty (full rescan). `rel` confined with `is_relative_to`.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-345
@@ -1990,12 +1993,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 38
-- Fixed: 76
+- Open: 37
+- Fixed: 77
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0047, CH-0048, CH-0052
-- Last commit: 51b545f
+- Next: CH-0048, CH-0052, CH-0081
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

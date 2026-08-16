@@ -9,7 +9,9 @@ root) and is a prerequisite for Plan 06's PR-differential gating.
 """
 
 import hashlib
+import hmac
 import json
+import os
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional
 
@@ -19,6 +21,7 @@ from Asgard.Bragi.Quality.models.debt_models import DebtItem
 
 STATE_RELATIVE_PATH = Path(".asgard_cache") / "bragi_debt_state.json"
 STATE_SCHEMA_VERSION = 1
+_HMAC_ENV = "ASGARD_DEBT_HMAC_KEY"
 
 
 class FileDebtState(BaseModel):
@@ -55,39 +58,123 @@ class DeltaResult(BaseModel):
 
 
 def content_hash(file_path: Path) -> Optional[str]:
-    """SHA-256 of a file's bytes; None when the file cannot be read."""
+    """SHA-256 of a file's bytes; None when the file cannot be read or is a symlink."""
+    path = Path(file_path)
+    if path.is_symlink():
+        return None
     try:
-        data = Path(file_path).read_bytes()
+        flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+        fd = os.open(path, flags)
+        try:
+            digest = hashlib.sha256()
+            while True:
+                chunk = os.read(fd, 65536)
+                if not chunk:
+                    break
+                digest.update(chunk)
+            return digest.hexdigest()
+        finally:
+            os.close(fd)
     except OSError:
         return None
-    return hashlib.sha256(data).hexdigest()
+
+
+def _state_path(scan_root: Path) -> Path:
+    return Path(scan_root) / STATE_RELATIVE_PATH
+
+
+def _key_path(scan_root: Path) -> Path:
+    path = _state_path(scan_root)
+    return path.with_name(path.name + ".key")
+
+
+def _read_nofollow(path: Path) -> bytes:
+    if path.is_symlink():
+        raise ValueError(f"debt-state path must not be a symlink: {path}")
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+    fd = os.open(path, flags)
+    try:
+        chunks = []
+        while True:
+            chunk = os.read(fd, 65536)
+            if not chunk:
+                break
+            chunks.append(chunk)
+        return b"".join(chunks)
+    finally:
+        os.close(fd)
+
+
+def _hmac_key(scan_root: Path) -> bytes:
+    env = os.environ.get(_HMAC_ENV, "").strip()
+    if env:
+        return env.encode("utf-8")
+    key_path = _key_path(scan_root)
+    if key_path.exists():
+        return _read_nofollow(key_path)
+    key = os.urandom(32)
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+    fd = os.open(key_path, flags, 0o600)
+    try:
+        os.write(fd, key)
+    finally:
+        os.close(fd)
+    os.chmod(key_path, 0o600)
+    return key
+
+
+def _canonical_payload(data: dict) -> dict:
+    payload = dict(data)
+    payload.pop("hmac", None)
+    files = payload.get("files")
+    if isinstance(files, dict):
+        payload["files"] = dict(sorted(files.items()))
+    return payload
+
+
+def _sign_state(scan_root: Path, data: dict) -> str:
+    canonical = json.dumps(_canonical_payload(data), sort_keys=True, separators=(",", ":"), default=str)
+    return hmac.new(_hmac_key(scan_root), canonical.encode("utf-8"), hashlib.sha256).hexdigest()
 
 
 def load_state(scan_root: Path) -> DebtState:
-    """Load `debt_state.json` for `scan_root`; returns an empty state when absent/corrupt."""
-    path = Path(scan_root) / STATE_RELATIVE_PATH
-    if not path.exists():
-        return DebtState(scan_root=str(scan_root))
+    """Load signed debt state. Unsigned, forged, or missing files are empty (full rescan)."""
+    empty = DebtState(scan_root=str(scan_root))
+    path = _state_path(scan_root)
+    if not path.exists() or path.is_symlink():
+        return empty
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        return DebtState(scan_root=str(scan_root))
-    if not isinstance(data, dict) or data.get("schema_version") != STATE_SCHEMA_VERSION:
-        return DebtState(scan_root=str(scan_root))
-    try:
+        data = json.loads(_read_nofollow(path).decode("utf-8"))
+        if not isinstance(data, dict) or data.get("schema_version") != STATE_SCHEMA_VERSION:
+            return empty
+        expected = data.get("hmac")
+        if not isinstance(expected, str) or not hmac.compare_digest(
+            expected, _sign_state(scan_root, data)
+        ):
+            return empty
+        data.pop("hmac", None)
         return DebtState(**data)
-    except Exception:
-        return DebtState(scan_root=str(scan_root))
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError, TypeError, ValueError):
+        return empty
 
 
 def save_state(scan_root: Path, state: DebtState) -> None:
-    """Persist `state` to `.asgard_cache/bragi_debt_state.json` under `scan_root`."""
-    path = Path(scan_root) / STATE_RELATIVE_PATH
+    """Persist signed `state` to `.asgard_cache/bragi_debt_state.json` under `scan_root`."""
+    path = _state_path(scan_root)
+    if path.is_symlink():
+        raise ValueError("debt-state path must not be a symlink")
     path.parent.mkdir(parents=True, exist_ok=True)
-    # Stable key order for deterministic bytes across identical runs.
     payload = json.loads(state.model_dump_json())
     payload["files"] = dict(sorted(payload.get("files", {}).items()))
-    path.write_text(json.dumps(payload, indent=2, sort_keys=False) + "\n", encoding="utf-8")
+    payload["hmac"] = _sign_state(scan_root, payload)
+    raw = (json.dumps(payload, indent=2, sort_keys=False) + "\n").encode("utf-8")
+    flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, "O_NOFOLLOW", 0)
+    fd = os.open(path, flags, 0o600)
+    try:
+        os.write(fd, raw)
+    finally:
+        os.close(fd)
+    os.chmod(path, 0o600)
 
 
 def changed_files(scan_root: Path, candidate_files: Iterable[Path], state: Optional[DebtState] = None) -> List[Path]:
@@ -99,20 +186,34 @@ def changed_files(scan_root: Path, candidate_files: Iterable[Path], state: Optio
     result: List[Path] = []
     for file_path in candidate_files:
         rel = _relative_key(scan_root, file_path)
-        cached = state.files.get(rel)
         current_hash = content_hash(file_path)
         if current_hash is None:
             continue
+        if rel is None:
+            result.append(file_path)
+            continue
+        cached = state.files.get(rel)
         if cached is None or cached.content_hash != current_hash:
             result.append(file_path)
     return result
 
 
-def _relative_key(scan_root: Path, file_path: Path) -> str:
+def _relative_key(scan_root: Path, file_path: Path) -> Optional[str]:
+    """Relative key under scan_root, or None if the path escapes the root."""
     try:
-        return str(Path(file_path).resolve().relative_to(Path(scan_root).resolve()))
-    except ValueError:
-        return str(file_path)
+        resolved = Path(file_path).resolve()
+        root = Path(scan_root).resolve()
+        if not resolved.is_relative_to(root):
+            return None
+        return str(resolved.relative_to(root))
+    except (OSError, ValueError):
+        return None
+
+
+def _confined_rel(scan_root: Path, rel: str) -> Optional[str]:
+    if not rel or Path(rel).is_absolute() or ".." in Path(rel).parts:
+        return None
+    return _relative_key(scan_root, Path(scan_root) / rel)
 
 
 def apply_delta(
@@ -129,23 +230,28 @@ def apply_delta(
     to detect deletions: any cached file absent from it has its debt
     removed from the total.
     """
-    all_current = set(all_current_files)
+    all_current = {key for key in all_current_files if _confined_rel(scan_root, key)}
     removed_minutes = 0.0
     for rel, cached in list(state.files.items()):
-        if rel not in all_current:
+        if _confined_rel(scan_root, rel) is None or rel not in all_current:
             removed_minutes += cached.debt_minutes
             del state.files[rel]
 
     added_or_changed_minutes = 0.0
+    applied: List[str] = []
     for rel, items in file_items.items():
-        old_minutes = state.files.get(rel).debt_minutes if rel in state.files else 0.0
+        confined = _confined_rel(scan_root, rel)
+        if confined is None:
+            continue
+        old_minutes = state.files.get(confined).debt_minutes if confined in state.files else 0.0
         new_minutes = sum(_item_minutes(item) for item in items)
-        full_path = Path(scan_root) / rel
+        full_path = Path(scan_root) / confined
         new_hash = content_hash(full_path) or ""
-        state.files[rel] = FileDebtState(
+        state.files[confined] = FileDebtState(
             content_hash=new_hash, debt_minutes=new_minutes, item_count=len(items),
         )
         added_or_changed_minutes += new_minutes - old_minutes
+        applied.append(confined)
 
     state.total_debt_minutes = max(
         state.total_debt_minutes + added_or_changed_minutes - removed_minutes, 0.0
@@ -153,8 +259,8 @@ def apply_delta(
     state.scan_root = str(scan_root)
 
     return DeltaResult(
-        changed_files=sorted(file_items.keys()),
-        unchanged_files=len(all_current) - len(file_items),
+        changed_files=sorted(applied),
+        unchanged_files=max(len(all_current) - len(applied), 0),
         added_or_changed_minutes=added_or_changed_minutes,
         removed_minutes=removed_minutes,
         total_debt_minutes=state.total_debt_minutes,
