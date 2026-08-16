@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 0    | 28    | 0             |
-| Medium   | 2    | 57    | 0             |
+| Medium   | 1    | 58    | 0             |
 | Low      | 1    | 21    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -817,7 +817,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0046 — Code-smell HTML report interpolates scan strings unescaped
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** f148b2d
+- **Fixed at:** 2026-08-16T14:01:00Z
+- **Implementation note:** html.escape scan_path/filename/description/evidence; allowlist severity CSS classes.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-79
@@ -2083,12 +2086,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 7
-- Fixed: 107
+- Open: 6
+- Fixed: 108
 - Accepted risk: 0
 - Current wave: W5
-- Next: CH-0046, CH-0064, CH-0019
-- Last commit: c42b8a3
+- Next: CH-0064, CH-0019
+- Last commit: f148b2d
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
