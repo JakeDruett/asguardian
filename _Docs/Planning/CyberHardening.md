@@ -1775,7 +1775,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0112 — CORS/headers checkers `urlopen` operator URLs with no host allowlist
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 277342e
 - **Fixed at:** 2026-08-16T12:20:00Z
 - **Implementation note:** Standalone URL/host allowlist; block private/metadata unless --allow-internal; cap port-scan workers at 32; re-validate redirects. CORS evil.* remain Origin headers only.
 - **Severity:** Medium

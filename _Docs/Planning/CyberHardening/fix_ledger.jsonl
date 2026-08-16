@@ -27,3 +27,4 @@
 {"id":"CH-0113","at":"2026-08-16T10:31:30Z","commit":"baae354","wave":"W1","summary":"Validate DNS names and pass dig -- before the domain"}
 {"id":"CH-0105","at":"2026-08-16T12:00:00Z","commit":"405ffdf","wave":"W1","summary":"HTTPS Vault; reject privileged services; digest-pin generator images; Helm no latest"}
 {"id":"CH-0108","at":"2026-08-16T12:12:00Z","commit":"d8f68d3","wave":"W1","summary":"SG egress self-only; allowlist names; escape HCL strings"}
+{"id":"CH-0112","at":"2026-08-16T12:20:00Z","commit":"277342e","wave":"W1","summary":"URL/host allowlist for CORS/headers/ports; cap workers; safe redirects"}
