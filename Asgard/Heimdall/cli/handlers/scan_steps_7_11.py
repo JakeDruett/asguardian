@@ -71,6 +71,7 @@ def _run_scan_steps_7_to_11(scan_path, exclude_patterns, include_tests, verbose,
     except Exception as e:
         scan_results["performance"] = {"status": "ERROR", "error": str(e)}
         print(f"       Error: {e}")
+        overall_exit = 1
 
     _next_step(step_state, total_steps, "OOP: Coupling/Cohesion Metrics...")
     try:
@@ -111,6 +112,7 @@ def _run_scan_steps_7_to_11(scan_path, exclude_patterns, include_tests, verbose,
     except Exception as e:
         scan_results["oop"] = {"status": "ERROR", "error": str(e)}
         print(f"       Error: {e}")
+        overall_exit = 1
 
     _next_step(step_state, total_steps, "Architecture: SOLID/Layer Analysis...")
     try:
@@ -132,6 +134,7 @@ def _run_scan_steps_7_to_11(scan_path, exclude_patterns, include_tests, verbose,
     except Exception as e:
         scan_results["architecture"] = {"status": "ERROR", "error": str(e)}
         print(f"       Error: {e}")
+        overall_exit = 1
 
     _next_step(step_state, total_steps, "Dependencies: Circular Import Detection...")
     try:
@@ -156,6 +159,7 @@ def _run_scan_steps_7_to_11(scan_path, exclude_patterns, include_tests, verbose,
     except Exception as e:
         scan_results["dependencies"] = {"status": "ERROR", "error": str(e)}
         print(f"       Error: {e}")
+        overall_exit = 1
 
     _next_step(step_state, total_steps, "Test Coverage: Gap Analysis...")
     try:
@@ -196,5 +200,6 @@ def _run_scan_steps_7_to_11(scan_path, exclude_patterns, include_tests, verbose,
     except Exception as e:
         scan_results["test_coverage"] = {"status": "ERROR", "error": str(e)}
         print(f"       Error: {e}")
+        overall_exit = 1
 
     return overall_exit

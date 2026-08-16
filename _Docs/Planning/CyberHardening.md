@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 19   | 40    | 0             |
+| Medium   | 18   | 41    | 0             |
 | Low      | 12   | 10    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1537,7 +1537,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0090 — `heimdall scan` treats step exceptions as PASS
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T17:05:00Z
+- **Implementation note:** Every step `except Exception` that records ERROR also sets `overall_exit = 1`. Raising type-check step fails the scan.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-390
@@ -1993,12 +1996,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 37
-- Fixed: 77
+- Open: 36
+- Fixed: 78
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0048, CH-0052, CH-0081
-- Last commit: 06a1b37
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

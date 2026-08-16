@@ -75,6 +75,7 @@ def _run_scan_steps_1_to_6(scan_path, exclude_patterns, include_tests, output_fo
     except Exception as e:
         scan_results["file_length"] = {"status": "ERROR", "error": str(e)}
         print(f"       Error: {e}")
+        overall_exit = 1
 
     _next_step(step_state, total_steps, "Quality: Complexity Analysis...")
     try:
@@ -99,6 +100,7 @@ def _run_scan_steps_1_to_6(scan_path, exclude_patterns, include_tests, output_fo
     except Exception as e:
         scan_results["complexity"] = {"status": "ERROR", "error": str(e)}
         print(f"       Error: {e}")
+        overall_exit = 1
 
     # GAIA house rule: lazy-import detection is opt-in (--profile gaia).
     if house_rules:
@@ -142,6 +144,7 @@ def _run_lazy_import_step(scan_path, exclude_patterns, include_tests, verbose, s
     except Exception as e:
         scan_results["lazy_imports"] = {"status": "ERROR", "error": str(e)}
         print(f"       Error: {e}")
+        overall_exit = 1
     return overall_exit
 
 
@@ -169,6 +172,7 @@ def _run_env_fallback_step(scan_path, exclude_patterns, include_tests, verbose, 
     except Exception as e:
         scan_results["env_fallbacks"] = {"status": "ERROR", "error": str(e)}
         print(f"       Error: {e}")
+        overall_exit = 1
     return overall_exit
 
 
@@ -201,6 +205,7 @@ def _run_type_check_step(scan_path, exclude_patterns, include_tests, verbose, sc
     except Exception as e:
         scan_results["type_check"] = {"status": "ERROR", "error": str(e)}
         print(f"       Error: {e}")
+        overall_exit = 1
     return overall_exit
 
 
@@ -262,5 +267,6 @@ def _run_security_step(scan_path, exclude_patterns, include_tests, verbose, scan
     except Exception as e:
         scan_results["security"] = {"status": "ERROR", "error": str(e)}
         print(f"       Error: {e}")
+        overall_exit = 1
 
     return overall_exit
