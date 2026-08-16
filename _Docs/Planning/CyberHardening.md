@@ -1,7 +1,8 @@
 # CyberHardening Plan
 
-Status: IN PROGRESS
+Status: INVENTORY COMPLETE — FIXES NOT YET APPLIED
 Started: 2026-08-16
+Completed inventory: 2026-08-16
 Repo: Asgard
 
 ## Purpose
@@ -24,9 +25,9 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Planned | Accepted risk |
 |----------|------|---------|---------------|
 | Critical | 0    | 0       | 0             |
-| High     | 27   | 0       | 0             |
-| Medium   | 55   | 0       | 0             |
-| Low      | 19   | 0       | 0             |
+| High     | 28   | 0       | 0             |
+| Medium   | 59   | 0       | 0             |
+| Low      | 22   | 0       | 0             |
 | Info     | 5    | 0       | 0             |
 
 ## Findings
@@ -40,7 +41,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 - **Confidence:** High
 - **CWE / class:** CWE-829 / supply chain
 - **Primary file:** `.github/workflows/ci.yml`
-- **Also on trace:** `.github/workflows/publish.yml`, `.github/workflows/l8-perf-budgets.yml`, `Asgard/Volundr/CICD/services/action_pins.py`, `Asgard_Test/tests_Volundr/golden/ci.yml`
+- **Also on trace:** `.github/workflows/publish.yml`, `.github/workflows/l8-perf-budgets.yml`, `Asgard/Volundr/CICD/services/action_pins.py`, `Asgard_Test/tests_Volundr/golden/ci.yml`, `_FutureItems-Security/Tools_Security/.github/workflows/security-scan.yml`
 - **Location:** every `uses:` step
 - **Trace:** workflow `uses: actions/*@v4|v5` / `pypa/gh-action-pypi-publish@release/v1` → GitHub resolves a moving tag → action code runs with job token / OIDC
 - **Impact:** A rewritten action tag executes in lint/test/publish. Publish path has `id-token: write`.
@@ -1199,7 +1200,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Confidence:** High
 - **CWE / class:** CWE-312 / CWE-532
 - **Primary file:** `Asgard/Heimdall/Security/utilities/security_utils.py`
-- **Also on trace:** `Asgard/Heimdall/Security/services/secrets_detection_service.py`, `Asgard/Heimdall/Security/services/_secrets_detection_helpers.py`, `Asgard/Heimdall/Security/services/_static_security_report_json_md.py`, `Asgard/Heimdall/Security/services/_config_secrets_helpers.py`, `Asgard/Heimdall/Security/services/_config_secrets_report.py`
+- **Also on trace:** `Asgard/Heimdall/Security/services/secrets_detection_service.py`, `Asgard/Heimdall/Security/services/_secrets_detection_helpers.py`, `Asgard/Heimdall/Security/services/_static_security_report_json_md.py`, `Asgard/Heimdall/Security/services/_config_secrets_helpers.py`, `Asgard/Heimdall/Security/services/_config_secrets_report.py`, `_FutureItems-Security/Tools_Security/secrets_scanner.py`
 - **Location:** `mask_secret` (first 4 + last 4); `mask_value` (`len//6` both ends)
 - **Trace:** Match group → `mask_secret`/`mask_value` → `SecretFinding.masked_value` / JSON+Markdown reports → CI logs
 - **Impact:** 8+ visible characters of keys/tokens/passwords in default reports.
@@ -1649,7 +1650,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Confidence:** High
 - **CWE / class:** CWE-345 / CWE-22
 - **Primary file:** `Asgard/common/_hash_cache.py`
-- **Also on trace:** `Asgard/common/_incremental_models.py`
+- **Also on trace:** `Asgard/common/_incremental_models.py`, `_FutureItems-Security/Tools_Security/file_integrity_checker.py`
 - **Location:** `load` `json.load` → `HashEntry`; `cache_file = project_path / cache_path`
 - **Trace:** Planted `.asgard-cache.json` `result` reused; absolute `cache_path` replaces the project root
 - **Impact:** Skip re-analysis / inject cached results. Same class as CH-0036.
@@ -1657,11 +1658,101 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Planned fix:** HMAC; refuse abs/`..` cache paths; default `store_results=False` for gates. Tests with planted `result`.
 - **Fix wave:** W3
 
+### CH-0110 — FutureItems security-scan workflow is fail-open and points at a missing directory
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-390 / CWE-670
+- **Primary file:** `_FutureItems-Security/Tools_Security/.github/workflows/security-scan.yml`
+- **Also on trace:** `_FutureItems-Security/Tools_Security/security_api.py`, `_FutureItems-Security/Tools_Security/secrets_scanner.py`
+- **Location:** jobs `security-scan` / `secrets-scan` / `dependency-check` / `code-quality` (`cd security-tools`)
+- **Trace:** GHA step `cd security-tools` → directory does not exist (code lives in `Tools_Security/`) → scanners never run → `continue-on-error: true` on the SARIF job → later `cat security-report.json` / upload still proceed or fail open
+- **Impact:** A scheduled "security scan" can stay green with zero analysis. Unpinned `actions/checkout@v4` / `setup-python@v5` / `upload-sarif@v3` also extend CH-0001.
+- **Evidence:** Workflow `cd security-tools` on lines 37, 50, 90, 113, 132, 161; repo path is `_FutureItems-Security/Tools_Security`. `continue-on-error: true` on the main scan step.
+- **Planned fix:** `working-directory: _FutureItems-Security/Tools_Security`. Drop `continue-on-error`. Fail the job if SARIF/JSON is missing. Pin actions (CH-0001). Add a CI test that the path exists.
+- **Fix wave:** W1
+
+### CH-0111 — SSL checker disables certificate verification then connects to the operator host
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** High
+- **CWE / class:** CWE-295
+- **Primary file:** `_FutureItems-Security/Tools_Security/ssl_checker.py`
+- **Also on trace:** `_FutureItems-Security/Tools_Security/security_toolkit.py`
+- **Location:** `SSLChecker.check_certificate` (`context.check_hostname = False`; `verify_mode = ssl.CERT_NONE`)
+- **Trace:** CLI `host`/`port` → `socket.create_connection` → `wrap_socket` with `CERT_NONE` → parse peer cert
+- **Impact:** Intended for inspecting bad certs, but any caller (including a future CI wrapper) accepts MITM and still reports a score. Banner/cert data is taken from an unverified peer.
+- **Evidence:** Lines 47–54 set `check_hostname = False` and `CERT_NONE` before connect. Toolkit exposes this as tool `ssl`.
+- **Planned fix:** Default to verifying; add `--insecure` for the analysis mode. Label scores collected under `CERT_NONE` as "unauthenticated peek". Tests that default verify rejects a bad chain.
+- **Fix wave:** W3
+
+### CH-0112 — CORS/headers checkers `urlopen` operator URLs with no host allowlist
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-918
+- **Primary file:** `_FutureItems-Security/Tools_Security/cors_checker.py`
+- **Also on trace:** `_FutureItems-Security/Tools_Security/http_security_headers.py`, `_FutureItems-Security/Tools_Security/port_scanner.py`, `_FutureItems-Security/Tools_Security/security_toolkit.py`
+- **Location:** `CORSChecker._test_origin` `urlopen`; `HTTPSecurityHeaders.check_url` `urlopen`; `PortScanner.scan_host` / `get_banner`
+- **Trace:** CLI URL/host → prefix `https://` if bare → `urllib.request.urlopen` / `socket.connect` to that target (and CORS variants `evil.{host}`)
+- **Impact:** Same scanner-as-client class as CH-0056. A CI job or wrapped API that forwards untrusted URLs becomes SSRF / port-scan. CORS checker also issues requests to attacker-shaped sibling hosts.
+- **Evidence:** `cors_checker.py` ~122 `urlopen(request)`; `http_security_headers.py` ~132; `port_scanner.py` `scan_host` ThreadPool 100 workers + banner `HEAD /`.
+- **Planned fix:** Allowlist schemes (`https` default); block link-local/metadata/private ranges unless `--allow-internal`; cap workers. Do not emit requests to synthesized `evil.` hosts against production. Tests for `http://169.254.169.254/`.
+- **Fix wave:** W1
+
+### CH-0113 — DNS checker passes unsanitized domain to `dig`
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-88
+- **Primary file:** `_FutureItems-Security/Tools_Security/dns_security_checker.py`
+- **Also on trace:** `_FutureItems-Security/Tools_Security/security_toolkit.py`
+- **Location:** `_get_dns_records` / `_check_dnssec` `subprocess.run(['dig', '+short', domain, record_type])`
+- **Trace:** CLI `domain` → `dig +short {domain} {type}` with no `--` separator and no hostname allowlist
+- **Impact:** A domain starting with `-` or containing `@` is interpreted as a `dig` option/server, not a name (file read via `@path`, unexpected servers). List-form argv avoids shell, not option injection.
+- **Evidence:** Lines 59–64 and 260–264 interpolate `domain` as a positional after `+short` with no `--`.
+- **Planned fix:** Validate hostname (`RFC 1123` / IDNA); reject leading `-` and `@`; pass `dig -- {domain} {type}`. Tests with `-f`, `@/etc/passwd`.
+- **Fix wave:** W1
+
+### CH-0114 — SecurityAPI loads scanners with broken operator precedence and fail-opens on errors
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-670 / CWE-390
+- **Primary file:** `_FutureItems-Security/Tools_Security/security_api.py`
+- **Also on trace:** `_FutureItems-Security/Tools_Security/security_toolkit.py`, `_FutureItems-Security/Tools_Security/.github/workflows/security-scan.yml`
+- **Location:** `_load_scanner` (`isinstance(obj, type) and name.endswith('Scanner') or name.endswith('Detector')`); `scan_all` `except Exception`
+- **Trace:** `dir(module)` first name ending `Detector` (including imports / non-types) → `obj()`; any scan exception → `ScanReport(total_issues=0)` with the error stuffed into `issues`
+- **Impact:** Wrong class constructed, or CI SARIF reports 0 issues when a scanner crashed (pairs with CH-0110).
+- **Evidence:** Line 173 missing parentheses; `scan_all` 143–155 catches all exceptions and still returns a report.
+- **Planned fix:** `(isinstance(obj, type) and (name.endswith('Scanner') or name.endswith('Detector')))`; require subclasses of a local `BaseScanner`; `scan_all` re-raise or set `total_issues=-1` and non-zero exit. Tests for imported `*Detector` names and a raising scanner.
+- **Fix wave:** W3
+
+### CH-0115 — SecurityAPI `-o` writes the operator path with no jail
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** High
+- **CWE / class:** CWE-73
+- **Primary file:** `_FutureItems-Security/Tools_Security/security_api.py`
+- **Also on trace:** `_FutureItems-Security/Tools_Security/security_toolkit.py`
+- **Location:** `main` `open(args.output, 'w')`
+- **Trace:** CLI `-o` → `open` truncate/write any path the process can access
+- **Impact:** Low as a local CLI; High if this API is later exposed over HTTP/MCP without a jail.
+- **Evidence:** `security_api.py` ~384–386. No `is_relative_to` / suffix allowlist.
+- **Planned fix:** Default to CWD; refuse abs/`..` unless `--allow-abs`; only `.json`/`.sarif`. Tests for `-o /tmp/x` and `-o ../../etc/cron.d/x`.
+- **Fix wave:** W2
+
 ## Planned fix waves
 
-- **W1 — CI / supply chain / secrets / network:** CH-0001–0006, CH-0023, CH-0024, CH-0033, CH-0049, CH-0056, CH-0060–0063, CH-0066, CH-0071, CH-0082, CH-0086, CH-0093, CH-0094, CH-0102–0105. Isolate git/linters; lock crawler/link/probe/proxy fetches; token-gate MCP; encode GHA commands; sanitize generators.
-- **W2 — Path confinement:** … CH-0059, CH-0065, CH-0068, CH-0078, CH-0091. Jail `$ref`, SQL/Alembic, Freya baseline paths; skip scanner symlinks; jail eval corpus.
-- **W3 — Baseline / cache / secrets in artifacts:** … CH-0051, CH-0052, CH-0054, CH-0069, CH-0076, CH-0077, CH-0079, CH-0080, CH-0081, CH-0088–0090, CH-0092. Redact crawl auth; sign baselines/caches; fail-closed domain/scan/ratings.
+- **W1 — CI / supply chain / secrets / network:** CH-0001–0006, CH-0023, CH-0024, CH-0033, CH-0049, CH-0056, CH-0060–0063, CH-0066, CH-0071, CH-0082, CH-0086, CH-0093, CH-0094, CH-0102–0105, CH-0110, CH-0112, CH-0113. Isolate git/linters; lock crawler/link/probe/proxy fetches; token-gate MCP; encode GHA commands; sanitize generators; jail FutureItems URL/DNS tools.
+- **W2 — Path confinement:** … CH-0059, CH-0065, CH-0068, CH-0078, CH-0091, CH-0115. Jail `$ref`, SQL/Alembic, Freya baseline paths; skip scanner symlinks; jail eval corpus; jail SecurityAPI `-o`.
+- **W3 — Baseline / cache / secrets in artifacts:** … CH-0051, CH-0052, CH-0054, CH-0069, CH-0076, CH-0077, CH-0079, CH-0080, CH-0081, CH-0088–0090, CH-0092, CH-0111, CH-0114. Redact crawl auth; sign baselines/caches; fail-closed domain/scan/ratings; verify TLS by default; fix SecurityAPI loader.
 - **W4 — Analyzer robustness:** CH-0016, CH-0017, CH-0018, CH-0021, CH-0022, CH-0025, CH-0031, CH-0039, CH-0045, CH-0053, CH-0083–0085, CH-0087, CH-0095. Size/recursion/hunk/regex/parse caps; spawn-safe parallel workers.
 - **W5 — Output / template hygiene:** … CH-0055, CH-0064, CH-0067. Escape Freya/scan HTML/JUnit reports.
 
@@ -1704,6 +1795,13 @@ None yet.
 - Batch 21 merged (2026-08-16): rest of DVWA + GoVWA + NodeGoat + OWASP CWE22/327 fixtures. remaining≈1974. Highest ID: CH-0109.
 - Batch 22 merged (2026-08-16): OWASP CWE327–CWE89 corpus remainder. remaining≈1894 completed≈1981. Highest ID: CH-0109.
 - Batch 23 merged (2026-08-16): remaining CWE89 safes + RailsGoat app + Semgrep through flask-api-method-string-format.py. remaining=1574 completed=2301 ledger=2301. Highest ID: CH-0109.
+- Batch 24 merged (2026-08-16): Semgrep flask-api-method-string-format.yaml through insecure-urlretrieve-ftp.yaml. remaining=1334 completed=2541 ledger=2541. Highest ID: CH-0109.
+- Batch 25 (in progress 2026-08-16): remaining Semgrep (194) + FutureItems first-party tools. Highest ID: CH-0115. Spot-check: insecure-urlretrieve.py / listeneval.py / mako-templates-detected.py / marshal.py not imported by Asgard/; ssl_checker CERT_NONE (CH-0111); dig unsanitized domain (CH-0113); GHA `cd security-tools` (CH-0110).
+- Batch 25 merged (2026-08-16): remaining Semgrep 194 (clean). remaining=1140.
+- Batch 26 merged (2026-08-16): WebGoat 188 + WebGoat.NET 150 + Heimdall benchmarks 176 (clean; corpus parsed not executed; PEM header only). remaining=626.
+- Batch 27 merged (2026-08-16): remaining Asgard_Test tests + FutureItems tools + MANIFEST.in + architecture.yml + `_scripts/list_pydantic_models.py` + inventory script. 10 FutureItems paths with findings (CH-0001/0079/0109/0110–0115). remaining=0 completed=3875 ledger=3875.
+- Refresh `init` (2026-08-16): discovered=3875 remaining=0. Ledger↔completed 1:1, no duplicate paths. Highest ID: CH-0115 (CH-0029 withdrawn).
+- **INVENTORY COMPLETE — FIXES NOT YET APPLIED.** First recommended wave: W1 (CI pins, untrusted-git isolation, MCP auth, scanner-as-client SSRF, generator injection).
 - **Successor:** remaining=1574. Next: `Asgard_Test/fixtures/semgrep/flask/security/flask-api-method-string-format.yaml` then rest of Semgrep, remaining Asgard_Test, `_FutureItems-Security`, `_scripts`, `architecture.yml`, inventory script. `python3 scripts/cyberhardening_inventory.py next 8`. Do not rebuild inventory. Do not implement fixes.
 - **Successor:** remaining≈1894. Next after pop: remaining `Asgard_Test/fixtures/owasp/` then other Asgard_Test packages, `_FutureItems-Security`, `_scripts`, `architecture.yml`, `scripts/cyberhardening_inventory.py`. `python3 scripts/cyberhardening_inventory.py status` / `next 8`. Do not rebuild inventory. Do not implement fixes.
 - Spot-check: dns_calculator offline (no dig); cgroup_analyzer no /proc I/O; SLO empty=healthy extended CH-0098; tracing cycle walks extended CH-0101.
