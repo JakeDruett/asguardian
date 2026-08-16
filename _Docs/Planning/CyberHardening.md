@@ -1847,7 +1847,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0107 — Volundr suppressions are unsigned YAML that delete findings
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 6126246
 - **Fixed at:** 2026-08-16T17:42:00Z
 - **Implementation note:** YAML rejects `*`/globs and requires expiry; CI fail-closed unless HMAC verifies; `ignore_rules` cannot drop in CI.
 - **Severity:** Medium
@@ -2022,7 +2022,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0114
-- Last commit: pending
+- Last commit: 6126246
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
