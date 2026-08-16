@@ -1562,7 +1562,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0102 — Dockerfile generator concatenates untrusted fields as instructions
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 882c7b8
 - **Fixed at:** 2026-08-16T10:24:00Z
 - **Implementation note:** Reject newline/# in interpolated fields; JSON-quote HEALTHCHECK; pin Trivy digest; docker.sock only with privileged_scan.
 - **Severity:** High
@@ -1791,7 +1791,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0066
-- Last commit: PENDING
+- Last commit: 882c7b8
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

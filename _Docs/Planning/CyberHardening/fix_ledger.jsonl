@@ -5,4 +5,4 @@
 {"id":"CH-0062","at":"2026-08-16T09:55:58Z","commit":"33b0266","wave":"W1","summary":"Validation proxy localhost bind, path jail, same-host redirects"}
 {"id":"CH-0063","at":"2026-08-16T09:58:04Z","commit":"b454c81","wave":"W1","summary":"LiveContract urljoin + path jail + encoded params + same-host redirects"}
 {"id":"CH-0094","at":"2026-08-16T10:00:29Z","commit":"85f6957","wave":"W1","summary":"Encode GitHub workflow-command fields to block command injection"}
-{"id":"CH-0102","at":"2026-08-16T10:24:00Z","commit":"PENDING","wave":"W1","summary":"Refuse Dockerfile field injection; pin Trivy; no docker.sock by default"}
+{"id":"CH-0102","at":"2026-08-16T10:02:33Z","commit":"882c7b8","wave":"W1","summary":"Refuse Dockerfile field injection; pin Trivy; no docker.sock by default"}
