@@ -644,7 +644,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Confidence:** High
 - **CWE / class:** CWE-59 / CWE-400
 - **Primary file:** `Asgard/Bragi/Quality/languages/javascript/services/js_analyzer.py`
-- **Also on trace:** `Asgard/Bragi/Quality/languages/cpp/services/cpp_analyzer.py`, `csharp/services/csharp_analyzer.py`, `go/services/go_analyzer.py`, `java/services/java_analyzer.py`, `php/services/php_analyzer.py` (and remaining language analyzers if they share the same skeleton)
+- **Also on trace:** `Asgard/Bragi/Quality/languages/cpp/services/cpp_analyzer.py`, `csharp/services/csharp_analyzer.py`, `go/services/go_analyzer.py`, `java/services/java_analyzer.py`, `php/services/php_analyzer.py`, `ruby/services/ruby_analyzer.py`, `rust/services/rust_analyzer.py`, `shell/services/shell_analyzer.py` (`rglob("*")` when shebang scan is on), `typescript/services/ts_analyzer.py` (delegates to JS walker)
 - **Location:** `analyze` / `_discover_files` / `analyze_directory`
 - **Trace:** `Path(scan_path).rglob(f"*{ext}")` → `read_text` of entire files. `rglob` follows directory symlinks. `exclude_patterns`, `max_file_lines`, `max_findings` exist on scan configs and are never applied.
 - **Impact:** Escape via dir symlink; unbounded memory/CPU on huge trees/`bundle.js`; `include_extensions` glob interpolation can widen the walk.
@@ -659,7 +659,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Confidence:** High
 - **CWE / class:** CWE-532
 - **Primary file:** `Asgard/Bragi/Quality/languages/javascript/services/_js_security_rules.py`
-- **Also on trace:** `Asgard/Bragi/Quality/languages/php/services/_php_rules.py`, `Asgard/Heimdall/cli/handlers/lang_analyzers.py` (prints `Code:` / JSON)
+- **Also on trace:** `Asgard/Bragi/Quality/languages/php/services/_php_rules.py`, `Asgard/Bragi/Quality/languages/ruby/services/_ruby_rules.py`, `Asgard/Bragi/Quality/languages/rust/services/_rust_rules.py`, `Asgard/Heimdall/cli/handlers/lang_analyzers.py` (prints `Code:` / JSON)
 - **Location:** `check_hardcoded_credentials`
 - **Trace:** Matching source line (including the literal) → `code_snippet` → CLI print / `report.dict()`
 - **Impact:** Detected secrets leave the file into reports, logs, and CI artifacts.
@@ -716,10 +716,11 @@ None yet.
 - Batch 2 merged: Architecture analyzers + Calibration + CodeFix + Coverage core (50 files)
 - Batch 3 merged: Coverage extractors + Dependencies + OOP models (40 files)
 - Batch 4 merged: OOP + Performance + BugDetection (48 files)
-- Batch 5 merged (2026-08-16): Quality language barrels + C++/C#/Go/Java/JS/PHP
-- Last paths completed: through `Asgard/Bragi/Quality/languages/php/services/_php_rules.py` (and `php_analyzer.py` if present in the pop)
-- Next batch: remaining Quality languages (php_analyzer if not popped, ruby/rust/shell/typescript) then Quality Complexity/*
-- Resume pointer: `python3 scripts/cyberhardening_inventory.py status`
-- Spot-check batch 5: language `eval` hits are detectors of scanned source, not Python eval. JS/PHP analyzers use `rglob` + unused limits.
+- Batch 5 merged: Quality language analyzers C++ through PHP
+- Batch 6 merged (2026-08-16): Quality ruby/rust/shell/typescript + Quality models A
+- Last paths completed: through `Asgard/Bragi/Quality/models/debt_models.py`
+- Next batch: remaining `Asgard/Bragi/Quality/models/*` then Quality services (Complexity, Duplication, Maintainability, Metrics, Naming, …)
+- Resume pointer: `python3 scripts/cyberhardening_inventory.py status` then `next 8`
+- Spot-check batch 6: language `eval` rules detect scanned source; shell rules do not execute. CH-0042/CH-0043 extended to ruby/rust/ts/shell.
 - Highest ID: CH-0045
-- **Successor:** do not rebuild inventory unless `todo.json` is missing. Continue `next N`. Do not implement fixes.
+- **Successor:** do not rebuild inventory unless `todo.json` is missing. Continue `next N`. Do not implement fixes. Unit of progress is one inventoried file traced + ledger + `done`.
