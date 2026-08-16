@@ -73,7 +73,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0003 — PyPI OIDC publish: floating publisher, no environment, no split-trust
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 4b7d552
 - **Fixed at:** 2026-08-16T09:58:00Z
 - **Implementation note:** Split build (no OIDC) / attest / publish; environment pypi; ubuntu-latest; tags v[0-9].*; workflow permissions {}.
 - **Severity:** High
@@ -1776,7 +1776,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0061
-- Last commit: PENDING
+- Last commit: 4b7d552
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
