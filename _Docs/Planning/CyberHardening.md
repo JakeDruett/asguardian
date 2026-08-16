@@ -719,8 +719,15 @@ None yet.
 - Batch 5 merged: Quality language analyzers C++ through PHP
 - Batch 6 merged (2026-08-16): Quality ruby/rust/shell/typescript + Quality models A
 - Last paths completed: through `Asgard/Bragi/Quality/models/debt_models.py`
-- Next batch: remaining `Asgard/Bragi/Quality/models/*` then Quality services (Complexity, Duplication, Maintainability, Metrics, Naming, …)
-- Resume pointer: `python3 scripts/cyberhardening_inventory.py status` then `next 8`
+- Next batch: remaining `Asgard/Bragi/Quality/models/*` then Quality services
+- Resume pointer (2026-08-16 session cap): remaining=3600 completed=275. Next paths:
+  - `Asgard/Bragi/Quality/models/documentation_models.py`
+  - `Asgard/Bragi/Quality/models/duplication_models.py`
+  - `Asgard/Bragi/Quality/models/env_fallback_models.py`
+  - `Asgard/Bragi/Quality/models/error_handling_models.py`
+  - `Asgard/Bragi/Quality/models/future_leak_models.py`
+  - then more `Quality/models/*` and Quality services
+- Commands: `python3 scripts/cyberhardening_inventory.py status` / `next 8` / `done PATH --disposition …`
 - Spot-check batch 6: language `eval` rules detect scanned source; shell rules do not execute. CH-0042/CH-0043 extended to ruby/rust/ts/shell.
 - Highest ID: CH-0045
 - **Successor:** do not rebuild inventory unless `todo.json` is missing. Continue `next N`. Do not implement fixes. Unit of progress is one inventoried file traced + ledger + `done`.
