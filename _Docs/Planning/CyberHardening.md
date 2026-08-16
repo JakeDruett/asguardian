@@ -193,7 +193,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0010 — Unconfined `baseline_path` join
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 0e5162a
 - **Fixed at:** 2026-08-16T12:46:00Z
 - **Implementation note:** Reject absolute/`..` baseline_file; resolved path must be_relative_to(project_path) before load/save.
 - **Severity:** Medium
@@ -1875,7 +1875,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W2
 - Next: CH-0058, CH-0059, CH-0068
-- Last commit: pending
+- Last commit: 0e5162a
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
