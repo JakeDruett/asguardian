@@ -4,7 +4,21 @@ Asgard Dashboard HTML Helpers
 Utility functions for generating HTML fragments in the web dashboard.
 """
 
+import html
 from pathlib import Path
+
+_ALLOWED_SEVERITY = frozenset({"critical", "high", "medium", "low", "info"})
+_ALLOWED_STATUS = frozenset(
+    {"open", "confirmed", "resolved", "false_positive", "wont_fix", "unknown"}
+)
+_ALLOWED_GATE = frozenset({"passed", "failed", "warning", "unknown", "error", "not_evaluated"})
+
+
+def esc(value: object) -> str:
+    """HTML-escape text and attribute values (quote=True)."""
+    if value is None:
+        return ""
+    return html.escape(str(value), quote=True)
 
 
 def truncate_path(file_path: str, components: int = 3) -> str:
@@ -17,28 +31,32 @@ def truncate_path(file_path: str, components: int = 3) -> str:
 
 def rating_badge(letter: str) -> str:
     """Return an HTML rating badge for a letter grade."""
-    safe = letter.upper() if letter and letter.upper() in ("A", "B", "C", "D", "E") else "unknown"
-    return f'<span class="rating-badge rating-{safe}">{letter or "?"}</span>'
+    raw = (letter or "").upper()
+    safe = raw if raw in ("A", "B", "C", "D", "E") else "unknown"
+    return f'<span class="rating-badge rating-{safe}">{esc(letter or "?")}</span>'
 
 
 def severity_badge(severity: str) -> str:
     """Return an HTML severity badge."""
-    low = severity.lower()
-    return f'<span class="sev-badge sev-{low}">{severity.upper()}</span>'
+    low = (severity or "").lower()
+    css = low if low in _ALLOWED_SEVERITY else "info"
+    return f'<span class="sev-badge sev-{css}">{esc((severity or "").upper())}</span>'
 
 
 def status_badge(status: str) -> str:
     """Return an HTML status badge."""
-    low = status.lower()
-    label = status.replace("_", " ").title()
-    return f'<span class="status-badge status-{low}">{label}</span>'
+    low = (status or "").lower()
+    css = low if low in _ALLOWED_STATUS else "unknown"
+    label = (status or "").replace("_", " ").title()
+    return f'<span class="status-badge status-{css}">{esc(label)}</span>'
 
 
 def gate_badge(status: str) -> str:
     """Return an HTML quality gate badge."""
     low = (status or "unknown").lower()
+    css = low if low in _ALLOWED_GATE else "unknown"
     label = (status or "Unknown").upper()
-    return f'<span class="gate-badge gate-{low}">{label}</span>'
+    return f'<span class="gate-badge gate-{css}">{esc(label)}</span>'
 
 
 def rating_to_score(letter: str) -> int:

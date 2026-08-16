@@ -8,6 +8,7 @@ from pathlib import Path
 
 from Asgard.Dashboard.models.dashboard_models import DashboardState
 from Asgard.Dashboard.services._html_helpers import (
+    esc,
     gate_badge,
     rating_badge,
 )
@@ -29,7 +30,9 @@ class HtmlRenderer:
         project_path: str,
     ) -> str:
         """Wrap content in a full HTML document with sidebar navigation."""
-        project_label = Path(project_path).name or project_path
+        project_label = esc(Path(project_path).name or project_path)
+        project_attr = esc(project_path)
+        title = esc(title)
 
         def nav_link(href: str, label: str, page_key: str) -> str:
             css_class = "active" if active_page == page_key else ""
@@ -55,7 +58,7 @@ class HtmlRenderer:
 <nav class="sidebar">
   <div class="sidebar-header">
     <h1>Asgard</h1>
-    <div class="sidebar-project" title="{project_path}">{project_label}</div>
+    <div class="sidebar-project" title="{project_attr}">{project_label}</div>
   </div>
   <div class="sidebar-nav">
     {nav_html}
@@ -189,7 +192,7 @@ body {{ font-family: system-ui, sans-serif; background: #f5f6fa; }}
 <body style="display:block;">
 <div class="error-container">
   <div class="error-title">Dashboard Error</div>
-  <div class="error-message">{message}</div>
+  <div class="error-message">{esc(message)}</div>
   <p style="margin-top:20px;"><a href="/" style="color:#3182ce;">Return to Overview</a></p>
 </div>
 </body>

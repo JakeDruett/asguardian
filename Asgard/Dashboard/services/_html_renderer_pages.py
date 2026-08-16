@@ -8,6 +8,7 @@ from typing import List
 
 from Asgard.Dashboard.models.dashboard_models import DashboardState
 from Asgard.Dashboard.services._html_helpers import (
+    esc,
     gate_badge,
     rating_badge,
     rating_to_score,
@@ -94,13 +95,13 @@ def render_issues_content(
 
         rows_html += f"""<tr>
   <td>{severity_badge(severity_str)}</td>
-  <td>{issue.get("issue_type", "")}</td>
-  <td title="{file_path}">{truncate_path(file_path)}</td>
-  <td>{line_number}</td>
-  <td>{issue.get("rule_id", "")}</td>
+  <td>{esc(issue.get("issue_type", ""))}</td>
+  <td title="{esc(file_path)}">{esc(truncate_path(file_path))}</td>
+  <td>{esc(line_number)}</td>
+  <td>{esc(issue.get("rule_id", ""))}</td>
   <td>{status_badge(status_str)}</td>
-  <td class="ts">{first_detected}</td>
-  <td>{issue.get("assigned_to", "") or ""}</td>
+  <td class="ts">{esc(first_detected)}</td>
+  <td>{esc(issue.get("assigned_to", "") or "")}</td>
 </tr>"""
 
     table_html = f"""
@@ -156,8 +157,8 @@ def render_history_content(state: DashboardState) -> str:
         score = rating_to_score(overall)
 
         rows_html += f"""<tr>
-  <td class="ts">{ts_display}</td>
-  <td><code>{commit_short}</code></td>
+  <td class="ts">{esc(ts_display)}</td>
+  <td><code>{esc(commit_short)}</code></td>
   <td>{gate_badge(gate_status) if gate_status else ""}</td>
   <td>{rating_badge(maint)}</td>
   <td>{rating_badge(reli)}</td>
@@ -198,7 +199,7 @@ def render_history_content(state: DashboardState) -> str:
         bar_pct = int((score / max_score) * 100)
 
         chart_items.append(f"""<div class="bar-row">
-  <div class="bar-label">{ts_label}</div>
+  <div class="bar-label">{esc(ts_label)}</div>
   <div class="bar-outer">
     <div class="bar-inner" style="width:{bar_pct}%;"></div>
   </div>

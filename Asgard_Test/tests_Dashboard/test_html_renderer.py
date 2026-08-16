@@ -418,3 +418,27 @@ class TestHtmlRendererPage:
         renderer = HtmlRenderer()
         result = renderer.render_page("Test", "<p>unique-marker-xyz</p>", "overview", "/project")
         assert "unique-marker-xyz" in result
+
+
+class TestDashboardHtmlEscapeCH0055:
+    def test_error_path_escapes_img_tag(self):
+        html = HtmlRenderer().render_error('Page not found: /<img src=x onerror=alert(1)>')
+        assert "<img src=" not in html
+        assert "&lt;img" in html
+
+    def test_issue_file_path_escaped_in_cell_and_title(self):
+        issue = _make_issue(file_path='/<img src=x onerror=alert(1)>/app.py')
+        issue["assigned_to"] = "<script>alert(1)</script>"
+        issue["rule_id"] = "a<b>"
+        html = HtmlRenderer().render_issues(_make_state(recent_issues=[issue]), "all", "all")
+        assert "<img src=" not in html
+        assert "&lt;img" in html
+        assert "&lt;script&gt;" in html
+        assert "a&lt;b&gt;" in html
+
+    def test_project_path_escaped_in_title_attr(self):
+        html = HtmlRenderer().render_page(
+            "Overview", "<p>ok</p>", "overview", '/tmp/" onclick=alert(1) x="'
+        )
+        assert 'title="/tmp/"' not in html
+        assert "&quot;" in html
