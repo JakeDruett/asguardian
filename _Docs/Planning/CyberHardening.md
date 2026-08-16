@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
 | Medium   | 2    | 57    | 0             |
-| Low      | 7    | 15    | 0             |
+| Low      | 6    | 16    | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -1534,7 +1534,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0087 — Private-index mitigation is a raw substring match
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 77fbace
+- **Fixed at:** 2026-08-16T13:28:00Z
+- **Implementation note:** detect_private_index parses uncommented pip/poetry/uv config only; commented --index-url no longer suppresses confusion findings.
 - **Severity:** Low
 - **Confidence:** High
 - **CWE / class:** CWE-184
@@ -2059,12 +2062,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 15
-- Fixed: 99
+- Open: 14
+- Fixed: 100
 - Accepted risk: 0
 - Current wave: W4
 - Next: CH-0025, CH-0031, CH-0039
-- Last commit: a12949d
+- Last commit: 77fbace
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
