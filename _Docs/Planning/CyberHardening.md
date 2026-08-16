@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
 | Medium   | 27   | 32    | 0             |
-| Low      | 13   | 9     | 0             |
+| Low      | 12   | 10    | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -1870,7 +1870,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0111 — SSL checker disables certificate verification then connects to the operator host
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T16:15:00Z
+- **Implementation note:** Default verifies the peer (`CERT_REQUIRED`). `--insecure` / `verify=False` is labeled unauthenticated peek.
 - **Severity:** Low
 - **Confidence:** High
 - **CWE / class:** CWE-295
@@ -1966,12 +1969,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 46
-- Fixed: 68
+- Open: 45
+- Fixed: 69
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0013, CH-0032, CH-0036
-- Last commit: 579bd83
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

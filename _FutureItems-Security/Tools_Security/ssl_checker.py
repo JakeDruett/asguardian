@@ -29,8 +29,11 @@ class SSLChecker:
         self.timeout = timeout
         self.results = {}
 
-    def check_certificate(self, host: str, port: int = 443) -> Dict:
-        """Check SSL certificate and configuration."""
+    def check_certificate(self, host: str, port: int = 443, verify: bool = True) -> Dict:
+        """Check SSL certificate and configuration.
+
+        Default verifies the peer. Pass verify=False for an unauthenticated peek.
+        """
         results = {
             'host': host,
             'port': port,
@@ -39,14 +42,18 @@ class SSLChecker:
             'protocol': {},
             'cipher': {},
             'issues': [],
-            'score': 100
+            'score': 100,
+            'unauthenticated_peek': not verify,
         }
 
         try:
-            # Create SSL context
             context = ssl.create_default_context()
-            context.check_hostname = False
-            context.verify_mode = ssl.CERT_NONE
+            if not verify:
+                context.check_hostname = False
+                context.verify_mode = ssl.CERT_NONE
+                results['issues'].append(
+                    "unauthenticated peek (CERT_NONE); score is not from a verified peer"
+                )
 
             # Connect and get certificate
             with socket.create_connection((host, port), timeout=self.timeout) as sock:
@@ -354,11 +361,16 @@ def main():
         action='store_true',
         help='Check supported SSL/TLS protocols'
     )
+    parser.add_argument(
+        '--insecure',
+        action='store_true',
+        help='Disable certificate verification (unauthenticated peek)',
+    )
 
     args = parser.parse_args()
     checker = SSLChecker(timeout=args.timeout)
 
-    checker.check_certificate(args.host, args.port)
+    checker.check_certificate(args.host, args.port, verify=not args.insecure)
     exit_code = checker.print_report()
 
     if args.protocols:
