@@ -72,8 +72,11 @@ _INTERNAL_NAME_HINTS = re.compile(
     re.IGNORECASE,
 )
 
-_PRIVATE_INDEX_HINTS = re.compile(
-    r"(--index-url|--extra-index-url|\[\[tool\.poetry\.source\]\]|\[tool\.uv\.index\])",
+_PIP_INDEX_PREFIXES = ("--index-url", "--extra-index-url", "-i ")
+_TOML_PRIVATE_TABLES = (
+    "[[tool.poetry.source]]",
+    "[tool.uv.index]",
+    "[[tool.uv.index]]",
 )
 
 
@@ -169,15 +172,45 @@ def check_dependency_confusion(
     return None
 
 
+def _uncommented_config_line(line: str) -> str:
+    stripped = line.strip()
+    if not stripped or stripped.startswith("#"):
+        return ""
+    return stripped.split("#", 1)[0].strip()
+
+
+def _pip_has_private_index(content: str) -> bool:
+    for raw in content.splitlines():
+        line = _uncommented_config_line(raw)
+        if not line:
+            continue
+        if line.startswith(_PIP_INDEX_PREFIXES) or line.startswith("--index-url=") or line.startswith(
+            "--extra-index-url="
+        ):
+            return True
+    return False
+
+
+def _toml_has_private_index(content: str) -> bool:
+    for raw in content.splitlines():
+        line = _uncommented_config_line(raw)
+        if line in _TOML_PRIVATE_TABLES:
+            return True
+    return False
+
+
 def detect_private_index(manifest_paths: List[Path]) -> bool:
-    """Static text scan for private-index configuration across the
-    project's manifest files -- no network query."""
+    """True only when uncommented pip/poetry/uv index config is present."""
     for path in manifest_paths:
         try:
             content = path.read_text(encoding="utf-8", errors="ignore")
         except OSError:
             continue
-        if _PRIVATE_INDEX_HINTS.search(content):
+        suffix = path.suffix.lower()
+        if suffix == ".toml":
+            if _toml_has_private_index(content):
+                return True
+        elif _pip_has_private_index(content):
             return True
     return False
 

@@ -51,6 +51,27 @@ def test_detect_private_index_from_requirements_txt():
         assert detect_private_index([req]) is True
 
 
+def test_detect_private_index_ignores_commented_index_url():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        req = Path(tmpdir) / "requirements.txt"
+        req.write_text("# --index-url https://pypi.org/simple\ninternal-billing-lib==0.1.0\n")
+        assert detect_private_index([req]) is False
+
+
+def test_detect_private_index_from_poetry_source_table():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        pyproject = Path(tmpdir) / "pyproject.toml"
+        pyproject.write_text("[tool.poetry]\nname = 'x'\n[[tool.poetry.source]]\nname = 'corp'\n")
+        assert detect_private_index([pyproject]) is True
+
+
+def test_detect_private_index_ignores_commented_poetry_source():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        pyproject = Path(tmpdir) / "pyproject.toml"
+        pyproject.write_text("# [[tool.poetry.source]]\n[tool.poetry]\nname = 'x'\n")
+        assert detect_private_index([pyproject]) is False
+
+
 def test_is_dev_dependency_file_heuristic():
     assert is_dev_dependency_file(Path("requirements-dev.txt")) is True
     assert is_dev_dependency_file(Path("requirements.txt")) is False
