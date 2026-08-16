@@ -19,6 +19,8 @@ def extract_operations(openapi_doc: dict[str, Any]) -> list[ProbeOperation]:
     operations: list[ProbeOperation] = []
     paths = openapi_doc.get("paths", {}) or {}
     for path, path_item in paths.items():
+        if not isinstance(path, str) or not path.startswith("/") or path.startswith("//"):
+            continue
         if not isinstance(path_item, dict):
             continue
         for method, op in path_item.items():

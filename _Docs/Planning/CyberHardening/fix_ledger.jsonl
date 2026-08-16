@@ -3,3 +3,4 @@
 {"id":"CH-0003","at":"2026-08-16T09:52:48Z","commit":"4b7d552","wave":"W1","summary":"Split-trust PyPI publish with environment, attest, and v[0-9].* tags"}
 {"id":"CH-0061","at":"2026-08-16T09:53:53Z","commit":"583399e","wave":"W1","summary":"Mock servers default to 127.0.0.1 and Flask debug=False"}
 {"id":"CH-0062","at":"2026-08-16T09:55:58Z","commit":"33b0266","wave":"W1","summary":"Validation proxy localhost bind, path jail, same-host redirects"}
+{"id":"CH-0063","at":"2026-08-16T10:14:00Z","commit":"PENDING","wave":"W1","summary":"LiveContract urljoin + path jail + encoded params + same-host redirects"}

@@ -25,6 +25,11 @@ from Asgard.Forseti.LiveContract.services._response_check_helpers import (
     check_negative_expectation,
     check_response,
 )
+from Asgard.Forseti.LiveContract.services._url_safety import (
+    encode_path_param,
+    join_probe_url,
+    open_probe_url,
+)
 from Asgard.Forseti.MockServer.services.mock_data_generator import MockDataGeneratorService
 
 
@@ -55,8 +60,17 @@ class LiveValidatorService:
         return report
 
     def _execute(self, operation: ProbeOperation, negative: bool) -> ProbeResult:
-        path = self._resolve_path(operation)
-        url = self.config.base_url.rstrip("/") + path
+        try:
+            path = self._resolve_path(operation)
+            url = join_probe_url(self.config.base_url, path)
+        except ValueError as exc:
+            return ProbeResult(
+                operation_id=operation.operation_id,
+                method=operation.method,
+                path=getattr(operation, "path", ""),
+                request_url="",
+                error=str(exc),
+            )
         body = self._build_body(operation, negative=negative)
 
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
@@ -74,7 +88,7 @@ class LiveValidatorService:
             ctx.verify_mode = ssl.CERT_NONE
 
         try:
-            with urllib.request.urlopen(request, timeout=self.config.timeout_s, context=ctx) as resp:
+            with open_probe_url(request, timeout=self.config.timeout_s, context=ctx) as resp:
                 status = resp.getcode()
                 raw = resp.read()
         except urllib.error.HTTPError as exc:
@@ -118,7 +132,9 @@ class LiveValidatorService:
             value = self._values.get(key)
             if value is None:
                 value = self._generator.generate_value(_guess_data_type(param))
-            path = path.replace("{" + param + "}", str(value))
+            path = path.replace("{" + param + "}", encode_path_param(value))
+        if not path.startswith("/") or path.startswith("//"):
+            raise ValueError("probe path must be a root-relative HTTP path")
         return path
 
     def _build_body(self, operation: ProbeOperation, negative: bool) -> Optional[dict[str, Any]]:

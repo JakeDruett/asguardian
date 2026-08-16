@@ -28,6 +28,11 @@ from Asgard.Forseti.LiveContract.models.live_contract_models import (
     WorkflowStepResult,
 )
 from Asgard.Forseti.LiveContract.services._dependency_helpers import extract_operations
+from Asgard.Forseti.LiveContract.services._url_safety import (
+    encode_path_param,
+    join_probe_url,
+    open_probe_url,
+)
 from Asgard.Forseti.Reporting.models.finding_models import Coordinates, Finding
 from Asgard.Forseti.Rules.models._rule_base_models import RuleCategory, SchemaFormat, Severity
 
@@ -103,13 +108,16 @@ class WorkflowRunnerService:
         params = _substitute(step.parameters, self.context)
         path = operation.path
         for name, value in params.items():
-            path = path.replace("{" + name + "}", str(value))
+            path = path.replace("{" + name + "}", encode_path_param(value))
         for param in operation.path_params:
             placeholder = "{" + param + "}"
             if placeholder in path:
-                path = path.replace(placeholder, str(self.context.get(param, "")))
+                path = path.replace(placeholder, encode_path_param(self.context.get(param, "")))
 
-        url = self.config.base_url.rstrip("/") + path
+        try:
+            url = join_probe_url(self.config.base_url, path)
+        except ValueError as exc:
+            return WorkflowStepResult(operation_id=step.operation_id, error=str(exc))
         body = _substitute(step.body, self.context) if step.body is not None else None
 
         headers = {"Content-Type": "application/json", "Accept": "application/json"}
@@ -127,7 +135,7 @@ class WorkflowRunnerService:
             ctx.verify_mode = ssl.CERT_NONE
 
         try:
-            with urllib.request.urlopen(request, timeout=self.config.timeout_s, context=ctx) as resp:
+            with open_probe_url(request, timeout=self.config.timeout_s, context=ctx) as resp:
                 status = resp.getcode()
                 raw = resp.read()
         except urllib.error.HTTPError as exc:
