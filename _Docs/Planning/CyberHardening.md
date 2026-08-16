@@ -617,7 +617,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0036 — Unsigned vulnerability lookup cache can hide or inject CVEs
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** db1a2c3
 - **Fixed at:** 2026-08-16T16:45:00Z
 - **Implementation note:** HMAC + schema on vuln cache envelopes; 0o700 dir; unsigned/planted empty bodies are a miss and refetch.
 - **Severity:** Medium
@@ -1992,7 +1992,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0043, CH-0047, CH-0048
-- Last commit: pending
+- Last commit: db1a2c3
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
