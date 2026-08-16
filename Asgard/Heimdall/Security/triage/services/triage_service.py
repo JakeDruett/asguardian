@@ -95,8 +95,8 @@ def triage_findings(
             context; defaults to the finding's own ``code_snippet`` attribute
             (or "" if absent).
         cache: optional :class:`TriageCache`; when omitted a default
-            ``.asgard_cache/triage``-backed cache is used (itself a no-op
-            when ``ASGARD_NO_CACHE`` is set).
+            HMAC-signed ``.asgard_cache/triage`` cache is used. Unsigned or
+            planted files miss. No-op when ``ASGARD_NO_CACHE`` is set.
         low_confidence_threshold: findings with ``confidence`` below this are
             considered for triage; others pass through unannotated.
 

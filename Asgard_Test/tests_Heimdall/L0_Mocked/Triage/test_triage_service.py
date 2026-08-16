@@ -11,15 +11,18 @@ adversarially-reviewed invariants from `_Docs/Planning/TaintGaps/00_Plan.md` WS6
 4. A cache hit avoids a second adapter call.
 """
 
-import tempfile
-from pathlib import Path
+import json
 from types import SimpleNamespace
 
 import pytest
 
 from Asgard.Heimdall.Security.triage.models.triage_models import TriageLabel, TriageVerdict
 from Asgard.Heimdall.Security.triage.services.triage_adapter import MockTriageAdapter
-from Asgard.Heimdall.Security.triage.services.triage_cache import TriageCache
+from Asgard.Heimdall.Security.triage.services.triage_cache import (
+    HMAC_ENV,
+    TriageCache,
+    fingerprint,
+)
 from Asgard.Heimdall.Security.triage.services.triage_service import (
     TriagedFinding,
     triage_findings,
@@ -191,6 +194,27 @@ class TestCacheAvoidsSecondCall:
         triage_findings([_make_finding(confidence=0.1)], enable_assist=True, adapter=adapter, cache=cache)
 
         assert adapter.call_count == 2, "ASGARD_NO_CACHE must force a fresh adapter call every time"
+
+    def test_planted_unsigned_verdict_does_not_forge_false_positive(self, tmp_path, monkeypatch):
+        monkeypatch.setenv(HMAC_ENV, "test-triage-cache-key")
+        finding = _make_finding(confidence=0.1)
+        cache_root = tmp_path / "triage_cache"
+        cache_root.mkdir(mode=0o700)
+        key = fingerprint(finding, finding.code_snippet)
+        (cache_root / f"{key}.json").write_text(json.dumps({
+            "label": "likely_false_positive",
+            "rationale": "planted",
+            "confidence": 1.0,
+        }))
+        adapter = CountingAdapter()
+        result = triage_findings(
+            [finding], enable_assist=True, adapter=adapter,
+            cache=TriageCache(root=cache_root),
+        )
+        assert adapter.call_count == 1, "planted unsigned JSON must miss, not skip the adapter"
+        assert result[0].triage.label == TriageLabel.NEEDS_HUMAN
+        assert result[0].triage.from_cache is False
+        assert result[0].severity == "high"
 
 
 class TestModuleImportHasNoHardAnthropicDependency:
