@@ -92,3 +92,4 @@
 {"id":"CH-0074","at":"2026-08-16T18:13:00Z","commit":"fec5bfd","wave":"W4","summary":"hide_selectors passed as JSON evaluate args"}
 {"id":"CH-0083","at":"2026-08-16T18:16:00Z","commit":"ee4351c","wave":"W4","summary":"Config-secret placeholders are whole-value; flatten depth-capped"}
 {"id":"CH-0084","at":"2026-08-16T13:00:00Z","commit":"f73f5a1","wave":"W4","summary":"Bound injection regexes; line-bounded scan with file/line caps"}
+{"id":"CH-0085","at":"2026-08-16T13:05:00Z","commit":"3d1bbf0","wave":"W4","summary":"Placeholder-only secret FP; testhost/ContestWinner1 report"}

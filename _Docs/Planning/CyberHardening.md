@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 4    | 55    | 0             |
+| Medium   | 3    | 56    | 0             |
 | Low      | 10   | 12    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1489,7 +1489,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0085 — Secret FP regex full-drops values containing `test`/`example`
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 3d1bbf0
+- **Fixed at:** 2026-08-16T13:05:00Z
+- **Implementation note:** Placeholder FP is whole-value only; matched_text ignored; AWS/GitHub/private-key never drop on substring test/example. testhost URL and ContestWinner1 report.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-693
@@ -2044,12 +2047,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 20
-- Fixed: 94
+- Open: 19
+- Fixed: 95
 - Accepted risk: 0
 - Current wave: W4
-- Next: CH-0085, CH-0099
-- Last commit: f73f5a1
+- Next: CH-0099
+- Last commit: 3d1bbf0
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
