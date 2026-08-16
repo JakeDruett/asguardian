@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 11   | 48    | 0             |
+| Medium   | 10   | 49    | 0             |
 | Low      | 11   | 11    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -318,7 +318,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0017 — Architecture bounds cache is unsigned and unvalidated
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T17:50:00Z
+- **Implementation note:** HMAC + schema on arch bounds cache; malformed hydrate is a miss (full infer).
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-345 / CWE-20
@@ -2020,12 +2023,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 28
-- Fixed: 86
+- Open: 27
+- Fixed: 87
 - Accepted risk: 0
 - Current wave: W4
-- Next: CH-0017, CH-0022, CH-0053
-- Last commit: bbc7e09
+- Next: CH-0022, CH-0053, CH-0070
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

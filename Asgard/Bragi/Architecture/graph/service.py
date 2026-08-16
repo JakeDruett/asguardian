@@ -12,11 +12,14 @@ from __future__ import annotations
 
 import ast
 import hashlib
+import hmac
 import json
 import os
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Set
+
+_HMAC_ENV = "ASGARD_ARCH_BOUNDS_HMAC_KEY"
 
 from Asgard.Bragi.Architecture.graph.drift import ArchitectureDriftViolation, detect_drift
 from Asgard.Bragi.Architecture.graph.module_cycles import ModuleCycle, detect_module_cycles
@@ -139,30 +142,22 @@ class ArchGraphService:
         current_modules = set(graph.graph)
 
         if cache is not None:
-            prev_bounds_raw = cache.get("bounds", {})
-            prev_modules = set(prev_bounds_raw)
-            prev_bounds: Dict[str, LevelBounds] = {
-                m: LevelBounds(
-                    module=m,
-                    min_level=b["min_level"],
-                    max_level=b["max_level"],
-                    base_level=b.get("base_level"),
-                    matched=b.get("matched", False),
-                    pinned_by=list(b.get("pinned_by", [])),
-                )
-                for m, b in prev_bounds_raw.items()
-            }
-            changed = self._changed_modules(path, graph, cache)
-            changed |= (current_modules - prev_modules)  # new modules
-            changed |= (prev_modules - current_modules)  # removed modules trigger neighbours too
-            if changed or (current_modules != prev_modules):
-                bounds = infer_levels_incremental(
-                    graph, self.config, changed & current_modules, prev_bounds,
-                    class_names, raw_imports,
-                )
-            else:
-                bounds = {m: prev_bounds[m] for m in current_modules if m in prev_bounds}
-        else:
+            try:
+                prev_bounds = self._hydrate_bounds(cache.get("bounds", {}))
+                prev_modules = set(prev_bounds)
+                changed = self._changed_modules(path, graph, cache)
+                changed |= (current_modules - prev_modules)
+                changed |= (prev_modules - current_modules)
+                if changed or (current_modules != prev_modules):
+                    bounds = infer_levels_incremental(
+                        graph, self.config, changed & current_modules, prev_bounds,
+                        class_names, raw_imports,
+                    )
+                else:
+                    bounds = {m: prev_bounds[m] for m in current_modules if m in prev_bounds}
+            except (TypeError, KeyError, AttributeError, ValueError):
+                cache = None
+        if cache is None:
             bounds = infer_levels(graph, self.config, class_names, raw_imports)
 
         self._save_bounds_cache(path, graph, bounds)
@@ -267,21 +262,69 @@ class ArchGraphService:
     def _cache_path(self, scan_path: Path) -> Path:
         return scan_path / BOUNDS_CACHE_RELATIVE_PATH
 
+    def _hmac_key(self, scan_path: Path) -> bytes:
+        env = os.environ.get(_HMAC_ENV, "").strip()
+        if env:
+            return env.encode("utf-8")
+        key_path = self._cache_path(scan_path).with_suffix(self._cache_path(scan_path).suffix + ".key")
+        if key_path.exists():
+            return key_path.read_bytes()
+        key = os.urandom(32)
+        key_path.parent.mkdir(parents=True, exist_ok=True)
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+        fd = os.open(key_path, flags, 0o600)
+        try:
+            os.write(fd, key)
+        finally:
+            os.close(fd)
+        os.chmod(key_path, 0o600)
+        return key
+
+    def _sign_bounds(self, scan_path: Path, payload: dict) -> str:
+        canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str)
+        return hmac.new(self._hmac_key(scan_path), canonical.encode("utf-8"), hashlib.sha256).hexdigest()
+
+    @staticmethod
+    def _hydrate_bounds(raw) -> Dict[str, LevelBounds]:
+        if not isinstance(raw, dict):
+            raise TypeError("bounds must be a dict")
+        hydrated: Dict[str, LevelBounds] = {}
+        for module, bound in raw.items():
+            if not isinstance(module, str) or not isinstance(bound, dict):
+                raise TypeError("invalid bound entry")
+            hydrated[module] = LevelBounds(
+                module=module,
+                min_level=int(bound["min_level"]),
+                max_level=int(bound["max_level"]),
+                base_level=bound.get("base_level"),
+                matched=bool(bound.get("matched", False)),
+                pinned_by=list(bound.get("pinned_by", [])),
+            )
+        return hydrated
+
     def _load_bounds_cache(self, scan_path: Path) -> Optional[dict]:
         if not self.use_disk_cache:
             return None
         cache_file = self._cache_path(scan_path)
-        if not cache_file.exists():
+        if not cache_file.exists() or cache_file.is_symlink():
             return None
         try:
-            with open(cache_file, "r", encoding="utf-8") as f:
-                data = json.load(f)
+            data = json.loads(cache_file.read_text(encoding="utf-8"))
+            if not isinstance(data, dict):
+                return None
+            expected = data.pop("hmac", None)
+            if not isinstance(expected, str) or not hmac.compare_digest(
+                expected, self._sign_bounds(scan_path, data)
+            ):
+                return None
             if data.get("version") != BOUNDS_CACHE_VERSION:
                 return None
             if data.get("config_hash") != self._config_hash():
                 return None
+            if not isinstance(data.get("bounds"), dict) or not isinstance(data.get("file_hashes"), dict):
+                return None
             return data
-        except (json.JSONDecodeError, OSError):
+        except (json.JSONDecodeError, OSError, TypeError, ValueError):
             return None
 
     def _save_bounds_cache(self, scan_path: Path, graph: DependencyGraph, bounds: Dict[str, LevelBounds]) -> None:
@@ -303,8 +346,8 @@ class ArchGraphService:
                     for m, b in bounds.items()
                 },
             }
-            with open(cache_file, "w", encoding="utf-8") as f:
-                json.dump(payload, f, indent=1, sort_keys=True)
+            payload["hmac"] = self._sign_bounds(scan_path, {k: v for k, v in payload.items() if k != "hmac"})
+            cache_file.write_text(json.dumps(payload, indent=1, sort_keys=True), encoding="utf-8")
         except OSError:
             pass  # caching is best-effort, never fatal
 

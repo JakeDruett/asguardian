@@ -2,6 +2,7 @@
 Tests for Heimdall Plan 03 — import-graph layer inference CSP, drift-paradox
 detection, module-level cycles, and incremental updates.
 """
+import json
 import os
 import random
 
@@ -250,6 +251,23 @@ class TestIncrementalEquivalence:
         for module in first:
             assert first[module].min_level == second[module].min_level
             assert first[module].max_level == second[module].max_level
+
+    def test_unsigned_or_malformed_bounds_cache_is_a_miss(self, tmp_path, monkeypatch):
+        monkeypatch.delenv("ASGARD_NO_CACHE", raising=False)
+        monkeypatch.setenv("ASGARD_ARCH_BOUNDS_HMAC_KEY", "test-arch-bounds")
+        _write_project(tmp_path, CLEAN_PROJECT)
+        cfg = default_architecture_config()
+        cache = tmp_path / ".asgard_cache" / "bragi_arch_bounds.json"
+        cache.parent.mkdir(parents=True)
+        cache.write_text(json.dumps({
+            "version": "1.0.0",
+            "config_hash": "deadbeef",
+            "file_hashes": {},
+            "bounds": {"evil": {"min_level": "not-an-int"}},
+        }))
+        service = ArchGraphService(config=cfg, dep_config=DependencyConfig(scan_path=tmp_path))
+        bounds = service.infer(tmp_path)
+        assert "evil" not in bounds
 
 
 class TestFanOutAndBackwardCompatibility:
