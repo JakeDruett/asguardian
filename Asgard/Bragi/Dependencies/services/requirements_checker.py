@@ -28,6 +28,18 @@ from Asgard.Bragi.Dependencies.services._requirements_reporter import (
 )
 
 
+def confine_sync_target(scan_path: Path, target_file: str) -> Path:
+    """Resolve *target_file* under *scan_path*; reject abs and ``..``."""
+    raw = Path(target_file)
+    if raw.is_absolute() or ".." in raw.parts:
+        raise ValueError("target_file must stay under the scan root")
+    root = Path(scan_path).resolve()
+    dest = (root / raw).resolve()
+    if not dest.is_relative_to(root):
+        raise ValueError("target_file must stay under the scan root")
+    return dest
+
+
 class RequirementsChecker:
     """Validates requirements.txt against actual imports in the codebase."""
 
@@ -56,7 +68,7 @@ class RequirementsChecker:
     def sync(self, result: RequirementsResult, target_file: str = "requirements.txt") -> int:
         """Synchronize requirements.txt based on analysis. Returns number of changes."""
         scan_path = Path(self.config.scan_path).resolve()
-        req_file = scan_path / target_file
+        req_file = confine_sync_target(scan_path, target_file)
         changes = 0
         existing_lines = []
         if req_file.exists():

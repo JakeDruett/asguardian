@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 13   | 15    | 0             |
+| High     | 12   | 16    | 0             |
 | Medium   | 46   | 13    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
@@ -562,7 +562,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0035 — `RequirementsChecker.sync` writes an unconfined `target_file`
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T12:32:00Z
+- **Implementation note:** confine_sync_target rejects absolute and `..` paths; dest must be_relative_to(scan_path).
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-22
@@ -1855,12 +1858,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 83
-- Fixed: 31
+- Open: 82
+- Fixed: 32
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0035, CH-0050, CH-0058, CH-0059
-- Last commit: 36692e3
+- Next: CH-0050, CH-0058, CH-0059, CH-0068
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
