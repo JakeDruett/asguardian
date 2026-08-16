@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 14   | 14    | 0             |
-| Medium   | 59   | 0     | 0             |
+| Medium   | 58   | 1     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
 
@@ -105,7 +105,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0005 — Draft L8 workflow would inherit default token and unpinned actions
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T10:52:00Z
+- **Implementation note:** contents:read permissions, persist-credentials false; SHA pins already from CH-0001; still if:false.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-250 / CWE-829 (latent)
@@ -1804,12 +1807,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 100
-- Fixed: 14
+- Open: 99
+- Fixed: 15
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0066, CH-0004, CH-0005, CH-0033
-- Last commit: 353cd90
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

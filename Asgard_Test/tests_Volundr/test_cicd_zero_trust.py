@@ -270,6 +270,20 @@ class TestRepoWorkflowPins:
         assert any("attest-build-provenance" in u for u in uses)
         assert any("gh-action-pypi-publish" in u for u in uses)
         assert any("download-artifact" in u for u in uses)
+        for job in jobs.values():
+            assert job.get("timeout-minutes") == 15
+
+    def test_l8_draft_has_least_privilege(self):
+        path = os.path.join(
+            self._REPO_ROOT, ".github", "workflows", "l8-perf-budgets.yml"
+        )
+        text = open(path, encoding="utf-8").read()
+        data = yaml.safe_load(text)
+        assert data.get("permissions") == {"contents": "read"} or data.get("permissions") == {}
+        job = data["jobs"]["l8-budgets"]
+        assert job["runs-on"] == "ubuntu-latest"
+        assert job.get("timeout-minutes") == 20
+        assert "persist-credentials: false" in text
 
 
 class TestInjectionImmunity:
