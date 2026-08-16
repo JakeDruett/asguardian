@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
 | Medium   | 35   | 24    | 0             |
-| Low      | 19   | 3     | 0             |
+| Low      | 18   | 4     | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -607,7 +607,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0037 — Vuln cache key is used as a path fragment
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T14:15:00Z
+- **Implementation note:** Allowlist cache keys/namespaces; hash key for filename; dest must stay under cache_dir.
 - **Severity:** Low
 - **Confidence:** Medium
 - **CWE / class:** CWE-22
@@ -1909,12 +1912,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 65
-- Fixed: 49
+- Open: 64
+- Fixed: 50
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0014, CH-0028, CH-0034, CH-0037
-- Last commit: 5e36f15
+- Next: CH-0014, CH-0028, CH-0034, CH-0041
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

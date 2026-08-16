@@ -23,9 +23,12 @@ traversal.
 import hashlib
 import json
 import os
+import re
 import time
 from pathlib import Path
 from typing import Any, Optional
+
+_CACHE_KEY_RE = re.compile(r"^[a-z0-9_]+$")
 
 DEFAULT_TTL_SECONDS = 24 * 60 * 60  # 24h
 NO_CACHE_ENV_VAR = "ASGARD_NO_CACHE"
@@ -37,8 +40,17 @@ def _cache_disabled() -> bool:
 
 def cache_key(namespace: str, payload: str) -> str:
     """Deterministic cache key: namespace-prefixed sha256 of the payload."""
+    if not _CACHE_KEY_RE.fullmatch(namespace or ""):
+        raise ValueError("cache namespace must match ^[a-z0-9_]+$")
     digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()
     return f"{namespace}_{digest}"
+
+
+def _safe_cache_filename(key: str) -> Optional[str]:
+    """Hash an allowlisted key; reject path-like keys."""
+    if not _CACHE_KEY_RE.fullmatch(key or ""):
+        return None
+    return hashlib.sha256(key.encode("utf-8")).hexdigest() + ".json"
 
 
 class VulnCache:
@@ -49,11 +61,23 @@ class VulnCache:
         self.cache_dir = Path(cache_dir) if cache_dir else Path(".asgard_cache") / "vulnerability"
         self.ttl_seconds = ttl_seconds
 
+    def _confined_path(self, key: str) -> Optional[Path]:
+        name = _safe_cache_filename(key)
+        if name is None:
+            return None
+        root = self.cache_dir.resolve()
+        dest = (root / name).resolve()
+        if not dest.is_relative_to(root):
+            return None
+        return dest
+
     def get(self, key: str) -> Optional[Any]:
         """Return the cached value for `key`, or None on miss/expiry/disabled/corrupt."""
         if _cache_disabled():
             return None
-        path = self.cache_dir / f"{key}.json"
+        path = self._confined_path(key)
+        if path is None:
+            return None
         try:
             with open(path, "r", encoding="utf-8") as f:
                 envelope = json.load(f)
@@ -73,7 +97,9 @@ class VulnCache:
             return
         try:
             self.cache_dir.mkdir(parents=True, exist_ok=True)
-            path = self.cache_dir / f"{key}.json"
+            path = self._confined_path(key)
+            if path is None:
+                return
             envelope = {"cached_at": time.time(), "value": value}
             tmp_path = path.with_suffix(".json.tmp")
             with open(tmp_path, "w", encoding="utf-8") as f:
