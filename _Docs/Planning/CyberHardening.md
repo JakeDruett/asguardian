@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 9    | 50    | 0             |
+| Medium   | 8    | 51    | 0             |
 | Low      | 11   | 11    | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -919,7 +919,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0053 — `ParallelScanner` pickles analyzer callables over fork IPC
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T18:02:00Z
+- **Implementation note:** spawn context; worker imports named analyzer; timeout kills workers; worker_count capped at 32.
 - **Severity:** Medium
 - **Confidence:** Medium
 - **CWE / class:** CWE-502 / CWE-400
@@ -2026,12 +2029,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 26
-- Fixed: 88
+- Open: 25
+- Fixed: 89
 - Accepted risk: 0
 - Current wave: W4
-- Next: CH-0053, CH-0070, CH-0074
-- Last commit: f4f18d8
+- Next: CH-0070, CH-0074, CH-0083
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
