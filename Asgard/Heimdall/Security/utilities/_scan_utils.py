@@ -6,8 +6,9 @@ File scanning and directory traversal helpers.
 
 import fnmatch
 import mimetypes
+import os
 from pathlib import Path
-from typing import Generator, List, Optional, Set
+from typing import Callable, Generator, List, Optional, Set
 
 
 SECURITY_SCAN_EXTENSIONS: Set[str] = {
@@ -135,6 +136,57 @@ def is_excluded_path(path: Path, exclude_patterns: List[str]) -> bool:
     return False
 
 
+def is_confined_scan_path(path: Path, root: Path) -> bool:
+    """True if *path* is not a symlink and resolves under *root*."""
+    try:
+        if path.is_symlink():
+            return False
+        return path.resolve().is_relative_to(root.resolve())
+    except (OSError, RuntimeError, ValueError):
+        return False
+
+
+def iter_confined_files(
+    root_path: Path,
+    *,
+    should_skip: Optional[Callable[[Path], bool]] = None,
+) -> Generator[Path, None, None]:
+    """Yield regular files under *root_path* without following symlinks.
+
+    Directory and file symlinks are skipped. Resolved paths must stay
+    under the resolved scan root (CH-0078).
+    """
+    root = Path(root_path)
+    try:
+        root_resolved = root.resolve()
+    except (OSError, RuntimeError):
+        return
+
+    def _walk(current: Path) -> Generator[Path, None, None]:
+        try:
+            with os.scandir(current) as entries:
+                for entry in entries:
+                    if entry.is_symlink():
+                        continue
+                    path = Path(entry.path)
+                    try:
+                        resolved = path.resolve()
+                    except (OSError, RuntimeError):
+                        continue
+                    if not resolved.is_relative_to(root_resolved):
+                        continue
+                    if should_skip is not None and should_skip(path):
+                        continue
+                    if entry.is_dir(follow_symlinks=False):
+                        yield from _walk(path)
+                    elif entry.is_file(follow_symlinks=False):
+                        yield path
+        except (PermissionError, FileNotFoundError, NotADirectoryError):
+            return
+
+    yield from _walk(root)
+
+
 def scan_directory_for_security(
     root_path: Path,
     exclude_patterns: Optional[List[str]] = None,
@@ -161,25 +213,15 @@ def scan_directory_for_security(
     else:
         valid_extensions = SECURITY_SCAN_EXTENSIONS
 
-    def _scan_recursive(current_path: Path) -> Generator[Path, None, None]:
-        try:
-            for entry in current_path.iterdir():
-                if is_excluded_path(entry, all_exclusions):
-                    continue
+    def _should_skip(path: Path) -> bool:
+        return is_excluded_path(path, all_exclusions)
 
-                if entry.is_dir():
-                    yield from _scan_recursive(entry)
-                elif entry.is_file():
-                    ext = entry.suffix.lower()
-                    if ext in valid_extensions and not is_binary_file(entry):
-                        yield entry
-                    elif entry.name in {".env", ".htaccess", "Dockerfile"}:
-                        yield entry
-
-        except PermissionError:
-            pass
-
-    yield from _scan_recursive(root_path)
+    for entry in iter_confined_files(root_path, should_skip=_should_skip):
+        ext = entry.suffix.lower()
+        if ext in valid_extensions and not is_binary_file(entry):
+            yield entry
+        elif entry.name in {".env", ".htaccess", "Dockerfile"}:
+            yield entry
 
 
 def read_file_lines(file_path: Path) -> List[str]:

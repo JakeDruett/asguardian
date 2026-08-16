@@ -12,6 +12,10 @@ import fnmatch
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
+from Asgard.Heimdall.Security.utilities._scan_utils import (
+    is_confined_scan_path,
+    iter_confined_files,
+)
 from Asgard.Heimdall.Security.context.test_context import classify_file_context
 from Asgard.Heimdall.Security.engine.dispatch import DispatchEngine
 from Asgard.Heimdall.Security.normalization.priority import (
@@ -88,17 +92,21 @@ def _iter_code_files(scan_path: Path, exclude_patterns: Sequence[str],
                      suffixes=None):
     scan_path = Path(scan_path)
     if scan_path.is_file():
-        yield scan_path
+        if is_confined_scan_path(scan_path, scan_path.parent):
+            yield scan_path
         return
-    for path in sorted(scan_path.rglob("*")):
-        if not path.is_file():
-            continue
+
+    def _skip(path: Path) -> bool:
+        try:
+            rel = str(path.relative_to(scan_path))
+        except ValueError:
+            return True
+        return _is_excluded(rel, exclude_patterns)
+
+    for path in sorted(iter_confined_files(scan_path, should_skip=_skip)):
         if suffixes and path.suffix not in suffixes:
             continue
         if not suffixes and path.suffix not in _CODE_EXTENSIONS:
-            continue
-        rel = str(path.relative_to(scan_path))
-        if _is_excluded(rel, exclude_patterns):
             continue
         yield path
 

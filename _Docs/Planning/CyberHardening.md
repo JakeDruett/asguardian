@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
-| Medium   | 40   | 19    | 0             |
+| Medium   | 39   | 20    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1264,7 +1264,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0078 — Heimdall security walker follows symlinks out of the scan root
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T13:30:00Z
+- **Implementation note:** iter_confined_files skips file/dir symlinks and requires resolved.is_relative_to(root); dispatch/deps/config-secrets no longer rglob/walk.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-59
@@ -1891,12 +1894,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 71
-- Fixed: 43
+- Open: 70
+- Fixed: 44
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0042, CH-0057, CH-0065, CH-0078
-- Last commit: 7b81377
+- Next: CH-0042, CH-0057, CH-0065, CH-0091
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

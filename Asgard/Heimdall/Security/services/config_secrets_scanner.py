@@ -3,7 +3,6 @@
 import configparser
 import fnmatch
 import json
-import os
 from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
@@ -32,6 +31,10 @@ from Asgard.Heimdall.Security.services._config_secrets_report import (
     generate_markdown_report,
     generate_text_report,
 )
+from Asgard.Heimdall.Security.utilities._scan_utils import (
+    is_confined_scan_path,
+    iter_confined_files,
+)
 
 
 class ConfigSecretsScanner:
@@ -47,9 +50,10 @@ class ConfigSecretsScanner:
         start_time = datetime.now()
         report = ConfigSecretsReport(scan_path=str(path))
         if path.is_file():
-            for finding in self._analyze_file(path, path.parent):
-                report.add_finding(finding)
-            report.files_scanned = 1
+            if is_confined_scan_path(path, path.parent):
+                for finding in self._analyze_file(path, path.parent):
+                    report.add_finding(finding)
+                report.files_scanned = 1
         else:
             self._analyze_directory(path, report)
         report.scan_duration_seconds = (datetime.now() - start_time).total_seconds()
@@ -163,18 +167,18 @@ class ConfigSecretsScanner:
 
     def _analyze_directory(self, directory: Path, report: ConfigSecretsReport) -> None:
         files_scanned = 0
-        for root, dirs, files in os.walk(directory):
-            root_path = Path(root)
-            dirs[:] = [d for d in dirs if not any(self._matches_pattern(d, p) for p in self.config.exclude_patterns)]
-            for file in files:
-                if not self._should_analyze_file(file):
-                    continue
-                if any(self._matches_pattern(file, p) for p in self.config.exclude_patterns):
-                    continue
-                file_path = root_path / file
-                for finding in self._analyze_file(file_path, directory):
-                    report.add_finding(finding)
-                files_scanned += 1
+
+        def _skip(path: Path) -> bool:
+            return any(
+                self._matches_pattern(path.name, p) for p in self.config.exclude_patterns
+            )
+
+        for file_path in iter_confined_files(directory, should_skip=_skip):
+            if not self._should_analyze_file(file_path.name):
+                continue
+            for finding in self._analyze_file(file_path, directory):
+                report.add_finding(finding)
+            files_scanned += 1
         report.files_scanned = files_scanned
 
     def _should_analyze_file(self, filename: str) -> bool:
