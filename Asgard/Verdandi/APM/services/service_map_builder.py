@@ -27,6 +27,8 @@ from Asgard.Verdandi.APM.services._identity_resolver import (
     resolve_identity,
 )
 
+_MAX_CRITICAL_PATH_SPANS = 4096
+
 # Generated/high-cardinality messaging destination names to collapse to a
 # single placeholder so they don't blow up node cardinality (amq.gen-*
 # broker-generated queue names, UUID-like segments).
@@ -202,13 +204,17 @@ class ServiceMapBuilder:
 
         critical_path = [root_span]
         current_span = root_span
+        visited = {root_span.span_id}
 
-        while current_span.span_id in children:
+        while current_span.span_id in children and len(critical_path) < _MAX_CRITICAL_PATH_SPANS:
             child_spans = children[current_span.span_id]
             if not child_spans:
                 break
 
             longest_child = max(child_spans, key=lambda s: s.duration_ms)
+            if longest_child.span_id in visited:
+                break
+            visited.add(longest_child.span_id)
             critical_path.append(longest_child)
             current_span = longest_child
 

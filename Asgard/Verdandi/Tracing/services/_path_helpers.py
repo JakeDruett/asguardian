@@ -12,6 +12,8 @@ from Asgard.Verdandi.Tracing.models.tracing_models import (
     TraceSpan,
 )
 
+MAX_CRITICAL_PATH_SPANS = 4096
+
 
 def percentile(sorted_values: List[float], pct: float) -> float:
     """Calculate percentile from sorted values."""
@@ -43,8 +45,9 @@ def find_critical_path(
     """
     path = [root]
     current = root
+    visited = {root.span_id}
 
-    while current.span_id in children:
+    while current.span_id in children and len(path) < MAX_CRITICAL_PATH_SPANS:
         child_spans = children[current.span_id]
         if not child_spans:
             break
@@ -60,6 +63,9 @@ def find_critical_path(
         else:
             critical_child = longest_child
 
+        if critical_child.span_id in visited:
+            break
+        visited.add(critical_child.span_id)
         path.append(critical_child)
         current = critical_child
 
