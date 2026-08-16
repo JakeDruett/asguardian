@@ -1292,7 +1292,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0074 — Screenshot `hide_selectors` interpolated into `page.evaluate`
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** fec5bfd
 - **Fixed at:** 2026-08-16T18:13:00Z
 - **Implementation note:** hide_selectors JSON-encoded and passed as evaluate args, not JS source.
 - **Severity:** Medium
@@ -2043,7 +2043,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W4
 - Next: CH-0083, CH-0084, CH-0085
-- Last commit: pending026682b
+- Last commit: fec5bfd026682b
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
