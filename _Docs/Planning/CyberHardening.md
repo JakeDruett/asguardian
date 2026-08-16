@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
 | Medium   | 2    | 57    | 0             |
-| Low      | 3    | 19    | 0             |
+| Low      | 2    | 20    | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -550,7 +550,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0031 — Profile YAML `ValidationError` aborts `LanguageProfileService` construction
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 10d6429
+- **Fixed at:** 2026-08-16T13:41:00Z
+- **Implementation note:** _load_yaml_profile catches ValidationError/TypeError/ValueError, logs, and falls back to generic/in-code defaults.
 - **Severity:** Low
 - **Confidence:** High
 - **CWE / class:** CWE-248 / availability
@@ -2071,12 +2074,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 11
-- Fixed: 103
+- Open: 10
+- Fixed: 104
 - Accepted risk: 0
 - Current wave: W4
-- Next: CH-0031, CH-0039
-- Last commit: d7e275c
+- Next: CH-0039
+- Last commit: 10d6429
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
