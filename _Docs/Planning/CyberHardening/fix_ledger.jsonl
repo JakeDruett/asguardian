@@ -108,3 +108,4 @@
 {"id":"CH-0046","at":"2026-08-16T14:01:00Z","commit":"f148b2d","wave":"W5","summary":"Escape code-smell HTML report fields"}
 {"id":"CH-0064","at":"2026-08-16T14:02:00Z","commit":"de56e96","wave":"W5","summary":"Escape docs title/contact; drop custom_css"}
 {"id":"CH-0019","at":"2026-08-16T14:15:00Z","commit":"5733100","wave":"W5","summary":"Escape Markdown report table cells"}
+{"id":"CH-0009","at":"2026-08-16T14:16:00Z","commit":"8c214f3","wave":"W5","summary":"Drop lib/env from generated gitignore"}

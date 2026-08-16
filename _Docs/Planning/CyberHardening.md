@@ -28,7 +28,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | High     | 0    | 28    | 0             |
 | Medium   | 0    | 59    | 0             |
 | Low      | 0    | 22    | 0             |
-| Info     | 4    | 1     | 0             |
+| Info     | 3    | 2     | 0             |
 
 ## Findings
 
@@ -180,7 +180,10 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0009 — Generated `GITIGNORE_FULL` ignores real source trees
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 8c214f3
+- **Fixed at:** 2026-08-16T14:16:00Z
+- **Implementation note:** Dropped lib/, lib64/, and env/ from GITIGNORE_FULL. .venv/ and venv/ remain.
 - **Severity:** Info
 - **Confidence:** High
 - **CWE / class:** CWE-693 adjacent
@@ -2092,12 +2095,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 4
-- Fixed: 110
+- Open: 3
+- Fixed: 111
 - Accepted risk: 0
 - Current wave: W5
-- Next: CH-0009, CH-0020, CH-0030
-- Last commit: 5733100
+- Next: CH-0020, CH-0030, CH-0044
+- Last commit: 8c214f3
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
