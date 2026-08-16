@@ -229,6 +229,24 @@ class TestRepoWorkflowPins:
             os.path.join(self._REPO_ROOT, ".github", "dependabot.yml")
         )
 
+    def test_ci_pull_request_not_on_shared_arc(self):
+        path = os.path.join(self._REPO_ROOT, ".github", "workflows", "ci.yml")
+        text = open(path, encoding="utf-8").read()
+        data = yaml.safe_load(text)
+        assert data["concurrency"]["cancel-in-progress"] is True
+        for job_name, job in data["jobs"].items():
+            runs_on = job["runs-on"]
+            assert "ubuntu-latest" in str(runs_on), job_name
+            assert "pull_request" in str(runs_on), job_name
+            assert job.get("timeout-minutes") == 30, job_name
+        assert "persist-credentials: false" in text
+        assert "pip install -e" in text
+        # Editable install of the PR tree must be gated off pull_request.
+        for i, line in enumerate(text.splitlines()):
+            if 'pip install -e' in line:
+                window = "\n".join(text.splitlines()[max(0, i - 8) : i + 1])
+                assert "pull_request" in window
+
 
 class TestInjectionImmunity:
     def test_adversarial_issue_title_is_rewritten(self, generator):

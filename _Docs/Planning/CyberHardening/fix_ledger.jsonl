@@ -1,1 +1,2 @@
 {"id":"CH-0001","at":"2026-08-16T09:49:17Z","commit":"8e27674","wave":"W1","summary":"SHA-pin all workflow uses; add pypa/codeql pins and Dependabot/Renovate"}
+{"id":"CH-0002","at":"2026-08-16T09:55:00Z","commit":"PENDING","wave":"W1","summary":"PR CI on ubuntu-latest; no editable install on pull_request; persist-credentials false"}
