@@ -267,3 +267,139 @@ class TestLanguagePathJail:
         profile = service.resolve("python")
         assert profile.language == "python"
         assert profile.thresholds["cyclomatic_complexity"].warn == 10
+
+
+_GENERIC_PROFILE_YAML = """\
+    language: generic
+    provenance: test-generic
+    thresholds:
+      cyclomatic_complexity: {warn: 10, fail: 20}
+    scalar_thresholds:
+      wmc: 20
+"""
+
+
+def _write_profiles_dir(tmp_path, files: dict):
+    profiles = tmp_path / "profiles"
+    profiles.mkdir()
+    for name, body in files.items():
+        (profiles / name).write_text(textwrap.dedent(body), encoding="utf-8")
+    return profiles
+
+
+class TestInvalidProfileDoesNotAbortConstruction:
+    """CH-0031: schema-invalid YAML is skipped; the service still constructs."""
+
+    def test_bundled_thresholds_list_falls_back_to_generic(self, tmp_path):
+        profiles = _write_profiles_dir(
+            tmp_path,
+            {
+                "generic.yaml": _GENERIC_PROFILE_YAML,
+                "python.yaml": """\
+                    language: python
+                    provenance: poisoned-list-thresholds
+                    thresholds: []
+                """,
+            },
+        )
+        service = LanguageProfileService(project_path=tmp_path, profiles_dir=profiles)
+        profile = service.resolve("python")
+        assert profile.language == "python"
+        assert profile.thresholds["cyclomatic_complexity"].warn == 10
+        assert profile.thresholds["cyclomatic_complexity"].fail == 20
+        assert "poisoned-list-thresholds" not in (profile.provenance or "")
+
+    def test_bundled_bad_enum_falls_back_to_generic(self, tmp_path):
+        profiles = _write_profiles_dir(
+            tmp_path,
+            {
+                "generic.yaml": _GENERIC_PROFILE_YAML,
+                "python.yaml": """\
+                    language: python
+                    provenance: poisoned-bad-enum
+                    thresholds:
+                      cyclomatic_complexity: {warn: 1, fail: 2}
+                    severity_confidence:
+                      global_dead_code: NOT_A_SEVERITY
+                """,
+            },
+        )
+        service = LanguageProfileService(project_path=tmp_path, profiles_dir=profiles)
+        profile = service.resolve("python")
+        assert profile.language == "python"
+        assert profile.thresholds["cyclomatic_complexity"].warn == 10
+        assert profile.thresholds["cyclomatic_complexity"].fail == 20
+        assert "poisoned-bad-enum" not in (profile.provenance or "")
+
+    def test_invalid_generic_yaml_uses_incode_defaults(self, tmp_path):
+        profiles = _write_profiles_dir(
+            tmp_path,
+            {
+                "generic.yaml": """\
+                    language: generic
+                    provenance: poisoned-generic
+                    thresholds: []
+                """,
+                "python.yaml": """\
+                    language: python
+                    provenance: test-python
+                    thresholds:
+                      cyclomatic_complexity: {warn: 11, fail: 21}
+                """,
+            },
+        )
+        service = LanguageProfileService(project_path=tmp_path, profiles_dir=profiles)
+        profile = service.resolve("python")
+        assert profile.language == "python"
+        assert profile.thresholds["cyclomatic_complexity"].warn == 11
+        assert "poisoned-generic" not in (profile.provenance or "")
+
+    def test_only_poisoned_generic_still_constructs(self, tmp_path):
+        profiles = _write_profiles_dir(
+            tmp_path,
+            {
+                "generic.yaml": """\
+                    language: generic
+                    provenance: poisoned-generic
+                    thresholds: []
+                """,
+            },
+        )
+        service = LanguageProfileService(project_path=tmp_path, profiles_dir=profiles)
+        profile = service.resolve("cobol")
+        assert profile.language == "cobol"
+        assert profile.thresholds == {}
+
+    def test_local_thresholds_list_is_skipped(self, tmp_path):
+        _plant_local_profile(
+            tmp_path,
+            """\
+            language: python
+            provenance: "planted list thresholds"
+            thresholds: []
+            """,
+        )
+        service = LanguageProfileService(project_path=tmp_path)
+        profile = service.resolve("python")
+        assert profile.thresholds["cyclomatic_complexity"].warn == 10
+        assert profile.thresholds["cyclomatic_complexity"].fail == 20
+        assert "planted list thresholds" not in (profile.provenance or "")
+
+    def test_local_bad_enum_is_skipped(self, tmp_path):
+        _plant_local_profile(
+            tmp_path,
+            """\
+            language: python
+            provenance: "planted bad enum"
+            thresholds:
+              cyclomatic_complexity: {warn: 8, fail: 16}
+            severity_confidence:
+              global_dead_code: NOT_A_SEVERITY
+            """,
+        )
+        service = LanguageProfileService(project_path=tmp_path)
+        profile = service.resolve("python")
+        assert profile.thresholds["cyclomatic_complexity"].warn == 10
+        assert profile.thresholds["cyclomatic_complexity"].fail == 20
+        assert "planted bad enum" not in (profile.provenance or "")
+        assert profile.severity_confidence.get("global_dead_code") != "NOT_A_SEVERITY"

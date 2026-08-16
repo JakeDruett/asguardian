@@ -15,8 +15,12 @@ the language profile).
 The local YAML is unsigned project cache (CH-0027): invalid numerics are
 refused entirely; accepted values are re-clamped to +-50% of the
 language/generic anchor before they can become the live profile.
+
+Shipped and local YAML that fail schema validation are skipped (CH-0031);
+the service still constructs and falls through to generic / in-code defaults.
 """
 
+import logging
 import math
 from pathlib import Path
 from typing import Dict, Optional
@@ -29,6 +33,8 @@ from Asgard.Bragi.Calibration.models.calibration_models import (
     LanguageProfile,
     ThresholdSpec,
 )
+
+logger = logging.getLogger(__name__)
 
 _PROFILES_DIR = Path(__file__).resolve().parent.parent / "profiles"
 _GENERIC_LANGUAGE = "generic"
@@ -62,16 +68,23 @@ def _local_override_schema_ok(profile: LanguageProfile) -> bool:
 
 
 def _load_yaml_profile(path: Path) -> Optional[LanguageProfile]:
+    """Load a shipped profile YAML. Fail-closed on parse/schema errors (CH-0031)."""
     if not path.exists():
         return None
     try:
         with open(path, "r", encoding="utf-8") as f:
             data = yaml.safe_load(f) or {}
-    except (yaml.YAMLError, OSError):
+    except (yaml.YAMLError, OSError) as exc:
+        logger.warning("skipping unreadable language profile %s: %s", path, exc)
         return None
     if not isinstance(data, dict):
+        logger.warning("skipping invalid language profile %s: root is not a mapping", path)
         return None
-    return LanguageProfile(**data)
+    try:
+        return LanguageProfile.model_validate(data)
+    except (TypeError, ValueError, ValidationError) as exc:
+        logger.warning("skipping invalid language profile %s: %s", path, exc)
+        return None
 
 
 class LanguageProfileService:
@@ -155,7 +168,8 @@ class LanguageProfileService:
             return None
         try:
             profile = LanguageProfile.model_validate(data)
-        except (TypeError, ValueError, ValidationError):
+        except (TypeError, ValueError, ValidationError) as exc:
+            logger.warning("skipping invalid local profile %s: %s", path, exc)
             return None
         if not isinstance(profile.language, str) or not LANGUAGE_ID_RE.fullmatch(profile.language):
             return None
