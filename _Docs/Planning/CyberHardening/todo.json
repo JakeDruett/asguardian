@@ -2,971 +2,11 @@
   "version": 1,
   "repo_root": ".",
   "generated_at": "2026-08-16T07:04:47+00:00",
-  "updated_at": "2026-08-16T08:55:10+00:00",
+  "updated_at": "2026-08-16T08:59:17+00:00",
   "planning_dir": "_Docs/Planning",
   "plan_path": "_Docs/Planning/CyberHardening.md",
   "total_discovered": 3875,
   "remaining": [
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/check_token_high.php",
-      "bytes": 512,
-      "sha256": "1c1b0c18dfa9c7bdd786130f7fe0cb8cb811737c892289ede7960460a3109adf",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/check_token_impossible.php",
-      "bytes": 518,
-      "sha256": "1a4331585a73a9b4a1bf6ca94d3ece91d2313ca787728a5b9804d889b7b15629",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/download_ecb_attack.php",
-      "bytes": 353,
-      "sha256": "45979dc8107c6500d7cb92e54e63f9921afde15c7d9a603d3eec1cc8c1de1984",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/download_oracle_attack.php",
-      "bytes": 359,
-      "sha256": "6e146d7684a5ba6ed698382c3e581f7ffe543bb2d55ad01e11026aefeb5982f7",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/ecb_attack.php",
-      "bytes": 2615,
-      "sha256": "e189aa33b8d6c99d32e983621d86d1ebe707e6ce672b16e7c7ad6ff2ba6cb415",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/high.php",
-      "bytes": 1946,
-      "sha256": "433e61d6f665c536b008f4fd146df3b3d1e84919869fd59cf7b860d66b41f1c4",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/impossible.php",
-      "bytes": 1808,
-      "sha256": "13ed9d7b5d5724305b0ddcca917ba5964e18a490c7d19c9ac3769541bd05268c",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/low.php",
-      "bytes": 3167,
-      "sha256": "66a71e0700377eadbcf282fe13bf963ffbee7de768953ea9731bf58c291fcd74",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/medium.php",
-      "bytes": 3147,
-      "sha256": "4eadabf52cf2071182da1334794d709be14c6b199959e36724e3be5c3d3188cd",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/oracle_attack.php",
-      "bytes": 8267,
-      "sha256": "d3a94da445a95c0660416289016339744b8e590130662a1d59194ae8a6726b52",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/token_library_high.php",
-      "bytes": 3288,
-      "sha256": "3c27dad000d91ced964bad8e9fba493006ef969471d570f63b1e74a87ae21caf",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/token_library_impossible.php",
-      "bytes": 3229,
-      "sha256": "d41b797cd4bd99611d61a45359888056c2dce898597ab8d572f6036bde376e3b",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/xor_theory.php",
-      "bytes": 842,
-      "sha256": "1c91492b298495b2739a7b96b5e2c03e1ec23860420caa190b0ba69b0d3de7d7",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/help/help.php",
-      "bytes": 3959,
-      "sha256": "ec464658d78d7cb215ced4ebab9c27ad08fc0e59f26307ce8266ccf0418d9ca9",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/index.php",
-      "bytes": 1651,
-      "sha256": "32cec003a59c91392dfd79bf76394e83045870ff08954257f64eca6a01152d81",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/high.php",
-      "bytes": 548,
-      "sha256": "3ef714bb1a4353fb9145a80f3a6e696f136efeaffdae37b272c6e71a8a1ddd98",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/impossible.php",
-      "bytes": 617,
-      "sha256": "7aa2553a66acc448e43da96f282d3aab8fdbaf4d19372d06437b793ef1f364cc",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/jsonp.php",
-      "bytes": 247,
-      "sha256": "1c4b3b75ece84ac0f5eaf6436a64dcd69511e9ce31d3f8213b6f85f9368ab10f",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/jsonp_impossible.php",
-      "bytes": 144,
-      "sha256": "434d8971d8184330f9d1e4232cdcd8d4e95c5b3e4cf19dd9af626f55e56cddff",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/low.php",
-      "bytes": 1013,
-      "sha256": "55773c232654ad9876cb18c92f0d784f18065c15fbecea38cb20b8983fc606cc",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/medium.php",
-      "bytes": 703,
-      "sha256": "79ec1a5e297047eedd9268f3131c42074e99da741bc19fe65b69b90e34930c31",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/help/help.php",
-      "bytes": 3385,
-      "sha256": "5c1285e301f371a7dd836121051f08b9252d446d9bae6e895a9f21e256ac4c9f",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/index.php",
-      "bytes": 3460,
-      "sha256": "1b0056ef03b6fd142ce6863e6cf2b7cfd6a9e35a5720db8f1ade56900baec3a3",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/source/high.php",
-      "bytes": 2076,
-      "sha256": "3b49690a116f2216e3ce5e6b0808440048739d3dabcc7acc88f44ab51d4749c1",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/source/impossible.php",
-      "bytes": 2177,
-      "sha256": "cf93ff925216475c0b47bd2b7aa0a55cafeed5a3a76c66fbed776c2746b0c05f",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/source/low.php",
-      "bytes": 1249,
-      "sha256": "d718de6b22eabe0f1a2f0f2b0c148c251787a46ed334a4496857a1cf12155ec6",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/source/medium.php",
-      "bytes": 1516,
-      "sha256": "5c8d73eb1f6a74fa1787f814fb64a6f4086ca8baef0bd975dd64219b6cd2abf0",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/test_credentials.php",
-      "bytes": 1975,
-      "sha256": "59a09842002bc799a70220ae560212dd1da76a521b87fa86826d390876041ec9",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/exec/help/help.php",
-      "bytes": 3186,
-      "sha256": "ab844c0484ca47ed07912736a91f80834b62d663c8214576fabd2884e685bf00",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/exec/index.php",
-      "bytes": 1829,
-      "sha256": "b1d993eb1fd41c0f5aca289639cc0f642a8aa15f91dc7a6eeb68b13842113f37",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/exec/source/high.php",
-      "bytes": 741,
-      "sha256": "e3b703d6180c5c1e62fd09f78036e193a16025ffe208be9d90bb19d71a08db7f",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/exec/source/impossible.php",
-      "bytes": 1159,
-      "sha256": "26b294a69538ae5de36b8669fdaef85022814bfaa253f7678b2ac5fa295ab543",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/exec/source/low.php",
-      "bytes": 404,
-      "sha256": "399a0d5dd28436a952a5bb0d14390eb421e57ab2e7add68813b6ce283cc70f28",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/exec/source/medium.php",
-      "bytes": 630,
-      "sha256": "c25e0a1a61a4c36eedad8c0d54178e88d030f3c2886fe34edea5ae5054c398c0",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/file1.php",
-      "bytes": 1050,
-      "sha256": "99413b79afafe0e592bcd5c8bbb77f4358b40d0f3d0b1477ef959b35b43d69a4",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/file2.php",
-      "bytes": 1054,
-      "sha256": "e2768877ed6bdcf617ecc740b01f175fbfe8d692c4a7ff4f61bb2f0a978ce861",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/file3.php",
-      "bytes": 1559,
-      "sha256": "37fa1e56424a8bf470d7ea6f01de85b06942bb2a1f5a5f95271f540cc6808d4f",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/file4.php",
-      "bytes": 372,
-      "sha256": "eac2771ecf32c42d1a6af2a27877e3d1e204f52fff82ffd4eba290abf7b4e0e5",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/help/help.php",
-      "bytes": 3700,
-      "sha256": "d062cca1f24e3508a867aa33661dd7dd0fa03e7d61d2b319af65e758a1471365",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/include.php",
-      "bytes": 2036,
-      "sha256": "3a4ba603ca2f0ed578ae3b489410698ce205f24834c4fc8fd31fa0b72a5928aa",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/index.php",
-      "bytes": 995,
-      "sha256": "e88ff0889422b4936bc24fb88ca5f2e291d2b31a17550f433a42c6a8208bd655",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/high.php",
-      "bytes": 236,
-      "sha256": "75a4014e0f38e9c44f7c323d8faccd11f82d58a1fdd88840b749d00f1e9e517b",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/impossible.php",
-      "bytes": 353,
-      "sha256": "66fa964b231cfb7dfc67d39bbfb2532bf1cd0449579152c4d675b617100b69ba",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/low.php",
-      "bytes": 73,
-      "sha256": "ac675d111bc8f81ac257f68563d5f26ece31afad7021a469d2c51babff867dad",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/medium.php",
-      "bytes": 222,
-      "sha256": "9f99e5345df6c33c8cc043db16c8ec0bf1d83dd93d5115417267bb1d7fcc83ba",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/help/help.php",
-      "bytes": 3365,
-      "sha256": "cbe69563f7229929e9a63d774bdf09a23b2a4673e9c2a463e446ae81726ad011",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/index.php",
-      "bytes": 3309,
-      "sha256": "76fb3fdbae08eb8fe0233438057c050a9fd59eeef4a11f6442158152b491e23c",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/high.php",
-      "bytes": 126,
-      "sha256": "78e518885940c4be182298b94e6864213dd4f9a6df987b4b107cc706bef59342",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/impossible.php",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/low.php",
-      "bytes": 4182,
-      "sha256": "bdcc3908cc8b1d5a0a8eec50c54229ed566e5bacc411f490f7e388bdf0179f4c",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/medium.php",
-      "bytes": 128,
-      "sha256": "6b15e110d6818aa41d73bb87be7e5fab263df017696d38417c94be4ea0026427",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/help/help.php",
-      "bytes": 2857,
-      "sha256": "a7b3dd493d4277b6905614e727e3218d25497082b0fe35bb4968fb994f4bdbab",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/index.php",
-      "bytes": 2124,
-      "sha256": "02467fc7da918bac2509da159cf49f9dce48623aff128a6333d3c45535f050cd",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/high.php",
-      "bytes": 398,
-      "sha256": "2d6d53feca779f9c93303a2e0a975882a033ab42ba545acd457555580fe05072",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/impossible.php",
-      "bytes": 483,
-      "sha256": "82c04f35908168ad2d4f948006c89a5fd6586cf335b771963ed839a7d06dd22a",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/info.php",
-      "bytes": 2022,
-      "sha256": "ffa4d0396f18cb3c16dda43fa76bf69b53a04dfa76777b9badecfd1d5c212de6",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/low.php",
-      "bytes": 221,
-      "sha256": "d9839b61e112df946429ec3b8f2de8a3e4f0ac741842fcd34cce0a1ab3363861",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/medium.php",
-      "bytes": 395,
-      "sha256": "634fdfb18bea35460f920bc4e22a5501975f61eb361886f093edf715895cbd17",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/help/help.php",
-      "bytes": 2885,
-      "sha256": "b735c93f55af9caf2e28ea7d6230a814d39f2d8e822181d740e34ef071815944",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/index.php",
-      "bytes": 2394,
-      "sha256": "44547e1f38882ac18196631a798fb1a569baa46a0d2f755c41f9dd7c7ddd0a86",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/session-input.php",
-      "bytes": 880,
-      "sha256": "b40d45f4c77728fdda9660f46cf5269ea6376e4a2beb7658ab10f0d6bad751cf",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/high.php",
-      "bytes": 1459,
-      "sha256": "a0515122d362ebd188ad7c85a313d72faf6ae373052162fb1e324e7834648374",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/impossible.php",
-      "bytes": 1854,
-      "sha256": "f4dcc92946933a31b0e93362a184ff776da9736036e99bec79f119cc2128aa8c",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/low.php",
-      "bytes": 1650,
-      "sha256": "652bb44d14a9d81c9245f05ed8440beecf7977e982e00d3ddb916126a72e85bf",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/medium.php",
-      "bytes": 1952,
-      "sha256": "dd81afdddf5817294f2eea11ffaf21b2aad90cb768cc3d57ef9b6d0f96020db4",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/test.php",
-      "bytes": 328,
-      "sha256": "5649cc5ab1e7139daad006bfbbd50920e5b1c88b0888665054e067d1781200cf",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/cookie-input.php",
-      "bytes": 805,
-      "sha256": "202b06dc715966364e727582f1e129db7c1f5692e6b2ca9a3eae4066ed19e4b5",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/help/help.php",
-      "bytes": 3143,
-      "sha256": "b6111a6931bb1c0143ff5a165a68be4907d63ad986cdffe763009f985b42a493",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/index.php",
-      "bytes": 3206,
-      "sha256": "db7227cd7e81a7a41d65e517a5e71656a9aae981cbbc5ecf47ffbef1bba5d3dc",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/high.php",
-      "bytes": 1566,
-      "sha256": "35165a2b85a80880b566a4605d2b23af5eefa5fff12e5b13961789dc4fafdc82",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/impossible.php",
-      "bytes": 1778,
-      "sha256": "ccd72dcc781d921f3acbc02da2609018f2d604921a51e74d6b097624ddc18f83",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/low.php",
-      "bytes": 1413,
-      "sha256": "28e34b5f7f4dd2ae1a38b1fae4c1bf67aaf3b98791c4a6c7560e322d1079f73a",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/medium.php",
-      "bytes": 1527,
-      "sha256": "6d2e04fab2e805f39629f6a8cc77e42671ebd13c0cba1bf3c00a9baa920efa4d",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/help/help.php",
-      "bytes": 2441,
-      "sha256": "afc40ad49132691c3fe2b5d02976a2e75e72b4266fa69eec6b50e96dee424de2",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/index.php",
-      "bytes": 2203,
-      "sha256": "a4246bd6e6d827b7b060dcc9e847139c7f5d53bc893a478bc47dd12c1b9bb865",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/high.php",
-      "bytes": 1117,
-      "sha256": "6e072f79ebde0d265c85306f4b761304e1977ca41f6b2e384b6a8b71b3104594",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/impossible.php",
-      "bytes": 2271,
-      "sha256": "82bf663396331b36ccdafdb628a71bec5d82d7f4e7652295b37b5e538781abf6",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/low.php",
-      "bytes": 511,
-      "sha256": "a958136c538b253829ffbb8d8e6e7daee5061b31a531c4b9bcc99e8d2099503f",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/medium.php",
-      "bytes": 965,
-      "sha256": "3ad92d2c7effadbb079f8527ec46a152afd4a3fb3e21ed03ac5cfe2bd8175781",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/view_help.php",
-      "bytes": 1115,
-      "sha256": "2976b32d8d934c3ab135aa5729c594dbb4ca3bb98ed320d96f7ee371dc23d616",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/view_source.php",
-      "bytes": 2705,
-      "sha256": "cb03e98bd2485a0038d5133c5781bc2e035dae701f9bbf88888e2d69855cdd42",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/view_source_all.php",
-      "bytes": 3053,
-      "sha256": "db86dcfc8708338f0a2a2ccb76b987e1bb726d634aa69aa9645b3bbab38eac59",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/help/help.php",
-      "bytes": 2129,
-      "sha256": "f42bd5d71841529d7e287f649b0447ebe51b68597b239aa6571e3856e153023b",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/index.php",
-      "bytes": 1412,
-      "sha256": "f47075b86fc6ce2a19021b5e51fe2dd5ad861decfea6f88f457fde7bacadbc4b",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/high.php",
-      "bytes": 395,
-      "sha256": "7b1a9485cd2a4364b2d82429c8e693c2d0896dbf925ce79f678287eecd830965",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/impossible.php",
-      "bytes": 255,
-      "sha256": "ad4a4e7ff2bc9ef9cdd5963846fb7987a9fb0d48b7a0674522af1faf4c6a1889",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/low.php",
-      "bytes": 289,
-      "sha256": "c88680e13f976f129b956cee00a7c426b6a29da9e678677b7d2881109f02b2d0",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/medium.php",
-      "bytes": 145,
-      "sha256": "b417f65ece3b5215560c74a7de99963b3a3b56a6defed0d81b6bfa3b83d68189",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/help/help.php",
-      "bytes": 3442,
-      "sha256": "0741f5bcba1cfe564a7e728d45c4ad5e94b33b6481201e7134ef44cd45b2335c",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/index.php",
-      "bytes": 2412,
-      "sha256": "42999c6361efcd1846182858ca16f8cc61ff9cca7326dfa6fd57f7edd28e02ee",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/high.php",
-      "bytes": 356,
-      "sha256": "b9d7b82cfbb5b208e0abfd63694b9388ab23333065086a056c8737ee347eb8c0",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/impossible.php",
-      "bytes": 83,
-      "sha256": "afc52f50b776249510940a7599afdcb4bbb3f8ddc86d70761a5ce95f6fda19eb",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/low.php",
-      "bytes": 48,
-      "sha256": "7fdc47cbbcdaa9abd594671ea46babfb7a370a7a91687ed77a57118de53df681",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/medium.php",
-      "bytes": 289,
-      "sha256": "06703f7929e8fee8042fa2193c2da91049f98cc44af22029e5324ee45bcd4356",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/help/help.php",
-      "bytes": 2702,
-      "sha256": "97254d1f7972144e555104ce974c664ccc6c8a456a26e39204029d8997404fe7",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/index.php",
-      "bytes": 1910,
-      "sha256": "ae06691fb578cd9af417656ebb5ae37181a95e0de9fafdb55776e352799c6342",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/high.php",
-      "bytes": 315,
-      "sha256": "1df9d34ce72f26e3f9cdf4878a23094e194dbabda0d2091547702a51f2851612",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/impossible.php",
-      "bytes": 413,
-      "sha256": "6cff3122f97aec856e57134f497cb79079929d7efa1aca3eb75748ea3cc28dd3",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/low.php",
-      "bytes": 229,
-      "sha256": "fb3c6fd9937697d4473cb9a2a9267df44b7e8620b16a4189189e76455d351833",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/medium.php",
-      "bytes": 288,
-      "sha256": "b2b44ca0f6dd017a5a81a3461668072e15b4481b0c5eebf6da42abcbc94830ad",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/help/help.php",
-      "bytes": 2648,
-      "sha256": "583380dc0a4a176c474a1c1a996540f4da974928d9ac83620f31a33ec9a3f94c",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/index.php",
-      "bytes": 2870,
-      "sha256": "88c6ade99cb248f5ae211a49cc23f56d48fe07c6e2d63175f76116e3560a8df5",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/high.php",
-      "bytes": 1338,
-      "sha256": "1b89419284977372e3f2093cd543202f399ef6bf244012c27ba8ada9c037bc40",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/impossible.php",
-      "bytes": 1364,
-      "sha256": "aa8c2d4ea5e990441070a57a33c92afb7562ecb1fa621a056624d40263cbd5be",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/low.php",
-      "bytes": 1208,
-      "sha256": "fd08b4c5d29111581d0ce36ce2a54febd236d4ed3bd7b64d53d6eae9b0f433a0",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/medium.php",
-      "bytes": 1311,
-      "sha256": "e4a44437fd9cdafff38a896622075fa8e35531d25e6ebda33cd364bc36649993",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/app.go",
-      "bytes": 2586,
-      "sha256": "97d1535bf82c9d59cb246d1473545fa11b4dea5552229db8539165bf0226813e",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/setting/setting.go",
-      "bytes": 1851,
-      "sha256": "090a82e4ab8abe85ca2d82b8ed9595ec8718c9ebf0cd65aeaef837a00025b05c",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/setup/function.go",
-      "bytes": 1644,
-      "sha256": "96a9171b9c0793f5e4d24d2bb98f5aa9900246c8a3f1697a71723a1ccf227c50",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/setup/setup.go",
-      "bytes": 2527,
-      "sha256": "b65848426f3d7e03d46bbcea3ed8826e3a802ca9dbb321a3a2b56146f97eb9b4",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/user/session/session.go",
-      "bytes": 1769,
-      "sha256": "8d4672fadeed4bb20befd11f01fd357e04ea9bd512fdda2e4121a365389f078b",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/user/user.go",
-      "bytes": 3835,
-      "sha256": "63e043f8b9da0ddc63d9f6d2d00e4f72211c5c4bf25850a51c25a5117fa34048",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/util/config/config.go",
-      "bytes": 579,
-      "sha256": "3e67090eacfb80049ea1e29ef416677b4dffc61d36630216892064aa7ce89b54",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/util/cookie.go",
-      "bytes": 1016,
-      "sha256": "fddf1fcd73debe746b22ab1680fc4501ac12fa902ba6086f434f0daf487f7f58",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/util/database/database.go",
-      "bytes": 1304,
-      "sha256": "5027740f8721c4eb52622ea7b12cda0b773e8aeb4b7a2fb066b683ae759be699",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/util/http.go",
-      "bytes": 209,
-      "sha256": "367f3b9dec70aa522e0416b48667acf03aec7047342235a17b3153091d98dc05",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/util/middleware/middleware.go",
-      "bytes": 1824,
-      "sha256": "4eec96fc01dbf0e0c6a7409a20b23936476076de854fdc8e1247e2c51e6bf4f2",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/util/template.go",
-      "bytes": 1152,
-      "sha256": "ce9520341dcc25c6df49eb23096cc98dd2adc6b9becbde9ce1bbad3ca54d8d68",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/csa/csa.go",
-      "bytes": 1345,
-      "sha256": "fc21c397c8cbfad9dcca0253ca7e66d8f3b2eb08c465f2c9355ac3b68b4f4928",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/idor/function.go",
-      "bytes": 1533,
-      "sha256": "7777a612e1d371044228338827bd3c31886b94f8ddc624e5fcbdc28def3c5101",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/idor/idor.go",
-      "bytes": 3993,
-      "sha256": "d771cee94985df1c16cc1ac324e3d8d6f9fa691048282b9415f42d5a6729a013",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/sqli/function.go",
-      "bytes": 1663,
-      "sha256": "b5a987a2bc057e0bdea4a546b3673450cc7ac91ad8587f7510d99f98760f472f",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/sqli/sqli.go",
-      "bytes": 2035,
-      "sha256": "72f954d4f873c21c5895dd3f71606e3108daaf342bac0790ac3ecf3ffccb6251",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/xss/function.go",
-      "bytes": 938,
-      "sha256": "cbc86e7a2c44e207095e55894ef1c01aef3cf1fab78b4e199743c569f1e56f49",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/xss/xss.go",
-      "bytes": 2707,
-      "sha256": "cc29fef66f841a041388767b907c78d998f8538f89d9919fae905021b4701c6d",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/xxe/xxe.go",
-      "bytes": 64,
-      "sha256": "01cdb2dd7950fc2163801281016a4648a82a19471988ee31f7c2d39a4de1ee9d",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/assets/js/chart/chart-data-morris.js",
-      "bytes": 3718,
-      "sha256": "a5511ae7a5614f9f2dd89625bce94d6b794a675dae4987259d087a8d2e8e2693",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/assets/js/tour/redirects-steps.js",
-      "bytes": 648,
-      "sha256": "16babf9b88e186cb4e2a7ab896a78494f6d4a88737c903eb1e23e35579ac651b",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/data/allocations-dao.js",
-      "bytes": 3928,
-      "sha256": "c6aebc971ce7f9c8b2a8f0864a500497de25a3ea0318ef94ecd57cadf6e789ea",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/data/benefits-dao.js",
-      "bytes": 1240,
-      "sha256": "0ac30b097e016eeffb10e1c72d9c657153d3ce67e7b3f4756b2cb127d94181d7",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/data/contributions-dao.js",
-      "bytes": 2791,
-      "sha256": "363065e8b3c32f0997ce2dcb17341eb3e40b7f43b00b72c576dfebf73f551c85",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/data/memos-dao.js",
-      "bytes": 1107,
-      "sha256": "6582195bd913c2d60d63e9b519f9508a3319e07e158fd0c6f31dcbc50a80e8cf",
-      "mtime": "2026-05-19T06:32:38+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/data/profile-dao.js",
-      "bytes": 3506,
-      "sha256": "80429a5df579867401a59b1cbd9c1d74f88d5548780fbd909e9504876c1968cc",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/data/research-dao.js",
-      "bytes": 750,
-      "sha256": "f1cf267e56080fc94943ad7d83802b4e9db9420687fac49f84dbc0e45dfa88ac",
-      "mtime": "2026-05-19T06:32:38+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/data/user-dao.js",
-      "bytes": 4078,
-      "sha256": "577fb140933a50e010a4bbcb74e975f678d7f3a989467e4d113926f35c042e64",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/allocations.js",
-      "bytes": 915,
-      "sha256": "b5b7da1a6b595799cf6cca402756dd9a3f6e2a8b5d712c1989d23b7f01f349a6",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/benefits.js",
-      "bytes": 1340,
-      "sha256": "bc5516b35ba21884915b88b3f810441e616f068d8a0cf756b143185d5aeda2d2",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/contributions.js",
-      "bytes": 2485,
-      "sha256": "196bdeaa22da4cfe8a851b1b932710b2fcedd21f14ed75d70b739ba759a01003",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/error.js",
-      "bytes": 281,
-      "sha256": "452dc61f9f06a31ea4305edb2e573fc940428615841533b59320792fcfb6fb3f",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/index.js",
-      "bytes": 3149,
-      "sha256": "3ab970b2888bc1501515db24a83cc7851ac9c09d00948c652300401515185eb5",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/memos.js",
-      "bytes": 824,
-      "sha256": "c3543f308f24083436e25e3a72210ad31e611db5c93268d8dd0e340095e132c9",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/profile.js",
-      "bytes": 3633,
-      "sha256": "18575bf3d3710906e57e09e6036e40fd3986bdcca436ed0e2a2875b41f0f2aca",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/research.js",
-      "bytes": 1071,
-      "sha256": "e399f3c70436fa160f00835626bf50f88980268fcd143436af97c9d2297c1d92",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/session.js",
-      "bytes": 10199,
-      "sha256": "e53e38b6eea76b026efaacde07f694e7a2eca005de4083fb74f9393d432a5b25",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/tutorial.js",
-      "bytes": 637,
-      "sha256": "502e0b959b37cbc844d15eadd7a78a40b5281155fcf8d532f0e4abdd2fee8eb9",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_js_fs.js",
-      "bytes": 157,
-      "sha256": "5c41306ccc85e39e79a84c110f4703dbd3fd32587ee1b9abfab1d48dac551b6f",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_js_send.js",
-      "bytes": 102,
-      "sha256": "18e4bc75706d43abcb81102092a5f4b50f7ba6d9b07e4e7c4f2843f6e7603652",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_open_1.py",
-      "bytes": 177,
-      "sha256": "b8c8dd5ca5229c07a018af9aa113b0e16270634b9dffdbbc00b0dc263362d59e",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_open_2.py",
-      "bytes": 131,
-      "sha256": "4b5e7bb3e10cf2b694dd6074cfbda8a8ba08bea65b4d4322b42eeeff1bed1eea",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_os_join.py",
-      "bytes": 168,
-      "sha256": "5be87ee70198b50a919579fb6370067aefcc53e0aacd5e90fa56156f07f24c52",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_pathlib.py",
-      "bytes": 141,
-      "sha256": "1a5f5ba7096722743d87cf33d456003cd7430a6b30bff536a69f241ea7517759",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_php_include.php",
-      "bytes": 96,
-      "sha256": "c38a04716f76c5fb619ff1b39d67f01fb64ba9e3e819d082fd39ae34adb37946",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_shutil.py",
-      "bytes": 118,
-      "sha256": "dbe985339fa284d5d6fab8e56dd37747c02f4016763af5952aaedac00063ed93",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_allowlist.py",
-      "bytes": 202,
-      "sha256": "06df7437dce63b73bf35e2d44b3491679e75d60de457fbce69c4e71196d2de24",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_basename.py",
-      "bytes": 312,
-      "sha256": "ef6ecc4286ea8837545d7a5f0e47239ece4d30e9d6b9bdcbb7ce80cab6ae578d",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_hardcoded_path.py",
-      "bytes": 129,
-      "sha256": "952fc00cc7e0006ca63bdb69cb2bc7a0c3e46595de545b83952130f01ad1d271",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_js_static.js",
-      "bytes": 147,
-      "sha256": "0a6c1f3dc90ae339b3dfe023ee2548573df79a4407cf1a9b166831fc75ff8f46",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_no_user_input.py",
-      "bytes": 101,
-      "sha256": "fe694b01cc7f2f28681acb31fb632c0ba995cc58bba59958aecf5f1fe9c05285",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/des_encrypt.py",
-      "bytes": 112,
-      "sha256": "a8d576a4c6cddf48dfac60ea65dce668d724db742acbbe981558b6124e1fb1a9",
-      "mtime": "2026-05-19T03:01:02+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/ecb_mode.py",
-      "bytes": 126,
-      "sha256": "6a41facfceac3509910f2b3bedeaa73cd506170e190b1b571c42eed355c1642d",
-      "mtime": "2026-05-19T03:01:02+00:00"
-    },
     {
       "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/hardcoded_key.py",
       "bytes": 96,
@@ -27347,6 +26387,1286 @@
       "disposition": "clean",
       "bytes": 2861,
       "sha256": "d05a90eb43b5e83dace99bfa9be0ad644e62c651883f3051e08b48e71626b82e"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/check_token_high.php",
+      "completed_at": "2026-08-16T08:59:07+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 512,
+      "sha256": "1c1b0c18dfa9c7bdd786130f7fe0cb8cb811737c892289ede7960460a3109adf"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/check_token_impossible.php",
+      "completed_at": "2026-08-16T08:59:07+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 518,
+      "sha256": "1a4331585a73a9b4a1bf6ca94d3ece91d2313ca787728a5b9804d889b7b15629"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/download_ecb_attack.php",
+      "completed_at": "2026-08-16T08:59:07+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 353,
+      "sha256": "45979dc8107c6500d7cb92e54e63f9921afde15c7d9a603d3eec1cc8c1de1984"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/download_oracle_attack.php",
+      "completed_at": "2026-08-16T08:59:07+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 359,
+      "sha256": "6e146d7684a5ba6ed698382c3e581f7ffe543bb2d55ad01e11026aefeb5982f7"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/ecb_attack.php",
+      "completed_at": "2026-08-16T08:59:07+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2615,
+      "sha256": "e189aa33b8d6c99d32e983621d86d1ebe707e6ce672b16e7c7ad6ff2ba6cb415"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/high.php",
+      "completed_at": "2026-08-16T08:59:07+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1946,
+      "sha256": "433e61d6f665c536b008f4fd146df3b3d1e84919869fd59cf7b860d66b41f1c4"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/impossible.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1808,
+      "sha256": "13ed9d7b5d5724305b0ddcca917ba5964e18a490c7d19c9ac3769541bd05268c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/low.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3167,
+      "sha256": "66a71e0700377eadbcf282fe13bf963ffbee7de768953ea9731bf58c291fcd74"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/medium.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3147,
+      "sha256": "4eadabf52cf2071182da1334794d709be14c6b199959e36724e3be5c3d3188cd"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/oracle_attack.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8267,
+      "sha256": "d3a94da445a95c0660416289016339744b8e590130662a1d59194ae8a6726b52"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/token_library_high.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3288,
+      "sha256": "3c27dad000d91ced964bad8e9fba493006ef969471d570f63b1e74a87ae21caf"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/token_library_impossible.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3229,
+      "sha256": "d41b797cd4bd99611d61a45359888056c2dce898597ab8d572f6036bde376e3b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/xor_theory.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 842,
+      "sha256": "1c91492b298495b2739a7b96b5e2c03e1ec23860420caa190b0ba69b0d3de7d7"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/help/help.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3959,
+      "sha256": "ec464658d78d7cb215ced4ebab9c27ad08fc0e59f26307ce8266ccf0418d9ca9"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/index.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1651,
+      "sha256": "32cec003a59c91392dfd79bf76394e83045870ff08954257f64eca6a01152d81"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/high.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 548,
+      "sha256": "3ef714bb1a4353fb9145a80f3a6e696f136efeaffdae37b272c6e71a8a1ddd98"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/impossible.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 617,
+      "sha256": "7aa2553a66acc448e43da96f282d3aab8fdbaf4d19372d06437b793ef1f364cc"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/jsonp.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 247,
+      "sha256": "1c4b3b75ece84ac0f5eaf6436a64dcd69511e9ce31d3f8213b6f85f9368ab10f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/jsonp_impossible.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 144,
+      "sha256": "434d8971d8184330f9d1e4232cdcd8d4e95c5b3e4cf19dd9af626f55e56cddff"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/low.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1013,
+      "sha256": "55773c232654ad9876cb18c92f0d784f18065c15fbecea38cb20b8983fc606cc"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/medium.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 703,
+      "sha256": "79ec1a5e297047eedd9268f3131c42074e99da741bc19fe65b69b90e34930c31"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/help/help.php",
+      "completed_at": "2026-08-16T08:59:08+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3385,
+      "sha256": "5c1285e301f371a7dd836121051f08b9252d446d9bae6e895a9f21e256ac4c9f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/index.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3460,
+      "sha256": "1b0056ef03b6fd142ce6863e6cf2b7cfd6a9e35a5720db8f1ade56900baec3a3"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/source/high.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2076,
+      "sha256": "3b49690a116f2216e3ce5e6b0808440048739d3dabcc7acc88f44ab51d4749c1"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/source/impossible.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2177,
+      "sha256": "cf93ff925216475c0b47bd2b7aa0a55cafeed5a3a76c66fbed776c2746b0c05f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/source/low.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1249,
+      "sha256": "d718de6b22eabe0f1a2f0f2b0c148c251787a46ed334a4496857a1cf12155ec6"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/source/medium.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1516,
+      "sha256": "5c8d73eb1f6a74fa1787f814fb64a6f4086ca8baef0bd975dd64219b6cd2abf0"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/test_credentials.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1975,
+      "sha256": "59a09842002bc799a70220ae560212dd1da76a521b87fa86826d390876041ec9"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/exec/help/help.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3186,
+      "sha256": "ab844c0484ca47ed07912736a91f80834b62d663c8214576fabd2884e685bf00"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/exec/index.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1829,
+      "sha256": "b1d993eb1fd41c0f5aca289639cc0f642a8aa15f91dc7a6eeb68b13842113f37"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/exec/source/high.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 741,
+      "sha256": "e3b703d6180c5c1e62fd09f78036e193a16025ffe208be9d90bb19d71a08db7f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/exec/source/impossible.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1159,
+      "sha256": "26b294a69538ae5de36b8669fdaef85022814bfaa253f7678b2ac5fa295ab543"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/exec/source/low.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 404,
+      "sha256": "399a0d5dd28436a952a5bb0d14390eb421e57ab2e7add68813b6ce283cc70f28"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/exec/source/medium.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 630,
+      "sha256": "c25e0a1a61a4c36eedad8c0d54178e88d030f3c2886fe34edea5ae5054c398c0"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/file1.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1050,
+      "sha256": "99413b79afafe0e592bcd5c8bbb77f4358b40d0f3d0b1477ef959b35b43d69a4"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/file2.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1054,
+      "sha256": "e2768877ed6bdcf617ecc740b01f175fbfe8d692c4a7ff4f61bb2f0a978ce861"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/file3.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1559,
+      "sha256": "37fa1e56424a8bf470d7ea6f01de85b06942bb2a1f5a5f95271f540cc6808d4f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/file4.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 372,
+      "sha256": "eac2771ecf32c42d1a6af2a27877e3d1e204f52fff82ffd4eba290abf7b4e0e5"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/help/help.php",
+      "completed_at": "2026-08-16T08:59:09+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3700,
+      "sha256": "d062cca1f24e3508a867aa33661dd7dd0fa03e7d61d2b319af65e758a1471365"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/include.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2036,
+      "sha256": "3a4ba603ca2f0ed578ae3b489410698ce205f24834c4fc8fd31fa0b72a5928aa"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/index.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 995,
+      "sha256": "e88ff0889422b4936bc24fb88ca5f2e291d2b31a17550f433a42c6a8208bd655"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/high.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 236,
+      "sha256": "75a4014e0f38e9c44f7c323d8faccd11f82d58a1fdd88840b749d00f1e9e517b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/impossible.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 353,
+      "sha256": "66fa964b231cfb7dfc67d39bbfb2532bf1cd0449579152c4d675b617100b69ba"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/low.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 73,
+      "sha256": "ac675d111bc8f81ac257f68563d5f26ece31afad7021a469d2c51babff867dad"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/medium.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 222,
+      "sha256": "9f99e5345df6c33c8cc043db16c8ec0bf1d83dd93d5115417267bb1d7fcc83ba"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/help/help.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3365,
+      "sha256": "cbe69563f7229929e9a63d774bdf09a23b2a4673e9c2a463e446ae81726ad011"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/index.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3309,
+      "sha256": "76fb3fdbae08eb8fe0233438057c050a9fd59eeef4a11f6442158152b491e23c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/high.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 126,
+      "sha256": "78e518885940c4be182298b94e6864213dd4f9a6df987b4b107cc706bef59342"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/impossible.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/low.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4182,
+      "sha256": "bdcc3908cc8b1d5a0a8eec50c54229ed566e5bacc411f490f7e388bdf0179f4c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/medium.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 128,
+      "sha256": "6b15e110d6818aa41d73bb87be7e5fab263df017696d38417c94be4ea0026427"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/help/help.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2857,
+      "sha256": "a7b3dd493d4277b6905614e727e3218d25497082b0fe35bb4968fb994f4bdbab"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/index.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2124,
+      "sha256": "02467fc7da918bac2509da159cf49f9dce48623aff128a6333d3c45535f050cd"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/high.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 398,
+      "sha256": "2d6d53feca779f9c93303a2e0a975882a033ab42ba545acd457555580fe05072"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/impossible.php",
+      "completed_at": "2026-08-16T08:59:10+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 483,
+      "sha256": "82c04f35908168ad2d4f948006c89a5fd6586cf335b771963ed839a7d06dd22a"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/info.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2022,
+      "sha256": "ffa4d0396f18cb3c16dda43fa76bf69b53a04dfa76777b9badecfd1d5c212de6"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/low.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 221,
+      "sha256": "d9839b61e112df946429ec3b8f2de8a3e4f0ac741842fcd34cce0a1ab3363861"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/medium.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 395,
+      "sha256": "634fdfb18bea35460f920bc4e22a5501975f61eb361886f093edf715895cbd17"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/help/help.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2885,
+      "sha256": "b735c93f55af9caf2e28ea7d6230a814d39f2d8e822181d740e34ef071815944"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/index.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2394,
+      "sha256": "44547e1f38882ac18196631a798fb1a569baa46a0d2f755c41f9dd7c7ddd0a86"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/session-input.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 880,
+      "sha256": "b40d45f4c77728fdda9660f46cf5269ea6376e4a2beb7658ab10f0d6bad751cf"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/high.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1459,
+      "sha256": "a0515122d362ebd188ad7c85a313d72faf6ae373052162fb1e324e7834648374"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/impossible.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1854,
+      "sha256": "f4dcc92946933a31b0e93362a184ff776da9736036e99bec79f119cc2128aa8c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/low.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1650,
+      "sha256": "652bb44d14a9d81c9245f05ed8440beecf7977e982e00d3ddb916126a72e85bf"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/medium.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1952,
+      "sha256": "dd81afdddf5817294f2eea11ffaf21b2aad90cb768cc3d57ef9b6d0f96020db4"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/test.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 328,
+      "sha256": "5649cc5ab1e7139daad006bfbbd50920e5b1c88b0888665054e067d1781200cf"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/cookie-input.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 805,
+      "sha256": "202b06dc715966364e727582f1e129db7c1f5692e6b2ca9a3eae4066ed19e4b5"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/help/help.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3143,
+      "sha256": "b6111a6931bb1c0143ff5a165a68be4907d63ad986cdffe763009f985b42a493"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/index.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3206,
+      "sha256": "db7227cd7e81a7a41d65e517a5e71656a9aae981cbbc5ecf47ffbef1bba5d3dc"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/high.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1566,
+      "sha256": "35165a2b85a80880b566a4605d2b23af5eefa5fff12e5b13961789dc4fafdc82"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/impossible.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1778,
+      "sha256": "ccd72dcc781d921f3acbc02da2609018f2d604921a51e74d6b097624ddc18f83"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/low.php",
+      "completed_at": "2026-08-16T08:59:11+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1413,
+      "sha256": "28e34b5f7f4dd2ae1a38b1fae4c1bf67aaf3b98791c4a6c7560e322d1079f73a"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/medium.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1527,
+      "sha256": "6d2e04fab2e805f39629f6a8cc77e42671ebd13c0cba1bf3c00a9baa920efa4d"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/help/help.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2441,
+      "sha256": "afc40ad49132691c3fe2b5d02976a2e75e72b4266fa69eec6b50e96dee424de2"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/index.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2203,
+      "sha256": "a4246bd6e6d827b7b060dcc9e847139c7f5d53bc893a478bc47dd12c1b9bb865"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/high.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1117,
+      "sha256": "6e072f79ebde0d265c85306f4b761304e1977ca41f6b2e384b6a8b71b3104594"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/impossible.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2271,
+      "sha256": "82bf663396331b36ccdafdb628a71bec5d82d7f4e7652295b37b5e538781abf6"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/low.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 511,
+      "sha256": "a958136c538b253829ffbb8d8e6e7daee5061b31a531c4b9bcc99e8d2099503f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/medium.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 965,
+      "sha256": "3ad92d2c7effadbb079f8527ec46a152afd4a3fb3e21ed03ac5cfe2bd8175781"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/view_help.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1115,
+      "sha256": "2976b32d8d934c3ab135aa5729c594dbb4ca3bb98ed320d96f7ee371dc23d616"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/view_source.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2705,
+      "sha256": "cb03e98bd2485a0038d5133c5781bc2e035dae701f9bbf88888e2d69855cdd42"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/view_source_all.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3053,
+      "sha256": "db86dcfc8708338f0a2a2ccb76b987e1bb726d634aa69aa9645b3bbab38eac59"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/help/help.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2129,
+      "sha256": "f42bd5d71841529d7e287f649b0447ebe51b68597b239aa6571e3856e153023b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/index.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1412,
+      "sha256": "f47075b86fc6ce2a19021b5e51fe2dd5ad861decfea6f88f457fde7bacadbc4b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/high.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 395,
+      "sha256": "7b1a9485cd2a4364b2d82429c8e693c2d0896dbf925ce79f678287eecd830965"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/impossible.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 255,
+      "sha256": "ad4a4e7ff2bc9ef9cdd5963846fb7987a9fb0d48b7a0674522af1faf4c6a1889"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/low.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 289,
+      "sha256": "c88680e13f976f129b956cee00a7c426b6a29da9e678677b7d2881109f02b2d0"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/medium.php",
+      "completed_at": "2026-08-16T08:59:12+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 145,
+      "sha256": "b417f65ece3b5215560c74a7de99963b3a3b56a6defed0d81b6bfa3b83d68189"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/help/help.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3442,
+      "sha256": "0741f5bcba1cfe564a7e728d45c4ad5e94b33b6481201e7134ef44cd45b2335c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/index.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2412,
+      "sha256": "42999c6361efcd1846182858ca16f8cc61ff9cca7326dfa6fd57f7edd28e02ee"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/high.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 356,
+      "sha256": "b9d7b82cfbb5b208e0abfd63694b9388ab23333065086a056c8737ee347eb8c0"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/impossible.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 83,
+      "sha256": "afc52f50b776249510940a7599afdcb4bbb3f8ddc86d70761a5ce95f6fda19eb"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/low.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 48,
+      "sha256": "7fdc47cbbcdaa9abd594671ea46babfb7a370a7a91687ed77a57118de53df681"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/medium.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 289,
+      "sha256": "06703f7929e8fee8042fa2193c2da91049f98cc44af22029e5324ee45bcd4356"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/help/help.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2702,
+      "sha256": "97254d1f7972144e555104ce974c664ccc6c8a456a26e39204029d8997404fe7"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/index.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1910,
+      "sha256": "ae06691fb578cd9af417656ebb5ae37181a95e0de9fafdb55776e352799c6342"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/high.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 315,
+      "sha256": "1df9d34ce72f26e3f9cdf4878a23094e194dbabda0d2091547702a51f2851612"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/impossible.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 413,
+      "sha256": "6cff3122f97aec856e57134f497cb79079929d7efa1aca3eb75748ea3cc28dd3"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/low.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 229,
+      "sha256": "fb3c6fd9937697d4473cb9a2a9267df44b7e8620b16a4189189e76455d351833"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/medium.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 288,
+      "sha256": "b2b44ca0f6dd017a5a81a3461668072e15b4481b0c5eebf6da42abcbc94830ad"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/help/help.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2648,
+      "sha256": "583380dc0a4a176c474a1c1a996540f4da974928d9ac83620f31a33ec9a3f94c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/index.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2870,
+      "sha256": "88c6ade99cb248f5ae211a49cc23f56d48fe07c6e2d63175f76116e3560a8df5"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/high.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1338,
+      "sha256": "1b89419284977372e3f2093cd543202f399ef6bf244012c27ba8ada9c037bc40"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/impossible.php",
+      "completed_at": "2026-08-16T08:59:13+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1364,
+      "sha256": "aa8c2d4ea5e990441070a57a33c92afb7562ecb1fa621a056624d40263cbd5be"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/low.php",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1208,
+      "sha256": "fd08b4c5d29111581d0ce36ce2a54febd236d4ed3bd7b64d53d6eae9b0f433a0"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/medium.php",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1311,
+      "sha256": "e4a44437fd9cdafff38a896622075fa8e35531d25e6ebda33cd364bc36649993"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/app.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2586,
+      "sha256": "97d1535bf82c9d59cb246d1473545fa11b4dea5552229db8539165bf0226813e"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/setting/setting.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1851,
+      "sha256": "090a82e4ab8abe85ca2d82b8ed9595ec8718c9ebf0cd65aeaef837a00025b05c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/setup/function.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1644,
+      "sha256": "96a9171b9c0793f5e4d24d2bb98f5aa9900246c8a3f1697a71723a1ccf227c50"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/setup/setup.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2527,
+      "sha256": "b65848426f3d7e03d46bbcea3ed8826e3a802ca9dbb321a3a2b56146f97eb9b4"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/user/session/session.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1769,
+      "sha256": "8d4672fadeed4bb20befd11f01fd357e04ea9bd512fdda2e4121a365389f078b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/user/user.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3835,
+      "sha256": "63e043f8b9da0ddc63d9f6d2d00e4f72211c5c4bf25850a51c25a5117fa34048"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/util/config/config.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 579,
+      "sha256": "3e67090eacfb80049ea1e29ef416677b4dffc61d36630216892064aa7ce89b54"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/util/cookie.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1016,
+      "sha256": "fddf1fcd73debe746b22ab1680fc4501ac12fa902ba6086f434f0daf487f7f58"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/util/database/database.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1304,
+      "sha256": "5027740f8721c4eb52622ea7b12cda0b773e8aeb4b7a2fb066b683ae759be699"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/util/http.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 209,
+      "sha256": "367f3b9dec70aa522e0416b48667acf03aec7047342235a17b3153091d98dc05"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/util/middleware/middleware.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1824,
+      "sha256": "4eec96fc01dbf0e0c6a7409a20b23936476076de854fdc8e1247e2c51e6bf4f2"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/util/template.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1152,
+      "sha256": "ce9520341dcc25c6df49eb23096cc98dd2adc6b9becbde9ce1bbad3ca54d8d68"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/csa/csa.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1345,
+      "sha256": "fc21c397c8cbfad9dcca0253ca7e66d8f3b2eb08c465f2c9355ac3b68b4f4928"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/idor/function.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1533,
+      "sha256": "7777a612e1d371044228338827bd3c31886b94f8ddc624e5fcbdc28def3c5101"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/idor/idor.go",
+      "completed_at": "2026-08-16T08:59:14+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3993,
+      "sha256": "d771cee94985df1c16cc1ac324e3d8d6f9fa691048282b9415f42d5a6729a013"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/sqli/function.go",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1663,
+      "sha256": "b5a987a2bc057e0bdea4a546b3673450cc7ac91ad8587f7510d99f98760f472f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/sqli/sqli.go",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2035,
+      "sha256": "72f954d4f873c21c5895dd3f71606e3108daaf342bac0790ac3ecf3ffccb6251"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/xss/function.go",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 938,
+      "sha256": "cbc86e7a2c44e207095e55894ef1c01aef3cf1fab78b4e199743c569f1e56f49"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/xss/xss.go",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2707,
+      "sha256": "cc29fef66f841a041388767b907c78d998f8538f89d9919fae905021b4701c6d"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/xxe/xxe.go",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 64,
+      "sha256": "01cdb2dd7950fc2163801281016a4648a82a19471988ee31f7c2d39a4de1ee9d"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/assets/js/chart/chart-data-morris.js",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3718,
+      "sha256": "a5511ae7a5614f9f2dd89625bce94d6b794a675dae4987259d087a8d2e8e2693"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/assets/js/tour/redirects-steps.js",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 648,
+      "sha256": "16babf9b88e186cb4e2a7ab896a78494f6d4a88737c903eb1e23e35579ac651b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/data/allocations-dao.js",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3928,
+      "sha256": "c6aebc971ce7f9c8b2a8f0864a500497de25a3ea0318ef94ecd57cadf6e789ea"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/data/benefits-dao.js",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1240,
+      "sha256": "0ac30b097e016eeffb10e1c72d9c657153d3ce67e7b3f4756b2cb127d94181d7"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/data/contributions-dao.js",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2791,
+      "sha256": "363065e8b3c32f0997ce2dcb17341eb3e40b7f43b00b72c576dfebf73f551c85"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/data/memos-dao.js",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1107,
+      "sha256": "6582195bd913c2d60d63e9b519f9508a3319e07e158fd0c6f31dcbc50a80e8cf"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/data/profile-dao.js",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3506,
+      "sha256": "80429a5df579867401a59b1cbd9c1d74f88d5548780fbd909e9504876c1968cc"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/data/research-dao.js",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 750,
+      "sha256": "f1cf267e56080fc94943ad7d83802b4e9db9420687fac49f84dbc0e45dfa88ac"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/data/user-dao.js",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4078,
+      "sha256": "577fb140933a50e010a4bbcb74e975f678d7f3a989467e4d113926f35c042e64"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/allocations.js",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 915,
+      "sha256": "b5b7da1a6b595799cf6cca402756dd9a3f6e2a8b5d712c1989d23b7f01f349a6"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/benefits.js",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1340,
+      "sha256": "bc5516b35ba21884915b88b3f810441e616f068d8a0cf756b143185d5aeda2d2"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/contributions.js",
+      "completed_at": "2026-08-16T08:59:15+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2485,
+      "sha256": "196bdeaa22da4cfe8a851b1b932710b2fcedd21f14ed75d70b739ba759a01003"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/error.js",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 281,
+      "sha256": "452dc61f9f06a31ea4305edb2e573fc940428615841533b59320792fcfb6fb3f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/index.js",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3149,
+      "sha256": "3ab970b2888bc1501515db24a83cc7851ac9c09d00948c652300401515185eb5"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/memos.js",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 824,
+      "sha256": "c3543f308f24083436e25e3a72210ad31e611db5c93268d8dd0e340095e132c9"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/profile.js",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3633,
+      "sha256": "18575bf3d3710906e57e09e6036e40fd3986bdcca436ed0e2a2875b41f0f2aca"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/research.js",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1071,
+      "sha256": "e399f3c70436fa160f00835626bf50f88980268fcd143436af97c9d2297c1d92"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/session.js",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10199,
+      "sha256": "e53e38b6eea76b026efaacde07f694e7a2eca005de4083fb74f9393d432a5b25"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/tutorial.js",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 637,
+      "sha256": "502e0b959b37cbc844d15eadd7a78a40b5281155fcf8d532f0e4abdd2fee8eb9"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_js_fs.js",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 157,
+      "sha256": "5c41306ccc85e39e79a84c110f4703dbd3fd32587ee1b9abfab1d48dac551b6f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_js_send.js",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 102,
+      "sha256": "18e4bc75706d43abcb81102092a5f4b50f7ba6d9b07e4e7c4f2843f6e7603652"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_open_1.py",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 177,
+      "sha256": "b8c8dd5ca5229c07a018af9aa113b0e16270634b9dffdbbc00b0dc263362d59e"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_open_2.py",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 131,
+      "sha256": "4b5e7bb3e10cf2b694dd6074cfbda8a8ba08bea65b4d4322b42eeeff1bed1eea"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_os_join.py",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 168,
+      "sha256": "5be87ee70198b50a919579fb6370067aefcc53e0aacd5e90fa56156f07f24c52"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_pathlib.py",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 141,
+      "sha256": "1a5f5ba7096722743d87cf33d456003cd7430a6b30bff536a69f241ea7517759"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_php_include.php",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 96,
+      "sha256": "c38a04716f76c5fb619ff1b39d67f01fb64ba9e3e819d082fd39ae34adb37946"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_shutil.py",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 118,
+      "sha256": "dbe985339fa284d5d6fab8e56dd37747c02f4016763af5952aaedac00063ed93"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_allowlist.py",
+      "completed_at": "2026-08-16T08:59:16+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 202,
+      "sha256": "06df7437dce63b73bf35e2d44b3491679e75d60de457fbce69c4e71196d2de24"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_basename.py",
+      "completed_at": "2026-08-16T08:59:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 312,
+      "sha256": "ef6ecc4286ea8837545d7a5f0e47239ece4d30e9d6b9bdcbb7ce80cab6ae578d"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_hardcoded_path.py",
+      "completed_at": "2026-08-16T08:59:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 129,
+      "sha256": "952fc00cc7e0006ca63bdb69cb2bc7a0c3e46595de545b83952130f01ad1d271"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_js_static.js",
+      "completed_at": "2026-08-16T08:59:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 147,
+      "sha256": "0a6c1f3dc90ae339b3dfe023ee2548573df79a4407cf1a9b166831fc75ff8f46"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_no_user_input.py",
+      "completed_at": "2026-08-16T08:59:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 101,
+      "sha256": "fe694b01cc7f2f28681acb31fb632c0ba995cc58bba59958aecf5f1fe9c05285"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/des_encrypt.py",
+      "completed_at": "2026-08-16T08:59:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 112,
+      "sha256": "a8d576a4c6cddf48dfac60ea65dce668d724db742acbbe981558b6124e1fb1a9"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/ecb_mode.py",
+      "completed_at": "2026-08-16T08:59:17+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 126,
+      "sha256": "6a41facfceac3509910f2b3bedeaa73cd506170e190b1b571c42eed355c1642d"
     }
   ]
 }
