@@ -24,9 +24,9 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Planned | Accepted risk |
 |----------|------|---------|---------------|
 | Critical | 0    | 0       | 0             |
-| High     | 5    | 0       | 0             |
-| Medium   | 10   | 0       | 0             |
-| Low      | 11   | 0       | 0             |
+| High     | 6    | 0       | 0             |
+| Medium   | 14   | 0       | 0             |
+| Low      | 13   | 0       | 0             |
 | Info     | 4    | 0       | 0             |
 
 ## Findings
@@ -310,7 +310,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 - **Confidence:** High
 - **CWE / class:** CWE-116
 - **Primary file:** `Asgard/Bragi/Architecture/services/_arch_reporter_markdown.py`
-- **Also on trace:** `Asgard/Bragi/Architecture/services/_pattern_reporter.py`, `Asgard/Bragi/Architecture/services/_solid_reporter.py`, `Asgard/Bragi/Architecture/services/_suggester_reporter.py`, `Asgard/Bragi/Architecture/services/_generic_hexagonal_checks.py`, `Asgard/Bragi/Coverage/services/_coverage_reporter.py`
+- **Also on trace:** `Asgard/Bragi/Architecture/services/_pattern_reporter.py`, `Asgard/Bragi/Architecture/services/_solid_reporter.py`, `Asgard/Bragi/Architecture/services/_suggester_reporter.py`, `Asgard/Bragi/Architecture/services/_generic_hexagonal_checks.py`, `Asgard/Bragi/Coverage/services/_coverage_reporter.py`, `Asgard/Bragi/Dependencies/services/_license_reporter.py`, `Asgard/Bragi/Dependencies/services/_dependency_reporter.py`
 - **Location:** markdown table cells (`class_name`, `message`, `source_module`, `signals`)
 - **Trace:** Scanned source tokens → violation/suggestion fields → f-string MD tables → CLI `print(report)`. JSON path uses `json.dumps` (safe). Full-scan HTML escapes the text reporter.
 - **Impact:** Broken tables; if a downstream Markdown→HTML renderer does not sanitize, `|` / HTML in identifiers can inject markup. No in-repo HTML consumer of these MD reports.
@@ -487,12 +487,132 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Planned fix:** Catch validation errors, log, fall back to generic/in-code defaults. Tests for `thresholds: []` and bad enums.
 - **Fix wave:** W4
 
+### CH-0032 — Unsigned license disk cache can bypass license policy
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-345
+- **Primary file:** `Asgard/Bragi/Dependencies/services/_license_cache.py`
+- **Also on trace:** `Asgard/Bragi/Dependencies/services/license_checker.py` (`use_cache` default True)
+- **Location:** `LicenseDiskCache` load/save `{scan_path}/.asgard_cache/bragi_license_cache.json`
+- **Trace:** `analyze()` → cache get by package name (not version) → `license_name` / `license_classifier` treated as truth → policy engine
+- **Impact:** A planted or committed cache entry can make a prohibited license look ALLOWED. Same class as CH-0017/CH-0027.
+- **Evidence:** Version string check only; no HMAC; keyed by name not version. `ASGARD_NO_CACHE` is the only integrity control.
+- **Planned fix:** Sign or refuse cache unless produced this run; include version in the key; validate record schema; default `use_cache=False` in CI.
+- **Fix wave:** W3
+
+### CH-0033 — License checker performs default-on HTTP to PyPI
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-668 / unexpected network
+- **Primary file:** `Asgard/Bragi/Dependencies/services/license_checker.py`
+- **Also on trace:** none
+- **Location:** `_get_license_from_pypi` via `_resolve_packages` thread pool
+- **Trace:** Uninstalled package name → `urlopen(https://pypi.org/pypi/{name}/json)` during `analyze()`. Unlike the vuln checker, there is no `enable_network` gate.
+- **Impact:** Unexpected egress; package names leak to PyPI; scan hangs/fails on restricted networks. Default TLS verify is on (good).
+- **Evidence:** Hardcoded pypi.org URL; called from the default analyze path.
+- **Planned fix:** Gate PyPI behind `enable_network` (same as `VulnerabilityChecker`). Prefer installed metadata only unless opted in.
+- **Fix wave:** W1
+
+### CH-0034 — Unquoted package name interpolated into the PyPI URL
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** Medium
+- **CWE / class:** CWE-20 / CWE-918 adjacent
+- **Primary file:** `Asgard/Bragi/Dependencies/services/license_checker.py`
+- **Also on trace:** `Asgard/Bragi/Dependencies/services/requirements_checker.py` (`_extract_package_name`)
+- **Location:** `f"https://pypi.org/pypi/{package_name}/json"`
+- **Trace:** Requirements line → package name → URL path. Host is fixed; `urlopen` follows redirects. Name is not PEP 503 normalized or `quote()`’d.
+- **Impact:** Path injection on pypi.org; possible redirect off-host if PyPI ever 3xx’s a crafted path. Not classic SSRF to an attacker origin from this string alone.
+- **Evidence:** No `urllib.parse.quote`; no `[A-Za-z0-9._-]` allowlist on this path (SBOM parsers do restrict names).
+- **Planned fix:** PEP 503 normalize + `quote(name, safe="")`; reject names outside `[A-Za-z0-9._-]`. Do not follow off-host redirects.
+- **Fix wave:** W2
+
+### CH-0035 — `RequirementsChecker.sync` writes an unconfined `target_file`
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-22
+- **Primary file:** `Asgard/Bragi/Dependencies/services/requirements_checker.py`
+- **Also on trace:** `Asgard/Heimdall/cli/handlers/syntax.py` (`target_file=getattr(args, 'target_file', ...)`)
+- **Location:** `sync` — `req_file = scan_path / target_file` then `write_text`
+- **Trace:** CLI `--target-file` → `sync` → POSIX `Path / abs` replaces the scan root → overwrite/create that path if the process can write
+- **Impact:** Arbitrary file write of a requirements-like text file. Also reads that path first if it exists.
+- **Evidence:** No `is_relative_to` after join. CLI passes `args.target_file` through.
+- **Planned fix:** Reject absolute `target_file` and `..`; `resolve()` and require `is_relative_to(scan_path)`. Tests for `/tmp/x` and `../x`.
+- **Fix wave:** W2
+
+### CH-0036 — Unsigned vulnerability lookup cache can hide or inject CVEs
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-345
+- **Primary file:** `Asgard/Bragi/Dependencies/services/_vuln_cache.py`
+- **Also on trace:** `Asgard/Bragi/Dependencies/services/vulnerability_checker.py` (`_post_batch_cached` / `_query_nvd_cached`)
+- **Location:** `{cwd}/.asgard_cache/vulnerability/{key}.json`
+- **Trace:** `enable_network=True` → cache get → treat `envelope["value"]` as OSV/NVD body → findings
+- **Impact:** A planted cache can hide CVEs (`checked=True`, empty vulns) or inject findings. Only on the opt-in network path. `ASGARD_NO_CACHE=1` bypasses.
+- **Evidence:** No HMAC; `mkdir` not `0o700`; TTL only.
+- **Planned fix:** Schema-validate cached bodies; optional HMAC; `0o700` cache dir; document `ASGARD_NO_CACHE` for CI gates.
+- **Fix wave:** W3
+
+### CH-0037 — Vuln cache key is used as a path fragment
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** Medium
+- **CWE / class:** CWE-22
+- **Primary file:** `Asgard/Bragi/Dependencies/services/_vuln_cache.py`
+- **Also on trace:** `cache_key(namespace, payload)`
+- **Location:** `self.cache_dir / f"{key}.json"`
+- **Trace:** If a caller passes a raw `key` with `/` or an absolute path, POSIX join escapes `cache_dir`. In-repo callers only use `cache_key("osv"|"nvd", ...)`.
+- **Impact:** Latent arbitrary cache read/write if a future caller skips `cache_key()`.
+- **Evidence:** Comment claims keys cannot traverse; true only for `cache_key()` outputs. `namespace` is interpolated unsanitized.
+- **Planned fix:** Allowlist keys as `^[a-z0-9_]+$`; always hash the full key; `resolve()` + `is_relative_to(cache_dir)`.
+- **Fix wave:** W2
+
+### CH-0038 — `PackageLicense.is_allowed` defaults True (fail-open)
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-696 / fail-open
+- **Primary file:** `Asgard/Bragi/Dependencies/models/license_models.py`
+- **Also on trace:** `Asgard/Bragi/Dependencies/services/license_checker.py`, `_license_policy.py`
+- **Location:** `PackageLicense.is_allowed: bool = True` while `verdict` defaults `"unknown"`
+- **Trace:** Any consumer that only checks the booleans treats an un-evaluated package as allowed
+- **Impact:** Policy bypass if a caller skips `verdict` / `_classify_license`. WARN packages also keep `is_allowed=True` by documented design.
+- **Evidence:** Comment at models L121–124. Defaults are fail-open.
+- **Planned fix:** Default `is_allowed=False` until classified; gates must use `verdict == "allowed"`. Tests for unclassified packages.
+- **Fix wave:** W3
+
+### CH-0039 — Unsigned dep-graph JSON cache can crash the scan
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** High
+- **CWE / class:** CWE-20 / CWE-345
+- **Primary file:** `Asgard/Bragi/Dependencies/services/graph_service.py`
+- **Also on trace:** `{scan_path}/.asgard_cache/bragi_dep_graph.json`
+- **Location:** `_load_cache` / `build`
+- **Trace:** `json.load` → `version == "1.0.0"` only → `files`/`derived` accessed outside the load `try`. Graph edges are always rebuilt live (not a finding-suppression clone of CH-0017).
+- **Impact:** Hostile cache → `AttributeError` / large-JSON DoS. Cycle results not currently poisoned.
+- **Evidence:** Non-dict `files` crashes; write is non-atomic.
+- **Planned fix:** Schema-validate; wrap hydrate in try/except and treat as miss; atomic replace. Do not consume `_derived` without recompute unless signed.
+- **Fix wave:** W4
+
 ## Planned fix waves
 
-- **W1 — CI / supply chain / secrets policy (do first):** CH-0001, CH-0002, CH-0003, CH-0004, CH-0005, CH-0006, CH-0023, CH-0024. Pin actions, stop executing PR code on ARC, lock PyPI publish, isolate git when talking to untrusted repos, keep credentials out of git.
-- **W2 — Path confinement:** CH-0007, CH-0008, CH-0010, CH-0014, CH-0026, CH-0028. Validate CLI/API/language/profile paths; refuse symlinks; atomic writes.
-- **W3 — Baseline / cache integrity:** CH-0011, CH-0012, CH-0013, CH-0015, CH-0027. Stop empty-message fuzzy suppression; bind match to payload; redact; re-clamp local calibration YAML.
-- **W4 — Analyzer robustness:** CH-0016, CH-0017, CH-0018, CH-0021, CH-0022, CH-0025, CH-0031. Size/recursion/hunk caps; cache schema; bound globs/regex; fail soft on bad YAML.
+- **W1 — CI / supply chain / secrets policy (do first):** CH-0001, CH-0002, CH-0003, CH-0004, CH-0005, CH-0006, CH-0023, CH-0024, CH-0033. Pin actions, stop executing PR code on ARC, lock PyPI publish, isolate git, do not phone home to PyPI unless opted in.
+- **W2 — Path confinement:** CH-0007, CH-0008, CH-0010, CH-0014, CH-0026, CH-0028, CH-0034, CH-0035, CH-0037. Validate CLI/API/language/profile/sync/cache-key paths.
+- **W3 — Baseline / cache / policy integrity:** CH-0011, CH-0012, CH-0013, CH-0015, CH-0027, CH-0032, CH-0036, CH-0038. Sign or refuse caches; fail-closed license defaults.
+- **W4 — Analyzer robustness:** CH-0016, CH-0017, CH-0018, CH-0021, CH-0022, CH-0025, CH-0031, CH-0039. Size/recursion/hunk caps; cache schema; fail soft on bad YAML.
 - **W5 — Output / template hygiene:** CH-0009, CH-0019, CH-0020, CH-0030. Escape markdown cells; tighten generated gitignore; constrain profile model fields.
 
 ## Accepted risks
@@ -503,9 +623,10 @@ None yet.
 
 - Inventory init (2026-08-16): discovered=3875 remaining=3875 completed=0
 - Batch 1 merged: 64 files (CI + BackendInit + Baseline + Architecture CIR/graph/services helpers)
-- Batch 2 merged (2026-08-16): Architecture analyzers + utilities + Calibration + CodeFix + Coverage core (~50 files)
-- Last paths completed: through `Asgard/Bragi/Coverage/utilities/__init__.py`
-- Next batch: Coverage extractors + Bragi Dependencies
-- Resume pointer: `python3 scripts/cyberhardening_inventory.py status` then `next`
-- Spot-check batch 2: re-read `szz.py` (`subprocess` argv-list, no `shell=True`), `profile_service.py` (`yaml.safe_load` + `language` path join), `codefix_service.py` (no writes), `solid_validator.analyze_multilang` (no per-file try). Traces matched.
-- Highest ID: CH-0031 (CH-0029 reserved/merged into CH-0019)
+- Batch 2 merged: Architecture analyzers + Calibration + CodeFix + Coverage core (50 files)
+- Batch 3 merged (2026-08-16): Coverage extractors + Dependencies + OOP models (~40 files)
+- Last paths completed: through `Asgard/Bragi/OOP/services/__init__.py`
+- Next batch: Bragi OOP services
+- Resume pointer: remaining≈3721 after batch-3 pop; `python3 scripts/cyberhardening_inventory.py status`
+- Spot-check batch 3: re-read `requirements_checker.sync` (unconfined `target_file`), `license_checker` PyPI `urlopen`, `PackageLicense.is_allowed=True`. Traces matched.
+- Highest ID: CH-0039

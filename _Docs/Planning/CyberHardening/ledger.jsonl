@@ -112,3 +112,43 @@
 {"path":"Asgard/Bragi/Coverage/services/gap_analyzer.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Walk+read_text; no coverage.xml parse"}
 {"path":"Asgard/Bragi/Coverage/services/suggestion_engine.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"In-memory ranking"}
 {"path":"Asgard/Bragi/Coverage/utilities/__init__.py","at":"2026-08-16T07:20:09+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export extractors"}
+{"path":"Asgard/Bragi/Coverage/utilities/method_extractor.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"ast.parse only; no I/O/eval/regex"}
+{"path":"Asgard/Bragi/Coverage/utilities/multilang_extractor.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"tree-sitter + CIR; static queries; no file open"}
+{"path":"Asgard/Bragi/Dependencies/__init__.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export"}
+{"path":"Asgard/Bragi/Dependencies/models/__init__.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export"}
+{"path":"Asgard/Bragi/Dependencies/models/dependency_models.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Dataclasses; no deser/secrets"}
+{"path":"Asgard/Bragi/Dependencies/models/license_models.py","at":"2026-08-16T07:24:37+00:00","disposition":"findings","finding_ids":["CH-0038"],"summary":"is_allowed defaults True (fail-open)"}
+{"path":"Asgard/Bragi/Dependencies/models/requirements_models.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Dataclasses; no deser"}
+{"path":"Asgard/Bragi/Dependencies/models/sbom_models.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Pydantic DTOs; no pickle"}
+{"path":"Asgard/Bragi/Dependencies/services/__init__.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export"}
+{"path":"Asgard/Bragi/Dependencies/services/_cvss.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Numeric CVSS parse only"}
+{"path":"Asgard/Bragi/Dependencies/services/_dependency_reporter.py","at":"2026-08-16T07:24:37+00:00","disposition":"findings","finding_ids":["CH-0019"],"summary":"Unescaped MD interpolation"}
+{"path":"Asgard/Bragi/Dependencies/services/_license_cache.py","at":"2026-08-16T07:24:37+00:00","disposition":"findings","finding_ids":["CH-0032"],"summary":"Unsigned license cache JSON"}
+{"path":"Asgard/Bragi/Dependencies/services/_license_policy.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"In-memory SPDX policy"}
+{"path":"Asgard/Bragi/Dependencies/services/_license_reporter.py","at":"2026-08-16T07:24:37+00:00","disposition":"findings","finding_ids":["CH-0019"],"summary":"Unescaped MD interpolation"}
+{"path":"Asgard/Bragi/Dependencies/services/_modularity_helpers.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Graph math only"}
+{"path":"Asgard/Bragi/Dependencies/services/_package_health.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Offline table; no network in this file"}
+{"path":"Asgard/Bragi/Dependencies/services/_requirements_data.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Static maps + AST visitor"}
+{"path":"Asgard/Bragi/Dependencies/services/_requirements_reporter.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"json.dumps/string reports"}
+{"path":"Asgard/Bragi/Dependencies/services/_sbom_formatters.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Dict emit only"}
+{"path":"Asgard/Bragi/Dependencies/services/_sbom_parsers.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"JSON/toml parse; no XML"}
+{"path":"Asgard/Bragi/Dependencies/services/_vuln_cache.py","at":"2026-08-16T07:24:37+00:00","disposition":"findings","finding_ids":["CH-0036","CH-0037"],"summary":"Unsigned vuln cache; key as path fragment"}
+{"path":"Asgard/Bragi/Dependencies/services/cycle_detector.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Delegates to graph_service.build"}
+{"path":"Asgard/Bragi/Dependencies/services/dependency_analyzer.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Orchestrator; no HTTP/write"}
+{"path":"Asgard/Bragi/Dependencies/services/graph_builder.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Export paths operator-chosen; no cache deser"}
+{"path":"Asgard/Bragi/Dependencies/services/graph_service.py","at":"2026-08-16T07:24:37+00:00","disposition":"findings","finding_ids":["CH-0039"],"summary":"Unsigned dep-graph cache can crash scan"}
+{"path":"Asgard/Bragi/Dependencies/services/import_analyzer.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"AST ImportVisitor; no eval"}
+{"path":"Asgard/Bragi/Dependencies/services/license_checker.py","at":"2026-08-16T07:24:37+00:00","disposition":"findings","finding_ids":["CH-0032","CH-0033","CH-0034"],"summary":"Default-on PyPI HTTP; unquoted name; cache trust"}
+{"path":"Asgard/Bragi/Dependencies/services/modularity_analyzer.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"No HTTP/write"}
+{"path":"Asgard/Bragi/Dependencies/services/requirements_checker.py","at":"2026-08-16T07:24:37+00:00","disposition":"findings","finding_ids":["CH-0035"],"summary":"sync writes unconfined target_file"}
+{"path":"Asgard/Bragi/Dependencies/services/sbom_generator.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Local metadata only"}
+{"path":"Asgard/Bragi/Dependencies/services/vulnerability_checker.py","at":"2026-08-16T07:24:37+00:00","disposition":"findings","finding_ids":["CH-0036"],"summary":"Opt-in OSV/NVD; unsigned cache as live result"}
+{"path":"Asgard/Bragi/Dependencies/utilities/__init__.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export"}
+{"path":"Asgard/Bragi/Dependencies/utilities/graph_utils.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Graph helpers; no I/O"}
+{"path":"Asgard/Bragi/OOP/__init__.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export"}
+{"path":"Asgard/Bragi/OOP/models/__init__.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export"}
+{"path":"Asgard/Bragi/OOP/models/_oop_class_metrics.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Dataclasses; no deser"}
+{"path":"Asgard/Bragi/OOP/models/_oop_enums.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Enums only"}
+{"path":"Asgard/Bragi/OOP/models/_oop_report.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Report dataclasses"}
+{"path":"Asgard/Bragi/OOP/models/oop_models.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Config/report models; no secrets"}
+{"path":"Asgard/Bragi/OOP/services/__init__.py","at":"2026-08-16T07:24:37+00:00","disposition":"clean","finding_ids":[],"summary":"Re-export"}
