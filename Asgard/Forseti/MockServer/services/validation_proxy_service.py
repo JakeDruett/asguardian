@@ -13,22 +13,54 @@ import urllib.error
 import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any, Callable, Optional
+from urllib.parse import urlsplit
 
 from Asgard.Forseti.LiveContract.models.live_contract_models import DriftReport, ProbeOperation, ProbeResult
 from Asgard.Forseti.LiveContract.services._dependency_helpers import extract_operations
 from Asgard.Forseti.LiveContract.services._response_check_helpers import check_response
-from Asgard.Forseti.MockServer.services._validation_proxy_helpers import match_operation
+from Asgard.Forseti.MockServer.services._validation_proxy_helpers import (
+    match_operation,
+    sanitize_proxy_path,
+    strip_hop_by_hop_headers,
+    validate_upstream_url,
+)
 
 # (status_code, headers, body_bytes)
 FetchResult = tuple[int, dict[str, str], bytes]
 Fetcher = Callable[[str, str, dict[str, str], bytes, float], FetchResult]
 
 
+class SameHostRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """Follow redirects only when scheme+host stay on the original upstream."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        origin = urlsplit(req.full_url)
+        dest = urlsplit(newurl)
+        if dest.scheme.lower() not in {"http", "https"}:
+            return None
+        if (dest.hostname or "").lower() != (origin.hostname or "").lower():
+            return None
+        origin_port = origin.port or (443 if origin.scheme == "https" else 80)
+        dest_port = dest.port or (443 if dest.scheme == "https" else 80)
+        if dest_port != origin_port:
+            return None
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def _opener() -> urllib.request.OpenerDirector:
+    return urllib.request.build_opener(SameHostRedirectHandler)
+
+
 def urllib_fetch(method: str, url: str, headers: dict[str, str], body: bytes, timeout_s: float) -> FetchResult:
     """Default `Fetcher`: forward the request upstream via stdlib `urllib`."""
-    req = urllib.request.Request(url, data=body or None, headers=headers, method=method.upper())
+    req = urllib.request.Request(
+        url,
+        data=body or None,
+        headers=strip_hop_by_hop_headers(headers),
+        method=method.upper(),
+    )
     try:
-        with urllib.request.urlopen(req, timeout=timeout_s) as resp:
+        with _opener().open(req, timeout=timeout_s) as resp:
             resp_body = resp.read()
             return resp.status, dict(resp.headers.items()), resp_body
     except urllib.error.HTTPError as e:
@@ -52,11 +84,11 @@ class ValidationProxyService:
         timeout_s: float = 5.0,
         fetcher: Optional[Fetcher] = None,
     ):
-        self.upstream = upstream.rstrip("/")
+        self.upstream = validate_upstream_url(upstream)
         self.timeout_s = timeout_s
         self.operations: list[ProbeOperation] = extract_operations(openapi_doc)
         self._fetch: Fetcher = fetcher or urllib_fetch
-        self._report = DriftReport(base_url=upstream)
+        self._report = DriftReport(base_url=self.upstream)
 
     def handle_request(
         self, method: str, path: str, headers: dict[str, str], body: bytes
@@ -67,9 +99,15 @@ class ValidationProxyService:
         thin HTTP layer can relay the upstream response to its own client
         while this service records drift findings on the side.
         """
-        operation = match_operation(self.operations, method, path)
-        url = f"{self.upstream}{path}"
-        status_code, resp_headers, resp_body = self._fetch(method, url, dict(headers), body, self.timeout_s)
+        try:
+            safe_path = sanitize_proxy_path(path)
+        except ValueError:
+            return 400, {"Content-Type": "text/plain"}, b"invalid path", []
+        operation = match_operation(self.operations, method, safe_path)
+        url = f"{self.upstream}{safe_path}"
+        status_code, resp_headers, resp_body = self._fetch(
+            method, url, strip_hop_by_hop_headers(dict(headers)), body, self.timeout_s
+        )
 
         findings: list = []
         if operation is not None:
@@ -141,7 +179,7 @@ def make_handler(service: ValidationProxyService) -> type:
     return type("_BoundProxyHTTPHandler", (_ProxyHTTPHandler,), {"service": service})
 
 
-def run_proxy_server(service: ValidationProxyService, host: str = "0.0.0.0", port: int = 8080) -> ThreadingHTTPServer:
+def run_proxy_server(service: ValidationProxyService, host: str = "127.0.0.1", port: int = 8080) -> ThreadingHTTPServer:
     """Start a blocking (until KeyboardInterrupt) stdlib HTTP proxy server.
 
     Cost: NETWORK - only called from the explicit `forseti mock proxy` CLI

@@ -278,7 +278,7 @@ def _add_mock_parser(subparsers: argparse._SubParsersAction) -> None:
     proxy.add_argument("spec_file", help="Path to OpenAPI specification file")
     proxy.add_argument("--upstream", required=True, help="Upstream base URL to forward requests to")
     proxy.add_argument("--port", type=int, default=8080, help="Port to listen on (default: 8080)")
-    proxy.add_argument("--host", default="0.0.0.0", help="Host to bind to (default: 0.0.0.0)")
+    proxy.add_argument("--host", default="127.0.0.1", help="Host to bind to (default: 127.0.0.1)")
     proxy.add_argument("--timeout", type=float, default=5.0, dest="timeout_s",
                        help="Per-request upstream timeout in seconds")
 

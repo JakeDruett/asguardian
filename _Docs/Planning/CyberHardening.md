@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 24   | 4     | 0             |
+| High     | 23   | 5     | 0             |
 | Medium   | 59   | 0     | 0             |
 | Low      | 22   | 0     | 0             |
 | Info     | 5    | 0     | 0             |
@@ -952,7 +952,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0062 — Validation proxy is an open SSRF forwarder
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** PENDING
+- **Fixed at:** 2026-08-16T10:08:00Z
+- **Implementation note:** Localhost bind; http(s) upstream only; path jail; hop-by-hop strip; same-host redirects only.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-918
@@ -1774,12 +1777,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 110
-- Fixed: 4
+- Open: 109
+- Fixed: 5
 - Accepted risk: 0
 - Current wave: W1
-- Next: CH-0024, CH-0049, CH-0060, CH-0062
-- Last commit: 583399e
+- Next: CH-0024, CH-0049, CH-0060, CH-0063
+- Last commit: PENDING
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
