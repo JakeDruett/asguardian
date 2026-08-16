@@ -848,7 +848,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0051 — Unsigned QualityGate fingerprint baseline can hide all PR findings
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 02016ca
 - **Fixed at:** 2026-08-16T15:28:00Z
 - **Implementation note:** HMAC-SHA256 on fingerprint store (`ASGARD_QG_HMAC_KEY` or sibling `.key`); unsigned/rewritten files load as empty → NOT_EVALUATED.
 - **Severity:** High
@@ -1947,7 +1947,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0011, CH-0013, CH-0027
-- Last commit: pending
+- Last commit: 02016ca
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

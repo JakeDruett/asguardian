@@ -57,4 +57,4 @@
 {"id":"CH-0069","at":"2026-08-16T15:20:00Z","commit":"27b3092","wave":"W3","summary":"Redact crawl auth_config secrets in generate/save report"}
 {"id":"CH-0012","at":"2026-08-16T15:22:00Z","commit":"1801500","wave":"W3","summary":"Refuse empty fuzzy baseline keys; persist violation_id"}
 {"id":"CH-0077","at":"2026-08-16T15:24:00Z","commit":"fff5004","wave":"W3","summary":"Record domain_errors; fail is_passing on scanner crash"}
-{"id":"CH-0051","at":"2026-08-16T15:28:00Z","commit":"pending","wave":"W3","summary":"HMAC QualityGate fingerprint baseline; planted file NOT_EVALUATED"}
+{"id":"CH-0051","at":"2026-08-16T15:28:00Z","commit":"02016ca","wave":"W3","summary":"HMAC QualityGate fingerprint baseline; planted file NOT_EVALUATED"}
