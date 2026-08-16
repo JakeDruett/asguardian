@@ -15,12 +15,17 @@ Storage is a plain JSON file under `.asgard_cache/` in the project root —
 no network, no external services.
 """
 
+import hashlib
+import hmac
 import json
+import os
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Set
 
 from pydantic import BaseModel, Field
+
+_HMAC_ENV = "ASGARD_QG_HMAC_KEY"
 
 
 class BranchBaseline(BaseModel):
@@ -59,22 +64,80 @@ class FingerprintBaselineStore:
 
     # -- persistence ------------------------------------------------------
 
+    def _key_path(self) -> Path:
+        return self.store_path.with_name(self.store_path.name + ".key")
+
+    def _read_nofollow(self, path: Path) -> bytes:
+        if path.is_symlink():
+            raise ValueError(f"quality-gate path must not be a symlink: {path}")
+        flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+        fd = os.open(path, flags)
+        try:
+            chunks = []
+            while True:
+                chunk = os.read(fd, 65536)
+                if not chunk:
+                    break
+                chunks.append(chunk)
+            return b"".join(chunks)
+        finally:
+            os.close(fd)
+
+    def _hmac_key(self) -> bytes:
+        env = os.environ.get(_HMAC_ENV, "").strip()
+        if env:
+            return env.encode("utf-8")
+        key_path = self._key_path()
+        if key_path.exists():
+            return self._read_nofollow(key_path)
+        key = os.urandom(32)
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+        fd = os.open(key_path, flags, 0o600)
+        try:
+            os.write(fd, key)
+        finally:
+            os.close(fd)
+        os.chmod(key_path, 0o600)
+        return key
+
+    def _sign_branches(self, branches: Dict[str, dict]) -> str:
+        payload = json.dumps(branches, sort_keys=True, separators=(",", ":"), default=str)
+        return hmac.new(self._hmac_key(), payload.encode("utf-8"), hashlib.sha256).hexdigest()
+
     def _read_all(self) -> Dict[str, dict]:
-        if not self.store_path.exists():
+        if not self.store_path.exists() or self.store_path.is_symlink():
             return {}
         try:
-            with open(self.store_path, "r", encoding="utf-8") as f:
-                data = json.load(f)
+            data = json.loads(self._read_nofollow(self.store_path).decode("utf-8"))
             branches = data.get("branches", {})
-            return branches if isinstance(branches, dict) else {}
-        except (json.JSONDecodeError, OSError):
+            if not isinstance(branches, dict):
+                return {}
+            expected = data.get("hmac")
+            if not isinstance(expected, str) or not hmac.compare_digest(
+                expected, self._sign_branches(branches)
+            ):
+                return {}
+            return branches
+        except (OSError, json.JSONDecodeError, UnicodeDecodeError, TypeError, ValueError):
             return {}
 
     def _write_all(self, branches: Dict[str, dict]) -> None:
+        if self.store_path.is_symlink():
+            raise ValueError("quality-gate baseline path must not be a symlink")
         self.store_path.parent.mkdir(parents=True, exist_ok=True)
-        payload = {"version": "1.0.0", "branches": branches}
-        with open(self.store_path, "w", encoding="utf-8") as f:
-            json.dump(payload, f, indent=2, default=str)
+        payload = {
+            "version": "1.0.0",
+            "branches": branches,
+            "hmac": self._sign_branches(branches),
+        }
+        raw = json.dumps(payload, indent=2, default=str).encode("utf-8")
+        flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, "O_NOFOLLOW", 0)
+        fd = os.open(self.store_path, flags, 0o600)
+        try:
+            os.write(fd, raw)
+        finally:
+            os.close(fd)
+        os.chmod(self.store_path, 0o600)
 
     # -- API ---------------------------------------------------------------
 

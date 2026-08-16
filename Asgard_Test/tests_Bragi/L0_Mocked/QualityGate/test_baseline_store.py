@@ -94,3 +94,75 @@ class TestReadOnlyDiscipline:
         store.capture("main", "a", ["fp1"])
         data = json.loads(store.store_path.read_text(encoding="utf-8"))
         assert "branches" in data
+        assert data.get("hmac")
+
+
+class TestSignedBaseline:
+    def test_unsigned_planted_baseline_is_rejected(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("ASGARD_QG_HMAC_KEY", "test-qg-key")
+        store = FingerprintBaselineStore(tmp_path)
+        planted_fps = ["deadbeef" * 4]
+        store.store_path.parent.mkdir(parents=True, exist_ok=True)
+        store.store_path.write_text(json.dumps({
+            "version": "1.0.0",
+            "branches": {
+                "main": {
+                    "branch": "main",
+                    "commit": "abc123",
+                    "captured_at": "2020-01-01T00:00:00",
+                    "fingerprints": planted_fps,
+                }
+            },
+        }), encoding="utf-8")
+        assert store.load("main") is None
+
+    def test_rewritten_fingerprints_without_hmac_are_rejected(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("ASGARD_QG_HMAC_KEY", "test-qg-key")
+        store = FingerprintBaselineStore(tmp_path)
+        store.capture("main", "abc123", ["fp1"])
+        data = json.loads(store.store_path.read_text(encoding="utf-8"))
+        data["branches"]["main"]["fingerprints"] = ["planted-current-fp"]
+        store.store_path.write_text(json.dumps(data), encoding="utf-8")
+        assert store.load("main") is None
+
+    def test_planted_current_fingerprints_do_not_pass_gate(self, tmp_path, monkeypatch):
+        monkeypatch.setenv("ASGARD_QG_HMAC_KEY", "test-qg-key")
+        from Asgard.Bragi.QualityGate.fingerprint import compute_fingerprint
+        from Asgard.Bragi.QualityGate.models.quality_gate_models import (
+            GateFinding,
+            GateStatus,
+        )
+        from Asgard.Bragi.QualityGate.services.quality_gate_evaluator import (
+            QualityGateEvaluator,
+        )
+
+        finding = GateFinding(
+            rule_id="SQLI",
+            file_path="src/app.py",
+            line=3,
+            severity="critical",
+            confidence=0.9,
+            snippet="db.execute(q)",
+        )
+        fp = compute_fingerprint(finding.rule_id, finding.file_path, snippet=finding.snippet)
+        cache = tmp_path / ".asgard_cache"
+        cache.mkdir()
+        (cache / "bragi_fingerprint_baseline.json").write_text(json.dumps({
+            "version": "1.0.0",
+            "branches": {
+                "main": {
+                    "branch": "main",
+                    "commit": "planted",
+                    "captured_at": "2020-01-01T00:00:00",
+                    "fingerprints": [fp],
+                }
+            },
+        }), encoding="utf-8")
+        result = QualityGateEvaluator().evaluate_differential(
+            [finding],
+            project_path=tmp_path,
+            base_branch="main",
+        )
+        status = result.status.value if hasattr(result.status, "value") else result.status
+        assert status == GateStatus.NOT_EVALUATED.value
+        assert result.baseline_available is False

@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 3    | 25    | 0             |
+| High     | 2    | 26    | 0             |
 | Medium   | 35   | 24    | 0             |
 | Low      | 13   | 9     | 0             |
 | Info     | 4    | 1     | 0             |
@@ -847,7 +847,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0051 — Unsigned QualityGate fingerprint baseline can hide all PR findings
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T15:28:00Z
+- **Implementation note:** HMAC-SHA256 on fingerprint store (`ASGARD_QG_HMAC_KEY` or sibling `.key`); unsigned/rewritten files load as empty → NOT_EVALUATED.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-345
@@ -1939,12 +1942,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 55
-- Fixed: 59
+- Open: 54
+- Fixed: 60
 - Accepted risk: 0
 - Current wave: W3
-- Next: CH-0051
-- Last commit: fff5004
+- Next: CH-0011, CH-0013, CH-0027
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
