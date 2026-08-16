@@ -7,14 +7,16 @@ in sorted name order.
 """
 
 import importlib.metadata
+import json
+import re
 import subprocess
 import time
-import json
 import urllib.error
 import urllib.request
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Set
+from urllib.parse import quote, urlsplit
 
 from Asgard.Bragi.Dependencies.models.license_models import (
     LicenseCategory,
@@ -37,6 +39,54 @@ from Asgard.Bragi.Dependencies.services._license_reporter import (
     generate_markdown_report,
     generate_text_report,
 )
+
+_PYPI_HOST = "pypi.org"
+_PYPI_NAME_CHARS = re.compile(r"^[A-Za-z0-9._-]+$")
+_PYPI_NORMALIZED_NAME = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+
+
+def normalize_pypi_name(name: str) -> str:
+    """PEP 503-normalize a name for a PyPI JSON path segment.
+
+    Rejects empty names, path/query characters, whitespace, ``..``, and
+    anything outside ``[A-Za-z0-9._-]``. Returns the quoted normalized
+    name (hyphens left unencoded).
+    """
+    raw = (name or "").strip()
+    if not raw:
+        raise ValueError("empty PyPI package name")
+    if any(ch in raw for ch in "/?#") or any(ch.isspace() for ch in raw):
+        raise ValueError("invalid PyPI package name")
+    if ".." in raw or not _PYPI_NAME_CHARS.fullmatch(raw):
+        raise ValueError("invalid PyPI package name")
+    normalized = re.sub(r"[-_.]+", "-", raw).lower()
+    if not _PYPI_NORMALIZED_NAME.fullmatch(normalized):
+        raise ValueError("invalid PyPI package name")
+    return quote(normalized, safe="-")
+
+
+class PyPIHostRedirectHandler(urllib.request.HTTPRedirectHandler):
+    """Follow redirects only to https://pypi.org (no off-host Location)."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        dest = urlsplit(newurl)
+        if dest.scheme.lower() != "https":
+            return None
+        if dest.username or dest.password:
+            return None
+        if (dest.hostname or "").lower() != _PYPI_HOST:
+            return None
+        if dest.port not in (None, 443):
+            return None
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def _open_pypi_url(url: str, timeout: float = 10):
+    dest = urlsplit(url)
+    if dest.scheme.lower() != "https" or (dest.hostname or "").lower() != _PYPI_HOST:
+        raise ValueError("PyPI URL must be https://pypi.org/...")
+    opener = urllib.request.build_opener(PyPIHostRedirectHandler())
+    return opener.open(url, timeout=timeout)
 
 
 class LicenseChecker:
@@ -307,8 +357,12 @@ class LicenseChecker:
     def _get_license_from_pypi(self, package_name: str) -> Optional[PackageLicense]:
         """Get license info from PyPI API."""
         try:
-            url = f"https://pypi.org/pypi/{package_name}/json"
-            with urllib.request.urlopen(url, timeout=10) as response:
+            safe_name = normalize_pypi_name(package_name)
+        except ValueError:
+            return None
+        try:
+            url = f"https://pypi.org/pypi/{safe_name}/json"
+            with _open_pypi_url(url, timeout=10) as response:
                 data = json.loads(response.read().decode())
             info = data.get("info", {})
             classifiers = info.get("classifiers", [])

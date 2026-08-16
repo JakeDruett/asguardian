@@ -27,7 +27,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Critical | 0    | 0     | 0             |
 | High     | 7    | 21    | 0             |
 | Medium   | 35   | 24    | 0             |
-| Low      | 14   | 8     | 0             |
+| Low      | 13   | 9     | 0             |
 | Info     | 4    | 1     | 0             |
 
 ## Findings
@@ -481,7 +481,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 ### CH-0028 — `write_local_profile` write root is caller-controlled
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** af33d04
 - **Fixed at:** 2026-08-16T14:26:00Z
 - **Implementation note:** Confine project_path to cwd; refuse .. / outside roots / dest symlink.
 - **Severity:** Low
@@ -565,7 +565,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0034 — Unquoted package name interpolated into the PyPI URL
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T14:27:00Z
+- **Implementation note:** PEP 503 normalize + quote; reject path-like names; refuse off-host PyPI redirects.
 - **Severity:** Low
 - **Confidence:** Medium
 - **CWE / class:** CWE-20 / CWE-918 adjacent
@@ -1924,11 +1927,11 @@ None yet.
 
 ## Implementation progress
 
-- Open: 60
-- Fixed: 54
+- Open: 59
+- Fixed: 55
 - Accepted risk: 0
-- Current wave: W2
-- Next: CH-0034
+- Current wave: W3
+- Next: CH-0012, CH-0051, CH-0069, CH-0076
 - Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
