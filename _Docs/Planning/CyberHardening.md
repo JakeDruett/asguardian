@@ -1292,7 +1292,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0082 — Opt-in Claude triage sends finding text and code to a third party
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 36692e3
 - **Fixed at:** 2026-08-16T12:25:00Z
 - **Implementation note:** Redact secret-like spans; cap code_context to 4000; system/user prompt split; untrusted model JSON; document data leaving host.
 - **Severity:** Low
@@ -1860,7 +1860,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W2
 - Next: CH-0035, CH-0050, CH-0058, CH-0059
-- Last commit: pending
+- Last commit: 36692e3
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
