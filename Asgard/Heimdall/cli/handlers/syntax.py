@@ -141,16 +141,23 @@ def run_licenses_analysis(args: argparse.Namespace, verbose: bool = False) -> in
         print(f"Error: Path does not exist: {scan_path}")
         return 1
 
-    config = LicenseConfig(
-        scan_path=scan_path,
-        requirements_files=getattr(args, "requirements_files", ["requirements.txt"]),
-        allowed_licenses=getattr(args, "allowed", None),
-        prohibited_licenses=getattr(args, "prohibited", None),
-        warning_licenses=getattr(args, "warn", None),
-        use_cache=default_use_cache() and not getattr(args, "no_cache", False),
-        output_format=args.format,
-        verbose=verbose,
-    )
+    config_kwargs = {
+        "scan_path": scan_path,
+        "requirements_files": getattr(args, "requirements_files", ["requirements.txt"]),
+        "use_cache": default_use_cache() and not getattr(args, "no_cache", False),
+        "output_format": args.format,
+        "verbose": verbose,
+    }
+    allowed = getattr(args, "allowed", None)
+    if allowed:
+        config_kwargs["allowed_licenses"] = list(allowed)
+    denied = getattr(args, "denied", None) or getattr(args, "prohibited", None)
+    if denied:
+        config_kwargs["prohibited_licenses"] = list(denied)
+    warn = getattr(args, "warn", None)
+    if warn:
+        config_kwargs["warn_licenses"] = list(warn)
+    config = LicenseConfig(**config_kwargs)
 
     try:
         checker = LicenseChecker(config)

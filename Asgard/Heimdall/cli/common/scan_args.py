@@ -161,6 +161,12 @@ def add_licenses_args(parser: argparse.ArgumentParser) -> None:
         help="License identifiers that are forbidden; any match is reported as a violation",
     )
     parser.add_argument(
+        "--warn",
+        nargs="+",
+        default=None,
+        help="License identifiers that should warn (maps to LicenseConfig.warn_licenses)",
+    )
+    parser.add_argument(
         "--exclude",
         "-x",
         type=str,
