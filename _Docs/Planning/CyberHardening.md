@@ -1220,7 +1220,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0070 — Accessibility `page.evaluate` interpolates DOM IDs into JS
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 026682b
 - **Fixed at:** 2026-08-16T18:12:00Z
 - **Implementation note:** `getElementById` uses a static evaluate function; `id_ref` is an argument, not source.
 - **Severity:** Medium
@@ -2040,7 +2040,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W4
 - Next: CH-0074, CH-0083, CH-0084
-- Last commit: pending
+- Last commit: 026682b
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
