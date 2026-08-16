@@ -935,7 +935,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0061 — Generated mock servers bind `0.0.0.0` with no auth and Flask `debug=True`
 
 - **Status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 583399e
 - **Fixed at:** 2026-08-16T10:02:00Z
 - **Implementation note:** Default bind 127.0.0.1; generated Flask debug=False; Express listens on config.host; local-only header.
 - **Severity:** High
@@ -1779,7 +1779,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W1
 - Next: CH-0024, CH-0049, CH-0060, CH-0062
-- Last commit: PENDING
+- Last commit: 583399e
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
