@@ -1355,7 +1355,7 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 ### CH-0080 — Unpinned (`*`) dependencies are treated as not vulnerable / live-checked
 
 - **Status:** Fixed
-- **Fixed in:** pending
+- **Fixed in:** 579bd83
 - **Fixed at:** 2026-08-16T16:08:00Z
 - **Implementation note:** Live lookup is not `checked` unless a pinned package was queried. `*` matches local CVEs and emits an unresolved finding when none exist.
 - **Severity:** Medium
@@ -1971,7 +1971,7 @@ None yet.
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0013, CH-0032, CH-0036
-- Last commit: pending
+- Last commit: 579bd83
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
