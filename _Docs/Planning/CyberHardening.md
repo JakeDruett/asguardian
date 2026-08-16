@@ -26,7 +26,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 2    | 26    | 0             |
-| Medium   | 28   | 31    | 0             |
+| Medium   | 27   | 32    | 0             |
 | Low      | 13   | 9     | 0             |
 | Info     | 4    | 1     | 0             |
 
@@ -1354,7 +1354,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0080 — Unpinned (`*`) dependencies are treated as not vulnerable / live-checked
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T16:08:00Z
+- **Implementation note:** Live lookup is not `checked` unless a pinned package was queried. `*` matches local CVEs and emits an unresolved finding when none exist.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-754
@@ -1963,12 +1966,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 47
-- Fixed: 67
+- Open: 46
+- Fixed: 68
 - Accepted risk: 0
 - Current wave: W3
 - Next: CH-0013, CH-0032, CH-0036
-- Last commit: 0b0e192
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
