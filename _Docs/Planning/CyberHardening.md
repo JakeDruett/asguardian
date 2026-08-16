@@ -25,7 +25,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 10   | 18    | 0             |
+| High     | 9    | 19    | 0             |
 | Medium   | 44   | 15    | 0             |
 | Low      | 20   | 2     | 0             |
 | Info     | 4    | 1     | 0             |
@@ -940,7 +940,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0059 — JSON Schema `$ref` reads arbitrary local files
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** pending
+- **Fixed at:** 2026-08-16T12:55:00Z
+- **Implementation note:** Jail file $refs under schema dir; reject absolute/file:///http(s)/data/ftp and `..` escapes; nested loads inherit jail.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-22 / CWE-73
@@ -1870,12 +1873,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 78
-- Fixed: 36
+- Open: 77
+- Fixed: 37
 - Accepted risk: 0
 - Current wave: W2
-- Next: CH-0058, CH-0059, CH-0068
-- Last commit: 0e5162a
+- Next: CH-0058, CH-0068
+- Last commit: pending
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress

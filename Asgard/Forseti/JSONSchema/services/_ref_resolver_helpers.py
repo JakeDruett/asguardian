@@ -13,9 +13,20 @@ from pathlib import Path
 from typing import Any, Optional
 from urllib.parse import urldefrag, urljoin, urlparse, unquote
 
+# Remote / non-file schemes are never fetched. file: is confined to the jail.
+_BLOCKED_REF_SCHEMES = frozenset({"http", "https", "data", "ftp"})
+
 
 class RefResolutionError(Exception):
     """Raised when a $ref cannot be resolved."""
+
+
+def _jail_root(root_path: Optional[Path]) -> Optional[Path]:
+    """Directory that external $refs must stay under. None → fail closed."""
+    if root_path is None:
+        return None
+    resolved = Path(root_path).resolve()
+    return resolved if resolved.is_dir() else resolved.parent
 
 
 def _pointer_unescape(token: str) -> str:
@@ -56,10 +67,19 @@ class SchemaRegistry:
     supports JSON Pointer fragments relative to any registered resource.
     """
 
-    def __init__(self, root_schema: Any, base_uri: str = "", root_path: Optional[Path] = None):
+    def __init__(
+        self,
+        root_schema: Any,
+        base_uri: str = "",
+        root_path: Optional[Path] = None,
+        *,
+        jail_root: Optional[Path] = None,
+    ):
         self.root_schema = root_schema
         self.base_uri = base_uri or ""
-        self.root_path = root_path
+        self.root_path = Path(root_path) if root_path is not None else None
+        # Confinement root for file $refs. Nested loads inherit the original jail.
+        self._jail = Path(jail_root).resolve() if jail_root is not None else _jail_root(self.root_path)
         # resource uri -> schema dict at that $id boundary
         self.resources: dict[str, Any] = {}
         # (resource_uri, anchor_name) -> schema dict
@@ -70,6 +90,13 @@ class SchemaRegistry:
         self._external: dict[str, "SchemaRegistry"] = {}
         self.resources[self.base_uri] = root_schema
         self._index(root_schema, self.base_uri)
+
+    def _ref_base_dir(self) -> Optional[Path]:
+        """Directory used to join a relative $ref (current document, not the jail)."""
+        if self.root_path is not None:
+            resolved = Path(self.root_path).resolve()
+            return resolved if resolved.is_dir() else resolved.parent
+        return self._jail
 
     def _index(self, node: Any, current_base: str) -> None:
         if isinstance(node, dict):
@@ -119,12 +146,16 @@ class SchemaRegistry:
             target_doc = self.root_schema
             uri = self.base_uri
         else:
-            parsed = urlparse(uri)
-            if parsed.scheme in ("", "file") and self.root_path is not None:
-                registry = self._load_external(parsed.path or uri)
-                target_doc = registry.root_schema
-            else:
+            raw_ref, _ = urldefrag(ref)
+            ref_scheme = urlparse(raw_ref).scheme.lower()
+            joined_scheme = urlparse(uri).scheme.lower()
+            scheme = ref_scheme or joined_scheme
+            if scheme in _BLOCKED_REF_SCHEMES or (scheme and scheme != "file"):
                 raise RefResolutionError(f"Cannot resolve external reference: {ref}")
+            if self._jail is None:
+                raise RefResolutionError(f"Cannot resolve external reference: {ref}")
+            registry = self._load_external(raw_ref)
+            target_doc = registry.root_schema
 
         if not fragment:
             return target_doc, uri
@@ -146,17 +177,54 @@ class SchemaRegistry:
     def _load_external(self, path_str: str) -> "SchemaRegistry":
         from Asgard.Forseti.JSONSchema.utilities.jsonschema_utils import load_schema_file
 
-        base_dir = self.root_path.parent if self.root_path else Path(".")
-        candidate = Path(path_str)
-        if not candidate.is_absolute():
-            candidate = base_dir / candidate
-        key = str(candidate.resolve())
+        jail = self._jail
+        if jail is None:
+            raise RefResolutionError(f"Cannot resolve external reference: {path_str}")
+
+        parsed = urlparse(path_str)
+        scheme = parsed.scheme.lower()
+        if scheme in _BLOCKED_REF_SCHEMES or (scheme and scheme != "file"):
+            raise RefResolutionError(f"Cannot resolve external reference: {path_str}")
+        if scheme == "file":
+            # file://host/… and file:///abs are absolute; only file:relative is allowed.
+            if parsed.netloc:
+                raise RefResolutionError(f"Cannot resolve external reference: {path_str}")
+            rel = unquote(parsed.path or "")
+        else:
+            if parsed.netloc:
+                raise RefResolutionError(f"Cannot resolve external reference: {path_str}")
+            rel = unquote(parsed.path or path_str)
+
+        rel_path = Path(rel)
+        if not rel or rel_path.is_absolute():
+            raise RefResolutionError(f"Cannot resolve external reference: {path_str}")
+
+        base_dir = self._ref_base_dir()
+        if base_dir is None:
+            raise RefResolutionError(f"Cannot resolve external reference: {path_str}")
+
+        dest = base_dir / rel_path
+        try:
+            candidate = dest.resolve()
+        except OSError as e:
+            raise RefResolutionError(f"Failed to load referenced file '{path_str}': {e}") from e
+        if not candidate.is_relative_to(jail):
+            raise RefResolutionError(f"Cannot resolve external reference: {path_str}")
+        if dest.is_symlink() and not dest.resolve().is_relative_to(jail):
+            raise RefResolutionError(f"Cannot resolve external reference: {path_str}")
+
+        key = str(candidate)
         if key not in self._external:
             try:
                 document = load_schema_file(candidate)
             except Exception as e:
                 raise RefResolutionError(f"Failed to load referenced file '{path_str}': {e}")
-            self._external[key] = SchemaRegistry(document, base_uri=f"file://{key}", root_path=candidate)
+            self._external[key] = SchemaRegistry(
+                document,
+                base_uri=f"file://{key}",
+                root_path=candidate,
+                jail_root=jail,
+            )
         return self._external[key]
 
 

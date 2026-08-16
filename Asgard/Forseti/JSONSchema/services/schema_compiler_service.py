@@ -198,7 +198,7 @@ class SchemaCompilerService:
                 return cached
 
         base_uri = ""
-        root_path = Path(schema_path) if schema_path else None
+        root_path = Path(schema_path).resolve() if schema_path else None
         if isinstance(schema, dict):
             raw_id = schema.get("$id")
             if isinstance(raw_id, str) and not raw_id.startswith("#"):
