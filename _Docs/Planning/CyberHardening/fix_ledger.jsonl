@@ -21,3 +21,4 @@
 {"id":"CH-0066","at":"2026-08-16T10:20:09Z","commit":"ce4f14e","wave":"W1","summary":"Freya crawler http(s) allowlist, internal block, SPA should_crawl"}
 {"id":"CH-0097","at":"2026-08-16T10:23:35Z","commit":"117770b","wave":"W1","summary":"Scope issue get/mutate to project_path"}
 {"id":"CH-0006","at":"2026-08-16T10:24:44Z","commit":"6a548f7","wave":"W1","summary":"SHA-pin pre-commit revs; pin extras; add detect-secrets"}
+{"id":"CH-0023","at":"2026-08-16T11:26:00Z","commit":"PENDING","wave":"W1","summary":"Keep CLAUDE.md gitignored; rotation/secret-scan remain human Jake-todo"}
