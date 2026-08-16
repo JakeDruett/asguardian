@@ -28,7 +28,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 | High     | 0    | 28    | 0             |
 | Medium   | 0    | 59    | 0             |
 | Low      | 0    | 22    | 0             |
-| Info     | 2    | 3     | 0             |
+| Info     | 1    | 4     | 0             |
 
 ## Findings
 
@@ -544,7 +544,10 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 
 ### CH-0030 — `LanguageProfile` accepts unconstrained language and numeric fields
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** a8d5333
+- **Fixed at:** 2026-08-16T14:18:00Z
+- **Implementation note:** Constrain language to ^[a-z][a-z0-9_]*$; finite warn<=fail; reject non-positive/non-finite weights. resolve() relabels invalid language to generic.
 - **Severity:** Info
 - **Confidence:** High
 - **CWE / class:** CWE-20
@@ -2098,12 +2101,12 @@ None yet.
 
 ## Implementation progress
 
-- Open: 2
-- Fixed: 112
+- Open: 1
+- Fixed: 113
 - Accepted risk: 0
 - Current wave: W5
-- Next: CH-0030, CH-0044
-- Last commit: 618c6a8
+- Next: CH-0044
+- Last commit: a8d5333
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 
 ## Scan progress
