@@ -25,8 +25,8 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 |----------|------|---------|---------------|
 | Critical | 0    | 0       | 0             |
 | High     | 6    | 0       | 0             |
-| Medium   | 14   | 0       | 0             |
-| Low      | 13   | 0       | 0             |
+| Medium   | 15   | 0       | 0             |
+| Low      | 14   | 0       | 0             |
 | Info     | 4    | 0       | 0             |
 
 ## Findings
@@ -310,7 +310,7 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 - **Confidence:** High
 - **CWE / class:** CWE-116
 - **Primary file:** `Asgard/Bragi/Architecture/services/_arch_reporter_markdown.py`
-- **Also on trace:** `Asgard/Bragi/Architecture/services/_pattern_reporter.py`, `Asgard/Bragi/Architecture/services/_solid_reporter.py`, `Asgard/Bragi/Architecture/services/_suggester_reporter.py`, `Asgard/Bragi/Architecture/services/_generic_hexagonal_checks.py`, `Asgard/Bragi/Coverage/services/_coverage_reporter.py`, `Asgard/Bragi/Dependencies/services/_license_reporter.py`, `Asgard/Bragi/Dependencies/services/_dependency_reporter.py`
+- **Also on trace:** `Asgard/Bragi/Architecture/services/_pattern_reporter.py`, `Asgard/Bragi/Architecture/services/_solid_reporter.py`, `Asgard/Bragi/Architecture/services/_suggester_reporter.py`, `Asgard/Bragi/Architecture/services/_generic_hexagonal_checks.py`, `Asgard/Bragi/Coverage/services/_coverage_reporter.py`, `Asgard/Bragi/Dependencies/services/_license_reporter.py`, `Asgard/Bragi/Dependencies/services/_dependency_reporter.py`, `Asgard/Bragi/OOP/services/_oop_reporter.py`, `Asgard/Bragi/Performance/services/_static_performance_reporter.py`
 - **Location:** markdown table cells (`class_name`, `message`, `source_module`, `signals`)
 - **Trace:** Scanned source tokens → violation/suggestion fields → f-string MD tables → CLI `print(report)`. JSON path uses `json.dumps` (safe). Full-scan HTML escapes the text reporter.
 - **Impact:** Broken tables; if a downstream Markdown→HTML renderer does not sanitize, `|` / HTML in identifiers can inject markup. No in-repo HTML consumer of these MD reports.
@@ -607,10 +607,40 @@ Coverage markdown interpolation is recorded on CH-0019 (`_coverage_reporter.py` 
 - **Planned fix:** Schema-validate; wrap hydrate in try/except and treat as miss; atomic replace. Do not consume `_derived` without recompute unless signed.
 - **Fix wave:** W4
 
+### CH-0040 — Performance directory walker follows symlinks and can recurse forever
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-59 / CWE-674
+- **Primary file:** `Asgard/Bragi/Performance/utilities/performance_utils.py`
+- **Also on trace:** `Asgard/Bragi/Performance/services/cache_analyzer_service.py`, `cpu_profiler_service.py`, `database_analyzer_service.py`, `memory_profiler_service.py`, `static_performance_service.py`
+- **Location:** `scan_directory_for_performance` → `_scan_recursive`
+- **Trace:** `entry.is_dir()` / `is_file()` follow symlinks; no visited-inode set; no `is_relative_to(root)`. Cycle `link → .` recurses until stack overflow. File symlink targets are `open().read()`’d into findings.
+- **Impact:** Escape the scan root via a directory symlink; CPU DoS via a cycle; host-file contents can appear in reports. Other Bragi walkers (`os.walk(followlinks=False)`) do not follow dir links.
+- **Evidence:** Only `PermissionError` is caught. No `is_symlink()` skip.
+- **Planned fix:** Skip symlinks (or `follow_symlinks=False`); track resolved inodes; require yielded paths `is_relative_to(root.resolve())`. Tests for dir-link escape and `link → .`.
+- **Fix wave:** W2
+
+### CH-0041 — `BugDetector` `rglob("*.py")` follows directory symlinks
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** High
+- **CWE / class:** CWE-59
+- **Primary file:** `Asgard/Bragi/Quality/BugDetection/services/bug_detector.py`
+- **Also on trace:** none
+- **Location:** `_collect_python_files` / `scan`
+- **Trace:** `Path.rglob("*.py")` follows dir symlinks; `read_text` follows file symlinks; no `is_relative_to`
+- **Impact:** A planted dir link under the scan root pulls outside-tree `.py` into findings/`code_snippet`.
+- **Evidence:** No symlink skip; exclude is name/fnmatch only.
+- **Planned fix:** Same walker policy as CH-0040; prefer `os.walk(followlinks=False)` + skip file symlinks (or resolve+jail).
+- **Fix wave:** W2
+
 ## Planned fix waves
 
 - **W1 — CI / supply chain / secrets policy (do first):** CH-0001, CH-0002, CH-0003, CH-0004, CH-0005, CH-0006, CH-0023, CH-0024, CH-0033. Pin actions, stop executing PR code on ARC, lock PyPI publish, isolate git, do not phone home to PyPI unless opted in.
-- **W2 — Path confinement:** CH-0007, CH-0008, CH-0010, CH-0014, CH-0026, CH-0028, CH-0034, CH-0035, CH-0037. Validate CLI/API/language/profile/sync/cache-key paths.
+- **W2 — Path confinement:** CH-0007, CH-0008, CH-0010, CH-0014, CH-0026, CH-0028, CH-0034, CH-0035, CH-0037, CH-0040, CH-0041. Validate CLI/API/language/profile/sync/cache-key paths; do not follow scan-tree symlinks.
 - **W3 — Baseline / cache / policy integrity:** CH-0011, CH-0012, CH-0013, CH-0015, CH-0027, CH-0032, CH-0036, CH-0038. Sign or refuse caches; fail-closed license defaults.
 - **W4 — Analyzer robustness:** CH-0016, CH-0017, CH-0018, CH-0021, CH-0022, CH-0025, CH-0031, CH-0039. Size/recursion/hunk caps; cache schema; fail soft on bad YAML.
 - **W5 — Output / template hygiene:** CH-0009, CH-0019, CH-0020, CH-0030. Escape markdown cells; tighten generated gitignore; constrain profile model fields.
@@ -624,9 +654,11 @@ None yet.
 - Inventory init (2026-08-16): discovered=3875 remaining=3875 completed=0
 - Batch 1 merged: 64 files (CI + BackendInit + Baseline + Architecture CIR/graph/services helpers)
 - Batch 2 merged: Architecture analyzers + Calibration + CodeFix + Coverage core (50 files)
-- Batch 3 merged (2026-08-16): Coverage extractors + Dependencies + OOP models (~40 files)
-- Last paths completed: through `Asgard/Bragi/OOP/services/__init__.py`
-- Next batch: Bragi OOP services
-- Resume pointer: remaining≈3721 after batch-3 pop; `python3 scripts/cyberhardening_inventory.py status`
-- Spot-check batch 3: re-read `requirements_checker.sync` (unconfined `target_file`), `license_checker` PyPI `urlopen`, `PackageLicense.is_allowed=True`. Traces matched.
-- Highest ID: CH-0039
+- Batch 3 merged: Coverage extractors + Dependencies + OOP models (40 files)
+- Batch 4 merged (2026-08-16): OOP services + Performance + BugDetection (~48 files)
+- Last paths completed: through `Asgard/Bragi/Quality/BugDetection/services/unreachable_code_detector.py` and `Asgard/Bragi/Quality/__init__.py`
+- Next batch: remaining `Asgard/Bragi/Quality/**` (Complexity, ComplexityCognitive, Duplication, Maintainability, Metrics, Naming, …)
+- Resume pointer: after batch-4 pop; `python3 scripts/cyberhardening_inventory.py status` (expect remaining≈3673)
+- Spot-check batch 4: grep Performance for subprocess/eval (none); re-read walker follows `is_dir()`/`is_file()`. Traces matched.
+- Highest ID: CH-0041
+- **Successor:** do not rebuild inventory. `init` is idempotent. Continue `next N` from disk. Do not implement fixes. Unit of progress remains one inventoried file traced + ledger + `done`.
