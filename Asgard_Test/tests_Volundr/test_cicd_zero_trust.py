@@ -305,6 +305,11 @@ class TestRepoWorkflowPins:
         assert job["runs-on"] == "ubuntu-latest"
         assert job.get("timeout-minutes") == 20
         assert "persist-credentials: false" in text
+        # Editable install of the PR tree must be gated off pull_request (CHC-0001).
+        for i, line in enumerate(text.splitlines()):
+            if "pip install -e" in line:
+                window = "\n".join(text.splitlines()[max(0, i - 8) : i + 1])
+                assert "pull_request" in window
 
 
 class TestInjectionImmunity:
