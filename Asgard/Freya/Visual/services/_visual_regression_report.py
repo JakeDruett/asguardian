@@ -4,6 +4,7 @@ Freya Visual Regression HTML report generation.
 Report builder extracted from visual_regression.py.
 """
 
+import html
 from datetime import datetime
 from pathlib import Path
 
@@ -15,7 +16,7 @@ def generate_html_report(report: RegressionReport, output_directory: Path) -> Pa
     html = f"""<!DOCTYPE html>
 <html>
 <head>
-    <title>Visual Regression Report - {report.suite_name}</title>
+    <title>Visual Regression Report - {html.escape(report.suite_name)}</title>
     <style>
         body {{ font-family: Arial, sans-serif; margin: 20px; }}
         .summary {{ background: #f5f5f5; padding: 20px; border-radius: 5px; }}
@@ -29,7 +30,7 @@ def generate_html_report(report: RegressionReport, output_directory: Path) -> Pa
     </style>
 </head>
 <body>
-    <h1>Visual Regression Report: {report.suite_name}</h1>
+    <h1>Visual Regression Report: {html.escape(report.suite_name)}</h1>
     <div class="summary">
         <p><strong>Total:</strong> {report.total_comparisons}</p>
         <p class="pass"><strong>Passed:</strong> {report.passed_comparisons}</p>
@@ -45,9 +46,9 @@ def generate_html_report(report: RegressionReport, output_directory: Path) -> Pa
 
         html += f"""
     <div class="test-case {status_class}">
-        <h3>{Path(result.baseline_path).name} - {status}</h3>
+        <h3>{html.escape(Path(result.baseline_path).name)} - {html.escape(status)}</h3>
         <p><strong>Similarity:</strong> {result.similarity_score:.2%}</p>
-        <p><strong>Method:</strong> {result.comparison_method.value}</p>
+        <p><strong>Method:</strong> {html.escape(str(result.comparison_method.value))}</p>
         <p><strong>Differences:</strong> {len(result.difference_regions)}</p>
     </div>
 """
