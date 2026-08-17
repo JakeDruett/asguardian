@@ -1,5 +1,6 @@
 """Monorepo infrastructure templates - build, k8s, terraform, and CI."""
 
+from Asgard.Volundr.CICD.services.action_pins import pinned
 from Asgard.Volundr.Scaffold.models.scaffold_models import ProjectConfig
 
 
@@ -183,7 +184,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: {pinned("actions/checkout@v4")}
 
       - name: Run linters
         run: make lint
@@ -195,7 +196,7 @@ jobs:
       matrix:
         service: [{", ".join([s.name for s in config.services])}]
     steps:
-      - uses: actions/checkout@v4
+      - uses: {pinned("actions/checkout@v4")}
 
       - name: Run tests
         run: |
@@ -209,7 +210,7 @@ jobs:
       matrix:
         service: [{", ".join([s.name for s in config.services])}]
     steps:
-      - uses: actions/checkout@v4
+      - uses: {pinned("actions/checkout@v4")}
 
       - name: Build Docker image
         run: |

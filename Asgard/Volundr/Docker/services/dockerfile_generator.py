@@ -26,6 +26,7 @@ import re
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 
+from Asgard.Volundr.CICD.services.action_pins import pinned
 from Asgard.Volundr.Docker.models.docker_models import (
     BuildStage,
     DockerfileConfig,
@@ -150,7 +151,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4  # pin to a full commit SHA in your repo
+      - uses: {pinned("actions/checkout@v4")}
       - name: Build image
         run: docker build -t "$IMAGE" .
         env:
@@ -215,6 +216,10 @@ class DockerfileGenerator:
             if stage.cmd:
                 for part in stage.cmd:
                     _require_safe_field(part, "cmd")
+            for mount in stage.secret_mounts:
+                _require_safe_field(str(mount.id), "secret_mount.id")
+                if mount.target:
+                    _require_safe_field(str(mount.target), "secret_mount.target")
 
     @staticmethod
     def _pinned_from(stage: BuildStage) -> str:
@@ -238,9 +243,11 @@ class DockerfileGenerator:
     def _mount_flags(stage: BuildStage) -> str:
         flags: List[str] = []
         for mount in stage.secret_mounts:
-            flag = f"--mount=type=secret,id={mount.id}"
+            mount_id = _require_safe_field(str(mount.id), "secret_mount.id")
+            flag = f"--mount=type=secret,id={mount_id}"
             if mount.target:
-                flag += f",target={mount.target}"
+                target = _require_safe_field(str(mount.target), "secret_mount.target")
+                flag += f",target={target}"
             if mount.required:
                 flag += ",required=true"
             flags.append(flag)

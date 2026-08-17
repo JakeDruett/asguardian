@@ -2,6 +2,7 @@
 
 from typing import List
 
+from Asgard.Volundr.CICD.services.action_pins import pinned
 from Asgard.Volundr.Scaffold.models.scaffold_models import ProjectConfig
 
 
@@ -18,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{{{ github.ref == 'refs/heads/main' && 'development' || 'production' }}}}
     steps:
-      - uses: actions/checkout@v4
+      - uses: {pinned("actions/checkout@v4")}
 
       - name: Deploy to Kubernetes
         run: |

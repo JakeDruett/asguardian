@@ -278,6 +278,9 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 
 ### CH-0001 — Residual (generated action tags)
 
+- **Leftover status:** Fixed
+- **Fixed in:** 1a46dac
+- **Implementation note:** Scaffold CI/CD and Docker scan-workflow emit pinned("actions/checkout@v4") SHAs; tests refuse @vN tags.
 - **Original sink (closed):** live `.github/workflows/*.yml` `uses:` were `@v4`/`@v5` / `pypa@release/v1`. Current `ci.yml` / `publish.yml` / `l8-perf-budgets.yml` use 40-char SHAs matching `KNOWN_ACTION_PINS`. Dependabot + Renovate pin updaters exist.
 - **Leftover:** generators still emit mutable tags.
   - `Asgard/Volundr/Scaffold/services/_monorepo_infra_templates.py` ~186/198/212: `uses: actions/checkout@v4`
