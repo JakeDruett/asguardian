@@ -58,9 +58,13 @@ def _build_children(spans: List[TraceSpan]) -> Dict[str, List[TraceSpan]]:
 def _collect_subtree_ids(root_id: str, children: Dict[str, List[TraceSpan]]) -> List[str]:
     ids = [root_id]
     stack = [root_id]
+    seen = {root_id}
     while stack:
         current = stack.pop()
         for child in children.get(current, []):
+            if child.span_id in seen:
+                continue
+            seen.add(child.span_id)
             ids.append(child.span_id)
             stack.append(child.span_id)
     return ids
@@ -203,10 +207,14 @@ def truncate_async(spans: List[TraceSpan]) -> Tuple[List[TraceSpan], List[Confid
         effective_end[r.span_id] = r.end_time_unix_nano
 
     queue: List[str] = [r.span_id for r in roots]
+    seen = set(queue)
     while queue:
         parent_id = queue.pop(0)
         parent_eff_end = effective_end[parent_id]
         for child in children.get(parent_id, []):
+            if child.span_id in seen:
+                continue
+            seen.add(child.span_id)
             new_end = min(child.end_time_unix_nano, parent_eff_end)
             effective_end[child.span_id] = new_end
 
