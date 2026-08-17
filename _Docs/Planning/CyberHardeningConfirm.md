@@ -93,8 +93,8 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0063 | High | W1 | Confirmed |  | urljoin + path jail; encode params; same-host redirects |
 | CH-0064 | Medium | W5 | Confirmed |  | title escaped; contact href allowlisted; no custom_css |
 | CH-0065 | Medium | W2 | Confirmed |  | sanitize_sql_default literals only |
-| CH-0066 | High | W1 | Residual | click/reload/login-submit follow first | start/login/enqueue/tester goto gated; click+reload navigate before allowlist |
-| CH-0067 | High | W5 | Confirmed |  | esc/html_link/safe_src/safe_css on HTML and JUnit |
+| CH-0066 | High | W1 | Residual | click/reload + many testers/security fetches ungated | start/login/enqueue/tester goto gated; click+reload and Freya Security/testers still raw goto |
+| CH-0067 | High | W5 | Residual | visual-regression HTML unescaped | crawler HTML/JUnit use esc/html_link/safe_src/safe_css; `_visual_regression_report` does not |
 | CH-0068 | High | W2 | Confirmed |  | confine_storage_path on load/delete/version; tests for ../ and symlink |
 | CH-0069 | High | W3 | Confirmed |  | password/token/cookie redacted to **** on generate+save |
 | CH-0070 | Medium | W4 | Confirmed |  | page.evaluate static fn + id arg |
@@ -105,7 +105,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0075 | Medium | W2 | Confirmed |  | validate_dns_domain then dig -- domain |
 | CH-0076 | High | W3 | Confirmed |  | HMAC baseline; adds set has_changes; fail-closed |
 | CH-0077 | High | W3 | Confirmed |  | domain_errors fail is_passing; CLI exit 1 |
-| CH-0078 | Medium | W2 | Residual | sibling scanners still rglob | owned walker confined; taint/log/scan_steps still rglob |
+| CH-0078 | Medium | W2 | Residual | sibling scanners still rglob | secrets/injection/crypto/config/deps now confined; Quality taint/debt, ReDoS/SSRF/Sensitive/Race, Heimdall taint still walk/rglob |
 | CH-0079 | Medium | W3 | Confirmed |  | mask_secret last-2 / length-only; span redact |
 | CH-0080 | Medium | W3 | Confirmed |  | * not live-checked; unresolved or local CVE |
 | CH-0081 | Medium | W3 | Residual | sibling .key HMAC plant | unsigned miss; env-less sibling key forges |
@@ -121,7 +121,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0091 | Medium | W2 | Confirmed |  | confine_eval_path on manifest joins |
 | CH-0092 | Medium | W3 | Residual | HMAC opt-in unsigned trust | jail+HMAC exist; unsigned JSON trusted if env unset |
 | CH-0093 | High | W1 | Confirmed |  | https API base; quote owner/repo; same-origin redirects; token not sent off-origin |
-| CH-0094 | High | W1 | Confirmed |  | percent-encode % CR/LF :/ :: ; strip C0 |
+| CH-0094 | High | W1 | Residual | common formatter GHA/HTML unsanitized | `Reporting/github_formatter.py` encodes; `common/_format_methods.py` still raw |
 | CH-0095 | Low | W4 | Residual | FileParseContext.read_bytes unbounded | caps on parse_file; scan hot path reads whole file first |
 | CH-0096 | Medium | W1 | Confirmed |  | project_name allowlist ^[A-Za-z_][A-Za-z0-9_-]*$ |
 | CH-0097 | Medium | W1 | Confirmed |  | get/mutate WHERE issue_id AND project_path |
@@ -269,8 +269,8 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | Severity | Reopened | Residual | New Open (CHC) | Confirmed | Accepted still | Vacated |
 |----------|----------|----------|----------------|-----------|----------------|---------|
 | Critical | 0 | 0 | 0 | 0 | 0 | 0 |
-| High     | 0 | 6 | 2 | 22 | 0 | 0 |
-| Medium   | 0 | 13 | 4 | 46 | 0 | 0 |
+| High     | 0 | 8 | 3 | 20 | 0 | 0 |
+| Medium   | 0 | 13 | 7 | 46 | 0 | 0 |
 | Low      | 0 | 6 | 1 | 16 | 0 | 0 |
 | Info     | 0 | 2 | 0 | 3 | 0 | 0 |
 
@@ -312,16 +312,19 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 - **Leftover:** `Asgard/Shared/Init/_templates_python.py` `PRE_COMMIT_CONFIG` still has SHA revs + `==` extras but **omits detect-secrets**. `asguardian init` projects do not get the secret-scan hook the repo itself now uses.
 - **Planned leftover fix:** copy the repo hook list (including detect-secrets) into the Python init template. Test generated config contains `id: detect-secrets`.
 
-### CH-0066 — Residual (click / reload / login-submit follow first)
+### CH-0066 — Residual (click / reload / testers / security fetches)
 
 - **Original sink (closed):** crawl `start_url` / `login_url` / discovery enqueue / tester `goto` use `validate_navigation_url` + `safe_goto`. SPA enqueue uses `should_crawl`. `file:` and literal RFC1918 are rejected before those `goto`s.
 - **Leftover:** Playwright still navigates **before** the allowlist on:
   - `site_crawler.py` login `submit` + `wait_for_url` (~183-196)
   - `_crawler_spa.py` `item.click()` + `expect_navigation` (~151-157)
   - `_crawler_spa.py` `page.reload()` (~98)
+  - Freya Responsive/Visual testers: `breakpoint_tester`, `mobile_compatibility`, `touch_target_validator`, `viewport_tester`, `layout_validator`, `style_validator`, screenshot helper `page.goto`
+  - Freya Security: `mixed_content_checker` / `sri_checker` `page.goto`; `security_header_scanner` `httpx.AsyncClient(follow_redirects=True).get` with no scheme/host allowlist
+  - `PlaywrightUtils.navigate` raw `page.goto`; `unified_tester` / runners never call `safe_goto`
   Post-checks use `resolve_host=False`, so a public name that later resolves internally is not DNS-checked.
-- **Impact:** Hostile login/SPA can already hit `file:` / metadata / RFC1918; the later validate only drops the URL from the crawl set.
-- **Planned leftover fix:** do not follow unknown navigations; intercept/route-abort non-allowlisted schemes/hosts; re-validate `page.url` with `resolve_host=True` after click/reload/submit.
+- **Impact:** Hostile login/SPA/tester/security URL can already hit `file:` / metadata / RFC1918; the later validate only drops the URL from the crawl set.
+- **Planned leftover fix:** do not follow unknown navigations; intercept/route-abort non-allowlisted schemes/hosts; re-validate `page.url` with `resolve_host=True` after click/reload/submit; route testers + header/SRI/mixed through `safe_goto` / `validate_navigation_url`.
 
 
 ### CH-0051 — Residual (sibling HMAC key)
@@ -368,9 +371,15 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 
 ### CH-0078 — Residual (sibling rglob walkers)
 
-- **Original sink (closed):** `iter_confined_files` skips symlinks and jails resolve. Secrets/injection/crypto/config/deps/dispatch use it.
-- **Leftover:** `taint_analyzer.py`, `log_analyzer.py`, `scan_steps_7_11.py` still `rglob`; several domain scanners `os.walk` then open file symlinks.
-- **Planned leftover fix:** route remaining Heimdall walkers through `iter_confined_files`.
+- **Original sink (closed):** `iter_confined_files` skips symlinks and jails resolve. Secrets/injection/crypto/config/deps + TLS certificate/cipher/protocol analyzers use it (re-confirmed this pass).
+- **Leftover:** still unconfined:
+  - `Asgard/Bragi/Quality/services/taint/taint_analyzer.py` `Path.rglob("*")` then `read_text`
+  - `technical_debt_analyzer.analyze_delta` `path.rglob("*")`
+  - `Asgard/Bragi/Quality/utilities/file_utils.py` `os.walk` keeps file symlinks
+  - Heimdall `TaintAnalysis/services/taint_analyzer.py` `rglob("*.py")`
+  - ReDoS / SSRF / SensitiveData / RaceCondition scanners `os.walk`
+  - `log_analyzer.py`, `scan_steps_7_11.py` (prior leftover)
+- **Planned leftover fix:** route remaining walkers through `iter_confined_files` / `iter_confined_regular_files`.
 
 ### CH-0111 — Residual (`--protocols` CERT_NONE)
 
@@ -386,7 +395,7 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 ### CH-0019 — Residual (unconverted MD reporters)
 
 - **Original sink (closed):** listed architecture/coverage/license/oop tables use `md_cell`.
-- **Leftover:** `_layer_reporter.py` and `_hexagonal_reporter.py` still interpolate names/paths/messages raw.
+- **Leftover:** `_layer_reporter.py` and `_hexagonal_reporter.py` still interpolate names/paths/messages raw. `md_cell(max_len=…)` slices after escaping, so a trailing `\|` can become `\` and swallow the next table `|`.
 
 ### CH-0020 — Residual (incomplete YAML coerce)
 
@@ -407,10 +416,23 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 ### CH-0098 — Residual (SLO empty = healthy)
 
 - `sla_checker` empty → 0 / BREACHED. `error_budget_calculator` / `sli_tracker` still treat zero events as 100% / 1.0.
+- Same class: `normalization/scoring.py` `multiplicative_security_score({})` is 100; `SecurityReport` defaults `score_counts or {}`. Incomplete CST (CHC-0009) still looks like a perfect score.
 
 ### CH-0101 — Residual (causal cycle walks)
 
 - `service_map_builder` has visited + cap. `causal_normalizer._collect_subtree_ids` / `truncate_async` still walk cyclic parents.
+
+### CH-0067 — Residual (visual-regression HTML)
+
+- **Original sink (closed):** Freya crawler HTML/JUnit go through `esc` / `html_link` / `safe_src` / `safe_css` (`html_reporter.py`, `_crawler_report.py`).
+- **Leftover:** `Asgard/Freya/Visual/services/_visual_regression_report.py` interpolates `suite_name` and `Path(baseline_path).name` into HTML with no escape, then `write_text`.
+- **Planned leftover fix:** reuse `_report_escape.esc` on every interpolated field; scheme-allowlist any future `src`/`href`.
+
+### CH-0094 — Residual (common formatter)
+
+- **Original sink (closed):** `Reporting/github_formatter.py` percent-encodes `%` CR/LF `:` `/` `::` and strips C0.
+- **Leftover:** `Asgard/common/_format_methods.py` `format_result_github` still emits `file={file_path}::{message}` raw; `format_result_html` / `format_results_html` interpolate title/location/message without `html.escape`.
+- **Planned leftover fix:** share the GHA encoder; `html.escape(..., quote=True)` on HTML formatters.
 
 
 ## New findings
@@ -531,12 +553,82 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 - **Fix wave:** W4
 
 
+### CHC-0008 — OpenAPI/compat YAML alias cycles unbounded
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-674 / CWE-400
+- **Primary file:** `Asgard/Forseti/Compatibility/utilities/compat_utils.py`
+- **Also on trace:** `Asgard/Forseti/OpenAPI/utilities/_openapi_spec_utils.py`, `Asgard/Forseti/OpenAPI/rules/_rule_helpers.py`, `Asgard/Forseti/OpenAPI/services/_spec_converter_2_to_3_helpers.py`, `Asgard/Forseti/OpenAPI/services/_spec_converter_3_to_2_helpers.py`, `Asgard/Forseti/Compatibility/services/_avro_adapter.py`
+- **Related original:** CH-0022, CH-0101
+- **Location:** `collect_refs` ~106-117; `get_all_refs` / `iter_refs`; `iter_schemas`; converter recurse; Avro named-type registry
+- **Trace:** hostile spec (`forseti openapi validate|convert` / `forseti compat check`) → `yaml.safe_load` (aliases become cyclic dicts) → walker follows `.values()` / `properties` without `id()` set → `RecursionError`
+- **Impact:** Process crash / CI hang. No RCE (`safe_load`). No SSRF (external `$ref` skipped).
+- **Evidence:** `resolve_references` / `_prepare_schema` already depth-cap; these walkers do not.
+- **Planned fix:** Shared walk with `id()` seen-set + depth cap (~64); catch `RecursionError` at service edges. Tests: self-aliased mapping `a: &a {b: *a}`.
+- **Fix wave:** W4
+
+
+### CHC-0009 — CST dispatch fail-open looks complete
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-390 / CWE-755
+- **Primary file:** `Asgard/Heimdall/Security/engine/dispatch.py`
+- **Also on trace:** `Asgard/Heimdall/cli/handlers/_security_dispatch.py`, `Asgard/Heimdall/cli/handlers/taint.py`, `Asgard/Heimdall/cli/handlers/scan_steps_1_6.py`
+- **Related original:** CH-0077, CH-0098
+- **Location:** `_scan_cst_language` ~347-405
+- **Trace:** `heimdall security scan` / taint → `run_dispatch_scan` → `DispatchEngine._scan_cst_language`. Missing grammar / `ctx.root is None` → `return [], False`. `scan_fn` `except Exception: flows = []`. CLI does not treat `analysis_truncated` / parse-failed as incomplete.
+- **Impact:** JS/TS/Java/Go/C injection can vanish (score 100, “no findings”) when tree-sitter is absent, parse fails, or the visitor throws. Layer 1 regex still runs; data-flow does not. Python still has L2/L3.
+- **Evidence:** docstring says empty list is intentional “optional tree-sitter”; `truncated` stays False on those paths so the scan looks complete.
+- **Planned fix:** Set `parse_failed`/`analysis_truncated` on miss/exception; CLI/gate must fail or degrade score when any file is incomplete; do not emit 100 for an empty CST pass.
+- **Fix wave:** W3
+
+
+### CHC-0010 — Taint stub YAML path not jailed
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-22 / CWE-693
+- **Primary file:** `Asgard/Heimdall/Security/TaintAnalysis/stubs/__init__.py`
+- **Also on trace:** `Asgard/Heimdall/Security/TaintAnalysis/services/taint_analyzer.py`, `Asgard/Heimdall/Security/TaintAnalysis/models/taint_models.py`
+- **Related original:** none
+- **Location:** `load_framework_stubs` ~42-47
+- **Trace:** `TaintConfig.framework_stubs` (user/API) → `_STUB_DIR / f"{name}.yml"` → `exists()` + `yaml.safe_load`. No basename allowlist, no `resolve().is_relative_to(_STUB_DIR)`. Loaded `sanitizer_names` become exact taint clears.
+- **Impact:** Not RCE (`safe_load`). With config control and a planted `*.yml`: arbitrary YAML read + sanitizer injection (mute taint).
+- **Evidence:** no `..` / separator reject; `Path / name` follows `../`.
+- **Planned fix:** Allow `[A-Za-z0-9_-]+` only; resolve and require relative to `_STUB_DIR`. Tests: `../evil` and `flask/../evil`.
+- **Fix wave:** W2
+
+
+### CHC-0011 — CST taint walk unbounded recursion
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-674 / CWE-400
+- **Primary file:** `Asgard/Heimdall/Security/TaintAnalysis/engine/cst_taint_visitor.py`
+- **Also on trace:** `Asgard/Heimdall/Security/TaintAnalysis/engine/cst_alias.py`, `Asgard/Heimdall/Security/TaintAnalysis/engine/cst_summaries.py`
+- **Related original:** CHC-0007, CHC-0009
+- **Location:** `_walk` / `_eval` / `_find_functions` / `_collect_identifiers` / `_node_chain`; `cst_alias.walk`; `_js_destructure_names`
+- **Trace:** deep/hostile CST → recursive walk → `RecursionError`. Alias map is outside the scan try and can crash `scan_file`; other walks are swallowed into CHC-0009 fail-open.
+- **Impact:** Scanner DoS, or silent skip of a file (empty taint looks clean).
+- **Evidence:** hop bound exists in `summaries.py` (`max_hops=4`); CST visitor walks have no depth cap.
+- **Planned fix:** Iterative walk or hard depth cap; catch `RecursionError` at `scan_file` and mark truncated.
+- **Fix wave:** W4
+
+
 ## Confirmation progress
 
-Updated: 2026-08-17T01:34:43+00:00
-- remaining: 2928
-- completed: 1010
-- last CHC ID: CHC-0007
+Updated: 2026-08-17T02:15:00+00:00
+- remaining: 2074
+- completed: 1864
+- last CHC ID: CHC-0011
 - All live original CH-XXXX have verdicts.
-- Batch 10: Quality models, Heimdall Headers/Hotspots, Forseti Alignment/AsyncAPI, Freya a11y, Reporting HTML leftover, more DVWA/GoVWA/NodeGoat/tests.
-- Next: `python3 scripts/cyberhardening_inventory.py --workspace CyberHardeningConfirm next 8`
+- Batch 12: Bragi Quality/QualityGate/Ratings remainder, Dashboard/CLI/common/config/MCP, Forseti CodeGen/JSONSchema/OpenAPI/Compatibility/Contracts/GraphQL/Database/Protobuf, Heimdall Security services+taint engine, Freya Integration/Responsive/Security/Visual.
+- New this batch: CHC-0008 YAML-cycle walks; CHC-0009 CST fail-open; CHC-0010 stub path; CHC-0011 CST recursion. CH-0067 and CH-0094 moved Confirmed→Residual.
+- Spot-check: type_checker→run_pyright isolated; esc() on dashboard pages; CodeGen confine+sanitize; $ref jail; secrets/injection confined walk; Freya Security raw goto/httpx (CH-0066 residual).
+- Next: remaining Forseti/Heimdall CLI/Freya/Verdandi/Volundr/Shared/_FutureItems, then fixtures.
