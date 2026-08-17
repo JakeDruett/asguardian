@@ -516,10 +516,12 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ## Confirmation progress
 
-Updated: 2026-08-17T01:12:06+00:00
-- remaining: 3811
-- completed: 127
+Updated: 2026-08-17T01:16:54+00:00
+- remaining: 3730
+- completed: 208
 - last CHC ID: CHC-0006
-- **All live original CH-XXXX have confirmation verdicts** (CH-0029 Skipped).
-- next: rest of inventory (non-primary files). Prefer remaining also-on-trace then lexicographic `next N`.
-- Resume pointer: remaining ~3800 after this pop. Continue `python3 scripts/cyberhardening_inventory.py --workspace CyberHardeningConfirm next 8`. Do not rebuild inventory. Do not implement.
+- All live original CH-XXXX have verdicts (CH-0029 Skipped).
+- Batch 6: Architecture package + Calibration profiles + leftover residual files (~80).
+- **RESUME:** remaining=3730. Next: `python3 scripts/cyberhardening_inventory.py --workspace CyberHardeningConfirm next 8` (lexicographic after Architecture/Calibration). Then Bragi CodeFix/Coverage/Dependencies remainder, Forseti, Freya, Heimdall, Verdandi, Volundr, Asgard_Test (~majority), FutureItems leftovers, scripts.
+- Do not rebuild confirmation inventory unless todo missing. Do not `init` original workspace. Do not implement.
+- Commands: `python3 scripts/cyberhardening_inventory.py --workspace CyberHardeningConfirm status` / `next 8`

@@ -126,3 +126,84 @@
 {"path":"Asgard/Verdandi/APM/services/service_map_builder.py","at":"2026-08-17T01:12:06+00:00","disposition":"residual","finding_ids":["CH-0101"],"summary":"visited+cap; causal leftover"}
 {"path":"Asgard/Volundr/Validation/models/suppression_models.py","at":"2026-08-17T01:12:06+00:00","disposition":"confirmed","finding_ids":["CH-0107"],"summary":"CI HMAC + refuse *"}
 {"path":"Asgard/common/_hash_cache.py","at":"2026-08-17T01:12:06+00:00","disposition":"residual","finding_ids":["CH-0109"],"summary":"unsigned miss; sibling key leftover"}
+{"path":".github/dependabot.yml","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"actions weekly pin updater; no sink"}
+{"path":"Asgard/common/_baseline_models.py","at":"2026-08-17T01:16:54+00:00","disposition":"new-findings","finding_ids":["CHC-0006"],"summary":"empty fuzzy still wildcards"}
+{"path":"Asgard/common/baseline.py","at":"2026-08-17T01:16:54+00:00","disposition":"new-findings","finding_ids":["CHC-0006"],"summary":"filter_items defaults message empty"}
+{"path":"Asgard/Bragi/Architecture/services/_layer_reporter.py","at":"2026-08-17T01:16:54+00:00","disposition":"residual","finding_ids":["CH-0019"],"summary":"MD tables unescaped"}
+{"path":"Asgard/Bragi/Architecture/services/_hexagonal_reporter.py","at":"2026-08-17T01:16:54+00:00","disposition":"residual","finding_ids":["CH-0019"],"summary":"MD tables unescaped"}
+{"path":"Asgard/Verdandi/SLO/services/error_budget_calculator.py","at":"2026-08-17T01:16:54+00:00","disposition":"residual","finding_ids":["CH-0098"],"summary":"empty events \u2192 100% COMPLIANT"}
+{"path":"Asgard/Verdandi/SLO/services/sli_tracker.py","at":"2026-08-17T01:16:54+00:00","disposition":"residual","finding_ids":["CH-0098"],"summary":"empty window success_rate 1.0"}
+{"path":"Asgard/Verdandi/Tracing/services/causal_normalizer.py","at":"2026-08-17T01:16:54+00:00","disposition":"residual","finding_ids":["CH-0101"],"summary":"cycle walks without visited"}
+{"path":"Asgard/Baseline/_baseline_report.py","at":"2026-08-17T01:16:54+00:00","disposition":"confirmed","finding_ids":["CH-0013"],"summary":"reports omit raw message"}
+{"path":"Asgard/BackendInit/__init__.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"re-export"}
+{"path":"Asgard/BackendInit/_templates_base.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"static strings"}
+{"path":"Asgard/Baseline/__init__.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"re-export"}
+{"path":"Asgard/Bragi/Architecture/__init__.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"re-export"}
+{"path":"Asgard/Bragi/Architecture/cir/__init__.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"empty"}
+{"path":"Asgard/Bragi/Architecture/cir/models.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"dataclasses"}
+{"path":"Asgard/Bragi/Architecture/evaluators/__init__.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"fan-out no I/O"}
+{"path":"Asgard/Bragi/Architecture/evaluators/_lcom4.py","at":"2026-08-17T01:16:54+00:00","disposition":"confirmed","finding_ids":["CH-0016"],"summary":"128 method cap"}
+{"path":"Asgard/Bragi/Architecture/evaluators/dip.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"linear suffix regex"}
+{"path":"Asgard/Bragi/Architecture/evaluators/isp.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"CIR counts"}
+{"path":"Asgard/Bragi/Architecture/evaluators/lsp.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"boolean flags"}
+{"path":"Asgard/Bragi/Architecture/evaluators/ocp.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"identifier set"}
+{"path":"Asgard/Bragi/Architecture/evaluators/srp.py","at":"2026-08-17T01:16:54+00:00","disposition":"confirmed","finding_ids":["CH-0016"],"summary":"oversized skip + evidence cap"}
+{"path":"Asgard/Bragi/Architecture/graph/__init__.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"docstring"}
+{"path":"Asgard/Bragi/Architecture/graph/drift.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"reads bounds only"}
+{"path":"Asgard/Bragi/Architecture/graph/module_cycles.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"nx SCC"}
+{"path":"Asgard/Bragi/Architecture/graph/nodes.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"LevelBounds dataclass"}
+{"path":"Asgard/Bragi/Architecture/graph/reflexion.py","at":"2026-08-17T01:16:54+00:00","disposition":"confirmed","finding_ids":["CH-0018"],"summary":"fnmatch skip cap"}
+{"path":"Asgard/Bragi/Architecture/models/__init__.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"re-export"}
+{"path":"Asgard/Bragi/Architecture/models/_layer_models.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"DTO"}
+{"path":"Asgard/Bragi/Architecture/models/_pattern_models.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"DTO"}
+{"path":"Asgard/Bragi/Architecture/models/_solid_models.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"DTO"}
+{"path":"Asgard/Bragi/Architecture/models/architecture_models.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"scan config DTO"}
+{"path":"Asgard/Bragi/Architecture/services/__init__.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"re-export"}
+{"path":"Asgard/Bragi/Architecture/services/_arch_reporter.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"re-export"}
+{"path":"Asgard/Bragi/Architecture/services/_arch_reporter_json.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":["CH-0019"],"summary":"json.dumps"}
+{"path":"Asgard/Bragi/Architecture/services/_arch_reporter_text.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":["CH-0019"],"summary":"text only"}
+{"path":"Asgard/Bragi/Architecture/services/_generic_hexagonal_checks.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":["CH-0019"],"summary":"message source only"}
+{"path":"Asgard/Bragi/Architecture/services/_hexagonal_anti_patterns.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"AST detectors"}
+{"path":"Asgard/Bragi/Architecture/services/_hexagonal_detectors.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"relative_to"}
+{"path":"Asgard/Bragi/Architecture/services/_hexagonal_rule_checks.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"direction checks"}
+{"path":"Asgard/Bragi/Architecture/services/_hexagonal_validators.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"re-export"}
+{"path":"Asgard/Bragi/Architecture/services/_layer_checks.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"substring layers"}
+{"path":"Asgard/Bragi/Architecture/services/_pattern_detectors.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"re-export"}
+{"path":"Asgard/Bragi/Architecture/services/_pattern_detectors_behavioral.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"AST"}
+{"path":"Asgard/Bragi/Architecture/services/_pattern_detectors_creational.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"AST"}
+{"path":"Asgard/Bragi/Architecture/services/_pattern_detectors_structural.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"AST"}
+{"path":"Asgard/Bragi/Architecture/services/_pattern_reporter.py","at":"2026-08-17T01:16:54+00:00","disposition":"confirmed","finding_ids":["CH-0019"],"summary":"md_cell on tables"}
+{"path":"Asgard/Bragi/Architecture/services/_solid_checks.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"AST"}
+{"path":"Asgard/Bragi/Architecture/services/_solid_detectors.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"AST"}
+{"path":"Asgard/Bragi/Architecture/services/_solid_reporter.py","at":"2026-08-17T01:16:54+00:00","disposition":"confirmed","finding_ids":["CH-0019"],"summary":"md_cell on tables"}
+{"path":"Asgard/Bragi/Architecture/services/_suggester_ast_helpers.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"AST metrics"}
+{"path":"Asgard/Bragi/Architecture/services/_suggester_helpers.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"suggestion DTO"}
+{"path":"Asgard/Bragi/Architecture/services/_suggester_reporter.py","at":"2026-08-17T01:16:54+00:00","disposition":"confirmed","finding_ids":["CH-0019"],"summary":"md_cell"}
+{"path":"Asgard/Bragi/Architecture/services/architecture_analyzer.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"facade"}
+{"path":"Asgard/Bragi/Architecture/services/hexagonal_analyzer.py","at":"2026-08-17T01:16:54+00:00","disposition":"residual","finding_ids":["CH-0017","CH-0018"],"summary":"infer hop + unused fnmatch leftover"}
+{"path":"Asgard/Bragi/Architecture/services/layer_analyzer.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"substring assignment"}
+{"path":"Asgard/Bragi/Architecture/services/pattern_detector.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"read_text+ast.parse"}
+{"path":"Asgard/Bragi/Architecture/services/pattern_suggester.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"read_text+ast.parse"}
+{"path":"Asgard/Bragi/Architecture/services/solid_validator.py","at":"2026-08-17T01:16:54+00:00","disposition":"confirmed","finding_ids":["CH-0022"],"summary":"size gate + RecursionError catch"}
+{"path":"Asgard/Bragi/Architecture/utilities/__init__.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"re-export"}
+{"path":"Asgard/Bragi/Architecture/utilities/_ast_class_utils.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"ast.parse"}
+{"path":"Asgard/Bragi/Architecture/utilities/_ast_method_utils.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"ast walk"}
+{"path":"Asgard/Bragi/Architecture/utilities/ast_utils.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"barrel"}
+{"path":"Asgard/Bragi/Calibration/__init__.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"empty"}
+{"path":"Asgard/Bragi/Calibration/models/__init__.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"empty"}
+{"path":"Asgard/Bragi/Calibration/profiles/cpp.yaml","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"finite warn<=fail"}
+{"path":"Asgard/Bragi/Calibration/profiles/csharp.yaml","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"finite warn<=fail"}
+{"path":"Asgard/Bragi/Calibration/profiles/generic.yaml","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"fallback numbers"}
+{"path":"Asgard/Bragi/Calibration/profiles/go.yaml","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"finite warn<=fail"}
+{"path":"Asgard/Bragi/Calibration/profiles/python.yaml","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"finite warn<=fail"}
+{"path":"Asgard/Bragi/Calibration/profiles/javascript.yaml","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"finite warn<=fail"}
+{"path":"Asgard/Bragi/Calibration/profiles/typescript.yaml","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"finite warn<=fail"}
+{"path":"Asgard/Bragi/Calibration/profiles/java.yaml","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"finite warn<=fail"}
+{"path":"Asgard/Bragi/Calibration/profiles/ruby.yaml","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"finite warn<=fail"}
+{"path":"Asgard/Bragi/Calibration/profiles/php.yaml","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"finite warn<=fail"}
+{"path":"Asgard/Bragi/Calibration/profiles/rust.yaml","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"finite warn<=fail"}
+{"path":"Asgard/Bragi/Calibration/profiles/shell.yaml","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"finite warn<=fail"}
+{"path":"Asgard/Bragi/Calibration/services/__init__.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"empty"}
+{"path":"Asgard/Bragi/Calibration/services/nb_model.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"in-process math"}
+{"path":"Asgard/Bragi/Calibration/services/pca_weights.py","at":"2026-08-17T01:16:54+00:00","disposition":"clean","finding_ids":[],"summary":"in-process PCA"}
+{"path":"Asgard/Shared/Init/_templates_python.py","at":"2026-08-17T01:16:54+00:00","disposition":"residual","finding_ids":["CH-0006","CH-0096"],"summary":"SHA pins; detect-secrets omitted"}
