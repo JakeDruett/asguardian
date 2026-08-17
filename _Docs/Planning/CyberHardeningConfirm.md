@@ -290,6 +290,9 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 
 ### CH-0024 — Residual (textconv / extra GIT_*)
 
+- **Leftover status:** Fixed
+- **Fixed in:** 8904394
+- **Implementation note:** Isolated git adds --no-textconv and wipes GIT_EXEC_PATH/GIT_WORK_TREE/GIT_CONFIG_*.
 - **Original sink (closed):** `szz._run_git` → `run_isolated_git` (`Asgard/Shared/common/_git_isolated.py`). `--no-ext-diff` on diff/log/show/blame; `-c diff.external=` / `core.fsmonitor=` / `core.pager=` / `alias.{cmd}=`; env pops `GIT_EXTERNAL_DIFF`/`GIT_PAGER`/`GIT_DIR`; `GIT_CONFIG_NOSYSTEM=1` + `GIT_CONFIG_GLOBAL=os.devnull`. Tests plant `diff.external` and `GIT_EXTERNAL_DIFF`.
 - **Leftover:** local `.git/config` `diff.*.textconv` / filter drivers still execute on `git diff` / `git blame`. `GIT_EXEC_PATH`, `GIT_WORK_TREE`, `GIT_CONFIG_PARAMETERS` / `GIT_CONFIG_COUNT` not wiped.
 - **Trace:** `compute_szz` → `_fix_commit_hunks` (`git diff`) / `_blame_inducing_commits` (`git blame`) → isolated helper → still honors repo textconv.

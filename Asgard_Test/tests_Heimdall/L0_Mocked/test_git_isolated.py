@@ -18,6 +18,7 @@ class TestIsolatedGitArgv:
         assert "alias.diff=" in argv
         diff_at = argv.index("diff")
         assert argv[diff_at + 1] == "--no-ext-diff"
+        assert argv[diff_at + 2] == "--no-textconv"
         assert argv[-3:] == ["-U0", "HEAD~1", "HEAD"]
 
     def test_rev_parse_does_not_get_no_ext_diff(self):
@@ -31,9 +32,17 @@ class TestIsolatedGitEnv:
         monkeypatch.setenv("GIT_EXTERNAL_DIFF", "/tmp/evil")
         monkeypatch.setenv("GIT_PAGER", "evil-pager")
         monkeypatch.setenv("GIT_DIR", "/tmp/hostile.git")
+        monkeypatch.setenv("GIT_EXEC_PATH", "/tmp/evil-git")
+        monkeypatch.setenv("GIT_WORK_TREE", "/tmp/tree")
+        monkeypatch.setenv("GIT_CONFIG_PARAMETERS", "evil")
+        monkeypatch.setenv("GIT_CONFIG_COUNT", "1")
         env = isolated_git_env()
         assert "GIT_EXTERNAL_DIFF" not in env
         assert "GIT_PAGER" not in env
         assert "GIT_DIR" not in env
+        assert "GIT_EXEC_PATH" not in env
+        assert "GIT_WORK_TREE" not in env
+        assert "GIT_CONFIG_PARAMETERS" not in env
+        assert "GIT_CONFIG_COUNT" not in env
         assert env["GIT_CONFIG_NOSYSTEM"] == "1"
         assert env["GIT_CONFIG_GLOBAL"] == os.devnull

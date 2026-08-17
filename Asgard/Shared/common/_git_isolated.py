@@ -11,12 +11,24 @@ from pathlib import Path
 from typing import Dict, List, Mapping, Optional, Sequence, Union
 
 # Env keys that retarget the repo or inject an executable helper.
-_UNSET_ENV = ("GIT_EXTERNAL_DIFF", "GIT_PAGER", "GIT_DIR")
+_UNSET_ENV = (
+    "GIT_EXTERNAL_DIFF",
+    "GIT_PAGER",
+    "GIT_DIR",
+    "GIT_EXEC_PATH",
+    "GIT_WORK_TREE",
+    "GIT_CONFIG_PARAMETERS",
+    "GIT_CONFIG_COUNT",
+)
 
 _SAFE_CONFIG = (
     "diff.external=",
     "core.fsmonitor=",
     "core.pager=",
+    "diff.textconv=",
+    "filter.lfs.smudge=",
+    "filter.lfs.clean=",
+    "filter.lfs.process=",
 )
 
 # `--no-ext-diff` is a diff-family option. Other commands reject it
@@ -58,11 +70,16 @@ def isolated_git_argv(
     if command:
         argv.extend(["-c", f"alias.{command}="])
     insert_no_ext = command in _NO_EXT_DIFF_COMMANDS and "--no-ext-diff" not in args
+    insert_no_textconv = command in _NO_EXT_DIFF_COMMANDS and "--no-textconv" not in args
     for arg in args:
         argv.append(arg)
-        if insert_no_ext and arg == command:
-            argv.append("--no-ext-diff")
-            insert_no_ext = False
+        if arg == command:
+            if insert_no_ext:
+                argv.append("--no-ext-diff")
+                insert_no_ext = False
+            if insert_no_textconv:
+                argv.append("--no-textconv")
+                insert_no_textconv = False
     return argv
 
 
