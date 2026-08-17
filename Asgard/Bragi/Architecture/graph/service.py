@@ -263,22 +263,14 @@ class ArchGraphService:
         return scan_path / BOUNDS_CACHE_RELATIVE_PATH
 
     def _hmac_key(self, scan_path: Path) -> bytes:
-        env = os.environ.get(_HMAC_ENV, "").strip()
-        if env:
-            return env.encode("utf-8")
-        key_path = self._cache_path(scan_path).with_suffix(self._cache_path(scan_path).suffix + ".key")
-        if key_path.exists():
-            return key_path.read_bytes()
-        key = os.urandom(32)
-        key_path.parent.mkdir(parents=True, exist_ok=True)
-        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
-        fd = os.open(key_path, flags, 0o600)
-        try:
-            os.write(fd, key)
-        finally:
-            os.close(fd)
-        os.chmod(key_path, 0o600)
-        return key
+        from Asgard.common._hmac_env import hmac_key_from_env
+
+        env = hmac_key_from_env(_HMAC_ENV)
+        if env is not None:
+            return env
+        if getattr(self, "_ephemeral_hmac", None) is None:
+            self._ephemeral_hmac = os.urandom(32)
+        return self._ephemeral_hmac
 
     def _sign_bounds(self, scan_path: Path, payload: dict) -> str:
         canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str)

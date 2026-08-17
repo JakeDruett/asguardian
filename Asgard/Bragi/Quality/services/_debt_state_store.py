@@ -106,21 +106,12 @@ def _read_nofollow(path: Path) -> bytes:
 
 
 def _hmac_key(scan_root: Path) -> bytes:
-    env = os.environ.get(_HMAC_ENV, "").strip()
-    if env:
-        return env.encode("utf-8")
-    key_path = _key_path(scan_root)
-    if key_path.exists():
-        return _read_nofollow(key_path)
-    key = os.urandom(32)
-    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
-    fd = os.open(key_path, flags, 0o600)
-    try:
-        os.write(fd, key)
-    finally:
-        os.close(fd)
-    os.chmod(key_path, 0o600)
-    return key
+    from Asgard.common._hmac_env import hmac_key_from_env
+
+    env = hmac_key_from_env(_HMAC_ENV)
+    if env is not None:
+        return env
+    return os.urandom(32)
 
 
 def _canonical_payload(data: dict) -> dict:

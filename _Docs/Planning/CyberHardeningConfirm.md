@@ -351,6 +351,8 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 
 ### CH-0051 — Residual (sibling HMAC key)
 
+- **Leftover status:** Fixed
+- **Implementation note:** HMAC keys are env-only; sibling .key files are never read for verify. Cluster with CH-0011/0017/0047/0048/0081/0109.
 - **Original sink (closed):** unsigned/rewritten fingerprint baseline JSON cannot hide PR findings. `FingerprintBaselineStore._read_all` HMAC-SHA256 + `compare_digest`; mismatch → empty → evaluator `NOT_EVALUATED`.
 - **Leftover:** without `ASGARD_QG_HMAC_KEY`, the same writer can plant sibling `bragi_fingerprint_baseline.json.key` + matching `hmac` and hide findings. Commit-SHA binding from the planned fix is not implemented.
 - **This is the textbook Residual leftover** (same uid plants `.key` + signed baseline).

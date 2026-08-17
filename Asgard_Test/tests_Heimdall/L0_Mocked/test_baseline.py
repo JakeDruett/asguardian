@@ -839,7 +839,8 @@ class TestRawViolationTextNotPersisted:
         )
         assert still_baselined == []
 
-    def test_cli_json_list_and_show_omit_secret(self, tmp_path, capsys):
+    def test_cli_json_list_and_show_omit_secret(self, tmp_path, capsys, monkeypatch):
+        monkeypatch.setenv("ASGARD_BASELINE_HMAC_KEY", "test-baseline-key")
         src = str(tmp_path / "config.py")
         finding = _SnippetFinding(
             src,

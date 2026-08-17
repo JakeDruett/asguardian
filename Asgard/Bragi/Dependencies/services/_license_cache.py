@@ -130,31 +130,16 @@ class LicenseDiskCache:
         return self.cache_path.with_name(self.cache_path.name + ".key")
 
     def _hmac_key(self, *, create: bool = False) -> Optional[bytes]:
-        env = os.environ.get(HMAC_ENV, "").strip()
-        if env:
-            return env.encode("utf-8")
-        key_path = self._key_path()
-        if key_path.is_symlink():
-            return None
-        if key_path.exists():
-            try:
-                return key_path.read_bytes()
-            except OSError:
-                return None
-        if not create:
-            return None
-        key = os.urandom(32)
-        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
-        try:
-            fd = os.open(key_path, flags, 0o600)
-            try:
-                os.write(fd, key)
-            finally:
-                os.close(fd)
-            os.chmod(key_path, 0o600)
-        except OSError:
-            return None
-        return key
+        from Asgard.common._hmac_env import hmac_key_from_env
+
+        env = hmac_key_from_env(HMAC_ENV)
+        if env is not None:
+            return env
+        if create:
+            if getattr(self, "_ephemeral_hmac", None) is None:
+                self._ephemeral_hmac = os.urandom(32)
+            return self._ephemeral_hmac
+        return getattr(self, "_ephemeral_hmac", None)
 
     def _sign(self, payload: dict, key: bytes) -> str:
         canonical = json.dumps(
