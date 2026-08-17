@@ -665,7 +665,10 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ### CHC-0013 — Helm values `--environment` path not jailed
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 4cf7629
+- **Fixed at:** 2026-08-17T17:35:00Z
+- **Implementation note:** Environment must match [A-Za-z0-9._-]+; dest is confine_output_file(values-{env}.yaml). Hostile paths return 1.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-22
@@ -698,17 +701,17 @@ Updated: 2026-08-17T02:45:00+00:00
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 3    | 2     | 0             |
-| Medium   | 4    | 4     | 0             |
+| Medium   | 3    | 5     | 0             |
 | Low      | 1    | 0     | 0             |
 | Info     | 0    | 0     | 0             |
 
-CHC Open remaining: CHC-0005, CHC-0006, CHC-0007, CHC-0008, CHC-0009, CHC-0011, CHC-0013. Residual leftovers still Open.
+CHC Open remaining: CHC-0005, CHC-0006, CHC-0007, CHC-0008, CHC-0009, CHC-0011. Residual leftovers still Open.
 
 ## Implementation progress
 
-- Open CHC: 7
-- Fixed CHC: 6 (0001, 0002, 0003, 0004, 0010, 0012)
+- Open CHC: 6
+- Fixed CHC: 7 (0001–0004, 0010, 0012, 0013)
 - Residual leftovers: 31 Open
-- Current wave: W2
-- Next: CHC-0013, then W3
+- Current wave: W3
+- Next: CHC-0006, CHC-0009, then W4
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`

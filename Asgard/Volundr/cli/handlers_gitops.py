@@ -182,8 +182,15 @@ def run_helm_values(args: argparse.Namespace) -> int:
     )
 
     if not args.dry_run:
-        output_file = Path(args.output_dir) / f"values-{args.environment}.yaml"
-        output_file.parent.mkdir(parents=True, exist_ok=True)
+        import re
+
+        from Asgard.Volundr._output_jail import confine_output_file
+
+        env = str(args.environment)
+        if not re.fullmatch(r"[A-Za-z0-9._-]+", env):
+            print("Error: environment name must match [A-Za-z0-9._-]+")
+            return 1
+        output_file = confine_output_file(args.output_dir, f"values-{env}.yaml")
         output_file.write_text(values_yaml)
         print(f"\nValues file generated successfully!")
         print(f"File: {output_file}")
