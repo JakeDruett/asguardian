@@ -123,3 +123,4 @@
 {"id":"CHC-0009","at":"2026-08-17T17:55:00Z","commit":"8156586","wave":"W3","summary":"Mark incomplete CST dispatch and fail closed"}
 {"id":"CHC-0005","at":"2026-08-17T18:20:00Z","commit":"5aca9c3","wave":"W4","summary":"Replace per-file git show with one git grep -I"}
 {"id":"CHC-0008","at":"2026-08-17T18:25:00Z","commit":"3460461","wave":"W4","summary":"Bound OpenAPI/compat YAML alias-cycle walks"}
+{"id":"CHC-0011","at":"2026-08-17T18:30:00Z","commit":"5709590","wave":"W4","summary":"Cap CST taint walk depth and catch RecursionError"}

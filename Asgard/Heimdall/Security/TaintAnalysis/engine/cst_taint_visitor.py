@@ -309,11 +309,14 @@ def _is_constant_node(node) -> bool:
     return False
 
 
+_MAX_CST_WALK_DEPTH = 256
+_MAX_CST_WALK_NODES = 50_000
+
 # ---------------------------------------------------------------- chain util
 
-def _node_chain(node, ctx) -> str:
+def _node_chain(node, ctx, depth: int = 0) -> str:
     """Flatten a member/field access or call target into a dotted chain."""
-    if node is None:
+    if node is None or depth > _MAX_CST_WALK_DEPTH:
         return ""
     t = node.type
     if t in (
@@ -325,14 +328,14 @@ def _node_chain(node, ctx) -> str:
     if t == "this":
         return "this"
     if t == "member_expression":
-        obj_chain = _node_chain(node.child_by_field_name("object"), ctx)
-        prop_chain = _node_chain(node.child_by_field_name("property"), ctx)
+        obj_chain = _node_chain(node.child_by_field_name("object"), ctx, depth + 1)
+        prop_chain = _node_chain(node.child_by_field_name("property"), ctx, depth + 1)
         if obj_chain and prop_chain:
             return f"{obj_chain}.{prop_chain}"
         return prop_chain or obj_chain
     if t == "field_access":
-        obj_chain = _node_chain(node.child_by_field_name("object"), ctx)
-        field_chain = _node_chain(node.child_by_field_name("field"), ctx)
+        obj_chain = _node_chain(node.child_by_field_name("object"), ctx, depth + 1)
+        field_chain = _node_chain(node.child_by_field_name("field"), ctx, depth + 1)
         if obj_chain and field_chain:
             return f"{obj_chain}.{field_chain}"
         return field_chain or obj_chain
@@ -340,15 +343,15 @@ def _node_chain(node, ctx) -> str:
         # C `s.field` / `p->field` (tree-sitter-c's struct-member-access
         # node type; the object is field "argument", not "object"/"field"
         # like the JS/Java equivalents -- WS2 one-level struct-field taint).
-        obj_chain = _node_chain(node.child_by_field_name("argument"), ctx)
-        field_chain = _node_chain(node.child_by_field_name("field"), ctx)
+        obj_chain = _node_chain(node.child_by_field_name("argument"), ctx, depth + 1)
+        field_chain = _node_chain(node.child_by_field_name("field"), ctx, depth + 1)
         if obj_chain and field_chain:
             return f"{obj_chain}.{field_chain}"
         return field_chain or obj_chain
     if t == "selector_expression":
         # Go `pkg.Func` / `receiver.Method` / `a.b.c` chains.
-        operand_chain = _node_chain(node.child_by_field_name("operand"), ctx)
-        field_chain = _node_chain(node.child_by_field_name("field"), ctx)
+        operand_chain = _node_chain(node.child_by_field_name("operand"), ctx, depth + 1)
+        field_chain = _node_chain(node.child_by_field_name("field"), ctx, depth + 1)
         if operand_chain and field_chain:
             return f"{operand_chain}.{field_chain}"
         return field_chain or operand_chain
@@ -371,15 +374,15 @@ def _node_chain(node, ctx) -> str:
                 if first_arg.type == "string":
                     spec = ctx.node_text(first_arg).strip("'\"`")
                     return module_target(spec)
-        return _node_chain(fn_node, ctx)
+        return _node_chain(fn_node, ctx, depth + 1)
     if t == "method_invocation":
-        obj_chain = _node_chain(node.child_by_field_name("object"), ctx)
-        name_chain = _node_chain(node.child_by_field_name("name"), ctx)
+        obj_chain = _node_chain(node.child_by_field_name("object"), ctx, depth + 1)
+        name_chain = _node_chain(node.child_by_field_name("name"), ctx, depth + 1)
         if obj_chain and name_chain:
             return f"{obj_chain}.{name_chain}"
         return name_chain
     if t == "object_creation_expression":
-        return _node_chain(node.child_by_field_name("type"), ctx)
+        return _node_chain(node.child_by_field_name("type"), ctx, depth + 1)
     if t == "new_expression":
         # JS `new Function(taint)` / `new Foo(...)` -- tree-sitter-js's
         # `new_expression` node uses field "constructor" (NOT "type" like
@@ -387,7 +390,7 @@ def _node_chain(node, ctx) -> str:
         # call) -- BLOCKER-3 (adversarial review): without this branch
         # `new Function(taint)` resolved to chain="" and was invisible to
         # both `_check_sink` and `_check_dynamic_construct`.
-        return _node_chain(node.child_by_field_name("constructor"), ctx)
+        return _node_chain(node.child_by_field_name("constructor"), ctx, depth + 1)
     if t == "import":
         # JS dynamic `import(userVar)` -- tree-sitter-js parses the bare
         # `import` keyword used as a call target (NOT `import ... from`
@@ -396,7 +399,7 @@ def _node_chain(node, ctx) -> str:
         # chain was "" and never matched `_JS_DYNAMIC_IMPORT_NAMES`.
         return "import"
     if t == "parenthesized_expression" and node.named_children:
-        return _node_chain(node.named_children[0], ctx)
+        return _node_chain(node.named_children[0], ctx, depth + 1)
     return ""
 
 
@@ -427,13 +430,19 @@ def _is_c_constant_literal(node) -> bool:
 
 
 def _find_functions(node, out: List) -> None:
-    """Depth-first collection of every function-like node in the tree."""
+    """Iterative collection of every function-like node in the tree."""
     if node is None:
         return
-    if node.type in _ALL_FUNCTION_TYPES:
-        out.append(node)
-    for child in node.children:
-        _find_functions(child, out)
+    stack = [node]
+    seen = 0
+    while stack:
+        if seen >= _MAX_CST_WALK_NODES:
+            break
+        current = stack.pop()
+        seen += 1
+        if current.type in _ALL_FUNCTION_TYPES:
+            out.append(current)
+        stack.extend(current.children)
 
 
 class CstFunctionTaintVisitor:
@@ -459,6 +468,7 @@ class CstFunctionTaintVisitor:
         self.func_name = func_name
         self.ctx = ctx
         self.lang = lang
+        self.truncated = False
         self.env: Dict[str, TaintState] = {}
         # WS2 -- C pointer-aliasing-lite: `self.ptr_aliases[name]` is the
         # SET of all names known to reference the same storage (union-find
@@ -795,7 +805,7 @@ class CstFunctionTaintVisitor:
                 state = self._union(state, self.env[member])
         return state
 
-    def _collect_identifiers(self, node, out: List[str]) -> None:
+    def _collect_identifiers(self, node, out: List[str], depth: int = 0) -> None:
         """Depth-first collection of every bare `identifier` leaf under
         `node` (C only, used by the unresolved-RHS alias fallback below).
 
@@ -812,7 +822,7 @@ class CstFunctionTaintVisitor:
         removes spurious unions, it never narrows a genuine one (the
         argument list, where an actual aliasing operand could appear, is
         still fully walked)."""
-        if node is None:
+        if node is None or depth > _MAX_CST_WALK_DEPTH:
             return
         if node.type == "identifier":
             out.append(self.ctx.node_text(node))
@@ -820,10 +830,10 @@ class CstFunctionTaintVisitor:
         if node.type == "call_expression":
             args_node = node.child_by_field_name("arguments")
             if args_node is not None:
-                self._collect_identifiers(args_node, out)
+                self._collect_identifiers(args_node, out, depth + 1)
             return
         for child in node.children:
-            self._collect_identifiers(child, out)
+            self._collect_identifiers(child, out, depth + 1)
 
     def _maybe_alias_declaration(
         self, name: str, value_node, is_pointer_decl: bool = False,
@@ -973,6 +983,17 @@ class CstFunctionTaintVisitor:
     def _eval(self, node) -> Optional[TaintState]:
         if node is None:
             return None
+        depth = getattr(self, "_cst_eval_depth", 0)
+        if depth >= _MAX_CST_WALK_DEPTH:
+            self.truncated = True
+            return None
+        self._cst_eval_depth = depth + 1
+        try:
+            return self._eval_body(node)
+        finally:
+            self._cst_eval_depth = depth
+
+    def _eval_body(self, node) -> Optional[TaintState]:
         t = node.type
         if t == "identifier":
             name = self.ctx.node_text(node)
@@ -1281,6 +1302,17 @@ class CstFunctionTaintVisitor:
     def _walk(self, node) -> None:
         if node is None:
             return
+        depth = getattr(self, "_cst_depth", 0)
+        if depth >= _MAX_CST_WALK_DEPTH:
+            self.truncated = True
+            return
+        self._cst_depth = depth + 1
+        try:
+            self._walk_body(node)
+        finally:
+            self._cst_depth = depth
+
+    def _walk_body(self, node) -> None:
         t = node.type
 
         if t in _ALL_FUNCTION_TYPES:
@@ -1924,7 +1956,11 @@ def _scan_functions(
         )
         if lang == "java":
             _populate_servlet_request_params(fn, ctx, visitor)
-        visitor._walk(body)
+        try:
+            visitor._walk(body)
+        except RecursionError:
+            visitor.truncated = True
+            raise
         flows.extend(visitor.found_flows)
     return flows
 

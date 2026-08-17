@@ -294,7 +294,9 @@ def build_cst_alias_map_with_origins(ctx, lang: str):
     if ctx is None or ctx.root is None:
         return aliases, origins
 
-    def walk(node) -> None:
+    def walk(node, depth: int = 0) -> None:
+        if node is None or depth > 256:
+            return
         t = node.type
         if lang in _JS_LANGS:
             if t == "import_statement":
@@ -316,7 +318,7 @@ def build_cst_alias_map_with_origins(ctx, lang: str):
                 _parse_java_import(ctx.node_text(node), aliases, origins, wildcard_packages)
                 return
         for child in node.children:
-            walk(child)
+            walk(child, depth + 1)
 
     walk(ctx.root)
     # wildcard_packages is populated during the walk above; since the

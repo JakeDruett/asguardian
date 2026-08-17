@@ -642,7 +642,10 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ### CHC-0011 — CST taint walk unbounded recursion
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 5709590
+- **Fixed at:** 2026-08-17T18:30:00Z
+- **Implementation note:** Depth/node caps on _walk/_eval/_node_chain/_find_functions/alias walk; RecursionError at scan re-raised so dispatch marks truncated.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-674 / CWE-400
@@ -713,17 +716,17 @@ Updated: 2026-08-17T02:45:00+00:00
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 1    | 4     | 0             |
-| Medium   | 1    | 7     | 0             |
+| Medium   | 0    | 8     | 0             |
 | Low      | 1    | 0     | 0             |
 | Info     | 0    | 0     | 0             |
 
-CHC Open remaining: CHC-0007, CHC-0011. Residual leftovers still Open.
+CHC Open remaining: CHC-0007. Residual leftovers still Open.
 
 ## Implementation progress
 
-- Open CHC: 2
-- Fixed CHC: 11
+- Open CHC: 1
+- Fixed CHC: 12
 - Residual leftovers: 31 Open
 - Current wave: W4
-- Next: CHC-0011, CHC-0007
+- Next: CHC-0007
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
