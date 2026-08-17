@@ -30,6 +30,8 @@ _SECRET_PATTERNS = [
     (r"(?:api[_-]?key|apikey)\s*(?:=|:)\s*['\"][A-Za-z0-9_-]{20,}['\"]", "HIGH", "api_key"),
 ]
 
+_MAX_SECRET_GREP_HITS = 500
+
 _ESSENTIAL_GITIGNORE = [
     (".env", "Environment files"),
     ("*.pem", "Private key files"),
@@ -165,14 +167,23 @@ class GitSecurityScanner:
 
     def _check_secrets_in_current_files(self) -> List[GitFinding]:
         findings: List[GitFinding] = []
-        output = self._git(["ls-tree", "-r", "HEAD", "--name-only"])
-        skip_exts = {".jpg", ".png", ".gif", ".pdf", ".zip", ".exe"}
-        for file_path in output.strip().splitlines():
-            if not file_path or any(file_path.endswith(e) for e in skip_exts):
+        grep_args = ["grep", "-I", "-n", "-E"]
+        for pattern, _severity, _issue_type in _SECRET_PATTERNS:
+            grep_args.extend(["-e", pattern])
+        grep_args.append("HEAD")
+        output = self._git(grep_args)
+        hits = 0
+        for raw in output.splitlines():
+            if hits >= _MAX_SECRET_GREP_HITS:
+                break
+            parts = raw.split(":", 2)
+            if len(parts) < 3:
                 continue
-            content = self._git(["show", f"HEAD:{file_path}"])
+            file_path, _lineno, snippet = parts
+            if not file_path:
+                continue
             for pattern, severity, issue_type in _SECRET_PATTERNS:
-                if re.search(pattern, content, re.IGNORECASE):
+                if re.search(pattern, snippet, re.IGNORECASE):
                     findings.append(GitFinding(
                         file_path=file_path,
                         commit="HEAD",
@@ -182,6 +193,8 @@ class GitSecurityScanner:
                         recommendation="Remove secret and rotate credentials",
                         details="In current HEAD",
                     ))
+                    hits += 1
+                    break
         return findings
 
     def _check_gitignore(self) -> List[GitFinding]:
