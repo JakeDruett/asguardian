@@ -565,7 +565,10 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ### CHC-0007 — Python OOP AST parse/walk/LCOM still unbounded
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 9c74e5e
+- **Fixed at:** 2026-08-17T18:35:00Z
+- **Implementation note:** Skip symlink/>1MiB/>50k-line files; node budget on ClassExtractor; skip LCOM above MAX_LCOM4_METHODS (128).
 - **Severity:** Low
 - **Confidence:** High
 - **CWE / class:** CWE-400
@@ -715,18 +718,18 @@ Updated: 2026-08-17T02:45:00+00:00
 | Severity | Open | Fixed | Accepted risk |
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
-| High     | 1    | 4     | 0             |
+| High     | 0    | 5     | 0             |
 | Medium   | 0    | 8     | 0             |
-| Low      | 1    | 0     | 0             |
+| Low      | 0    | 1     | 0             |
 | Info     | 0    | 0     | 0             |
 
-CHC Open remaining: CHC-0007. Residual leftovers still Open.
+CHC Open remaining: none. Residual leftovers still Open.
 
 ## Implementation progress
 
-- Open CHC: 1
-- Fixed CHC: 12
+- Open CHC: 0
+- Fixed CHC: 13
 - Residual leftovers: 31 Open
-- Current wave: W4
-- Next: CHC-0007
+- Current wave: residuals
+- Next: residual leftover planned fixes
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`

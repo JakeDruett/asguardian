@@ -106,8 +106,14 @@ class CohesionAnalyzer:
 
         regular_methods = [m for m in methods if not m.name.startswith("_")]
 
+        from Asgard.Bragi.Architecture.evaluators._lcom4 import MAX_LCOM4_METHODS
+
         true_lcom4 = 0
-        if len(regular_methods) < 2 or len(attributes) < 1:
+        if len(regular_methods) > MAX_LCOM4_METHODS:
+            lcom = 0.0
+            lcom4 = 0.0
+            true_lcom4 = 0
+        elif len(regular_methods) < 2 or len(attributes) < 1:
             lcom = 0.0
             lcom4 = 0.0
             true_lcom4 = len(regular_methods)

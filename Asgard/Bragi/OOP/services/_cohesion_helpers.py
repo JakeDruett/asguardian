@@ -6,6 +6,7 @@ LCOM calculation functions and cohesion split suggestions.
 
 from typing import Dict, List, Set, Tuple
 
+from Asgard.Bragi.Architecture.evaluators._lcom4 import MAX_LCOM4_METHODS
 from Asgard.Bragi.OOP.models.oop_models import ClassCohesionMetrics
 
 
@@ -19,7 +20,7 @@ def calculate_lcom_ck(method_attr_usage: Dict[str, Set[str]]) -> float:
     methods = list(method_attr_usage.keys())
     n = len(methods)
 
-    if n < 2:
+    if n < 2 or n > MAX_LCOM4_METHODS:
         return 0.0
 
     p = 0
@@ -51,7 +52,7 @@ def calculate_lcom_hs(method_attr_usage: Dict[str, Set[str]], num_attributes: in
     m = len(method_attr_usage)
     a = num_attributes
 
-    if m <= 1 or a == 0:
+    if m <= 1 or a == 0 or m > MAX_LCOM4_METHODS:
         return 0.0
 
     attr_access_count: Dict[str, int] = {}
@@ -85,6 +86,8 @@ def calculate_true_lcom4(
         return 0
     if len(methods) == 1:
         return 1
+    if len(methods) > MAX_LCOM4_METHODS:
+        return 0
 
     adjacency: Dict[str, Set[str]] = {m: set() for m in methods}
     method_set = set(methods)

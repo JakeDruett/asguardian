@@ -37,9 +37,16 @@ class MethodInfo:
 class ClassExtractor(ast.NodeVisitor):
     """AST visitor that extracts class information."""
 
-    def __init__(self):
+    def __init__(self, max_nodes: int = 50_000):
         self.classes: List[ClassInfo] = []
         self._current_class: Optional[ClassInfo] = None
+        self._nodes_left = max_nodes
+
+    def generic_visit(self, node: ast.AST) -> None:
+        if self._nodes_left <= 0:
+            return
+        self._nodes_left -= 1
+        super().generic_visit(node)
 
     def visit_ClassDef(self, node: ast.ClassDef) -> None:
         """Extract class definition."""

@@ -108,10 +108,11 @@ class CouplingAnalyzer:
         for class_name, class_data in all_classes.items():
             file_path = Path(class_data["file"])
 
-            try:
-                source = file_path.read_text(encoding="utf-8", errors="ignore")
-                tree = ast.parse(source)
-            except (SyntaxError, Exception):
+            from Asgard.Bragi.OOP.utilities._class_functions import read_oop_source, parse_oop_source
+
+            source = read_oop_source(file_path)
+            tree = parse_oop_source(source) if source is not None else None
+            if tree is None:
                 continue
 
             imported_names = file_imports.get(str(file_path), set())
@@ -184,10 +185,11 @@ class CouplingAnalyzer:
         for names in from_imports.values():
             imported_names.update(names)
 
-        try:
-            source = path.read_text(encoding="utf-8", errors="ignore")
-            tree = ast.parse(source)
-        except (SyntaxError, Exception):
+        from Asgard.Bragi.OOP.utilities._class_functions import read_oop_source, parse_oop_source
+
+        source = read_oop_source(path)
+        tree = parse_oop_source(source) if source is not None else None
+        if tree is None:
             return []
 
         results = []

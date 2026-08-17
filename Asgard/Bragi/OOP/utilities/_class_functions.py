@@ -7,7 +7,39 @@ to class, method, and import information.
 
 import ast
 from pathlib import Path
-from typing import Dict, List, Set, Tuple
+from typing import Dict, List, Optional, Set, Tuple
+
+MAX_OOP_SOURCE_BYTES = 1_048_576
+MAX_OOP_SOURCE_LINES = 50_000
+
+
+def _source_too_large(source: str) -> bool:
+    return (
+        len(source.encode("utf-8", errors="ignore")) > MAX_OOP_SOURCE_BYTES
+        or source.count("\n") >= MAX_OOP_SOURCE_LINES
+    )
+
+
+def read_oop_source(file_path: Path) -> Optional[str]:
+    """Read a Python file if it is not a symlink and stays under size/line caps."""
+    try:
+        if file_path.is_symlink() or file_path.stat().st_size > MAX_OOP_SOURCE_BYTES:
+            return None
+        source = file_path.read_text(encoding="utf-8", errors="ignore")
+    except (IOError, OSError):
+        return None
+    if _source_too_large(source):
+        return None
+    return source
+
+
+def parse_oop_source(source: str):
+    if _source_too_large(source):
+        return None
+    try:
+        return ast.parse(source)
+    except (SyntaxError, RecursionError, MemoryError, ValueError):
+        return None
 
 from Asgard.Bragi.OOP.utilities._class_visitors import (
     ClassExtractor,
@@ -28,9 +60,8 @@ def extract_classes_from_source(source: str) -> List[ClassInfo]:
     Returns:
         List of ClassInfo objects
     """
-    try:
-        tree = ast.parse(source)
-    except SyntaxError:
+    tree = parse_oop_source(source)
+    if tree is None:
         return []
 
     extractor = ClassExtractor()
@@ -48,11 +79,10 @@ def extract_classes_from_file(file_path: Path) -> List[ClassInfo]:
     Returns:
         List of ClassInfo objects
     """
-    try:
-        source = file_path.read_text(encoding="utf-8", errors="ignore")
-        return extract_classes_from_source(source)
-    except (IOError, OSError):
+    source = read_oop_source(file_path)
+    if source is None:
         return []
+    return extract_classes_from_source(source)
 
 
 def get_class_methods(class_info: ClassInfo) -> List[MethodInfo]:
@@ -143,9 +173,8 @@ def get_imports_from_source(source: str) -> Tuple[Set[str], Dict[str, Set[str]]]
     Returns:
         Tuple of (imports, from_imports)
     """
-    try:
-        tree = ast.parse(source)
-    except SyntaxError:
+    tree = parse_oop_source(source)
+    if tree is None:
         return set(), {}
 
     extractor = ImportExtractor()
@@ -163,11 +192,10 @@ def get_imports_from_file(file_path: Path) -> Tuple[Set[str], Dict[str, Set[str]
     Returns:
         Tuple of (imports, from_imports)
     """
-    try:
-        source = file_path.read_text(encoding="utf-8", errors="ignore")
-        return get_imports_from_source(source)
-    except (IOError, OSError):
+    source = read_oop_source(file_path)
+    if source is None:
         return set(), {}
+    return get_imports_from_source(source)
 
 
 def find_class_usages(source: str, class_name: str) -> List[int]:
@@ -181,9 +209,8 @@ def find_class_usages(source: str, class_name: str) -> List[int]:
     Returns:
         List of line numbers where class is referenced
     """
-    try:
-        tree = ast.parse(source)
-    except SyntaxError:
+    tree = parse_oop_source(source)
+    if tree is None:
         return []
 
     usages = []
