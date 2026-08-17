@@ -1,6 +1,6 @@
 # CyberHardening Confirmation Plan
 
-Status: IN PROGRESS
+Status: CONFIRMATION COMPLETE — 13 NEW FINDINGS
 Started: 2026-08-17
 Repo: Asgard
 Original plan: `_Docs/Planning/CyberHardening.md`
@@ -670,12 +670,12 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ## Confirmation progress
 
-Updated: 2026-08-17T02:30:00+00:00
-- remaining: 1552
-- completed: 2386
+Updated: 2026-08-17T02:45:00+00:00
+- remaining: 0 (refresh `init` discovered 3938, no new files)
+- completed: 3938
 - last CHC ID: CHC-0013
-- All live original CH-XXXX have verdicts. Product packages drained.
-- Batch 13: remaining Forseti, Heimdall CLI/eval/Shared, Freya rest, Verdandi, Volundr, _FutureItems-Security.
-- New this batch: CHC-0012 yaml.compose unsafe Loader; CHC-0013 helm values --environment path. CH-0046 and CH-0064 moved Confirmed→Residual. CHC-0004 also-on-trace expanded to sibling writers.
-- Spot-check: MockServer 127.0.0.1+debug=False; sla_checker empty 0; scaffold still @v4; helm name RE; sourcemap yaml.compose; helm values path join.
-- Next: Asgard_Test fixtures/tests (~1552) then refresh init + Phase 4.
+- All 114 live original CH-XXXX have verdicts (1 Skipped withdrawn). Reopened=0.
+- Batch 14: remaining Asgard_Test fixtures/tests + MANIFEST.in/scripts. All corpus/tests clean (no live secrets). Golden ci.yml/ci-deploy.yml SHA-pinned (CH-0001/0002/0003 Confirmed on those files).
+- Ledger: 3939 lines / 3938 completed (extra historical `.gitignore` line, not inventoried). Every completed path has a ledger line.
+- Phase 4: Status CONFIRMATION COMPLETE — 13 NEW FINDINGS.
+- Next mission: implement Open CHC-0001..0013 and Residual leftovers. Do not start a second first-audit.
