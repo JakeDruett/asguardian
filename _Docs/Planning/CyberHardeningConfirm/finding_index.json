@@ -1,0 +1,1643 @@
+[
+  {
+    "id": "CH-0001",
+    "title": "GitHub Actions pinned to mutable tags",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": ".github/workflows/ci.yml",
+    "also": [
+      ".github/workflows/publish.yml",
+      ".github/workflows/l8-perf-budgets.yml",
+      "Asgard/Volundr/CICD/services/action_pins.py",
+      "Asgard_Test/tests_Volundr/golden/ci.yml",
+      "_FutureItems-Security/Tools_Security/.github/workflows/security-scan.yml"
+    ],
+    "impl": "SHA-pinned every live `uses:` (KNOWN_ACTION_PINS + pypa/codeql); added Dependabot and Renovate pin updaters.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0002",
+    "title": "Public `pull_request` jobs execute untrusted code on self-hosted `arc-x86`",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": ".github/workflows/ci.yml",
+    "also": [
+      "pyproject.toml",
+      "Asgard_Test/conftest.py"
+    ],
+    "impl": "PR jobs run on ubuntu-latest with persist-credentials false; editable install is push-only; concurrency + 30m timeouts added.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0003",
+    "title": "PyPI OIDC publish: floating publisher, no environment, no split-trust",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": ".github/workflows/publish.yml",
+    "also": [
+      "pyproject.toml",
+      "MANIFEST.in",
+      "Asgard_Test/tests_Volundr/golden/ci-deploy.yml"
+    ],
+    "impl": "Split build (no OIDC) / attest / publish; environment pypi; ubuntu-latest; tags v[0-9].*; workflow permissions {}.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0004",
+    "title": "No `timeout-minutes` on live ARC workflows",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W1",
+    "primary": ".github/workflows/ci.yml",
+    "also": [
+      ".github/workflows/publish.yml"
+    ],
+    "impl": "Already closed by CH-0002 (ci.yml timeout 30 + concurrency) and CH-0003 (publish.yml timeout 15).",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0005",
+    "title": "Draft L8 workflow would inherit default token and unpinned actions",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W1",
+    "primary": ".github/workflows/l8-perf-budgets.yml",
+    "also": [
+      "_Docs/Testing/L8_Perf_Budget_Policy.md"
+    ],
+    "impl": "contents:read permissions, persist-credentials false; SHA pins already from CH-0001; still if:false.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0006",
+    "title": "Pre-commit pins are movable tags; no secret-scan hook",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W1",
+    "primary": ".pre-commit-config.yaml",
+    "also": [
+      "Asgard/HooksSetup/service.py",
+      "Asgard/Shared/Init/_templates_python.py"
+    ],
+    "impl": "Pin hook revs to SHAs; pin mypy extras with ==; add detect-secrets hook.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0007",
+    "title": "`init-backend` writes outside the intended base directory",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W2",
+    "primary": "Asgard/BackendInit/service.py",
+    "also": [
+      "Asgard/_cli_handlers.py",
+      "handle_init_backend",
+      "Asgard/cli.py",
+      "folder_name"
+    ],
+    "impl": "folder_name must be a single path segment; reject abs/empty/./../separators; dest is_relative_to(base); return 1 on error.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0008",
+    "title": "BackendInit `.gitignore` merge follows symlinks",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W2",
+    "primary": "Asgard/BackendInit/service.py",
+    "also": [
+      "Asgard/BackendInit/templates.py"
+    ],
+    "impl": "_ensure_gitignore and _write_if_absent skip symlink paths; target file contents are unchanged.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0009",
+    "title": "Generated `GITIGNORE_FULL` ignores real source trees",
+    "status": "Fixed",
+    "severity": "Info",
+    "wave": "W5",
+    "primary": "Asgard/BackendInit/templates.py",
+    "also": [
+      "Asgard/BackendInit/service.py"
+    ],
+    "impl": "Dropped lib/, lib64/, and env/ from GITIGNORE_FULL. .venv/ and venv/ remain.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0010",
+    "title": "Unconfined `baseline_path` join",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W2",
+    "primary": "Asgard/Baseline/baseline_manager.py",
+    "also": [
+      "Asgard/Heimdall/cli/handlers/baseline.py",
+      "Asgard/Heimdall/cli/common/scan_args.py"
+    ],
+    "impl": "Reject absolute/`..` baseline_file; resolved path must be_relative_to(project_path) before load/save.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0011",
+    "title": "Unsigned baseline is a suppression oracle",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Baseline/models.py",
+    "also": [
+      "Asgard/Baseline/baseline_manager.py",
+      "json.load",
+      "BaselineFile(**data)",
+      "Asgard/Baseline/_baseline_operations.py"
+    ],
+    "impl": "`matches` requires message or violation_id; unsigned/rewritten `.asgard-baseline.json` HMAC-fails to empty (no suppressions).",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0012",
+    "title": "Fuzzy match with empty message suppresses a whole file+type",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W3",
+    "primary": "Asgard/Baseline/_baseline_operations.py",
+    "also": [
+      "Asgard/Baseline/_baseline_helpers.py",
+      "get_violation_message",
+      "Asgard/Baseline/models.py",
+      "matches_fuzzy",
+      "Asgard/Heimdall/Security/models/security_models_base.py",
+      "SecretFinding"
+    ],
+    "impl": "Empty/whitespace fuzzy keys unmatched; persist `violation_id` instead of blank; SecretFinding.message is pattern:masked_value.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0013",
+    "title": "Raw violation text persisted and dumped",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Baseline/baseline_manager.py",
+    "also": [
+      "Asgard/Baseline/_baseline_operations.py",
+      "Asgard/Heimdall/cli/handlers/baseline.py"
+    ],
+    "impl": "Persist sha256 of message/snippet attrs; default JSON report and CLI list omit `message`. Matching hashes both sides.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0014",
+    "title": "Baseline save is non-atomic and follows symlinks",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W2",
+    "primary": "Asgard/Baseline/baseline_manager.py",
+    "also": [],
+    "impl": "Refuse dest symlink; load without exists(); save via temp + os.replace.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0015",
+    "title": "12-hex violation IDs collide; `remove_entry` deletes every match",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W3",
+    "primary": "Asgard/Baseline/_baseline_helpers.py",
+    "also": [
+      "Asgard/Baseline/models.py",
+      "remove_entry",
+      "Asgard/Baseline/baseline_manager.py"
+    ],
+    "impl": "`generate_violation_id` stores the full SHA-256. `remove_entry` deletes only a unique match (optional file/line).",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0016",
+    "title": "Unbounded CIR parse / walk / LCOM4 (local DoS)",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W4",
+    "primary": "Asgard/Bragi/Architecture/cir/builder.py",
+    "also": [
+      "Asgard/Bragi/Architecture/evaluators/_lcom4.py",
+      "Asgard/Bragi/Architecture/evaluators/srp.py"
+    ],
+    "impl": "Cap CIR source bytes/lines; iterative _walk with node/depth budgets; LCOM4 skips and SRP flags classes over 128 methods; evidence string capped.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0017",
+    "title": "Architecture bounds cache is unsigned and unvalidated",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W4",
+    "primary": "Asgard/Bragi/Architecture/graph/service.py",
+    "also": [
+      "Asgard/Bragi/Architecture/graph/propagation.py",
+      "Asgard/Bragi/Architecture/services/hexagonal_analyzer.py",
+      "analyze",
+      "explain_file",
+      "heimdall architecture hexagonal",
+      "layers --explain"
+    ],
+    "impl": "HMAC + schema on arch bounds cache; malformed hydrate is a miss (full infer).",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0018",
+    "title": "`fnmatch` on attacker-controlled architecture.yml patterns",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W4",
+    "primary": "Asgard/Bragi/Architecture/graph/propagation.py",
+    "also": [
+      "Asgard/Bragi/Architecture/graph/reflexion.py",
+      "Asgard/Bragi/Architecture/services/_architecture_config.py"
+    ],
+    "impl": "Sanitize path_patterns (max length 200, max 8 `*`, strings only). Matchers skip oversized globs.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0019",
+    "title": "Markdown reporters interpolate scan-controlled strings unescaped",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W5",
+    "primary": "Asgard/Bragi/Architecture/services/_arch_reporter_markdown.py",
+    "also": [
+      "Asgard/Bragi/Architecture/services/_pattern_reporter.py",
+      "Asgard/Bragi/Architecture/services/_solid_reporter.py",
+      "Asgard/Bragi/Architecture/services/_suggester_reporter.py",
+      "Asgard/Bragi/Architecture/services/_generic_hexagonal_checks.py",
+      "Asgard/Bragi/Coverage/services/_coverage_reporter.py",
+      "Asgard/Bragi/Dependencies/services/_license_reporter.py",
+      "Asgard/Bragi/Dependencies/services/_dependency_reporter.py",
+      "Asgard/Bragi/OOP/services/_oop_reporter.py",
+      "Asgard/Bragi/Performance/services/_static_performance_reporter.py"
+    ],
+    "impl": "Shared md_cell() escapes pipes, backticks, control chars, and HTML in Bragi Markdown table cells.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0020",
+    "title": "Architecture YAML loader: caller path + no schema",
+    "status": "Fixed",
+    "severity": "Info",
+    "wave": "W5",
+    "primary": "Asgard/Bragi/Architecture/services/_architecture_config.py",
+    "also": [
+      "Asgard/Bragi/Architecture/graph/service.py",
+      "from_yaml"
+    ],
+    "impl": "Require is_file + 256 KiB cap; layers must be mappings; coerce list fields. Keep yaml.safe_load.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0021",
+    "title": "Regex SOLID fallback ReDoS on large source lines",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W4",
+    "primary": "Asgard/Bragi/Architecture/services/_generic_solid_checks.py",
+    "also": [
+      "Asgard/Bragi/Architecture/services/_treesitter_solid_checks.py"
+    ],
+    "impl": "JS/TS method patterns bound to .{0,200}; all regex SOLID checks skip lines over 4096 chars.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0022",
+    "title": "Unbounded tree-sitter recursion can abort a multi-language SOLID run",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W4",
+    "primary": "Asgard/Bragi/Architecture/services/_treesitter_solid_checks.py",
+    "also": [
+      "Asgard/Bragi/Architecture/services/solid_validator.py",
+      "analyze_file_generic",
+      "analyze_multilang"
+    ],
+    "impl": "Iterative TS walk with depth/node/byte/line caps; RecursionError/MemoryError skip the file.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0023",
+    "title": "Local `CLAUDE.md` is documented as credential-bearing and is gitignored",
+    "status": "Fixed",
+    "severity": "Info",
+    "wave": "W1",
+    "primary": ".gitignore",
+    "also": [
+      "CLAUDE.md"
+    ],
+    "impl": "Keep CLAUDE.md gitignored and untracked; test asserts the ignore. Rotation and GitHub secret scanning remain Jake-todo human items.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0024",
+    "title": "SZZ runs `git diff` against an untrusted repo without isolating git config",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": "Asgard/Bragi/Calibration/services/szz.py",
+    "also": [
+      "Asgard/Bragi/Calibration/services/rule_validator.py",
+      "Asgard/Bragi/Quality/services/_git_friction.py",
+      "Asgard/Bragi/QualityGate/services/_git_diff.py",
+      "Asgard/Bragi/QualityGate/services/_hotspot_ranker.py",
+      "Asgard/Heimdall/Security/Git/services/git_scanner.py",
+      "Asgard/Heimdall/cli/handlers/new_code.py",
+      "Asgard/Shared/common/new_code_period.py",
+      "Asgard/Shared/common/_new_code_git.py",
+      "Asgard/Shared/Issues/services/issue_tracker.py",
+      "get_git_blame"
+    ],
+    "impl": "Shared isolated git helper; --no-ext-diff, blank global, cleared GIT_EXTERNAL_DIFF/PAGER/DIR; applied on all caller-repo git sinks.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0025",
+    "title": "SZZ unbounded per-hunk `git blame`",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W4",
+    "primary": "Asgard/Bragi/Calibration/services/szz.py",
+    "also": [
+      "Asgard/Bragi/Calibration/services/rule_validator.py"
+    ],
+    "impl": "Cap hunks/commit and total blame calls; skip -C on wide diffs; INSUFFICIENT_DATA over budget.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0026",
+    "title": "`LanguageProfileService` joins unsanitized `language` into a file path",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W2",
+    "primary": "Asgard/Bragi/Calibration/services/profile_service.py",
+    "also": [
+      "Asgard/Bragi/Calibration/models/calibration_models.py",
+      "LanguageProfile.language"
+    ],
+    "impl": "Allowlist language `^[a-z][a-z0-9_]*$`; resolve under profiles_dir; invalid/unknown falls back to generic.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0027",
+    "title": "Local calibration profile YAML is trusted without clamp or authenticity check",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Bragi/Calibration/services/profile_service.py",
+    "also": [
+      "Asgard/Bragi/Calibration/services/local_calibrator.py",
+      "_clamp",
+      ".asgard_cache/bragi_local_profile.yaml"
+    ],
+    "impl": "Load refuses invalid YAML/numerics and re-clamps against the language/generic anchor; resolve() re-clamps to the target language.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0028",
+    "title": "`write_local_profile` write root is caller-controlled",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W2",
+    "primary": "Asgard/Bragi/Calibration/services/local_calibrator.py",
+    "also": [
+      "Asgard/Heimdall/cli/handlers/calibration.py",
+      "--write"
+    ],
+    "impl": "Confine project_path to cwd; refuse .. / outside roots / dest symlink.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0029",
+    "title": "(withdrawn \u2014 merged into CH-0019)",
+    "status": "withdrawn",
+    "severity": "",
+    "wave": "",
+    "primary": "",
+    "also": [],
+    "impl": "",
+    "withdrawn": true
+  },
+  {
+    "id": "CH-0030",
+    "title": "`LanguageProfile` accepts unconstrained language and numeric fields",
+    "status": "Fixed",
+    "severity": "Info",
+    "wave": "W5",
+    "primary": "Asgard/Bragi/Calibration/models/calibration_models.py",
+    "also": [
+      "Asgard/Bragi/Calibration/services/profile_service.py",
+      "Asgard/Bragi/Ratings/services/composite_score_engine.py"
+    ],
+    "impl": "Constrain language to ^[a-z][a-z0-9_]*$; finite warn<=fail; reject non-positive/non-finite weights. resolve() relabels invalid language to generic.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0031",
+    "title": "Profile YAML `ValidationError` aborts `LanguageProfileService` construction",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W4",
+    "primary": "Asgard/Bragi/Calibration/services/profile_service.py",
+    "also": [
+      "Asgard/Bragi/Calibration/models/calibration_models.py"
+    ],
+    "impl": "_load_yaml_profile catches ValidationError/TypeError/ValueError, logs, and falls back to generic/in-code defaults.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0032",
+    "title": "Unsigned license disk cache can bypass license policy",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Bragi/Dependencies/services/_license_cache.py",
+    "also": [
+      "Asgard/Bragi/Dependencies/services/license_checker.py",
+      "use_cache"
+    ],
+    "impl": "HMAC + `name@version` keys; unsigned/v1 cache ignored. `use_cache` defaults off in CI.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0033",
+    "title": "License checker performs default-on HTTP to PyPI",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W1",
+    "primary": "Asgard/Bragi/Dependencies/services/license_checker.py",
+    "also": [],
+    "impl": "PyPI fallback gated behind LicenseConfig.enable_network (default False).",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0034",
+    "title": "Unquoted package name interpolated into the PyPI URL",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W2",
+    "primary": "Asgard/Bragi/Dependencies/services/license_checker.py",
+    "also": [
+      "Asgard/Bragi/Dependencies/services/requirements_checker.py",
+      "_extract_package_name"
+    ],
+    "impl": "PEP 503 normalize + quote; reject path-like names; refuse off-host PyPI redirects.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0035",
+    "title": "`RequirementsChecker.sync` writes an unconfined `target_file`",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W2",
+    "primary": "Asgard/Bragi/Dependencies/services/requirements_checker.py",
+    "also": [
+      "Asgard/Heimdall/cli/handlers/syntax.py",
+      "target_file=getattr(args, 'target_file', ...)"
+    ],
+    "impl": "confine_sync_target rejects absolute and `..` paths; dest must be_relative_to(scan_path).",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0036",
+    "title": "Unsigned vulnerability lookup cache can hide or inject CVEs",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Bragi/Dependencies/services/_vuln_cache.py",
+    "also": [
+      "Asgard/Bragi/Dependencies/services/vulnerability_checker.py",
+      "_post_batch_cached",
+      "_query_nvd_cached"
+    ],
+    "impl": "HMAC + schema on vuln cache envelopes; 0o700 dir; unsigned/planted empty bodies are a miss and refetch.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0037",
+    "title": "Vuln cache key is used as a path fragment",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W2",
+    "primary": "Asgard/Bragi/Dependencies/services/_vuln_cache.py",
+    "also": [
+      "cache_key(namespace, payload)"
+    ],
+    "impl": "Allowlist cache keys/namespaces; hash key for filename; dest must stay under cache_dir.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0038",
+    "title": "`PackageLicense.is_allowed` defaults True (fail-open)",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Bragi/Dependencies/models/license_models.py",
+    "also": [
+      "Asgard/Bragi/Dependencies/services/license_checker.py",
+      "_license_policy.py"
+    ],
+    "impl": "Default `is_allowed=False`; gates use `is_policy_allowed` (`verdict == \"allowed\"`). Classifier still sets WARN True.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0039",
+    "title": "Unsigned dep-graph JSON cache can crash the scan",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W4",
+    "primary": "Asgard/Bragi/Dependencies/services/graph_service.py",
+    "also": [
+      "{scan_path}/.asgard_cache/bragi_dep_graph.json"
+    ],
+    "impl": "HMAC + schema on dep-graph cache; hydrate errors are a miss; atomic replace; derived reused only if signed.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0040",
+    "title": "Performance directory walker follows symlinks and can recurse forever",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W2",
+    "primary": "Asgard/Bragi/Performance/utilities/performance_utils.py",
+    "also": [
+      "Asgard/Bragi/Performance/services/cache_analyzer_service.py",
+      "cpu_profiler_service.py",
+      "database_analyzer_service.py",
+      "memory_profiler_service.py",
+      "static_performance_service.py"
+    ],
+    "impl": "Skip file/dir symlinks; track dir inodes; require resolved paths under scan root.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0041",
+    "title": "`BugDetector` `rglob(\"*.py\")` follows directory symlinks",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W2",
+    "primary": "Asgard/Bragi/Quality/BugDetection/services/bug_detector.py",
+    "also": [],
+    "impl": "os.walk(followlinks=False); skip file/dir symlinks; require resolved.is_relative_to(root).",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0042",
+    "title": "Language analyzers `rglob` and ignore advertised exclude/size limits",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W2",
+    "primary": "Asgard/Bragi/Quality/languages/javascript/services/js_analyzer.py",
+    "also": [
+      "Asgard/Bragi/Quality/languages/cpp/services/cpp_analyzer.py",
+      "csharp/services/csharp_analyzer.py",
+      "go/services/go_analyzer.py",
+      "java/services/java_analyzer.py",
+      "php/services/php_analyzer.py",
+      "ruby/services/ruby_analyzer.py",
+      "rust/services/rust_analyzer.py",
+      "shell/services/shell_analyzer.py",
+      "rglob(\"*\")",
+      "typescript/services/ts_analyzer.py"
+    ],
+    "impl": "Shared _confined_walk (no symlink follow); apply exclude/max_file_lines/max_findings; line cap 4096; extension allowlist.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0043",
+    "title": "Hardcoded-credential rules copy the secret into `code_snippet`",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Bragi/Quality/languages/javascript/services/_js_security_rules.py",
+    "also": [
+      "Asgard/Bragi/Quality/languages/php/services/_php_rules.py",
+      "Asgard/Bragi/Quality/languages/ruby/services/_ruby_rules.py",
+      "Asgard/Bragi/Quality/languages/rust/services/_rust_rules.py",
+      "Asgard/Bragi/Quality/models/env_fallback_models.py",
+      "Asgard/Bragi/Quality/services/_env_fallback_reporter.py",
+      "Asgard/Heimdall/cli/handlers/lang_analyzers.py"
+    ],
+    "impl": "JS/PHP/Ruby/Rust credential snippets and env-fallback defaults use last-2/length-only mask; CLI remasks before print/JSON.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0044",
+    "title": "`js.no-eval` remediates to `Function`",
+    "status": "Fixed",
+    "severity": "Info",
+    "wave": "W5",
+    "primary": "Asgard/Bragi/Quality/languages/javascript/services/_js_rules.py",
+    "also": [],
+    "impl": "js.no-eval fix_suggestion recommends JSON.parse/structured parsers only; never Function/eval.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0045",
+    "title": "PHP rule regexes are quadratic on long lines",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W4",
+    "primary": "Asgard/Bragi/Quality/languages/php/services/_php_rules.py",
+    "also": [
+      "Asgard/Bragi/Quality/languages/php/services/php_analyzer.py"
+    ],
+    "impl": "SQL-build and XSS-concat patterns bound to .{0,200}; those checks skip lines over 4096 chars.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0046",
+    "title": "Code-smell HTML report interpolates scan strings unescaped",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W5",
+    "primary": "Asgard/Bragi/Quality/services/_code_smell_report_html.py",
+    "also": [
+      "Asgard/Bragi/Quality/services/code_smell_detector.py",
+      "Asgard/Bragi/Quality/services/_code_smell_visitor.py",
+      "Asgard/Heimdall/cli/handlers/_base.py",
+      "Asgard/Heimdall/cli/handlers/quality_file_length.py",
+      "Asgard/Heimdall/cli/handlers/scan_html.py",
+      "Asgard/Reporting/_html_report_builders.py",
+      "Asgard/Reporting/html_generator.py"
+    ],
+    "impl": "html.escape scan_path/filename/description/evidence; allowlist severity CSS classes.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0047",
+    "title": "Unsigned debt-state JSON cache can skip re-analysis",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Bragi/Quality/services/_debt_state_store.py",
+    "also": [
+      "{scan_root}/.asgard_cache/bragi_debt_state.json"
+    ],
+    "impl": "HMAC on debt-state JSON; unsigned/forged load as empty (full rescan). `rel` confined with `is_relative_to`.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0048",
+    "title": "Incremental file-hash cache is unsigned and mtime-skips",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Bragi/Quality/services/_incremental_cache.py",
+    "also": [
+      "Asgard/Bragi/Quality/services/incremental_scanner.py"
+    ],
+    "impl": "Always re-hash; HMAC schema v2; confine cache_path; honor TTL. `enabled` still defaults False.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0049",
+    "title": "Type checkers / linters execute untrusted project config",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": "Asgard/Bragi/Quality/services/_syntax_linters.py",
+    "also": [
+      "Asgard/Bragi/Quality/services/_mypy_runner.py",
+      "Asgard/Bragi/Quality/services/_pyright_runner.py"
+    ],
+    "impl": "Isolated cwd/config for pylint/flake8/mypy/pyright; no project plugins; npx --no-install; -- before paths.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0050",
+    "title": "Pyright runner writes/unlinks config in the scan tree (symlink clobber)",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W2",
+    "primary": "Asgard/Bragi/Quality/services/_pyright_runner.py",
+    "also": [
+      "Asgard/Bragi/Quality/services/type_checker.py"
+    ],
+    "impl": "Already closed by CH-0049 \u2014 invoke_pyright writes pyrightconfig.json in isolated_tool_workspace and passes --project there; test_linter_isolation covers it.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0051",
+    "title": "Unsigned QualityGate fingerprint baseline can hide all PR findings",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W3",
+    "primary": "Asgard/Bragi/QualityGate/baseline_store.py",
+    "also": [
+      "Asgard/Bragi/QualityGate/services/quality_gate_evaluator.py",
+      "{scan}/.asgard_cache/bragi_fingerprint_baseline.json"
+    ],
+    "impl": "HMAC-SHA256 on fingerprint store (`ASGARD_QG_HMAC_KEY` or sibling `.key`); unsigned/rewritten files load as empty \u2192 NOT_EVALUATED.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0052",
+    "title": "Gate fingerprints collapse to rule+path when snippet is empty",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Bragi/QualityGate/fingerprint.py",
+    "also": [
+      "Asgard/Bragi/QualityGate/services/_differential_engine.py",
+      "ensure_fingerprint"
+    ],
+    "impl": "Fingerprint includes line+message; `ensure_fingerprint` recomputes unless a signed `qg1.` mac is present.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0053",
+    "title": "`ParallelScanner` pickles analyzer callables over fork IPC",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W4",
+    "primary": "Asgard/Bragi/Quality/services/parallel_scanner.py",
+    "also": [],
+    "impl": "spawn context; worker imports named analyzer; timeout kills workers; worker_count capped at 32.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0054",
+    "title": "Unmeasured Ratings dimensions default to letter A",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Bragi/Ratings/services/ratings_calculator.py",
+    "also": [
+      "Asgard/Bragi/Ratings/services/_report_extractors.py"
+    ],
+    "impl": "Unmeasured dimensions are N/A and fail overall; blocker maps to E. Lazy-import Heimdall test_context in context_classifier so Ratings can load.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0055",
+    "title": "Dashboard HTML interpolates request path and issue fields unescaped",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W5",
+    "primary": "Asgard/Dashboard/services/html_renderer.py",
+    "also": [
+      "Asgard/Dashboard/adapters/web/dashboard_handler.py",
+      "Asgard/Dashboard/services/_html_renderer_pages.py",
+      "Asgard/Dashboard/services/_html_helpers.py"
+    ],
+    "impl": "html.escape all interpolated dashboard fields; allowlist badge CSS classes. 404 path and issue file_path escaped.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0056",
+    "title": "Dashboard has no authentication; `--host` can bind all interfaces",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W1",
+    "primary": "Asgard/Dashboard/adapters/web/dashboard_handler.py",
+    "also": [
+      "Asgard/Dashboard/server.py",
+      "--host",
+      "localhost",
+      "Asgard/Heimdall/cli/handlers/mcp.py",
+      "run_dashboard"
+    ],
+    "impl": "Refuse 0.0.0.0/:: unless --expose. Default remains localhost. Dashboard is local-only.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0057",
+    "title": "Alignment config `file:` paths are not confined to `base_dir`",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W2",
+    "primary": "Asgard/Forseti/Alignment/services/alignment_loader_service.py",
+    "also": [
+      "forseti align check",
+      "forseti audit",
+      "alignment-config.yaml"
+    ],
+    "impl": "confine_source_path rejects abs/`..`; dest must be_relative_to(base_dir) before read_text.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0058",
+    "title": "CodeGen interpolates untrusted OpenAPI strings into generated source",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W2",
+    "primary": "Asgard/Forseti/CodeGen/services/_python_generator_helpers.py",
+    "also": [
+      "Asgard/Forseti/CodeGen/services/_typescript_generator_helpers.py",
+      "Asgard/Forseti/CodeGen/services/_golang_generator_client_helpers.py"
+    ],
+    "impl": "JSON-encode path templates; sanitize identifiers; escape comments; jail _write_files under output_dir. `{__import__('os')}` is data, not an f-string.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0059",
+    "title": "JSON Schema `$ref` reads arbitrary local files",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W2",
+    "primary": "Asgard/Forseti/JSONSchema/services/_ref_resolver_helpers.py",
+    "also": [
+      "Asgard/Forseti/JSONSchema/services/schema_compiler_service.py",
+      "schema_validator_service.py"
+    ],
+    "impl": "Jail file $refs under schema dir; reject absolute/file:///http(s)/data/ftp and `..` escapes; nested loads inherit jail.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0060",
+    "title": "GraphQL introspection `urlopen` is unauthenticated SSRF",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": "Asgard/Forseti/GraphQL/services/introspection_service.py",
+    "also": [],
+    "impl": "http(s) only; block RFC1918/loopback/link-local unless --allow-internal; re-validate redirects; no file/ftp handlers.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0061",
+    "title": "Generated mock servers bind `0.0.0.0` with no auth and Flask `debug=True`",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": "Asgard/Forseti/MockServer/services/_mock_server_generator_helpers.py",
+    "also": [
+      "Asgard/Forseti/MockServer/models/mock_models.py",
+      "host",
+      "mock_server_generator.py"
+    ],
+    "impl": "Default bind 127.0.0.1; generated Flask debug=False; Express listens on config.host; local-only header.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0062",
+    "title": "Validation proxy is an open SSRF forwarder",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": "Asgard/Forseti/MockServer/services/validation_proxy_service.py",
+    "also": [
+      "_validation_proxy_helpers.py"
+    ],
+    "impl": "Localhost bind; http(s) upstream only; path jail; hop-by-hop strip; same-host redirects only.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0063",
+    "title": "LiveContract probe URL join can rewrite authority; `urlopen` follows redirects",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": "Asgard/Forseti/LiveContract/services/live_validator_service.py",
+    "also": [
+      "probe_planner_service.py",
+      "workflow_runner_service.py"
+    ],
+    "impl": "urljoin + root-relative path jail; encode path params; skip non-/ spec paths; same-host redirects only.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0064",
+    "title": "Documentation HTML interpolates title/contact/custom_css unescaped",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W5",
+    "primary": "Asgard/Forseti/Documentation/services/docs_generator.py",
+    "also": [
+      "_docs_generator_helpers.py",
+      "templates/base.html",
+      "{{ title }}"
+    ],
+    "impl": "Escape title; allowlist http(s)/mailto contact hrefs; drop custom_css from HTML. javascript: URLs become #.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0065",
+    "title": "SQL `DEFAULT` interpolated unsanitized into migrations/Alembic",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W2",
+    "primary": "Asgard/Forseti/Database/services/_schema_analyzer_helpers.py",
+    "also": [
+      "migration_generator_service.py",
+      "_schema_diff_helpers.py"
+    ],
+    "impl": "Restrict defaults to literals; quote identifiers; Alembic op.execute(repr(sql)); reject 1;DROP / comments / newlines.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0066",
+    "title": "Freya site crawler navigates unvalidated URLs (SSRF / `file:`)",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": "Asgard/Freya/Integration/services/_crawler_discovery.py",
+    "also": [
+      "site_crawler.py",
+      "_crawler_spa.py",
+      "_crawler_page_tester.py",
+      "page.goto",
+      "Asgard/Freya/Performance/services/page_load_analyzer.py",
+      "resource_timing_analyzer.py",
+      "Asgard/Freya/SEO/services/meta_tag_analyzer.py",
+      "robots_analyzer.py",
+      "Asgard/Freya/Visual/services/_screenshot_capture_helpers.py"
+    ],
+    "impl": "http(s) only; block RFC1918/loopback unless allow_internal; re-validate page.url; SPA enqueue uses should_crawl. Other Freya page.goto (a11y/SEO/visual) still local-fixture file: paths.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0067",
+    "title": "Freya HTML/JUnit reports interpolate crawl strings unescaped",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W5",
+    "primary": "Asgard/Freya/Integration/services/html_reporter.py",
+    "also": [
+      "_crawler_report.py",
+      "Asgard/Freya/cli/_formatters_accessibility.py"
+    ],
+    "impl": "Escape HTML/XML; allowlist http(s) href/src; reject javascript:/data:. Tests with script in finding message.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0068",
+    "title": "Visual baseline index can delete/copy arbitrary files",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W2",
+    "primary": "Asgard/Freya/Integration/services/baseline_manager.py",
+    "also": [
+      "_baseline_manager_helpers.py"
+    ],
+    "impl": "confine_storage_path refuses dest symlinks and paths outside storage_directory; delete/version/load skip or raise on hostile screenshot_path.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0069",
+    "title": "Crawl reports persist `auth_config` (passwords) on disk",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W3",
+    "primary": "Asgard/Freya/Integration/services/_crawler_report.py",
+    "also": [
+      "site_crawler.py"
+    ],
+    "impl": "`generate_report`/`save_report` copy config and replace secret `auth_config` values with `****`; keys kept. Deviation: length-only mask, not prefix/suffix.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0070",
+    "title": "Accessibility `page.evaluate` interpolates DOM IDs into JS",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W4",
+    "primary": "Asgard/Freya/Accessibility/services/_aria_validator_checks_part2.py",
+    "also": [],
+    "impl": "`getElementById` uses a static evaluate function; `id_ref` is an argument, not source.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0071",
+    "title": "Link validator HEADs extracted links without scheme allowlist",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W1",
+    "primary": "Asgard/Freya/Links/services/link_validator.py",
+    "also": [
+      "_link_validator_helpers.py"
+    ],
+    "impl": "Only http(s); skip private/metadata; re-validate Location; reuse Freya URL policy.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0072",
+    "title": "Screenshot / visual-regression writes unsanitized filenames",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W2",
+    "primary": "Asgard/Freya/Visual/services/_screenshot_capture_helpers.py",
+    "also": [
+      "screenshot_capture.py",
+      "visual_regression.py",
+      "Asgard/Freya/Responsive/services/breakpoint_tester.py"
+    ],
+    "impl": "sanitize_output_name + confine_output_path; reject abs/`..`; wired into capture, regression, breakpoint tester.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0073",
+    "title": "Freya Scoring empty/unknown findings grade as A and pass",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Freya/Scoring/services/grade_calculator.py",
+    "also": [
+      "quality_gate.py",
+      "severity_mapper.py"
+    ],
+    "impl": "Empty category scores are N/A (not A); unknown severity is BLOCKER; needs_review fails the gate; empty findings fail-closed.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0074",
+    "title": "Screenshot `hide_selectors` interpolated into `page.evaluate`",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W4",
+    "primary": "Asgard/Freya/Visual/services/_screenshot_capture_helpers.py",
+    "also": [],
+    "impl": "hide_selectors JSON-encoded and passed as evaluate args, not JS source.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0075",
+    "title": "DNS checker runs `dig` with an unvalidated domain",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W2",
+    "primary": "Asgard/Heimdall/Security/DNS/services/dns_checker.py",
+    "also": [],
+    "impl": "RFC1123-style domain allowlist; reject @ and leading -; pass dig -- domain type.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0076",
+    "title": "File-integrity baseline is unsigned; `has_changes` ignores adds",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W3",
+    "primary": "Asgard/Heimdall/Security/FileIntegrity/services/file_integrity_checker.py",
+    "also": [
+      ".file_integrity_baseline.json"
+    ],
+    "impl": "HMAC-SHA256 on baseline files (`ASGARD_INTEGRITY_HMAC_KEY` or sibling `.key` 0600); unsigned/rewritten hashes fail-closed; `has_changes` includes added; O_NOFOLLOW + skip file/dir symlinks.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0077",
+    "title": "`StaticSecurityService.scan` swallows domain failures (fail-open PASS)",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W3",
+    "primary": "Asgard/Heimdall/Security/services/static_security_service.py",
+    "also": [
+      "Asgard/Heimdall/Security/models/security_models_findings.py",
+      "is_passing"
+    ],
+    "impl": "Domain exceptions go to `SecurityReport.domain_errors` and fail `is_passing`; scanners log instead of `except: pass`.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0078",
+    "title": "Heimdall security walker follows symlinks out of the scan root",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W2",
+    "primary": "Asgard/Heimdall/Security/utilities/_scan_utils.py",
+    "also": [
+      "Asgard/Heimdall/Security/services/secrets_detection_service.py",
+      "Asgard/Heimdall/Security/services/injection_detection_service.py",
+      "Asgard/Heimdall/Security/services/cryptographic_validation_service.py",
+      "Asgard/Heimdall/Security/services/config_secrets_scanner.py",
+      "Asgard/Heimdall/Security/services/dependency_vulnerability_service.py",
+      "Asgard/Heimdall/cli/handlers/_security_dispatch.py"
+    ],
+    "impl": "iter_confined_files skips file/dir symlinks and requires resolved.is_relative_to(root); dispatch/deps/config-secrets no longer rglob/walk.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0079",
+    "title": "Secret reports leak prefix+suffix of matched values",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Heimdall/Security/utilities/security_utils.py",
+    "also": [
+      "Asgard/Heimdall/Security/services/secrets_detection_service.py",
+      "Asgard/Heimdall/Security/services/_secrets_detection_helpers.py",
+      "Asgard/Heimdall/Security/services/_static_security_report_json_md.py",
+      "Asgard/Heimdall/Security/services/_config_secrets_helpers.py",
+      "Asgard/Heimdall/Security/services/_config_secrets_report.py",
+      "_FutureItems-Security/Tools_Security/secrets_scanner.py"
+    ],
+    "impl": "`mask_secret` defaults to last-2 or length-only; `line_content` redacted by column span. Never print both ends.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0080",
+    "title": "Unpinned (`*`) dependencies are treated as not vulnerable / live-checked",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Heimdall/Security/services/_live_vulnerability_lookup.py",
+    "also": [
+      "Asgard/Heimdall/Security/services/_vulnerability_database.py",
+      "Asgard/Heimdall/Security/services/dependency_vulnerability_service.py",
+      "Asgard/Heimdall/Security/services/_requirements_parser.py"
+    ],
+    "impl": "Live lookup is not `checked` unless a pinned package was queried. `*` matches local CVEs and emits an unresolved finding when none exist.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0081",
+    "title": "Unsigned triage cache can plant advisory verdicts",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Heimdall/Security/triage/services/triage_cache.py",
+    "also": [
+      "Asgard/Heimdall/Security/triage/services/triage_service.py"
+    ],
+    "impl": "HMAC + hex-64 keys + jail under cache dir; unsigned/planted verdicts miss.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0082",
+    "title": "Opt-in Claude triage sends finding text and code to a third party",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W1",
+    "primary": "Asgard/Heimdall/Security/triage/services/triage_adapter.py",
+    "also": [
+      "Asgard/Heimdall/Security/triage/services/triage_service.py"
+    ],
+    "impl": "Redact secret-like spans; cap code_context to 4000; system/user prompt split; untrusted model JSON; document data leaving host.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0083",
+    "title": "Config-secrets placeholder fragments drop real credentials",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W4",
+    "primary": "Asgard/Heimdall/Security/services/_config_secrets_helpers.py",
+    "also": [
+      "Asgard/Heimdall/Security/services/config_secrets_scanner.py"
+    ],
+    "impl": "Placeholder match is whole-value only; `\"<\"` dropped; flatten depth-capped and cycle-safe.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0084",
+    "title": "Injection-pattern regexes are ReDoS-prone on hostile source",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W4",
+    "primary": "Asgard/Heimdall/Security/services/_injection_patterns.py",
+    "also": [
+      "Asgard/Heimdall/Security/services/injection_detection_service.py"
+    ],
+    "impl": "Bounded nested `.*` / `[^)]*` to `{0,N}`; `_scan_file` is line-bounded with 1 MiB / 4096-char caps; 50k-char non-match test. Also bounded the other greedy patterns in the same file.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0085",
+    "title": "Secret FP regex full-drops values containing `test`/`example`",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W4",
+    "primary": "Asgard/Heimdall/Security/services/_secret_patterns.py",
+    "also": [
+      "Asgard/Heimdall/Security/services/_secrets_detection_helpers.py",
+      "Asgard/Heimdall/Security/services/secrets_detection_service.py"
+    ],
+    "impl": "Placeholder FP is whole-value only; matched_text ignored; AWS/GitHub/private-key never drop on substring test/example. testhost URL and ContestWinner1 report.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0086",
+    "title": "MCP HTTP server has no authentication and runs tools on any path",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": "Asgard/Heimdall/cli/handlers/mcp.py",
+    "also": [
+      "Asgard/MCP/server/asgard_mcp_server.py",
+      "Asgard/MCP/server/_mcp_tools.py",
+      "Asgard/MCP/server/__init__.py",
+      "asguardian-mcp"
+    ],
+    "impl": "Bearer token required; refuse 0.0.0.0 without --expose; jail tool paths; cap body size; no traceback leak.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0087",
+    "title": "Private-index mitigation is a raw substring match",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W4",
+    "primary": "Asgard/Heimdall/Security/services/_supply_chain_analysis.py",
+    "also": [
+      "Asgard/Heimdall/Security/services/dependency_vulnerability_service.py"
+    ],
+    "impl": "detect_private_index parses uncommented pip/poetry/uv config only; commented --index-url no longer suppresses confusion findings.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0088",
+    "title": "Ratings/gate/compliance CLIs fail-open on exit status",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Heimdall/cli/handlers/ratings.py",
+    "also": [
+      "Asgard/Heimdall/cli/handlers/security.py",
+      "run_compliance_analysis",
+      "return 0"
+    ],
+    "impl": "Ratings exit 1 on D/E/N/A/NOT_MEASURED; gate NOT_EVALUATED and compliance findings fail; diff-gate exceptions no longer swallowed.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0089",
+    "title": "License CLI `--denied` never reaches `LicenseConfig`",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Heimdall/cli/handlers/syntax.py",
+    "also": [
+      "Asgard/Heimdall/cli/common/scan_args.py",
+      "Asgard/Bragi/Dependencies/models/license_models.py"
+    ],
+    "impl": "`--denied` maps to `prohibited_licenses`; `--warn` to `warn_licenses`. Unset keeps dataclass defaults.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0090",
+    "title": "`heimdall scan` treats step exceptions as PASS",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Heimdall/cli/handlers/scan.py",
+    "also": [
+      "Asgard/Heimdall/cli/handlers/scan_steps_1_6.py",
+      "Asgard/Heimdall/cli/handlers/scan_steps_7_11.py"
+    ],
+    "impl": "Every step `except Exception` that records ERROR also sets `overall_exit = 1`. Raising type-check step fails the scan.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0091",
+    "title": "Evaluation corpus manifest paths are unjailed",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W2",
+    "primary": "Asgard/Heimdall/evaluation/vendored_corpus.py",
+    "also": [
+      "Asgard/Heimdall/evaluation/corpus.py"
+    ],
+    "impl": "confine_eval_path rejects abs/`..`; vendored/taint/CVE holdout joins must stay under corpus/checkout root.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0092",
+    "title": "Calibration map write is unsigned and unconfined",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Heimdall/evaluation/calibration.py",
+    "also": [
+      "Asgard/Heimdall/cli/handlers/evaluation.py",
+      "--save-calibration"
+    ],
+    "impl": "Jail save/load under CWD or HEIMDALL_CALIBRATION_DIR; HMAC when HEIMDALL_CALIBRATION_HMAC_KEY is set.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0093",
+    "title": "PR decorator `urlopen` follows redirects to a caller-controlled API base",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": "Asgard/Reporting/PRDecoration/services/github_decorator.py",
+    "also": [
+      "Asgard/Reporting/PRDecoration/services/gitlab_decorator.py",
+      "Asgard/Reporting/PRDecoration/models/decoration_models.py"
+    ],
+    "impl": "https-only API bases; quote owner/repo; same-origin redirects; refuse token to non-allowlisted hosts.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0094",
+    "title": "GitHub Actions formatter emits unsanitized workflow commands",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": "Asgard/Reporting/github_formatter.py",
+    "also": [
+      "Asgard/Reporting/_github_format_helpers.py"
+    ],
+    "impl": "Percent-encode %, CR/LF, property :/, and :: in messages; strip remaining C0.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0095",
+    "title": "Tree-sitter parse has no size/timeout cap",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W4",
+    "primary": "Asgard/Heimdall/treesitter/file_context.py",
+    "also": [
+      "Asgard/Heimdall/treesitter/_parser_pool.py",
+      "Asgard/Heimdall/treesitter/_query_runner.py"
+    ],
+    "impl": "2 MiB parse cap, Parser.timeout_micros 250ms, iterative ERROR walk, query cache evicts at 256.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0096",
+    "title": "`init-linter` interpolates unsanitized `project_name` into TOML/YAML/hook entry",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W1",
+    "primary": "Asgard/Shared/Init/linter_initializer.py",
+    "also": [
+      "Asgard/Shared/Init/_templates_python.py",
+      "Asgard/Heimdall/cli/handlers/init_linter.py"
+    ],
+    "impl": "Restrict project_name to ^[A-Za-z_][A-Za-z0-9_-]*$.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0097",
+    "title": "Issue get/mutate is UUID-global (no project check)",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W1",
+    "primary": "Asgard/Shared/Issues/services/_issue_repository.py",
+    "also": [
+      "Asgard/Shared/Issues/services/issue_tracker.py",
+      "Asgard/Heimdall/cli/handlers/issues.py",
+      "Asgard/MCP/server/_mcp_tools.py"
+    ],
+    "impl": "get/update/assign/comment require project_path and filter SQL by it; TrackedIssue stores project_path.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0098",
+    "title": "Empty SLA window set reports 100% compliance",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Verdandi/Analysis/services/sla_checker.py",
+    "also": [
+      "Asgard/Verdandi/Analysis/models/analysis_models.py",
+      "Asgard/Verdandi/SLO/models/slo_models.py",
+      "Asgard/Verdandi/SLO/services/error_budget_calculator.py",
+      "Asgard/Verdandi/SLO/services/sli_tracker.py",
+      "Asgard/Verdandi/SLO/services/_sli_aggregation.py"
+    ],
+    "impl": "Empty compliance rate and empty SLO report are 0%; non-finite percentiles BREACHED; 0.0 targets are not skipped.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0099",
+    "title": "Sketch `from_dict` trusts unbounded attacker JSON",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W4",
+    "primary": "Asgard/Verdandi/Analysis/services/quantile_sketch.py",
+    "also": [
+      "Asgard/Verdandi/cli/_parser_flags.py",
+      "Asgard/Verdandi/cli/__init__.py",
+      "sketch-merge",
+      "Asgard/Verdandi/cli/handlers_new_apis.py"
+    ],
+    "impl": "Cap centroid/bucket count and compression; reject non-finite/negative weights; clamp DDSketch indexes. CLI merge caps files/size and jails -o.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0100",
+    "title": "Invalid anomaly baseline is treated as in-bounds",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Verdandi/Anomaly/services/baseline_comparator.py",
+    "also": [
+      "Asgard/Verdandi/Anomaly/models/anomaly_models.py",
+      "Asgard/Verdandi/Anomaly/services/_comparator_helpers.py"
+    ],
+    "impl": "Invalid baseline is not in-bounds; deviation 1.0; compare status `unknown` + significant. Empty current is unknown, not normal.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0101",
+    "title": "Service-map critical-path walk loops on cyclic parents",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W4",
+    "primary": "Asgard/Verdandi/APM/services/service_map_builder.py",
+    "also": [
+      "Asgard/Verdandi/Tracing/services/_path_helpers.py",
+      "Asgard/Verdandi/Tracing/services/causal_normalizer.py",
+      "Asgard/Verdandi/Tracing/services/critical_path_analyzer.py"
+    ],
+    "impl": "Visited set + 4096-span cap on service-map and tracing critical-path walks. A\u2192B\u2192A terminates.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0102",
+    "title": "Dockerfile generator concatenates untrusted fields as instructions",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": "Asgard/Volundr/Docker/services/dockerfile_generator.py",
+    "also": [
+      "Asgard/Volundr/Docker/models/docker_models.py"
+    ],
+    "impl": "Reject newline/# in interpolated fields; JSON-quote HEALTHCHECK; pin Trivy digest; docker.sock only with privileged_scan.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0103",
+    "title": "Jenkins emitter interpolates `run`/`env` without hardening",
+    "status": "Fixed",
+    "severity": "High",
+    "wave": "W1",
+    "primary": "Asgard/Volundr/CICD/services/pipeline_generator_helpers.py",
+    "also": [
+      "Asgard/Volundr/CICD/services/context_hardening.py"
+    ],
+    "impl": "harden_steps; quoted sh(); refuse ''' breakout in run/env.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0104",
+    "title": "Helm chart name is interpolated into `{{ define }}` / `include`",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W1",
+    "primary": "Asgard/Volundr/Helm/services/_chart_generator_templates.py",
+    "also": [
+      "Asgard/Volundr/Helm/services/_chart_generator_extras.py",
+      "Asgard/Volundr/Helm/services/chart_generator.py"
+    ],
+    "impl": "HelmChart.name allowlisted to ^[a-z0-9-]+$.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0105",
+    "title": "Generators emit floating tags, HTTP Vault, and privileged-capable services",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W1",
+    "primary": "Asgard/Volundr/CICD/models/cicd_models.py",
+    "also": [
+      "Asgard/Volundr/CICD/services/pipeline_generator_helpers.py",
+      "Asgard/Volundr/CICD/services/action_pins.py",
+      "Asgard/Volundr/Compose/services/compose_generator_helpers.py",
+      "Asgard/Volundr/Helm/models/helm_models.py"
+    ],
+    "impl": "HTTPS-only vault_url; reject privileged GHA/Compose services; digest-pin known images (GitLab/CircleCI/actionlint); Helm image_tag default empty, reject latest/current.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0106",
+    "title": "Pipeline `save_to_file` joins unsanitized `config.name`",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W2",
+    "primary": "Asgard/Volundr/CICD/services/pipeline_generator.py",
+    "also": [
+      "Asgard/Volundr/CICD/services/pipeline_generator_helpers.py",
+      "Asgard/Volundr/Scaffold/services/microservice_scaffold.py",
+      "Asgard/Volundr/Scaffold/services/monorepo_scaffold.py"
+    ],
+    "impl": "safe_pipeline_name [a-z0-9-]+; confine save_to_file and scaffold writes under output_dir.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0107",
+    "title": "Volundr suppressions are unsigned YAML that delete findings",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/Volundr/Validation/models/suppression_models.py",
+    "also": [
+      "Asgard/Volundr/Validation/services/suppression_engine.py",
+      "Asgard/Volundr/Validation/services/validation_engine.py",
+      "ignore_rules"
+    ],
+    "impl": "YAML rejects `*`/globs and requires expiry; CI fail-closed unless HMAC verifies; `ignore_rules` cannot drop in CI.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0108",
+    "title": "Terraform module builder emits `0.0.0.0/0` egress and unsanitized HCL",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W1",
+    "primary": "Asgard/Volundr/Terraform/services/_module_builder_blocks.py",
+    "also": [
+      "Asgard/Volundr/Terraform/services/_module_builder_generators.py"
+    ],
+    "impl": "SG egress defaults to self=true; allowlist module/variable/output names; escape HCL string literals (`\"`, `${`).",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0109",
+    "title": "Incremental `FileHashCache` is unsigned and unconfined",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "Asgard/common/_hash_cache.py",
+    "also": [
+      "Asgard/common/_incremental_models.py",
+      "_FutureItems-Security/Tools_Security/file_integrity_checker.py"
+    ],
+    "impl": "HMAC + jail cache_path; always re-hash; `store_results` defaults False. Unsigned planted result is ignored.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0110",
+    "title": "FutureItems security-scan workflow is fail-open and points at a missing directory",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W1",
+    "primary": "_FutureItems-Security/Tools_Security/.github/workflows/security-scan.yml",
+    "also": [
+      "_FutureItems-Security/Tools_Security/security_api.py",
+      "_FutureItems-Security/Tools_Security/secrets_scanner.py"
+    ],
+    "impl": "Run scanners from Tools_Security cwd; drop continue-on-error; require SARIF output. Deviation: working-directory . (workflow already lives in Tools_Security).",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0111",
+    "title": "SSL checker disables certificate verification then connects to the operator host",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W3",
+    "primary": "_FutureItems-Security/Tools_Security/ssl_checker.py",
+    "also": [
+      "_FutureItems-Security/Tools_Security/security_toolkit.py"
+    ],
+    "impl": "Default verifies the peer (`CERT_REQUIRED`). `--insecure` / `verify=False` is labeled unauthenticated peek.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0112",
+    "title": "CORS/headers checkers `urlopen` operator URLs with no host allowlist",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W1",
+    "primary": "_FutureItems-Security/Tools_Security/cors_checker.py",
+    "also": [
+      "_FutureItems-Security/Tools_Security/http_security_headers.py",
+      "_FutureItems-Security/Tools_Security/port_scanner.py",
+      "_FutureItems-Security/Tools_Security/security_toolkit.py"
+    ],
+    "impl": "Standalone URL/host allowlist; block private/metadata unless --allow-internal; cap port-scan workers at 32; re-validate redirects. CORS evil.* remain Origin headers only.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0113",
+    "title": "DNS checker passes unsanitized domain to `dig`",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W1",
+    "primary": "_FutureItems-Security/Tools_Security/dns_security_checker.py",
+    "also": [
+      "_FutureItems-Security/Tools_Security/security_toolkit.py"
+    ],
+    "impl": "RFC1123/IDNA hostname validation; reject leading -/ @; pass dig -- domain type.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0114",
+    "title": "SecurityAPI loads scanners with broken operator precedence and fail-opens on errors",
+    "status": "Fixed",
+    "severity": "Medium",
+    "wave": "W3",
+    "primary": "_FutureItems-Security/Tools_Security/security_api.py",
+    "also": [
+      "_FutureItems-Security/Tools_Security/security_toolkit.py",
+      "_FutureItems-Security/Tools_Security/.github/workflows/security-scan.yml"
+    ],
+    "impl": "Load only module-local BaseScanner types; scan_all sets total_issues=-1 and non-zero exit on crash.",
+    "withdrawn": null
+  },
+  {
+    "id": "CH-0115",
+    "title": "SecurityAPI `-o` writes the operator path with no jail",
+    "status": "Fixed",
+    "severity": "Low",
+    "wave": "W2",
+    "primary": "_FutureItems-Security/Tools_Security/security_api.py",
+    "also": [
+      "_FutureItems-Security/Tools_Security/security_toolkit.py"
+    ],
+    "impl": "Jail -o under CWD; refuse abs/`..` unless --allow-abs; only .json/.sarif.",
+    "withdrawn": null
+  }
+]

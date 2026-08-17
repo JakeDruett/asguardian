@@ -2116,6 +2116,7 @@ None yet.
 - First finding commit: 8e27674 (CH-0001)
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
 - Close-out (2026-08-16): 115 findings (114 Fixed + 1 withdrawn). Summary High 28 / Medium 59 / Low 22 / Info 5. Every Fixed ID is in `git log` and `fix_ledger.jsonl`. No accepted risks. No blocked items.
+- Confirmation pass: `_Docs/Planning/CyberHardeningConfirm.md` (started 2026-08-17)
 
 ## Scan progress
 

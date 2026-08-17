@@ -320,11 +320,11 @@ def resolve_planning_dir(root: Path) -> Path:
     return created
 
 
-def resolve_paths(root: Path) -> dict[str, Path]:
+def resolve_paths(root: Path, workspace_name: str = "CyberHardening") -> dict[str, Path]:
     planning = resolve_planning_dir(root)
-    workspace = planning / "CyberHardening"
+    workspace = planning / workspace_name
     workspace.mkdir(parents=True, exist_ok=True)
-    plan_md = planning / "CyberHardening.md"
+    plan_md = planning / f"{workspace_name}.md"
     plan_alt = workspace / "00_Plan.md"
     if plan_md.is_file():
         plan = plan_md
@@ -643,6 +643,11 @@ def cmd_done(
 
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(description="CyberHardening inventory / todo manager")
+    p.add_argument(
+        "--workspace",
+        default="CyberHardening",
+        help="Planning subdirectory for todo + ledger (default: CyberHardening)",
+    )
     sub = p.add_subparsers(dest="cmd", required=True)
     sub.add_parser("init", help="discover files; create/merge todo.json")
     sub.add_parser("status", help="print total / remaining / completed")
@@ -653,7 +658,14 @@ def build_parser() -> argparse.ArgumentParser:
     done.add_argument("path")
     done.add_argument(
         "--disposition",
-        choices=("findings", "clean"),
+        choices=(
+            "findings",
+            "clean",
+            "confirmed",
+            "reopened",
+            "residual",
+            "new-findings",
+        ),
         default="clean",
     )
     done.add_argument(
@@ -667,7 +679,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     root = repo_root()
-    paths = resolve_paths(root)
+    paths = resolve_paths(root, args.workspace)
     if args.cmd == "init":
         return cmd_init(root, paths)
     if args.cmd == "status":
