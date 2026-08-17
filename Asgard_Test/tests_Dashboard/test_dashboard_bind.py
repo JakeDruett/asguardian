@@ -15,3 +15,15 @@ def test_refuses_wildcard_bind_without_expose():
     )
     with pytest.raises(ValueError, match="expose"):
         DashboardServer(config).run()
+
+
+@pytest.mark.parametrize("host", ["0", "::0", "*", "[::0]"])
+def test_refuses_alias_wildcard_bind_without_expose(host):
+    config = DashboardConfig(
+        host=host,
+        project_path=".",
+        expose=False,
+        open_browser=False,
+    )
+    with pytest.raises(ValueError, match="expose"):
+        DashboardServer(config).run()

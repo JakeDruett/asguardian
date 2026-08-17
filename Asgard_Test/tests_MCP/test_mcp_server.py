@@ -348,3 +348,9 @@ class TestMCPPathJail:
         config = MCPServerConfig(host="0.0.0.0", auth_token="t", expose=False)
         with pytest.raises(ValueError, match="expose"):
             AsgardMCPServer(config).run()
+
+    @pytest.mark.parametrize("host", ["0", "::0", "*", "[::0]"])
+    def test_refuses_alias_wildcard_bind_without_expose(self, host):
+        config = MCPServerConfig(host=host, auth_token="t", expose=False)
+        with pytest.raises(ValueError, match="expose"):
+            AsgardMCPServer(config).run()

@@ -160,8 +160,10 @@ class AsgardMCPServer:
 
     def run(self) -> None:
         """Start the HTTP/JSON-RPC server and block until interrupted."""
-        host = (self._config.host or "localhost").strip()
-        if host in {"0.0.0.0", "::", "[::]"} and not self._config.expose:
+        from Asgard.common._bind_host import is_wildcard_bind_host, normalize_bind_host
+
+        host = normalize_bind_host(self._config.host)
+        if is_wildcard_bind_host(host) and not self._config.expose:
             raise ValueError("refusing to bind all interfaces without expose=True")
         if not self._config.auth_token:
             raise ValueError("auth_token is required to start the MCP HTTP server")
@@ -230,8 +232,8 @@ class AsgardMCPServer:
             def log_message(self, fmt: str, *args: Any) -> None:
                 pass
 
-        httpd = HTTPServer((self._config.host, self._config.port), _Handler)
-        print(f"Asgard MCP server listening on {self._config.host}:{self._config.port}")
+        httpd = HTTPServer((host, self._config.port), _Handler)
+        print(f"Asgard MCP server listening on {host}:{self._config.port}")
         try:
             httpd.serve_forever()
         except KeyboardInterrupt:

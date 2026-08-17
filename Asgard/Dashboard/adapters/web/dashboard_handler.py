@@ -149,14 +149,16 @@ class DashboardServer:
 
         Blocks until the process is interrupted (Ctrl-C).
         """
-        host = (self._config.host or "localhost").strip()
-        if host in {"0.0.0.0", "::", "[::]"} and not self._config.expose:
+        from Asgard.common._bind_host import is_wildcard_bind_host, normalize_bind_host
+
+        host = normalize_bind_host(self._config.host)
+        if is_wildcard_bind_host(host) and not self._config.expose:
             raise ValueError("refusing to bind all interfaces without expose=True")
         handler_class = _make_handler_class(self._config)
         server_address = (host, self._config.port)
         httpd = http.server.HTTPServer(server_address, handler_class)
 
-        url = f"http://{self._config.host}:{self._config.port}/"
+        url = f"http://{host}:{self._config.port}/"
         print(f"Asgard dashboard running at {url}")
         print(f"Project: {self._config.project_path}")
         print("Press Ctrl-C to stop.")

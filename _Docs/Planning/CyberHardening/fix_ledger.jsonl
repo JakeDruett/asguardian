@@ -114,3 +114,4 @@
 {"id":"CH-0044","at":"2026-08-16T14:19:00Z","commit":"e8191c3","wave":"W5","summary":"js.no-eval remediation drops Function"}
 {"id":"CHC-0012","at":"2026-08-17T03:05:05Z","commit":"b7ad32a","wave":"W1","summary":"SafeLoader + reject python YAML tags in sourcemap compose"}
 {"id":"CHC-0001","at":"2026-08-17T03:05:51Z","commit":"75727b6","wave":"W1","summary":"L8 draft pip install -e gated off pull_request"}
+{"id":"CHC-0003","at":"2026-08-17T03:05:52Z","commit":"7f32c38","wave":"W1","summary":"Normalize bind host; refuse 0/::0/* without --expose"}

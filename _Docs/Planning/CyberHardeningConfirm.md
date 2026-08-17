@@ -452,7 +452,8 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ### CHC-0001 — Draft L8 still editable-installs the PR tree
 
-- **Status:** Open
+- **Status:** Fixed
+- **Implementation note:** PR path installs pytest/benchmark/pyyaml without `-e`; PYTHONPATH=workspace. Test asserts `pip install -e` is gated by pull_request.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-829
@@ -484,7 +485,8 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ### CHC-0003 — MCP wildcard-bind deny-list is incomplete
 
-- **Status:** Open
+- **Status:** Fixed
+- **Implementation note:** `normalize_bind_host` + `is_wildcard_bind_host` treat `0` / `::0` / `*` as wildcard; MCP/Dashboard bind the normalized host. Tests for aliases.
 - **Severity:** Medium
 - **Confidence:** Medium
 - **CWE / class:** CWE-306 / CWE-668
