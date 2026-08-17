@@ -464,3 +464,253 @@
 {"path":"Asgard_Test/fixtures/bandit/examples/try_except_continue.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
 {"path":"Asgard_Test/fixtures/bandit/examples/try_except_pass.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
 {"path":"Asgard_Test/fixtures/bandit/examples/unverified_context.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard/Heimdall/Security/Deserialization/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Deserialization/models/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Deserialization/models/deserialization_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Deserialization/services/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Deserialization/services/_deserialization_ast_analysis.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Deserialization/services/deserialization_scanner.py","at":"2026-08-17T01:31:09+00:00","disposition":"residual","finding_ids":["CH-0078"],"summary":"os.walk file-symlink read"}
+{"path":"Asgard/Heimdall/Security/FileIntegrity/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/FileIntegrity/models/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/FileIntegrity/models/file_integrity_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"confirmed","finding_ids":["CH-0076"],"summary":"has_changes includes adds"}
+{"path":"Asgard/Heimdall/Security/FileIntegrity/services/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Frontend/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Frontend/models/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Frontend/models/frontend_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Frontend/services/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Frontend/services/frontend_scanner.py","at":"2026-08-17T01:31:09+00:00","disposition":"residual","finding_ids":["CH-0078"],"summary":"os.walk file-symlink read"}
+{"path":"Asgard/Heimdall/Security/Git/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Git/models/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Git/models/git_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Git/services/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Headers/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Headers/models/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Headers/models/header_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Headers/services/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Headers/services/_cors_patterns.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Headers/services/_csp_checks.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/_dispatch_analysis.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/_dispatch_infra.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/_dispatch_management.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/_dispatcher.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/common/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/common/_constants.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/common/analysis_args.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/common/concurrency_args.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/common/import_args.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/common/output_args.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/common/profile_args.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/common/quality_args.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/common/scan_args.py","at":"2026-08-17T01:31:09+00:00","disposition":"confirmed","finding_ids":["CH-0089"],"summary":"--denied dest wired"}
+{"path":"Asgard/Heimdall/cli/common/security_args.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/common/tool_args.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/common/tool_extra_args.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/common/typing_args.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/handlers/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/cli/handlers/_base.py","at":"2026-08-17T01:31:09+00:00","disposition":"residual","finding_ids":["CH-0046"],"summary":"HTML interpolates scan_path raw"}
+{"path":"Asgard/Bragi/Quality/languages/ruby/models/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/ruby/models/ruby_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/ruby/services/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/ruby/services/_ruby_rules.py","at":"2026-08-17T01:31:09+00:00","disposition":"confirmed","finding_ids":["CH-0043"],"summary":"mask_quoted_literals"}
+{"path":"Asgard/Bragi/Quality/languages/ruby/services/ruby_analyzer.py","at":"2026-08-17T01:31:09+00:00","disposition":"confirmed","finding_ids":["CH-0042"],"summary":"confined walk"}
+{"path":"Asgard/Bragi/Quality/languages/rust/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/rust/models/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/rust/models/rust_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/rust/services/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/rust/services/_rust_rules.py","at":"2026-08-17T01:31:09+00:00","disposition":"confirmed","finding_ids":["CH-0043"],"summary":"mask_quoted_literals"}
+{"path":"Asgard/Bragi/Quality/languages/rust/services/rust_analyzer.py","at":"2026-08-17T01:31:09+00:00","disposition":"confirmed","finding_ids":["CH-0042"],"summary":"confined walk"}
+{"path":"Asgard/Bragi/Quality/languages/shell/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/shell/models/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/shell/models/shell_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/shell/services/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/shell/services/_shell_bug_rules.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/shell/services/_shell_rules.py","at":"2026-08-17T01:31:09+00:00","disposition":"residual","finding_ids":["CH-0043"],"summary":"raw credential snippet leftover"}
+{"path":"Asgard/Bragi/Quality/languages/shell/services/shell_analyzer.py","at":"2026-08-17T01:31:09+00:00","disposition":"confirmed","finding_ids":["CH-0042"],"summary":"confined walk"}
+{"path":"Asgard/Bragi/Quality/languages/typescript/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/typescript/models/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/typescript/models/ts_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/typescript/services/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/typescript/services/_ts_security_rules.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/languages/typescript/services/ts_analyzer.py","at":"2026-08-17T01:31:09+00:00","disposition":"confirmed","finding_ids":["CH-0042","CH-0043"],"summary":"JS confined walk + masked creds"}
+{"path":"Asgard/Bragi/Quality/models/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Architecture/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Architecture/test_architecture_analyzer.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Architecture/test_architecture_config.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Architecture/test_architecture_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Architecture/test_cir_builder.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Architecture/test_generic_hexagonal_checks.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Architecture/test_generic_solid_checks.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Architecture/test_graph_layer_inference.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Architecture/test_hexagonal_analyzer.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Architecture/test_md_cell.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Architecture/test_reflexion.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Architecture/test_solid_validator.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Architecture/test_treesitter_solid_checks.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Calibration/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Calibration/test_language_profile_schema.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Calibration/test_local_calibrator.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Calibration/test_nb_model.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Calibration/test_pca_weights.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Calibration/test_profile_service.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Calibration/test_rule_validator.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Calibration/test_rule_validator_stage2.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Calibration/test_szz.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/CodeFix/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/CodeFix/test_codefix_service.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Coverage/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Coverage/test_coverage_analyzer.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Coverage/test_coverage_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Coverage/test_multilang_coverage.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_dependency_analyzer.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"L0 unit tests; no live secrets"}
+{"path":"Asgard/Heimdall/Security/Container/models/container_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Container/services/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Container/services/_compliance_mapping.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Container/services/_compose_checks.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Container/services/_compose_checks_network.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Container/services/_compose_checks_runtime.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Container/services/_dockerfile_checks.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Container/services/_dockerfile_patterns.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Container/services/_dockerfile_structural_checks.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Container/services/compose_analyzer.py","at":"2026-08-17T01:31:09+00:00","disposition":"residual","finding_ids":["CH-0078"],"summary":"iterdir follows links"}
+{"path":"Asgard/Heimdall/Security/Container/services/container_analyzer.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Container/services/dockerfile_analyzer.py","at":"2026-08-17T01:31:09+00:00","disposition":"residual","finding_ids":["CH-0078"],"summary":"iterdir follows links"}
+{"path":"Asgard/Heimdall/Security/Container/utilities/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Container/utilities/_dockerfile_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Container/utilities/_dockerfile_parse_helpers.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/Container/utilities/dockerfile_parser.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/DNS/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"confirmed","finding_ids":["CH-0075"],"summary":"re-export fixed checker"}
+{"path":"Asgard/Heimdall/Security/DNS/models/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/DNS/models/dns_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/DNS/services/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"confirmed","finding_ids":["CH-0075"],"summary":"re-export fixed checker"}
+{"path":"Asgard/Heimdall/Security/DataExfil/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/DataExfil/models/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/DataExfil/models/data_exfil_models.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/DataExfil/services/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Heimdall/Security/DataExfil/services/data_exfil_detector.py","at":"2026-08-17T01:31:09+00:00","disposition":"residual","finding_ids":["CH-0078"],"summary":"os.walk file-symlink read"}
+{"path":"Asgard/Bragi/Quality/services/__init__.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_blocking_async_report.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_blocking_async_visitor.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"unbounded AST/read is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/services/_code_smell_report.py","at":"2026-08-17T01:31:09+00:00","disposition":"confirmed","finding_ids":["CH-0046"],"summary":"escaped HTML re-export"}
+{"path":"Asgard/Bragi/Quality/services/_code_smell_visitor.py","at":"2026-08-17T01:31:09+00:00","disposition":"confirmed","finding_ids":["CH-0046"],"summary":"feeds escaped HTML"}
+{"path":"Asgard/Bragi/Quality/services/_complexity_report.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_complexity_visitors.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"unbounded AST/read is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/services/_daemon_thread_report.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_daemon_thread_visitor.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"unbounded AST/read is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/services/_datetime_report.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_datetime_visitor.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"unbounded AST/read is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/services/_debt_aggregator.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_debt_workers.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"unbounded AST/read is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/services/_documentation_helpers.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_documentation_report.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_duplication_helpers.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"unbounded AST/read is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/services/_duplication_report.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_env_fallback_helpers.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_env_fallback_reporter.py","at":"2026-08-17T01:31:09+00:00","disposition":"confirmed","finding_ids":["CH-0043"],"summary":"snippets remasked"}
+{"path":"Asgard/Bragi/Quality/services/_env_fallback_visitor.py","at":"2026-08-17T01:31:09+00:00","disposition":"confirmed","finding_ids":["CH-0043"],"summary":"model remasks"}
+{"path":"Asgard/Bragi/Quality/services/_error_handling_reporter.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_error_handling_visitor.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"unbounded AST/read is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/services/_future_leak_report.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, confined, or no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_future_leak_visitor.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"unbounded AST/read is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/services/_generic_complexity.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"unbounded AST/read is CHC-0007 clone"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/brute/source/impossible.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/brute/source/low.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/brute/source/medium.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/captcha/help/help.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/captcha/index.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/captcha/source/high.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/captcha/source/impossible.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/captcha/source/low.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/captcha/source/medium.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/help/help.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/index.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/check_token_high.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/check_token_impossible.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/download_ecb_attack.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/download_oracle_attack.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/ecb_attack.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/high.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/impossible.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/low.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/medium.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/oracle_attack.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/token_library_high.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/token_library_impossible.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/cryptography/source/xor_theory.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csp/help/help.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csp/index.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/high.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/impossible.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/jsonp.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/jsonp_impossible.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/low.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csp/source/medium.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/help/help.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/index.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/source/high.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/source/impossible.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/source/low.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/source/medium.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/csrf/test_credentials.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/exec/help/help.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/exec/index.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/exec/source/high.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/exec/source/impossible.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/exec/source/low.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/exec/source/medium.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/fi/file1.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/fi/file2.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/fi/file3.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/fi/file4.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/fi/help/help.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/urlopen.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/weak_cryptographic_key_sizes.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/wildcard-injection.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/xml_etree_celementtree.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/xml_etree_elementtree.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/xml_expatbuilder.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/xml_expatreader.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/xml_minidom.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/xml_pulldom.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/xml_sax.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/xml_xmlrpc.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/yaml_load.py","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/bootstrap.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/gen_openapi.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/help/help.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/index.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/public/index.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/source/high.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/source/impossible.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/source/low.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/source/medium.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/src/GenericController.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/src/HealthController.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/src/Helpers.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/src/Login.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/src/LoginController.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/src/Order.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/src/OrderController.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/src/Token.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/src/User.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/api/src/UserController.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/authbypass/change_user_details.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/authbypass/get_user_data.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/authbypass/help/help.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/authbypass/index.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/authbypass/source/high.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/authbypass/source/impossible.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/authbypass/source/low.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/authbypass/source/medium.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/bac/help/help.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/bac/index.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/bac/log_viewer.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/bac/source/high.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/bac/source/impossible.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/bac/source/low.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/bac/source/medium.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/bac/source/view_source.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/brute/help/help.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/brute/index.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/brute/source/high.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}

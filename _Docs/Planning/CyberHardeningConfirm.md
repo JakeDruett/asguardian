@@ -533,11 +533,10 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ## Confirmation progress
 
-Updated: 2026-08-17T01:27:29+00:00
-- remaining: 3473
-- completed: 465
+Updated: 2026-08-17T01:31:09+00:00
+- remaining: 3223
+- completed: 715
 - last CHC ID: CHC-0007
 - All live original CH-XXXX have verdicts.
-- Batch 8: remaining Performance, BugDetection, Quality langs cpp-php, Heimdall API/Access/Auth/Backdoor, Bandit fixtures (~177).
+- Batch 9: Quality ruby-ts + Quality visitors + Heimdall Container/Deser/Frontend + CLI dispatch + Bandit/DVWA/tests.
 - Next: `python3 scripts/cyberhardening_inventory.py --workspace CyberHardeningConfirm next 8`
-- Do not rebuild confirmation inventory. Do not implement.
