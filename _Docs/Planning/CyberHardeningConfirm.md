@@ -330,7 +330,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 ### CH-0009 — Residual (ENV/ still in template)
 
 - **Leftover status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 018d0db
 - **Implementation note:** Dropped ENV/ from BackendInit GITIGNORE_FULL so a directory named ENV is not ignored.
 - **Planned leftover fix:** drop ENV/ from the generated gitignore.
 

@@ -158,7 +158,6 @@ pip-wheel-metadata/
 # Virtual environments
 .venv/
 venv/
-ENV/
 .env.local
 .env.*.local
 
