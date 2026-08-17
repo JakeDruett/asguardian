@@ -16,3 +16,11 @@ def test_pre_commit_revs_are_full_shas():
         assert _SHA.fullmatch(rev), rev
     hook_ids = [hook["id"] for repo in data["repos"] for hook in repo["hooks"]]
     assert "detect-secrets" in hook_ids
+
+
+def test_python_init_template_includes_detect_secrets():
+    from Asgard.Shared.Init._templates_python import PRE_COMMIT_CONFIG
+
+    data = yaml.safe_load(PRE_COMMIT_CONFIG.replace("{project_name}", "demo"))
+    hook_ids = [hook["id"] for repo in data["repos"] for hook in repo["hooks"]]
+    assert "detect-secrets" in hook_ids

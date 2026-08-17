@@ -321,7 +321,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 ### CH-0006 — Residual (generated hook template)
 
 - **Leftover status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 317751e
 - **Implementation note:** Python init PRE_COMMIT_CONFIG now includes detect-secrets (same rev as the repo hook).
 - **Original sink (closed):** repo `.pre-commit-config.yaml` uses 40-char `rev` SHAs, `additional_dependencies` pinned with `==`, and a `detect-secrets` hook.
 - **Leftover:** `Asgard/Shared/Init/_templates_python.py` `PRE_COMMIT_CONFIG` still has SHA revs + `==` extras but **omits detect-secrets**. `asguardian init` projects do not get the secret-scan hook the repo itself now uses.

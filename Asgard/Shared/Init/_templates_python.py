@@ -125,6 +125,11 @@ repos:
         args: ["--ignore-missing-imports"]
         pass_filenames: false
         entry: mypy {project_name}/
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: 01886c8a910c64595c47f186ca1ffc0b77fa5458  # v1.5.0
+    hooks:
+      - id: detect-secrets
 """
 
 # -- Standalone ruff.toml (for projects that don't use pyproject.toml) --
