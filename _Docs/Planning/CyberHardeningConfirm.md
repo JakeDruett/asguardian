@@ -676,6 +676,6 @@ Updated: 2026-08-17T02:45:00+00:00
 - last CHC ID: CHC-0013
 - All 114 live original CH-XXXX have verdicts (1 Skipped withdrawn). Reopened=0.
 - Batch 14: remaining Asgard_Test fixtures/tests + MANIFEST.in/scripts. All corpus/tests clean (no live secrets). Golden ci.yml/ci-deploy.yml SHA-pinned (CH-0001/0002/0003 Confirmed on those files).
-- Ledger: 3939 lines / 3938 completed (extra historical `.gitignore` line, not inventoried). Every completed path has a ledger line.
+- Ledger: 3938 lines / 3938 completed (1:1 after dropping extra `.gitignore`). Every completed path has a ledger line. Asgard_Test bench/Heimdall-tests/package-tests/meta clusters rewritten from traces.
 - Phase 4: Status CONFIRMATION COMPLETE — 13 NEW FINDINGS.
 - Next mission: implement Open CHC-0001..0013 and Residual leftovers. Do not start a second first-audit.

@@ -2,7 +2,7 @@
   "version": 1,
   "repo_root": ".",
   "generated_at": "2026-08-17T00:40:38+00:00",
-  "updated_at": "2026-08-17T02:08:19+00:00",
+  "updated_at": "2026-08-17T02:11:40+00:00",
   "planning_dir": "_Docs/Planning",
   "plan_path": "_Docs/Planning/CyberHardeningConfirm.md",
   "total_discovered": 3938,
@@ -28679,8 +28679,10 @@
     {
       "path": "Asgard_Test/tests_Heimdall/L0_Mocked/Evaluation/test_corpus_path_jail.py",
       "completed_at": "2026-08-17T02:08:17+00:00",
-      "finding_ids": [],
-      "disposition": "clean",
+      "finding_ids": [
+        "CH-0091"
+      ],
+      "disposition": "confirmed",
       "bytes": 816,
       "sha256": "2870041bd64ed1e464f43b0a7e63975cc85acb1d314363ad3d61a9fda962e1c3"
     },
@@ -28959,8 +28961,10 @@
     {
       "path": "Asgard_Test/tests_Heimdall/L0_Mocked/Security/test_scan_symlink_confinement.py",
       "completed_at": "2026-08-17T02:08:17+00:00",
-      "finding_ids": [],
-      "disposition": "clean",
+      "finding_ids": [
+        "CH-0078"
+      ],
+      "disposition": "confirmed",
       "bytes": 8966,
       "sha256": "ef56c969b46e4d38d71cd6510a78bb179478680e6f80cd70f22fb295f1f5ef32"
     },
@@ -30999,8 +31003,10 @@
     {
       "path": "Asgard_Test/tests_Heimdall/evaluation/test_calibration_map.py",
       "completed_at": "2026-08-17T02:08:17+00:00",
-      "finding_ids": [],
-      "disposition": "clean",
+      "finding_ids": [
+        "CH-0092"
+      ],
+      "disposition": "residual",
       "bytes": 9520,
       "sha256": "7eca1aa303522101056f024137e104d6e92579eb5bb42c386dda75f140407805"
     },
