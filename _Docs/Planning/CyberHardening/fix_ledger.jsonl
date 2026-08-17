@@ -133,4 +133,5 @@
 {"id":"CH-0009","at":"2026-08-17T19:15:00Z","commit":"018d0db","wave":"W5","summary":"Drop ENV/ from generated BackendInit gitignore"}
 {"id":"CH-0064","at":"2026-08-17T19:40:00Z","commit":"aa3bc62","wave":"W5","summary":"Escape OpenAPI HTML status_code"}
 {"id":"CH-0094","at":"2026-08-17T19:41:00Z","commit":"8bbe1ca","wave":"W5","summary":"Escape common formatter GHA/HTML fields"}
-{"id":"CH-0067","at":"2026-08-17T19:42:00Z","commit":"PENDING","wave":"W5","summary":"Escape visual-regression HTML fields"}
+{"id":"CH-0067","at":"2026-08-17T19:42:00Z","commit":"dfa718d","wave":"W5","summary":"Escape visual-regression HTML fields"}
+{"id":"CH-0046","at":"2026-08-17T19:43:00Z","commit":"PENDING","wave":"W5","summary":"Escape scan_path in quality/scan HTML"}

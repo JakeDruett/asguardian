@@ -1,3 +1,4 @@
+import html
 from datetime import datetime
 from typing import cast
 
@@ -130,7 +131,7 @@ def _generate_scan_html_report(
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Heimdall Scan - {scan_path}</title>
+  <title>Heimdall Scan - {html.escape(str(scan_path))}</title>
   <style>
     *{{box-sizing:border-box;margin:0;padding:0}}
     body{{background:#1e1e1e;color:#d4d4d4;font-family:'Cascadia Code','Fira Code',Consolas,monospace;font-size:13px;line-height:1.6;display:flex;flex-direction:column;height:100vh;overflow:hidden}}
@@ -164,7 +165,7 @@ def _generate_scan_html_report(
   <div class="hdr">
     <h1>Heimdall Full Scan <span class="overall">{overall}</span></h1>
     <div class="meta">
-      {scan_path} &nbsp;|&nbsp; {scanned_at.strftime('%Y-%m-%d %H:%M:%S')} &nbsp;|&nbsp; {duration:.1f}s &nbsp;|&nbsp;
+      {html.escape(str(scan_path))} &nbsp;|&nbsp; {scanned_at.strftime('%Y-%m-%d %H:%M:%S')} &nbsp;|&nbsp; {duration:.1f}s &nbsp;|&nbsp;
       <span class="pass">{pass_count} passed</span> &nbsp;
       <span class="fail">{fail_count} failed</span> &nbsp;
       <span class="err">{err_count} errors</span>

@@ -1,3 +1,4 @@
+import html
 import io
 import os
 import re
@@ -197,7 +198,7 @@ def _generate_quality_html_report(result) -> str:
             badge_color = _HTML_SEVERITY_COLORS.get(severity, "#7f8c8d")
             violation_rows.append(
                 f"<tr>"
-                f"<td>{v.relative_path}</td>"
+                f"<td>{html.escape(str(v.relative_path))}</td>"
                 f"<td>{v.line_count}</td>"
                 f"<td>{v.threshold}</td>"
                 f"<td>+{v.lines_over}</td>"
@@ -250,7 +251,7 @@ def _generate_quality_html_report(result) -> str:
         "<body>"
         "<header>"
         "<h1>Heimdall Code Quality Report &mdash; File Length Analysis</h1>"
-        f"<p>Scan path: {result.scan_path} &nbsp;|&nbsp; "
+        f"<p>Scan path: {html.escape(str(result.scan_path))} &nbsp;|&nbsp; "
         f"Generated: {result.scanned_at.strftime('%Y-%m-%d %H:%M:%S')} &nbsp;|&nbsp; "
         f"Duration: {result.scan_duration_seconds:.2f}s</p>"
         "</header>"
