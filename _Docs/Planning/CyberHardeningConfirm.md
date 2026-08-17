@@ -533,32 +533,11 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ## Confirmation progress
 
-Updated: 2026-08-17T01:20:52+00:00
-- remaining: 3650
-- completed: 288
+Updated: 2026-08-17T01:27:29+00:00
+- remaining: 3473
+- completed: 465
 - last CHC ID: CHC-0007
-- All live original CH-XXXX have verdicts (CH-0029 Skipped).
-- Batches 1–7: finding primaries + Architecture/Calibration/CodeFix/Coverage/Dependencies/OOP/Performance start.
-
-## RESUME (session cap)
-
-Confirmation is **not done**. remaining=3650.
-
-Successor:
-1. Read `_Docs/Planning/CyberHardeningConfirm.md` Confirmation progress + New findings.
-2. Do **not** rebuild confirmation inventory. Do **not** `init` the original CyberHardening workspace.
-3. Continue: `python3 scripts/cyberhardening_inventory.py --workspace CyberHardeningConfirm next 8`
-4. Next paths:
-Asgard/Bragi/Performance/services/memory_profiler_service.py
-Asgard/Bragi/Performance/services/static_performance_service.py
-Asgard/Bragi/Performance/utilities/__init__.py
-Asgard/Bragi/Performance/utilities/_performance_ast_utils.py
-Asgard/Bragi/Quality/BugDetection/__init__.py
-Asgard/Bragi/Quality/BugDetection/models/__init__.py
-Asgard/Bragi/Quality/BugDetection/models/bug_models.py
-Asgard/Bragi/Quality/BugDetection/services/__init__.py
-5. Then remaining Bragi Performance/Quality/QualityGate/Ratings, Forseti, Freya, Heimdall, Verdandi, Volundr, Asgard CLI/common/config, Asgard_Test (majority), FutureItems leftovers, scripts.
-6. Merge verdicts into this plan + confirmation ledger, then `done PATH`.
-7. When remaining=0 after a refresh `init`, run Phase 4 close-out.
-
-Do not implement. Do not ask whether to continue.
+- All live original CH-XXXX have verdicts.
+- Batch 8: remaining Performance, BugDetection, Quality langs cpp-php, Heimdall API/Access/Auth/Backdoor, Bandit fixtures (~177).
+- Next: `python3 scripts/cyberhardening_inventory.py --workspace CyberHardeningConfirm next 8`
+- Do not rebuild confirmation inventory. Do not implement.

@@ -287,3 +287,180 @@
 {"path":"Asgard/Bragi/Performance/services/cache_analyzer_service.py","at":"2026-08-17T01:20:52+00:00","disposition":"confirmed","finding_ids":["CH-0040"],"summary":"confined walker"}
 {"path":"Asgard/Bragi/Performance/services/cpu_profiler_service.py","at":"2026-08-17T01:20:52+00:00","disposition":"confirmed","finding_ids":["CH-0040"],"summary":"confined walker"}
 {"path":"Asgard/Bragi/Performance/services/database_analyzer_service.py","at":"2026-08-17T01:20:52+00:00","disposition":"confirmed","finding_ids":["CH-0040"],"summary":"confined walker"}
+{"path":"Asgard/Bragi/Performance/services/memory_profiler_service.py","at":"2026-08-17T01:27:29+00:00","disposition":"confirmed","finding_ids":["CH-0040"],"summary":"uses confined performance walker"}
+{"path":"Asgard/Bragi/Performance/services/static_performance_service.py","at":"2026-08-17T01:27:29+00:00","disposition":"confirmed","finding_ids":["CH-0040"],"summary":"delegates to confined scanners"}
+{"path":"Asgard/Bragi/Performance/utilities/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export"}
+{"path":"Asgard/Bragi/Performance/utilities/_performance_ast_utils.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"ast helpers no FS"}
+{"path":"Asgard/Bragi/Quality/BugDetection/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/BugDetection/models/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/BugDetection/models/bug_models.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/BugDetection/services/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/BugDetection/services/assertion_misuse_detector.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"AST-only detector; unbounded parse is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/BugDetection/services/dead_code_detector.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"AST-only detector; unbounded parse is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/BugDetection/services/division_by_zero_detector.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"AST-only detector; unbounded parse is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/BugDetection/services/exception_quality_detector.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"AST-only detector; unbounded parse is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/BugDetection/services/magic_numbers_detector.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"AST-only detector; unbounded parse is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/BugDetection/services/null_dereference_detector.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"AST-only detector; unbounded parse is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/BugDetection/services/python_footgun_detector.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"AST-only detector; unbounded parse is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/BugDetection/services/type_erosion_scanner.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"AST-only detector; unbounded parse is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/BugDetection/services/unreachable_code_detector.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"AST-only detector; unbounded parse is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/_quality_models_imports.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/_quality_services_imports.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/_confined_walk.py","at":"2026-08-17T01:27:29+00:00","disposition":"confirmed","finding_ids":["CH-0042"],"summary":"shared confined walker"}
+{"path":"Asgard/Bragi/Quality/languages/cpp/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/cpp/models/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/cpp/models/cpp_models.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/cpp/services/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/cpp/services/_cpp_rules.py","at":"2026-08-17T01:27:29+00:00","disposition":"residual","finding_ids":["CH-0043"],"summary":"raw credential snippet leftover"}
+{"path":"Asgard/Bragi/Quality/languages/cpp/services/cpp_analyzer.py","at":"2026-08-17T01:27:29+00:00","disposition":"confirmed","finding_ids":["CH-0042"],"summary":"collect_regex_findings confined"}
+{"path":"Asgard/Bragi/Quality/languages/csharp/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/csharp/models/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/csharp/models/csharp_models.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/csharp/services/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/csharp/services/_csharp_rules.py","at":"2026-08-17T01:27:29+00:00","disposition":"residual","finding_ids":["CH-0043"],"summary":"raw credential snippet leftover"}
+{"path":"Asgard/Bragi/Quality/languages/csharp/services/csharp_analyzer.py","at":"2026-08-17T01:27:29+00:00","disposition":"confirmed","finding_ids":["CH-0042"],"summary":"collect_regex_findings confined"}
+{"path":"Asgard/Bragi/Quality/languages/go/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/go/models/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/go/models/go_models.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/go/services/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/go/services/_go_rules.py","at":"2026-08-17T01:27:29+00:00","disposition":"residual","finding_ids":["CH-0043"],"summary":"raw credential snippet leftover"}
+{"path":"Asgard/Bragi/Quality/languages/go/services/go_analyzer.py","at":"2026-08-17T01:27:29+00:00","disposition":"confirmed","finding_ids":["CH-0042"],"summary":"confined walk"}
+{"path":"Asgard/Bragi/Quality/languages/java/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/java/models/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/java/models/java_models.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/java/services/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/java/services/_java_rules.py","at":"2026-08-17T01:27:29+00:00","disposition":"residual","finding_ids":["CH-0043"],"summary":"raw credential snippet leftover"}
+{"path":"Asgard/Bragi/Quality/languages/java/services/java_analyzer.py","at":"2026-08-17T01:27:29+00:00","disposition":"confirmed","finding_ids":["CH-0042"],"summary":"confined walk"}
+{"path":"Asgard/Bragi/Quality/languages/javascript/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/javascript/models/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/javascript/models/js_models.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/javascript/services/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/javascript/services/_js_style_rules.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/php/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/php/models/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/php/models/php_models.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/php/services/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Bragi/Quality/languages/php/services/php_analyzer.py","at":"2026-08-17T01:27:29+00:00","disposition":"confirmed","finding_ids":["CH-0042","CH-0045"],"summary":"confined walk + php regex caps"}
+{"path":"Asgard/Bragi/Quality/languages/ruby/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export or models"}
+{"path":"Asgard/Heimdall/Security/API/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/API/models/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/API/models/api_models.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/API/services/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/API/services/api_scanner.py","at":"2026-08-17T01:27:29+00:00","disposition":"residual","finding_ids":["CH-0078"],"summary":"os.walk not iter_confined_files"}
+{"path":"Asgard/Heimdall/Security/Access/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/Access/models/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/Access/models/access_models.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/Access/services/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/Access/services/access_analyzer.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/Access/services/control_analyzer.py","at":"2026-08-17T01:27:29+00:00","disposition":"residual","finding_ids":["CH-0084"],"summary":"nested .* full-file finditer clone"}
+{"path":"Asgard/Heimdall/Security/Access/services/permission_analyzer.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/Access/utilities/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/Access/utilities/decorator_utils.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/Auth/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/Auth/models/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/Auth/models/auth_models.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/Auth/services/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"re-export, models, or confined walker"}
+{"path":"Asgard/Heimdall/Security/Auth/services/_jwt_patterns.py","at":"2026-08-17T01:27:29+00:00","disposition":"residual","finding_ids":["CH-0084"],"summary":"unbounded regex clone"}
+{"path":"Asgard/Heimdall/Security/Auth/services/_password_patterns.py","at":"2026-08-17T01:27:29+00:00","disposition":"residual","finding_ids":["CH-0084"],"summary":"unbounded regex clone"}
+{"path":"Asgard/Heimdall/Security/Auth/services/auth_analyzer.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Auth/services/jwt_validator.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Auth/services/password_analyzer.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Auth/services/session_analyzer.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Auth/services/timing_safe_compare.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Auth/utilities/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Auth/utilities/token_utils.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Backdoor/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Backdoor/models/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Backdoor/models/backdoor_models.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Backdoor/services/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Backdoor/services/backdoor_detector.py","at":"2026-08-17T01:27:29+00:00","disposition":"residual","finding_ids":["CH-0078"],"summary":"os.walk + read follows file symlink"}
+{"path":"Asgard/Heimdall/Security/Compliance/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Compliance/models/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Compliance/models/compliance_models.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Compliance/services/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Compliance/services/_compliance_mappers.py","at":"2026-08-17T01:27:29+00:00","disposition":"residual","finding_ids":["CH-0073"],"summary":"unknown severity -> low"}
+{"path":"Asgard/Heimdall/Security/Compliance/services/compliance_reporter.py","at":"2026-08-17T01:27:29+00:00","disposition":"residual","finding_ids":["CH-0073"],"summary":"empty reports grade A"}
+{"path":"Asgard/Heimdall/Security/Container/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard/Heimdall/Security/Container/models/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"confined walker or re-export"}
+{"path":"Asgard_Test/fixtures/bandit/examples/__init__.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/assert.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/binding.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/cipher-modes.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/ciphers.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/crypto-md5.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/dill.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/django_sql_injection_extra.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/django_sql_injection_raw.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/eval.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/exec.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/flask_debug.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/ftplib.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/hardcoded-passwords.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/hardcoded-tmp.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/hashlib_new_insecure_functions.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/httpoxy_cgihandler.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/httpoxy_twisted_directory.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/httpoxy_twisted_script.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/huggingface_unsafe_download.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/imports-aliases.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/imports-from.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/imports-function.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/imports-with-importlib.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/imports.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/jinja2_templating.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/jsonpickle.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/logging_config_insecure_listen.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/long_set.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/mako_templating.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/mark_safe.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/mark_safe_insecure.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/mark_safe_secure.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/markupsafe_markup_xss.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/markupsafe_markup_xss_allowed_calls.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/markupsafe_markup_xss_extend_markup_names.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/marshal_deserialize.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/mktemp.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/multiline_statement.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/new_candidates-all.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/new_candidates-none.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/new_candidates-nosec.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/new_candidates-some.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/no_host_key_verification.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/nonsense.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/nonsense2.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/nosec.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/okay.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/os-chmod.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/os-exec.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/os-popen.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/os-spawn.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/os-startfile.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/os_system.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/pandas_read_pickle.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/paramiko_injection.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/partial_path_process.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/pickle_deserialize.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/popen_wrappers.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/pycrypto.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/pycryptodome.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/pyghmi.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/pytorch_load.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/random_module.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/requests-missing-timeout.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/requests-ssl-verify-disabled.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/shelve_open.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/skip.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/snmp.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/sql_multiline_statements.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/sql_statements.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/ssl-insecure-version.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/subprocess_shell.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/tarfile_extractall.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/telnetlib.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/trojansource.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/trojansource_latin1.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/try_except_continue.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/try_except_pass.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
+{"path":"Asgard_Test/fixtures/bandit/examples/unverified_context.py","at":"2026-08-17T01:27:29+00:00","disposition":"clean","finding_ids":[],"summary":"bandit known-bad corpus; not imported; no live secrets"}
