@@ -39,8 +39,16 @@ def load_framework_stubs(frameworks: Sequence[str]) -> FrameworkStubs:
     except ImportError:
         return merged
 
+    import re
+
+    _STUB_NAME_RE = re.compile(r"^[A-Za-z0-9_-]+$")
+    stub_root = _STUB_DIR.resolve()
     for name in frameworks:
-        stub_path = _STUB_DIR / f"{name}.yml"
+        if not isinstance(name, str) or not _STUB_NAME_RE.fullmatch(name):
+            continue
+        stub_path = (stub_root / f"{name}.yml").resolve()
+        if not stub_path.is_relative_to(stub_root):
+            continue
         if not stub_path.exists():
             continue
         try:

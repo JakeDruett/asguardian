@@ -470,7 +470,7 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 ### CHC-0002 — Mock server codegen interpolates untrusted OpenAPI into source
 
 - **Status:** Fixed
-- **Fixed in:** 8e1f881
+- **Fixed in:** a449ad7
 - **Fixed at:** 2026-08-17T17:20:00Z
 - **Implementation note:** Routes use sanitize_identifier / string_literal / escape_docstring; paths allowlisted. Tests reject quote/newline injection.
 - **Severity:** High
@@ -607,7 +607,10 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ### CHC-0010 — Taint stub YAML path not jailed
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 47280b3
+- **Fixed at:** 2026-08-17T17:25:00Z
+- **Implementation note:** Stub names must match [A-Za-z0-9_-]+; resolved path must stay under the stubs directory.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-22 / CWE-693
@@ -692,17 +695,17 @@ Updated: 2026-08-17T02:45:00+00:00
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 3    | 2     | 0             |
-| Medium   | 6    | 2     | 0             |
+| Medium   | 5    | 3     | 0             |
 | Low      | 1    | 0     | 0             |
 | Info     | 0    | 0     | 0             |
 
-CHC Open remaining: CHC-0004, CHC-0005, CHC-0006, CHC-0007, CHC-0008, CHC-0009, CHC-0010, CHC-0011, CHC-0013. Residual leftovers still Open.
+CHC Open remaining: CHC-0004, CHC-0005, CHC-0006, CHC-0007, CHC-0008, CHC-0009, CHC-0011, CHC-0013. Residual leftovers still Open.
 
 ## Implementation progress
 
-- Open CHC: 9 (after this commit: CHC-0002 Fixed)
-- Fixed CHC: 4 (0001, 0002, 0003, 0012)
+- Open CHC: 8
+- Fixed CHC: 5 (0001, 0002, 0003, 0010, 0012)
 - Residual leftovers: 31 Open
 - Current wave: W2
-- Next: CHC-0010, CHC-0004, CHC-0013, then W3
+- Next: CHC-0004, CHC-0013, then W3
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`
