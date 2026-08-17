@@ -65,6 +65,15 @@ class TestSyntaxAndDigest:
 
 
 class TestSecretHandling:
+    def test_secret_mount_newline_id_refused(self):
+        config = simple_config(stages=[BuildStage(
+            name="app", base_image="python:3.12-slim",
+            run_commands=["true"],
+            secret_mounts=[SecretMount(id="pypi\nRUN echo pwned", target="/run/secrets/pypi")],
+        )])
+        with pytest.raises(ValueError):
+            generate(config)
+
     def test_secret_mount_rendered(self):
         config = simple_config(stages=[BuildStage(
             name="app", base_image="python:3.12-slim",

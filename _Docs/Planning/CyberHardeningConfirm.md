@@ -300,6 +300,9 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 
 ### CH-0102 — Residual (SecretMount)
 
+- **Leftover status:** Fixed
+- **Fixed in:** 2af3540
+- **Implementation note:** SecretMount id/target pass _require_safe_field; newline in id is refused.
 - **Original sink (closed):** `_require_safe_field` rejects CR/LF/`#` on name/syntax/args/labels/stage image/workdir/user/copy/run/env/entrypoint/cmd. HEALTHCHECK uses `json.dumps`. Trivy digest-pinned. `docker.sock` only if `privileged_scan`.
 - **Leftover:** `_mount_flags` interpolates `mount.id` / `mount.target` into `RUN --mount=...` without `_require_safe_field`. Newline/`#` becomes another Dockerfile instruction. CLI `--secret-mounts` feeds this.
 - **Location:** `dockerfile_generator.py` `_mount_flags` ~238-249; `_assert_safe_config` ~177-217 does not walk `secret_mounts`.
@@ -307,6 +310,9 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 
 ### CH-0103 — Residual (Jenkins env keys)
 
+- **Leftover status:** Fixed
+- **Fixed in:** PENDING
+- **Implementation note:** Jenkins env keys must match [A-Za-z_][A-Za-z0-9_]*; hostile keys raise.
 - **Original sink (closed):** `generate_jenkins` calls `harden_steps`; `_jenkins_safe_script` refuses triple-quote/CR; values go through `_jenkins_groovy_string` (quoted `sh(...)`, not raw triple-quoted). Tests refuse triple-quote breakout in `run`.
 - **Leftover:** `config.env` keys interpolated raw into the Groovy `environment` block (~596-597). A key with newline or quote breaks out.
 - **Planned leftover fix:** allowlist env keys `[A-Za-z_][A-Za-z0-9_]*` (or refuse quote/newline). Test a hostile key.
@@ -314,9 +320,19 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 
 ### CH-0006 — Residual (generated hook template)
 
+- **Leftover status:** Fixed
+- **Fixed in:** PENDING
+- **Implementation note:** Python init PRE_COMMIT_CONFIG now includes detect-secrets (same rev as the repo hook).
 - **Original sink (closed):** repo `.pre-commit-config.yaml` uses 40-char `rev` SHAs, `additional_dependencies` pinned with `==`, and a `detect-secrets` hook.
 - **Leftover:** `Asgard/Shared/Init/_templates_python.py` `PRE_COMMIT_CONFIG` still has SHA revs + `==` extras but **omits detect-secrets**. `asguardian init` projects do not get the secret-scan hook the repo itself now uses.
 - **Planned leftover fix:** copy the repo hook list (including detect-secrets) into the Python init template. Test generated config contains `id: detect-secrets`.
+
+### CH-0009 — Residual (ENV/ still in template)
+
+- **Leftover status:** Fixed
+- **Fixed in:** PENDING
+- **Implementation note:** Dropped ENV/ from BackendInit GITIGNORE_FULL so a directory named ENV is not ignored.
+- **Planned leftover fix:** drop ENV/ from the generated gitignore.
 
 ### CH-0066 — Residual (click / reload / testers / security fetches)
 

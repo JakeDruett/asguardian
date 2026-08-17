@@ -127,3 +127,4 @@
 {"id":"CHC-0007","at":"2026-08-17T18:35:00Z","commit":"9c74e5e","wave":"W4","summary":"Cap Python OOP source size, AST nodes, and LCOM"}
 {"id":"CH-0001","at":"2026-08-17T18:50:00Z","commit":"1a46dac","wave":"W1","summary":"Pin generated checkout actions to KNOWN_ACTION_PINS SHAs"}
 {"id":"CH-0024","at":"2026-08-17T18:55:00Z","commit":"8904394","wave":"W1","summary":"Disable textconv and wipe extra GIT_* in isolated git"}
+{"id":"CH-0102","at":"2026-08-17T19:00:00Z","commit":"2af3540","wave":"W1","summary":"Sanitize SecretMount id/target in Dockerfile RUN --mount"}
