@@ -33,7 +33,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0003 | High | W1 | Confirmed |  | split build/attest/publish; env pypi; tag v[0-9].* |
 | CH-0004 | Medium | W1 | Confirmed |  | ci 30m + concurrency; publish 15m |
 | CH-0005 | Medium | W1 | Confirmed |  | contents:read; persist-credentials false; SHA pins; still if:false |
-| CH-0006 | Low | W1 | (pending) | | `.pre-commit-config.yaml` |
+| CH-0006 | Low | W1 | Residual | init template omits detect-secrets | repo config SHA-pinned + detect-secrets; generated Python template is not |
 | CH-0007 | Medium | W2 | (pending) | | `Asgard/BackendInit/service.py` |
 | CH-0008 | Low | W2 | (pending) | | `Asgard/BackendInit/service.py` |
 | CH-0009 | Info | W5 | (pending) | | `Asgard/BackendInit/templates.py` |
@@ -60,9 +60,9 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0030 | Info | W5 | (pending) | | `Asgard/Bragi/Calibration/models/calibration_models.py` |
 | CH-0031 | Low | W4 | (pending) | | `Asgard/Bragi/Calibration/services/profile_service.py` |
 | CH-0032 | Medium | W3 | (pending) | | `Asgard/Bragi/Dependencies/services/_license_cache.py` |
-| CH-0033 | Medium | W1 | (pending) | | `Asgard/Bragi/Dependencies/services/license_checker.py` |
+| CH-0033 | Medium | W1 | Confirmed |  | enable_network default False; https://pypi.org only; 10s timeout |
 | CH-0034 | Low | W2 | (pending) | | `Asgard/Bragi/Dependencies/services/license_checker.py` |
-| CH-0035 | High | W2 | (pending) | | `Asgard/Bragi/Dependencies/services/requirements_checker.py` |
+| CH-0035 | High | W2 | Confirmed |  | confine_sync_target jail; abs/.. rejected |
 | CH-0036 | Medium | W3 | (pending) | | `Asgard/Bragi/Dependencies/services/_vuln_cache.py` |
 | CH-0037 | Low | W2 | (pending) | | `Asgard/Bragi/Dependencies/services/_vuln_cache.py` |
 | CH-0038 | Medium | W3 | (pending) | | `Asgard/Bragi/Dependencies/models/license_models.py` |
@@ -76,30 +76,30 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0046 | Medium | W5 | (pending) | | `Asgard/Bragi/Quality/services/_code_smell_report_html.py` |
 | CH-0047 | Medium | W3 | (pending) | | `Asgard/Bragi/Quality/services/_debt_state_store.py` |
 | CH-0048 | Medium | W3 | (pending) | | `Asgard/Bragi/Quality/services/_incremental_cache.py` |
-| CH-0049 | High | W1 | Confirmed |  | isolated cwd/config; plugins disabled; planted-config tests exist |
-| CH-0050 | High | W2 | (pending) | | `Asgard/Bragi/Quality/services/_pyright_runner.py` |
+| CH-0049 | High | W1 | Confirmed |  | mypy/pyright runners isolated; planted plugins not loaded |
+| CH-0050 | High | W2 | Confirmed |  | pyrightconfig written only in isolated temp workdir |
 | CH-0051 | High | W3 | (pending) | | `Asgard/Bragi/QualityGate/baseline_store.py` |
 | CH-0052 | Medium | W3 | (pending) | | `Asgard/Bragi/QualityGate/fingerprint.py` |
 | CH-0053 | Medium | W4 | (pending) | | `Asgard/Bragi/Quality/services/parallel_scanner.py` |
 | CH-0054 | Medium | W3 | (pending) | | `Asgard/Bragi/Ratings/services/ratings_calculator.py` |
 | CH-0055 | High | W5 | (pending) | | `Asgard/Dashboard/services/html_renderer.py` |
-| CH-0056 | Medium | W1 | (pending) | | `Asgard/Dashboard/adapters/web/dashboard_handler.py` |
+| CH-0056 | Medium | W1 | Confirmed |  | default localhost; refuse 0.0.0.0/:: without --expose |
 | CH-0057 | Medium | W2 | (pending) | | `Asgard/Forseti/Alignment/services/alignment_loader_service.py` |
-| CH-0058 | High | W2 | (pending) | | `Asgard/Forseti/CodeGen/services/_python_generator_helpers.py` |
-| CH-0059 | High | W2 | (pending) | | `Asgard/Forseti/JSONSchema/services/_ref_resolver_helpers.py` |
+| CH-0058 | High | W2 | Confirmed |  | json.dumps paths; sanitize identifiers; confine_output_path |
+| CH-0059 | High | W2 | Confirmed |  | $ref jailed to schema dir; remotes/file-abs refused |
 | CH-0060 | High | W1 | Confirmed |  | http(s)+IP block+redirect revalidate; no file/ftp handlers |
 | CH-0061 | High | W1 | Confirmed |  | default 127.0.0.1; generated Flask debug=False |
 | CH-0062 | High | W1 | Confirmed |  | localhost default; http(s) upstream; path jail; same-host redirects |
 | CH-0063 | High | W1 | Confirmed |  | urljoin + path jail; encode params; same-host redirects |
 | CH-0064 | Medium | W5 | (pending) | | `Asgard/Forseti/Documentation/services/docs_generator.py` |
 | CH-0065 | Medium | W2 | (pending) | | `Asgard/Forseti/Database/services/_schema_analyzer_helpers.py` |
-| CH-0066 | High | W1 | Confirmed |  | http(s) only; RFC1918 blocked; safe_goto revalidates; SPA uses should_crawl |
+| CH-0066 | High | W1 | Residual | click/reload/login-submit follow first | start/login/enqueue/tester goto gated; click+reload navigate before allowlist |
 | CH-0067 | High | W5 | (pending) | | `Asgard/Freya/Integration/services/html_reporter.py` |
-| CH-0068 | High | W2 | (pending) | | `Asgard/Freya/Integration/services/baseline_manager.py` |
+| CH-0068 | High | W2 | Confirmed |  | confine_storage_path on load/delete/version; tests for ../ and symlink |
 | CH-0069 | High | W3 | (pending) | | `Asgard/Freya/Integration/services/_crawler_report.py` |
 | CH-0070 | Medium | W4 | (pending) | | `Asgard/Freya/Accessibility/services/_aria_validator_checks_part2.py` |
 | CH-0071 | Medium | W1 | (pending) | | `Asgard/Freya/Links/services/link_validator.py` |
-| CH-0072 | High | W2 | (pending) | | `Asgard/Freya/Visual/services/_screenshot_capture_helpers.py` |
+| CH-0072 | High | W2 | Confirmed |  | sanitize_output_name + confine_output_path on every write |
 | CH-0073 | Medium | W3 | (pending) | | `Asgard/Freya/Scoring/services/grade_calculator.py` |
 | CH-0074 | Medium | W4 | (pending) | | `Asgard/Freya/Visual/services/_screenshot_capture_helpers.py` |
 | CH-0075 | Medium | W2 | (pending) | | `Asgard/Heimdall/Security/DNS/services/dns_checker.py` |
@@ -132,7 +132,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0102 | High | W1 | Residual | SecretMount id/target | newline/# refused on listed fields; SecretMount interpolated unsanitized |
 | CH-0103 | High | W1 | Residual | Jenkins env keys | run/env values hardened; env keys still raw in Groovy environment {} |
 | CH-0104 | Medium | W1 | (pending) | | `Asgard/Volundr/Helm/services/_chart_generator_templates.py` |
-| CH-0105 | Medium | W1 | (pending) | | `Asgard/Volundr/CICD/models/cicd_models.py` |
+| CH-0105 | Medium | W1 | Confirmed |  | https vault_url; harden_service_map rejects privileged/floating |
 | CH-0106 | Medium | W2 | (pending) | | `Asgard/Volundr/CICD/services/pipeline_generator.py` |
 | CH-0107 | Medium | W3 | (pending) | | `Asgard/Volundr/Validation/models/suppression_models.py` |
 | CH-0108 | Medium | W1 | (pending) | | `Asgard/Volundr/Terraform/services/_module_builder_blocks.py` |
@@ -269,8 +269,8 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | Severity | Reopened | Residual | New Open (CHC) | Confirmed | Accepted still | Vacated |
 |----------|----------|----------|----------------|-----------|----------------|---------|
 | Critical | 0 | 0 | 0 | 0 | 0 | 0 |
-| High     | 0 | 4 | 1 | 11 | 0 | 0 |
-| Medium   | 0 | 0 | 3 | 2 | 0 | 0 |
+| High     | 0 | 5 | 1 | 16 | 0 | 0 |
+| Medium   | 0 | 1 | 4 | 5 | 0 | 0 |
 | Low      | 0 | 0 | 0 | 1 | 0 | 0 |
 | Info     | 0 | 0 | 0 | 0 | 0 | 0 |
 
@@ -306,6 +306,24 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 - **Planned leftover fix:** allowlist env keys `[A-Za-z_][A-Za-z0-9_]*` (or refuse quote/newline). Test a hostile key.
 
 
+### CH-0006 — Residual (generated hook template)
+
+- **Original sink (closed):** repo `.pre-commit-config.yaml` uses 40-char `rev` SHAs, `additional_dependencies` pinned with `==`, and a `detect-secrets` hook.
+- **Leftover:** `Asgard/Shared/Init/_templates_python.py` `PRE_COMMIT_CONFIG` still has SHA revs + `==` extras but **omits detect-secrets**. `asguardian init` projects do not get the secret-scan hook the repo itself now uses.
+- **Planned leftover fix:** copy the repo hook list (including detect-secrets) into the Python init template. Test generated config contains `id: detect-secrets`.
+
+### CH-0066 — Residual (click / reload / login-submit follow first)
+
+- **Original sink (closed):** crawl `start_url` / `login_url` / discovery enqueue / tester `goto` use `validate_navigation_url` + `safe_goto`. SPA enqueue uses `should_crawl`. `file:` and literal RFC1918 are rejected before those `goto`s.
+- **Leftover:** Playwright still navigates **before** the allowlist on:
+  - `site_crawler.py` login `submit` + `wait_for_url` (~183-196)
+  - `_crawler_spa.py` `item.click()` + `expect_navigation` (~151-157)
+  - `_crawler_spa.py` `page.reload()` (~98)
+  Post-checks use `resolve_host=False`, so a public name that later resolves internally is not DNS-checked.
+- **Impact:** Hostile login/SPA can already hit `file:` / metadata / RFC1918; the later validate only drops the URL from the crawl set.
+- **Planned leftover fix:** do not follow unknown navigations; intercept/route-abort non-allowlisted schemes/hosts; re-validate `page.url` with `resolve_host=True` after click/reload/submit.
+
+
 ## New findings
 
 ### CHC-0001 — Draft L8 still editable-installs the PR tree
@@ -331,7 +349,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 - **Confidence:** High
 - **CWE / class:** CWE-94
 - **Primary file:** `Asgard/Forseti/MockServer/services/_mock_server_generator_helpers.py`
-- **Also on trace:** `Asgard/Forseti/MockServer/services/mock_server_generator.py`
+- **Also on trace:** `Asgard/Forseti/MockServer/services/mock_server_generator.py` (FastAPI/Express title/description/version also interpolated)
 - **Related original:** CH-0061, CH-0058
 - **Location:** `generate_flask_route` ~74-78; `generate_flask_route_stateful`; `generate_express_route`
 - **Trace:** OpenAPI `endpoint.path` / `summary` / `operation_id` → f-string into `@app.route("...")` / function name / docstring → generated Flask/Express source
@@ -347,10 +365,10 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 - **Confidence:** Medium
 - **CWE / class:** CWE-306 / CWE-668
 - **Primary file:** `Asgard/MCP/server/asgard_mcp_server.py`
-- **Also on trace:** `Asgard/Heimdall/cli/handlers/mcp.py`
+- **Also on trace:** `Asgard/Heimdall/cli/handlers/mcp.py`, `Asgard/Dashboard/adapters/web/dashboard_handler.py` (same deny-list)
 - **Related original:** CH-0086
 - **Location:** `AsgardMCPServer.run` ~163-165, bind at ~233
-- **Trace:** `--host 0` / `::0` (not in `{0.0.0.0, ::, [::]}`) → `HTTPServer((host, port))` can bind all interfaces without `--expose`. Auth token is still required.
+- **Trace:** `--host 0` / `::0` / `*` (not in `{0.0.0.0, ::, [::]}`) → bind all interfaces without `--expose`. Empty `host=""` is checked as localhost (`or "localhost"`) but MCP binds raw `self._config.host` (INADDR_ANY). Dashboard binds the stripped host (aliases still apply).
 - **Impact:** LAN exposure of a token-gated MCP if an operator uses a non-canonical wildcard. Not an unauth bypass.
 - **Evidence:** deny-list is a literal set; bind uses `self._config.host` not the stripped/normalized host.
 - **Planned fix:** Normalize host (strip, lowercase, treat `0` / `::0` / `*` as wildcard); refuse unless `--expose`. Bind the normalized host. Tests for `--host 0` and `--host ::0`.
@@ -373,14 +391,30 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 - **Fix wave:** W2
 
 
+### CHC-0005 — Git scanner unbounded per-file `git show`
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-400
+- **Primary file:** `Asgard/Heimdall/Security/Git/services/git_scanner.py`
+- **Also on trace:** `Asgard/Shared/common/_git_isolated.py`
+- **Related original:** CH-0024, CH-0025
+- **Location:** `_check_secrets_in_current_files` ~166-185
+- **Trace:** `ls-tree -r HEAD --name-only` → one `git show HEAD:{path}` per tree entry (30s timeout) → regex scan
+- **Impact:** A huge tree turns a local git scan into thousands of processes / full-history blob materializations. Isolated git helper does not cap count.
+- **Evidence:** skip list is only a few binary extensions; no file-count or size cap.
+- **Planned fix:** cap files and blob bytes; skip binaries by content; reuse one `git grep`/`git grep -I` instead of per-file `show`. Tests with a planted large tree.
+- **Fix wave:** W4
+
+
 ## Confirmation progress
 
-Updated: 2026-08-17T00:50:39+00:00
-- remaining: 3923
-- completed this batch: 15 files (batch 1 — W1 High primaries + clustered also-on-trace)
-- last paths: `.github/workflows/ci.yml`, `publish.yml`, `l8-perf-budgets.yml`, `szz.py`, `_syntax_linters.py`, Forseti GraphQL/Mock/Live, Freya crawler, MCP handler, github decorator/formatter, dockerfile_generator, pipeline_generator_helpers
-- last CHC ID: CHC-0004
-- next unconfirmed original IDs: CH-0006 onward; W2 High primaries CH-0035/0050/0058/0059/0068/0072
-- next batch: W1 High also-on-trace + remaining W1 primaries
-- Rescans: CH-0025 agent said Vacated; orchestrator overrode to Confirmed (caps still present). CH-0002 agent said Residual (PR can rewrite workflow); orchestrator overrode to Confirmed (stated sink closed; GHA workflow-mutation is the documented approval gate).
+Updated: 2026-08-17T00:56:31+00:00
+- remaining: 3887
+- completed batches: 1 (15 files) + 2 (~37 files)
+- last CHC ID: CHC-0005
+- verdicts this batch: CH-0006 Residual; CH-0033/0035/0049/0050/0056/0058/0059/0068/0072/0105 Confirmed; CH-0066 moved Confirmed→Residual (click/reload follow)
+- next unconfirmed original IDs: remaining W1 (CH-0071, CH-0082, CH-0104, CH-0108, CH-0110, CH-0112, CH-0113, …) then W2/W3 High primaries CH-0012/0051/0055/0067/0069/0076/0077
+- Rescans: none this batch (spot-check: pre-commit SHAs, license enable_network=False, pyright isolated write, requirements confine_sync_target, git_scanner per-file show)
 - Commands: `python3 scripts/cyberhardening_inventory.py --workspace CyberHardeningConfirm status` / `next 8`
