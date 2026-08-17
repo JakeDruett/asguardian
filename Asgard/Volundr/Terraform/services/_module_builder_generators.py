@@ -48,7 +48,10 @@ def generate_variables_tf(config: ModuleConfig) -> str:
     for var in config.variables:
         content.append(f"variable {hcl_quoted(var.name)} {{")
         content.append(f"  description = {hcl_quoted(var.description)}")
-        content.append(f"  type        = {var.type}")
+        type_text = str(var.type)
+        if any(ch in type_text for ch in "\n\r#"):
+            raise ValueError("variable type must be a single-line HCL type")
+        content.append(f"  type        = {type_text}")
 
         if var.default is not None:
             if isinstance(var.default, str):
@@ -81,7 +84,7 @@ def generate_outputs_tf(config: ModuleConfig) -> str:
     content: List[str] = []
 
     for output in config.outputs:
-        if "\n" in output.value or "\r" in output.value:
+        if any(ch in str(output.value) for ch in "\n\r#"):
             raise ValueError("output value must be a single-line expression")
         content.append(f"output {hcl_quoted(output.name)} {{")
         content.append(f"  description = {hcl_quoted(output.description)}")

@@ -136,4 +136,5 @@
 {"id":"CH-0067","at":"2026-08-17T19:42:00Z","commit":"dfa718d","wave":"W5","summary":"Escape visual-regression HTML fields"}
 {"id":"CH-0046","at":"2026-08-17T19:43:00Z","commit":"6677453","wave":"W5","summary":"Escape scan_path in quality/scan HTML"}
 {"id":"CH-0019","at":"2026-08-17T19:44:00Z","commit":"beafb22","wave":"W5","summary":"md_cell on layer and hexagonal markdown tables"}
-{"id":"CH-0051","at":"2026-08-17T19:50:00Z","commit":"PENDING","wave":"W3","summary":"Env-only HMAC keys; ignore sibling .key (cluster)"}
+{"id":"CH-0051","at":"2026-08-17T19:50:00Z","commit":"711ae7b","wave":"W3","summary":"Env-only HMAC keys; ignore sibling .key (cluster)"}
+{"id":"CH-0108","at":"2026-08-17T20:00:00Z","commit":"PENDING","wave":"W1","summary":"Refuse newline/# in HCL type and output value"}
