@@ -714,3 +714,298 @@
 {"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/brute/help/help.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
 {"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/brute/index.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
 {"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/brute/source/high.php","at":"2026-08-17T01:31:09+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard/Freya/Accessibility/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/models/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/models/_accessibility_enums.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/models/_accessibility_report_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/models/accessibility_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/services/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/services/_aria_validator_checks.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/services/_aria_validator_tiers.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/services/_color_contrast_math.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/services/_color_contrast_page.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/services/_component_criticality.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/services/_focus_order_spatial.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/services/_keyboard_nav_checks.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/services/_screen_reader_checks.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/services/_screen_reader_checks_part2.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/services/_wcag_checks.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/services/_wcag_checks_part2.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/services/_wcag_criteria.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Accessibility/services/aria_validator.py","at":"2026-08-17T01:34:43+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"ungated page.goto"}
+{"path":"Asgard/Freya/Accessibility/services/color_contrast.py","at":"2026-08-17T01:34:43+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"ungated page.goto"}
+{"path":"Asgard/Freya/Accessibility/services/keyboard_nav.py","at":"2026-08-17T01:34:43+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"ungated page.goto"}
+{"path":"Asgard/Freya/Accessibility/services/screen_reader.py","at":"2026-08-17T01:34:43+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"ungated page.goto"}
+{"path":"Asgard/Freya/Accessibility/services/wcag_validator.py","at":"2026-08-17T01:34:43+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"ungated page.goto"}
+{"path":"Asgard/Freya/Accessibility/utilities/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Freya/Config/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/models/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/models/alignment_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/models/ir_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/services/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/services/_discover_helpers.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/services/_ir_avro_helpers.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/services/_ir_graphql_helpers.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/services/_ir_openapi_helpers.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/services/_ir_protobuf_helpers.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/services/_ir_sql_helpers.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/services/_lexical_helpers.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/services/_type_matrix_helpers.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/services/alignment_checker_service.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/services/ir_builder_service.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/Alignment/utilities/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/AsyncAPI/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/AsyncAPI/models/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/AsyncAPI/models/_asyncapi_base_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/AsyncAPI/models/asyncapi_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/AsyncAPI/services/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/AsyncAPI/services/_asyncapi_parser_helpers.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/AsyncAPI/services/_asyncapi_validator_helpers.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/AsyncAPI/services/asyncapi_diff_service.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Forseti/AsyncAPI/services/asyncapi_parser_service.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/fi/include.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/fi/index.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/high.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/impossible.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/low.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/medium.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/help/help.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/index.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/high.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/impossible.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/low.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/medium.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/help/help.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/index.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/high.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/impossible.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/info.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/low.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/medium.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/help/help.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/index.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/session-input.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/high.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/impossible.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/low.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/medium.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/test.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/cookie-input.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/help/help.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/index.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/high.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/impossible.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/low.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/medium.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/upload/help/help.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/upload/index.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/high.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/impossible.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/low.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/medium.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/view_help.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/view_source.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/view_source_all.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/help/help.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/index.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/high.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/impossible.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/low.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/medium.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/help/help.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/index.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/high.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/impossible.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/low.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/medium.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/help/help.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/index.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/high.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/impossible.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/low.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard/Heimdall/Security/Headers/services/_header_context.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Headers/services/_header_patterns.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Headers/services/cors_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Headers/services/csp_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Headers/services/header_validator.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Headers/services/headers_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Headers/utilities/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Headers/utilities/csp_parser.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Hotspots/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Hotspots/models/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Hotspots/models/hotspot_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Hotspots/services/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Hotspots/services/_ast_hotspot_checks.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Hotspots/services/_regex_hotspot_checks.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Hotspots/services/hotspot_detector.py","at":"2026-08-17T01:34:43+00:00","disposition":"residual","finding_ids":["CH-0078"],"summary":"os.walk file-symlink read"}
+{"path":"Asgard/Heimdall/Security/Hotspots/services/hotspot_review.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Hotspots/services/pr_summary.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/InfoDisclosure/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/InfoDisclosure/models/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/InfoDisclosure/models/info_disclosure_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/InfoDisclosure/services/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/InfoDisclosure/services/info_disclosure_scanner.py","at":"2026-08-17T01:34:43+00:00","disposition":"residual","finding_ids":["CH-0078"],"summary":"os.walk file-symlink read"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/models/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/models/infra_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/services/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/services/_config_patterns.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/services/_credential_patterns.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/services/_hardening_patterns.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Heimdall/Security/Infrastructure/services/config_validator.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/medium.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/help/help.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/index.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/high.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/impossible.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/low.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/medium.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/app.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/setting/setting.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/setup/function.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/setup/setup.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/user/session/session.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/user/user.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/util/config/config.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/util/cookie.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/util/database/database.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/util/http.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/util/middleware/middleware.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/util/template.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/vulnerability/csa/csa.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/vulnerability/idor/function.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/vulnerability/idor/idor.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/vulnerability/sqli/function.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/vulnerability/sqli/sqli.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/vulnerability/xss/function.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/vulnerability/xss/xss.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/govwa/vulnerability/xxe/xxe.go","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/assets/js/chart/chart-data-morris.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/assets/js/tour/redirects-steps.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/data/allocations-dao.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/data/benefits-dao.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/data/contributions-dao.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/data/memos-dao.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/data/profile-dao.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/data/research-dao.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/data/user-dao.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/routes/allocations.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/routes/benefits.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/routes/contributions.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/routes/error.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/routes/index.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/routes/memos.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/routes/profile.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/routes/research.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/routes/session.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/nodegoat/app/routes/tutorial.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_js_fs.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_js_send.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_open_1.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_open_2.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_os_join.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_pathlib.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_php_include.php","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_shutil.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_allowlist.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_basename.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_hardcoded_path.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_js_static.js","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_no_user_input.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/des_encrypt.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"known-bad corpus; no live secrets"}
+{"path":"Asgard/Reporting/History/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/History/infrastructure/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/History/infrastructure/persistence/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/History/infrastructure/persistence/history_schema.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/History/models/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/History/models/history_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/History/services/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/History/services/_history_db.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/History/services/_history_repository.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/History/services/history_store.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/History/services/reporting_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/History/services/savd_metrics.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/PRDecoration/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/PRDecoration/models/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/PRDecoration/models/decoration_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"confirmed","finding_ids":["CH-0093"],"summary":"URL models; sinks guarded"}
+{"path":"Asgard/Reporting/PRDecoration/services/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/PRDecoration/services/_http_safety.py","at":"2026-08-17T01:34:43+00:00","disposition":"confirmed","finding_ids":["CH-0093"],"summary":"https+origin guard"}
+{"path":"Asgard/Reporting/PRDecoration/services/gitlab_decorator.py","at":"2026-08-17T01:34:43+00:00","disposition":"confirmed","finding_ids":["CH-0093"],"summary":"https API + quote"}
+{"path":"Asgard/Reporting/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/_github_format_helpers.py","at":"2026-08-17T01:34:43+00:00","disposition":"confirmed","finding_ids":["CH-0094"],"summary":"workflow command encode"}
+{"path":"Asgard/Reporting/_html_report_builders.py","at":"2026-08-17T01:34:43+00:00","disposition":"residual","finding_ids":["CH-0046"],"summary":"raw HTML interpolation"}
+{"path":"Asgard/Reporting/_html_templates.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Reporting/html_generator.py","at":"2026-08-17T01:34:43+00:00","disposition":"residual","finding_ids":["CH-0046"],"summary":"raw HTML interpolation"}
+{"path":"Asgard/Verdandi/APM/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Verdandi/APM/models/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_dependency_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_graph_service.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_health_checks.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_license_cache.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_license_policy.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_no_cache_env.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_pypi_name_url.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_requirements_sync_jail.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_sbom_closure.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_sbom_generator.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_vulnerability_checker_network.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/OOP/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_cir_metrics.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_cir_oop_bridge.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_coupling_assignment_tracking.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_oop_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_oop_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Performance/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_cache_analyzer_service.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_cpu_profiler_service.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_database_analyzer_service.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_memory_profiler_service.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_performance_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_performance_utils.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_static_performance_service.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_confined_walk.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_cpp_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_csharp_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_go_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_java_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_js_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_js_security_rules.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_php_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_ruby_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_rust_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_shell_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_ts_analyzer.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Taint/__init__.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard_Test/tests_Bragi/L0_Mocked/Quality/Taint/test_taint_engine.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"L0 tests; no live secrets"}
+{"path":"Asgard/Bragi/Quality/models/analysis_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/blocking_async_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/complexity_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/daemon_thread_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/datetime_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/debt_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/documentation_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/duplication_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/env_fallback_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"confirmed","finding_ids":["CH-0043"],"summary":"remasks stored secrets"}
+{"path":"Asgard/Bragi/Quality/models/error_handling_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/future_leak_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/lazy_import_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/library_usage_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/maintainability_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/naming_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/race_condition_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/resource_cleanup_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/smell_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/syntax_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/thread_safety_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/type_check_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/models/typing_models.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_lazy_import_report.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_lazy_import_visitor.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"unbounded AST is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/services/_library_usage_report.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_library_usage_visitor.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"unbounded AST is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/services/_maintainability_helpers.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_maintainability_report.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}
+{"path":"Asgard/Bragi/Quality/services/_maintainability_visitor.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":["CHC-0007"],"summary":"unbounded AST is CHC-0007 clone"}
+{"path":"Asgard/Bragi/Quality/services/_naming_helpers.py","at":"2026-08-17T01:34:43+00:00","disposition":"clean","finding_ids":[],"summary":"models/re-export/confined/no new sink"}

@@ -533,10 +533,10 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ## Confirmation progress
 
-Updated: 2026-08-17T01:31:09+00:00
-- remaining: 3223
-- completed: 715
+Updated: 2026-08-17T01:34:43+00:00
+- remaining: 2928
+- completed: 1010
 - last CHC ID: CHC-0007
 - All live original CH-XXXX have verdicts.
-- Batch 9: Quality ruby-ts + Quality visitors + Heimdall Container/Deser/Frontend + CLI dispatch + Bandit/DVWA/tests.
+- Batch 10: Quality models, Heimdall Headers/Hotspots, Forseti Alignment/AsyncAPI, Freya a11y, Reporting HTML leftover, more DVWA/GoVWA/NodeGoat/tests.
 - Next: `python3 scripts/cyberhardening_inventory.py --workspace CyberHardeningConfirm next 8`

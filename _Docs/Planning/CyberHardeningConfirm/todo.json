@@ -2,191 +2,11 @@
   "version": 1,
   "repo_root": ".",
   "generated_at": "2026-08-17T00:40:38+00:00",
-  "updated_at": "2026-08-17T01:31:25+00:00",
+  "updated_at": "2026-08-17T01:34:49+00:00",
   "planning_dir": "_Docs/Planning",
   "plan_path": "_Docs/Planning/CyberHardeningConfirm.md",
   "total_discovered": 3938,
   "remaining": [
-    {
-      "path": "Asgard/Bragi/Quality/models/analysis_models.py",
-      "bytes": 6573,
-      "sha256": "9c968a74d52236348165f0121cdd8a7a25c985fcecb5bb7030262e1bc39c1427",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/blocking_async_models.py",
-      "bytes": 6192,
-      "sha256": "811b77dca889e62369bc7c15bf4c7ea4943c39b0fcd932abc321e3207681775f",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/complexity_models.py",
-      "bytes": 10456,
-      "sha256": "7da682d558b427530d80b1f12386d7155ad143790d41ba53f6df4590976c26f5",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/daemon_thread_models.py",
-      "bytes": 6287,
-      "sha256": "cc9be963905c749b58bf802f560954381fe61b0eb8b015dd2bb65ed72246c67e",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/datetime_models.py",
-      "bytes": 7093,
-      "sha256": "e4c41e8722f2c423e489fd371355a030ff8bbc4b2571f4b6320a6bd7b030363e",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/debt_models.py",
-      "bytes": 15292,
-      "sha256": "602d14ed243986d2b70a0c9892bed28d3707dd77608eab943699f1b451a3bf96",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/documentation_models.py",
-      "bytes": 7491,
-      "sha256": "72d5db70fcb94687f8933f311eece4e35dedc6ffefa17a71d4c344350040a9ef",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/duplication_models.py",
-      "bytes": 8363,
-      "sha256": "de5e19c4cdf292c5b1dcca3ce5f949dbd3a3f8e992a0077fc77cca0c9c34112d",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/env_fallback_models.py",
-      "bytes": 9101,
-      "sha256": "6e8f7cb481a9244f5133990e6267f6490dc0d02bf99dd64e02fd2bd32b094e3b",
-      "mtime": "2026-08-16T12:13:41+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/error_handling_models.py",
-      "bytes": 7017,
-      "sha256": "e505712a3d8768127a029c0e4e1e7bc64ae6446288f0bbe4ba1c13c5499eeda7",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/future_leak_models.py",
-      "bytes": 5903,
-      "sha256": "c2daa140469f89312051c916648b47fb1c91d23241f0d50f9fb57ff479a8a013",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/lazy_import_models.py",
-      "bytes": 6414,
-      "sha256": "8afd33583dc3ede3dff4ebf0e5d50c8da89a718f3ca17587d9a08f4faae60264",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/library_usage_models.py",
-      "bytes": 5653,
-      "sha256": "ac7408e6e6cb09dd77d79f19be2bfcf6c14a245b60ab8a41a4080ab1b9dffa1c",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/maintainability_models.py",
-      "bytes": 11692,
-      "sha256": "30a68e687e7a114b666a5ae503513ac768691f7d8f32897dfa368787e6e10a86",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/naming_models.py",
-      "bytes": 4680,
-      "sha256": "93ddb1bf8a38ad923181aa31f4dfec603b899c7ab2fca6d14d9b348723b8992b",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/race_condition_models.py",
-      "bytes": 6193,
-      "sha256": "3b968f28d4d69385b6df67111c90415f78443702d21f4b4d9d87b3e3d5a61251",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/resource_cleanup_models.py",
-      "bytes": 6973,
-      "sha256": "f38c3a4404631808155413bd42095588392c5d3cf2700887be83c043307083da",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/smell_models.py",
-      "bytes": 7629,
-      "sha256": "0b9d835f7bd0a2fb7a05abf5ebb62c52ee7cfc583f50909156ddc2222b063f89",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/syntax_models.py",
-      "bytes": 6036,
-      "sha256": "db8259fc7618f0bbb70095777f3dc6ede82ba494b7e6ed6711d4954ccaedb449",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/thread_safety_models.py",
-      "bytes": 6067,
-      "sha256": "7e00ced5c821b6f192e8bf9fa559fb1bdc168ae2fa2cfc1f2e4d859974118204",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/type_check_models.py",
-      "bytes": 11437,
-      "sha256": "8d104ba2aad0b65cc4ba24861eabd1c6790805460eae43afd6241ef2128e311f",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/models/typing_models.py",
-      "bytes": 8269,
-      "sha256": "ec11d12b9effdf3637b6a472bdbf0c0003dc92f7dead32d34520208216b27822",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/services/_lazy_import_report.py",
-      "bytes": 6628,
-      "sha256": "54221a0b724e66e12d758981790703921fb83fd2b986bbbf9f2146801690f012",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/services/_lazy_import_visitor.py",
-      "bytes": 8206,
-      "sha256": "132e06291de4f9423fcbfac0a664f3bcaa2219a0312fd68dd9ed7e0a69544875",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/services/_library_usage_report.py",
-      "bytes": 4136,
-      "sha256": "ce64a40d9ed571818b1cbc24fecae1b08567f43cd6d38fa2632ce6bebe265be6",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/services/_library_usage_visitor.py",
-      "bytes": 3659,
-      "sha256": "990e25f51a8ddb03d90dd6077993321a1dfe04a0808486081fdcf54ff62bf16b",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/services/_maintainability_helpers.py",
-      "bytes": 4185,
-      "sha256": "af2133c4acbfe56a08ee4c2049f0064811474c8c775cd8eeb1ececa42b4aab65",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/services/_maintainability_report.py",
-      "bytes": 6244,
-      "sha256": "9ded3d9334ffb989fd2d0995fbadc85a97f7f13b3ada3fa1a5ffc369e9d65ab8",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/services/_maintainability_visitor.py",
-      "bytes": 8030,
-      "sha256": "395fbdd056b38b748d1ed79025f93e9c9c6a2807a7bf90abba671338d21bb181",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Quality/services/_naming_helpers.py",
-      "bytes": 3784,
-      "sha256": "4e92d9e74fdf8084cd34af1a66c5728bdc48cf6476781c856625ce609860659b",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
     {
       "path": "Asgard/Bragi/Quality/services/_naming_report.py",
       "bytes": 3938,
@@ -684,156 +504,6 @@
       "bytes": 5393,
       "sha256": "faef1f3b6f750dbe331e3e3fe18943ea7e32ebc5e852cee8deca4263ea0c7c1b",
       "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/__init__.py",
-      "bytes": 1463,
-      "sha256": "ce83482f2d4cd4a815ff124bec6a70904e6dbab7cff1801280c51d1c2872e621",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/models/__init__.py",
-      "bytes": 492,
-      "sha256": "99cefb22014f899ce0964be985d9048cc8235a4e0bc5fc14eab24a9de63ea024",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/models/alignment_models.py",
-      "bytes": 2059,
-      "sha256": "79bf1edd2a932a053f3b277f346f2a3168ebc669f758ee0fba05f80530103cef",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/models/ir_models.py",
-      "bytes": 2583,
-      "sha256": "cea7f8ccbe66ff1383a16800993be81fdf14ed534bb126eef3b4e73ed6448060",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/services/__init__.py",
-      "bytes": 244,
-      "sha256": "8dd4455092c05a3c77fd91a980192d14eb6c351e7ae3043254e162a0dde52791",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/services/_discover_helpers.py",
-      "bytes": 4327,
-      "sha256": "35c6a9b2674f7d9a08fb86f5279c94f0f426aca12fc0c9061dbfda540e82ff29",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/services/_ir_avro_helpers.py",
-      "bytes": 3474,
-      "sha256": "5178fc44f140087aa34a9b220c5252e929db8d6d259566728ae098952bd5bec9",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/services/_ir_graphql_helpers.py",
-      "bytes": 3119,
-      "sha256": "ffaff491cda654204f590de3b7701b3fd8ba81011b11ff228bbd1b5b35615832",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/services/_ir_openapi_helpers.py",
-      "bytes": 4109,
-      "sha256": "bcf785d14394bb469fcb69645f3c81a1a3feb81f00e2bdafb9850c24eacce57e",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/services/_ir_protobuf_helpers.py",
-      "bytes": 3886,
-      "sha256": "9b97caa41294b74542e2f1d0623b2dd353f35fbe52cbfe5a530f0c0d93b88824",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/services/_ir_sql_helpers.py",
-      "bytes": 2363,
-      "sha256": "0feca1ed49f48170751641c5016851a52f30aaac837eff07e875e98f7b1c7b55",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/services/_lexical_helpers.py",
-      "bytes": 989,
-      "sha256": "8e7c5d5afab4f9cf9fff895eab035fec596071f7fe699a43ecc0e6d23f45af31",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/services/_type_matrix_helpers.py",
-      "bytes": 2804,
-      "sha256": "a60c504649908a2cf7bbc3ded05e2dc136c63a57066682f9f5933c80ad295d14",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/services/alignment_checker_service.py",
-      "bytes": 8479,
-      "sha256": "0a50c23e8c92c96249a19598a5764840a9998c41395ef610b6188ba8d24b8be8",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/services/ir_builder_service.py",
-      "bytes": 2330,
-      "sha256": "956f1dce9d2bd5818bdc12b19b62cd55c65258e49951a6de83de3df71d0c498c",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/Alignment/utilities/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/AsyncAPI/__init__.py",
-      "bytes": 1846,
-      "sha256": "33249e98a87a5e8fbb7b43a24f5cc13bcfd88a3533fab47068785bcb9b4cc2c5",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/AsyncAPI/models/__init__.py",
-      "bytes": 742,
-      "sha256": "4cf490cd9cf9f01421109629335aa564d71f4860a1b7cb5e11e46b63e62530a1",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/AsyncAPI/models/_asyncapi_base_models.py",
-      "bytes": 7999,
-      "sha256": "1572445add3927839d7fac26b66f6bae49755dc1d6fd9667d85a3e8f2bc07780",
-      "mtime": "2026-03-20T03:27:47+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/AsyncAPI/models/asyncapi_models.py",
-      "bytes": 5728,
-      "sha256": "3783d772a1da1cedb3e4579f502662c6dacb572b5f329bbdff274c9d2948400f",
-      "mtime": "2026-03-20T03:28:14+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/AsyncAPI/services/__init__.py",
-      "bytes": 339,
-      "sha256": "7275776476adbd63ce32d462617b3a08aafe99b19e631a9907d9fe10d9e455c5",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/AsyncAPI/services/_asyncapi_parser_helpers.py",
-      "bytes": 5564,
-      "sha256": "2102ddc5e1b509d766b52905c4e98ec31eec799cd35d94d2ae2b55f2e7517e2f",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/AsyncAPI/services/_asyncapi_validator_helpers.py",
-      "bytes": 10633,
-      "sha256": "6c7d7831253383537c4e9bef58c4f60f07f279fc11ee4cb107f8587c077d0c4d",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/AsyncAPI/services/asyncapi_diff_service.py",
-      "bytes": 4161,
-      "sha256": "83786a5905203eef416ef0fe4272c0b7c64bad22bee643fa8d40d35a3d938eaa",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Forseti/AsyncAPI/services/asyncapi_parser_service.py",
-      "bytes": 7717,
-      "sha256": "e8b6f6ca3f8853cda6af0edaf68a47e5cb18caa35545e000012ea99c6396f21d",
-      "mtime": "2026-03-20T03:42:08+00:00"
     },
     {
       "path": "Asgard/Forseti/AsyncAPI/services/asyncapi_validator_service.py",
@@ -2018,156 +1688,6 @@
       "mtime": "2026-08-16T09:56:40+00:00"
     },
     {
-      "path": "Asgard/Freya/Accessibility/__init__.py",
-      "bytes": 2326,
-      "sha256": "731b7614516b4f17edffb1fac8a4bdb900159f2fec9685dfb656ae0bf4f5ab7a",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/models/__init__.py",
-      "bytes": 885,
-      "sha256": "4543ca2f356fc18d5969c474c62b29ea19e9da7e0d2330afe4ed71eb14cb9bca",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/models/_accessibility_enums.py",
-      "bytes": 4868,
-      "sha256": "283fa7ae6b46f5eb00aceec38aa344e6d4fcba64f2a481557f75bc9d53924065",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/models/_accessibility_report_models.py",
-      "bytes": 15374,
-      "sha256": "9cbe860afac968e9b97de20f484b53341903fd84640ea6f961c37281cfba5b69",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/models/accessibility_models.py",
-      "bytes": 1592,
-      "sha256": "f1fd14fe2982b28cffdfba7f02e2ca34586f29178db193bfac3317fc5bab99cc",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/__init__.py",
-      "bytes": 636,
-      "sha256": "a944bdd1a1a594455815df8be7f1d3870595cfd63636ed0ca7ff10e0754537cd",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_aria_validator_checks.py",
-      "bytes": 11839,
-      "sha256": "88d263d7ce4532942b0b90af4c221260f3aeac09192f76829c50a2de890c3a5d",
-      "mtime": "2026-03-22T07:52:11+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_aria_validator_tiers.py",
-      "bytes": 13657,
-      "sha256": "8ccc20ed0bd97fd4bdc1f8857c6a7899e6e252f5e047f5b4cab6fc71a595ce82",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_color_contrast_math.py",
-      "bytes": 4041,
-      "sha256": "c816be5ed670841b23cf5bb0ff4c3f7ba1cb40c583e8ae9dc7bf54101bf464dd",
-      "mtime": "2026-03-20T03:05:48+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_color_contrast_page.py",
-      "bytes": 4574,
-      "sha256": "52d2651487356351a9f92bd54a75b0afe8e8187c5c3f256a15fa782ceca003bf",
-      "mtime": "2026-03-22T07:50:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_component_criticality.py",
-      "bytes": 6993,
-      "sha256": "1a10089e02690f5d30066942754fc5a799e204fde70c0b222ac40a8e2b3717ca",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_focus_order_spatial.py",
-      "bytes": 3777,
-      "sha256": "f1b0af46535cfc9009716289f27843de3bfa5060b59e94537d21ed9aed34a663",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_keyboard_nav_checks.py",
-      "bytes": 10743,
-      "sha256": "91e4fe7104253edcb75dfad049c6cfda1ba7cbdcbd5645fa7029b9be1376a57d",
-      "mtime": "2026-03-22T07:53:16+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_screen_reader_checks.py",
-      "bytes": 8503,
-      "sha256": "4f7b759dd7b6c76d94c50568647654832a9360e72bc1e932dc39d50feea0916d",
-      "mtime": "2026-03-22T07:31:36+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_screen_reader_checks_part2.py",
-      "bytes": 5262,
-      "sha256": "c38862949feb7c006565474f7a66f0cfcbc5538bff402f2c71434e6c50ed3674",
-      "mtime": "2026-03-22T07:31:21+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_wcag_checks.py",
-      "bytes": 8857,
-      "sha256": "a0045e59e2a3d67f223eec70cf43006d8672390dd09045a3ea8d23c55d8ba5b0",
-      "mtime": "2026-08-14T07:10:17+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_wcag_checks_part2.py",
-      "bytes": 5715,
-      "sha256": "fb53f1bf82e5da358041588808f2667b72c6e71079febb3e194d4b3301ba5d99",
-      "mtime": "2026-03-22T07:33:56+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/_wcag_criteria.py",
-      "bytes": 6488,
-      "sha256": "0880f37694a6ed329098a41f1b561af304bd7cb0d6a9bc7ed9981ba484c0ddb3",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/aria_validator.py",
-      "bytes": 6897,
-      "sha256": "5b1b9fafe0accd9cc72a09649a57fc86efb1c3a62107a6e6f4360b1939437d11",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/color_contrast.py",
-      "bytes": 7760,
-      "sha256": "4b9d15764c235929f26dc61ffd9084c8021ce0cafe745f8bf4ca676849c55763",
-      "mtime": "2026-03-22T07:51:19+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/keyboard_nav.py",
-      "bytes": 5745,
-      "sha256": "a6dbdac7fe4f0a24d41fab0026460f339972e1310ec01c24f5ad6d385d88ff85",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/screen_reader.py",
-      "bytes": 4499,
-      "sha256": "28d191d6e744f6b4231088d30c30e6e130d27332edae54bdae1e6d9e88af806a",
-      "mtime": "2026-03-22T07:31:49+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/services/wcag_validator.py",
-      "bytes": 7862,
-      "sha256": "b9395e07715fb44c2730d980b229bd16bf8c86b6c7004471cc101cd59b1148e6",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Accessibility/utilities/__init__.py",
-      "bytes": 84,
-      "sha256": "3b5683b8b71987e51b2a62c5fd7cb2333092ff90365a32bab6886835cff4581c",
-      "mtime": "2026-03-11T07:31:51+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Config/__init__.py",
-      "bytes": 714,
-      "sha256": "fa8702b8db0582c239db237ea51911a60184fe9b5d137ebeac16b7258026f3d3",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
       "path": "Asgard/Freya/Config/models/__init__.py",
       "bytes": 201,
       "sha256": "c17376cd716ed31f7436e26b81896c5dcd4006573a8c1b8f3c3aa8fcb86e783b",
@@ -2994,186 +2514,6 @@
       "bytes": 10774,
       "sha256": "0e10d59906a849d6a12a35b4cd9eaba19f6a8061197d1bc69e08ba98669f8130",
       "mtime": "2026-08-16T10:15:49+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Headers/services/_header_context.py",
-      "bytes": 2843,
-      "sha256": "eb14ef454dc4bb2ceb2480d1d5ec1a72a8c40a8a8d58cd473191a13aa0d7ab06",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Headers/services/_header_patterns.py",
-      "bytes": 5012,
-      "sha256": "3aaeff9636550bd78268cd5f705fb48473aee00f9606c1f8be9d1cad45f4dc78",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Headers/services/cors_analyzer.py",
-      "bytes": 8130,
-      "sha256": "cfdc85705b9449a593498294538c80cc1dee677b2147c3b89db155372c634998",
-      "mtime": "2026-03-20T03:10:02+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Headers/services/csp_analyzer.py",
-      "bytes": 5952,
-      "sha256": "91da62f78ab5b54ac312de5699c4302dd01836defaaf8ac17eff24ae1e1a0d76",
-      "mtime": "2026-03-20T03:11:43+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Headers/services/header_validator.py",
-      "bytes": 10943,
-      "sha256": "483300f8c33eb4835c1f4a74d6c9f7598faef237e2361a90e59e6f47b67fa73c",
-      "mtime": "2026-03-20T03:15:47+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Headers/services/headers_analyzer.py",
-      "bytes": 10477,
-      "sha256": "97a3b5fe8522affea4138faeb9541ea3df5b2c570a164829c1879d92af396718",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Headers/utilities/__init__.py",
-      "bytes": 526,
-      "sha256": "48e8ae0761843f8e9b8e7ba0a4262cee016bd77cc34facbd9703e2bb59ae8bed",
-      "mtime": "2026-03-11T04:06:31+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Headers/utilities/csp_parser.py",
-      "bytes": 8759,
-      "sha256": "28c32e3d7e2e585212f76c13fd396ec3a3b6de1a37906f03571ef08fc61d878a",
-      "mtime": "2026-03-22T07:27:08+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Hotspots/__init__.py",
-      "bytes": 1719,
-      "sha256": "4c0ae1e67d898059f0843ab638a752b8ddfdcdacd3c5c101716a143051865275",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Hotspots/models/__init__.py",
-      "bytes": 376,
-      "sha256": "45bffd12346355fab7633b0b63c2957aa9d34b43d32a4bd4d3f40e65f60cb56d",
-      "mtime": "2026-03-11T05:45:28+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Hotspots/models/hotspot_models.py",
-      "bytes": 7867,
-      "sha256": "0b8bbf89d71e84d4d09c9ed5f9ff8e76adabef458aea12983e878d6611759f8d",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Hotspots/services/__init__.py",
-      "bytes": 169,
-      "sha256": "75f6bb71b052c0b7848d9a6a5657d422420dbe37d1fec72d88a8016767b266a0",
-      "mtime": "2026-03-11T05:45:28+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Hotspots/services/_ast_hotspot_checks.py",
-      "bytes": 12960,
-      "sha256": "710fb90294b3cdcaeb849548692158019f6766a09944f498df36aff60d65d117",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Hotspots/services/_regex_hotspot_checks.py",
-      "bytes": 5210,
-      "sha256": "2202ae97d8fab148acd747bf28cba776bf65f819ea73f4caeee1bd909476ee81",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Hotspots/services/hotspot_detector.py",
-      "bytes": 9055,
-      "sha256": "8660c6e240b8184db3289fe392c97693e43088d3d29e0078c4aeee648535f7c2",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Hotspots/services/hotspot_review.py",
-      "bytes": 4097,
-      "sha256": "e2b5a3d5171891ddf9f4e8768a036c63438004a69ff852ed7ff0711eb8c297ba",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Hotspots/services/pr_summary.py",
-      "bytes": 2708,
-      "sha256": "3af788869fdd42d59333f0b853c8238c8427ef7bf0148422063425817c9a560c",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/InfoDisclosure/__init__.py",
-      "bytes": 1078,
-      "sha256": "7edceafe91f790464be75a3ee989012a956c670d2ff7c038419a4553cca32c7d",
-      "mtime": "2026-05-17T00:53:59+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/InfoDisclosure/models/__init__.py",
-      "bytes": 339,
-      "sha256": "d5e4e153e5d4d1838804c64e96ad0328b2cfba93de8742a2817d8dae4ed1305d",
-      "mtime": "2026-05-17T00:53:59+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/InfoDisclosure/models/info_disclosure_models.py",
-      "bytes": 1047,
-      "sha256": "460c69d569b961a3064c3a37d158cb724ebbd44e5b44be568eb6fc3d1bd4366b",
-      "mtime": "2026-05-17T00:53:59+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/InfoDisclosure/services/__init__.py",
-      "bytes": 144,
-      "sha256": "c9753c946d2b49a7e6536566fa14b30f94fe51544224c432d7f9c8e5bcf96c0b",
-      "mtime": "2026-05-17T00:53:59+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/InfoDisclosure/services/info_disclosure_scanner.py",
-      "bytes": 6949,
-      "sha256": "1e243d77f74b2bc2867a861b19596e004e126c52a2e8450081f867c40e0985fa",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Infrastructure/__init__.py",
-      "bytes": 1365,
-      "sha256": "88bc9e738cadf40d8e6d6526e68cf91af9195a1ab04840faaaa493cb2dda5b8d",
-      "mtime": "2026-03-11T04:06:31+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Infrastructure/models/__init__.py",
-      "bytes": 351,
-      "sha256": "599ba4597373284854ec8943b31d187b8bdc9aa25bade9f8db629d7397bea0c8",
-      "mtime": "2026-03-11T04:06:31+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Infrastructure/models/infra_models.py",
-      "bytes": 11779,
-      "sha256": "8607079508430069ed3b9e7a7e6bdb4fca37e4721fa35bd8f385db6924834aec",
-      "mtime": "2026-03-11T04:06:31+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Infrastructure/services/__init__.py",
-      "bytes": 588,
-      "sha256": "e6ac460128a99e06cae4ba8990d8f0b43a0bf4705b8984d42dadb80a122a8b30",
-      "mtime": "2026-03-11T04:06:31+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Infrastructure/services/_config_patterns.py",
-      "bytes": 11661,
-      "sha256": "e4a455c87f72f1899f088e0b4b50f4663eae3270ab02316f1b3c182aa57d6bdc",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Infrastructure/services/_credential_patterns.py",
-      "bytes": 7500,
-      "sha256": "84b86ebd7be99f81c90587188660a0d78706e3a7931e7f143a77e0324fc27ccf",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Infrastructure/services/_hardening_patterns.py",
-      "bytes": 10544,
-      "sha256": "c249cc017d106cbf3d230ef23d67c41cb22004fe99a80b9e0b2c46f274da1a88",
-      "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/Infrastructure/services/config_validator.py",
-      "bytes": 6262,
-      "sha256": "af28c3d408a893aaa25b037bcc7f0a8605ebc20b044807c1ab5fa2f076d53c8d",
-      "mtime": "2026-03-20T03:05:01+00:00"
     },
     {
       "path": "Asgard/Heimdall/Security/Infrastructure/services/credential_analyzer.py",
@@ -4424,144 +3764,6 @@
       "mtime": "2026-08-16T10:09:21+00:00"
     },
     {
-      "path": "Asgard/Reporting/History/__init__.py",
-      "bytes": 1725,
-      "sha256": "75ad9a8c5c128107095a0e4772afdef79d973355bff56755b373a7019bc5b3da",
-      "mtime": "2026-04-16T06:03:12+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/History/infrastructure/__init__.py",
-      "bytes": 48,
-      "sha256": "ed0a0a56367de6da36ad1d3c020ef9d5f7cb3ab57043aff8af630e92c6d94b2b",
-      "mtime": "2026-04-16T05:59:56+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/History/infrastructure/persistence/__init__.py",
-      "bytes": 60,
-      "sha256": "f41767743e5afd30c5762cccd04736dddcb20253bf47c43452703231603154ff",
-      "mtime": "2026-04-16T05:59:57+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/History/infrastructure/persistence/history_schema.py",
-      "bytes": 3699,
-      "sha256": "91cfe0f704869ee08c5f5c899e863f867229cf6aa6d62e49653b03bb456eea70",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/History/models/__init__.py",
-      "bytes": 311,
-      "sha256": "d1154e1e48237229497e5fcd9d11c93fa63ffff19ed72dfbf65b2614f26a4895",
-      "mtime": "2026-03-11T07:12:52+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/History/models/history_models.py",
-      "bytes": 4991,
-      "sha256": "3027806a48b1ca517cc9b64a9f2b1077faf3c9f2000c9a62fe8155bfc2bb4a9d",
-      "mtime": "2026-03-11T07:12:52+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/History/services/__init__.py",
-      "bytes": 443,
-      "sha256": "29fa2e7514f458aef9f846f18f417bb52643f3efbd206823ef0beb06d870fc96",
-      "mtime": "2026-04-16T06:01:27+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/History/services/_history_db.py",
-      "bytes": 701,
-      "sha256": "525ddc1ebcbbbf78837024503a4bc6ffbc76f6b8e8e7306202e0268ef9c1919f",
-      "mtime": "2026-04-16T06:00:37+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/History/services/_history_repository.py",
-      "bytes": 4743,
-      "sha256": "1d6a09ddbdcf54194ac9a3aef35976e251b471d916118d304f02e94b77349c5f",
-      "mtime": "2026-04-16T06:00:54+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/History/services/history_store.py",
-      "bytes": 3404,
-      "sha256": "7acdd11f54e1603f324957c57086e335e9d13e3f453e9131a880689474a68db2",
-      "mtime": "2026-04-16T06:01:23+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/History/services/reporting_analyzer.py",
-      "bytes": 5248,
-      "sha256": "209275cc4ae1a956358f2a37ab8bb02f83fe32a5a272cde38599fe2cbf5dc670",
-      "mtime": "2026-04-16T06:01:11+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/History/services/savd_metrics.py",
-      "bytes": 4088,
-      "sha256": "e2e3a35252a9a95d4e5a24bf993f5e7d17c84eba4ba4a359a5293b524a98655e",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/PRDecoration/__init__.py",
-      "bytes": 1905,
-      "sha256": "4516281191202bab660a85790d725d12a664d4dc0e9dae50c50f01e272246cae",
-      "mtime": "2026-03-11T07:12:52+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/PRDecoration/models/__init__.py",
-      "bytes": 295,
-      "sha256": "6e1805d9b617f09bd077588d976d1c9b1e605b3cb4996006babfc531889a1564",
-      "mtime": "2026-03-11T07:12:52+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/PRDecoration/models/decoration_models.py",
-      "bytes": 3760,
-      "sha256": "bd8cc41c05c18ff43b2765f830bdc3cf91e031dcecc82b39f521050ed7fe9b37",
-      "mtime": "2026-04-16T04:48:48+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/PRDecoration/services/__init__.py",
-      "bytes": 268,
-      "sha256": "07356cb9ba19db3fc6cd80f9e1b838eedb10fdf9524a35c74a7ad96b82553b23",
-      "mtime": "2026-03-11T07:12:52+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/PRDecoration/services/_http_safety.py",
-      "bytes": 1893,
-      "sha256": "6095770bfd41c7b58049bf9b9e6d97b131b74190a431ccf2a93b567a5a21837b",
-      "mtime": "2026-08-16T10:05:18+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/PRDecoration/services/gitlab_decorator.py",
-      "bytes": 9008,
-      "sha256": "1cc470be7b69b3846a10bef8bd3ec6f284f44133f92b725a56fabcff5f194b88",
-      "mtime": "2026-08-16T10:07:15+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/__init__.py",
-      "bytes": 1292,
-      "sha256": "d9c0ae046acea2edecdc7d185336695368d41fdbaceb855765200d15c24540e6",
-      "mtime": "2026-03-11T07:12:52+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/_github_format_helpers.py",
-      "bytes": 6307,
-      "sha256": "81bbefa2cd4cdef13c53b586f6049fa708486f13265b561c535adb574b337cdf",
-      "mtime": "2026-08-16T09:59:12+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/_html_report_builders.py",
-      "bytes": 4534,
-      "sha256": "c854f194bf88c637efaad36fd69477d557ec8c38fbb462327dad21592b70235a",
-      "mtime": "2026-03-22T07:26:35+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/_html_templates.py",
-      "bytes": 5421,
-      "sha256": "25ba29410a76f20f542a1e7ff5d6a7a2b968104f1c8862fd5c4fa92868b7d9c8",
-      "mtime": "2026-03-22T05:57:02+00:00"
-    },
-    {
-      "path": "Asgard/Reporting/html_generator.py",
-      "bytes": 7798,
-      "sha256": "6ab8c45a7a3637f10b168376027ededcd224632ab339635c396a18afe3618ace",
-      "mtime": "2026-03-22T07:27:05+00:00"
-    },
-    {
       "path": "Asgard/Shared/Init/__init__.py",
       "bytes": 298,
       "sha256": "93b4877b7da4504bca4e80b7d50bd07df17f0a64b785c663fe2bce7da88fbd3b",
@@ -4710,18 +3912,6 @@
       "bytes": 3233,
       "sha256": "b019d7e915c1ffca37677ececf445b22a3c2ba9aea8daf8aae5bc5e18eab23b9",
       "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/APM/__init__.py",
-      "bytes": 1373,
-      "sha256": "839a7cb715828fc5b9a052ecd0ec697e3b9786084be1405dfe7ef9eb3687c654",
-      "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Verdandi/APM/models/__init__.py",
-      "bytes": 392,
-      "sha256": "5f5f81be322622af2f348fd77ba7c86cba54d4e8314f2bf5b332580c0902fa57",
-      "mtime": "2026-03-11T07:29:48+00:00"
     },
     {
       "path": "Asgard/Verdandi/APM/models/apm_models.py",
@@ -6684,726 +5874,6 @@
       "bytes": 5158,
       "sha256": "062dfdf2d8bc281c0ec2d9bb2ddec5e0c8d319967f673697d2a4136d9198b871",
       "mtime": "2026-08-13T13:44:11+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/include.php",
-      "bytes": 2036,
-      "sha256": "3a4ba603ca2f0ed578ae3b489410698ce205f24834c4fc8fd31fa0b72a5928aa",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/index.php",
-      "bytes": 995,
-      "sha256": "e88ff0889422b4936bc24fb88ca5f2e291d2b31a17550f433a42c6a8208bd655",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/high.php",
-      "bytes": 236,
-      "sha256": "75a4014e0f38e9c44f7c323d8faccd11f82d58a1fdd88840b749d00f1e9e517b",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/impossible.php",
-      "bytes": 353,
-      "sha256": "66fa964b231cfb7dfc67d39bbfb2532bf1cd0449579152c4d675b617100b69ba",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/low.php",
-      "bytes": 73,
-      "sha256": "ac675d111bc8f81ac257f68563d5f26ece31afad7021a469d2c51babff867dad",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/medium.php",
-      "bytes": 222,
-      "sha256": "9f99e5345df6c33c8cc043db16c8ec0bf1d83dd93d5115417267bb1d7fcc83ba",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/help/help.php",
-      "bytes": 3365,
-      "sha256": "cbe69563f7229929e9a63d774bdf09a23b2a4673e9c2a463e446ae81726ad011",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/index.php",
-      "bytes": 3309,
-      "sha256": "76fb3fdbae08eb8fe0233438057c050a9fd59eeef4a11f6442158152b491e23c",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/high.php",
-      "bytes": 126,
-      "sha256": "78e518885940c4be182298b94e6864213dd4f9a6df987b4b107cc706bef59342",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/impossible.php",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/low.php",
-      "bytes": 4182,
-      "sha256": "bdcc3908cc8b1d5a0a8eec50c54229ed566e5bacc411f490f7e388bdf0179f4c",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/medium.php",
-      "bytes": 128,
-      "sha256": "6b15e110d6818aa41d73bb87be7e5fab263df017696d38417c94be4ea0026427",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/help/help.php",
-      "bytes": 2857,
-      "sha256": "a7b3dd493d4277b6905614e727e3218d25497082b0fe35bb4968fb994f4bdbab",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/index.php",
-      "bytes": 2124,
-      "sha256": "02467fc7da918bac2509da159cf49f9dce48623aff128a6333d3c45535f050cd",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/high.php",
-      "bytes": 398,
-      "sha256": "2d6d53feca779f9c93303a2e0a975882a033ab42ba545acd457555580fe05072",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/impossible.php",
-      "bytes": 483,
-      "sha256": "82c04f35908168ad2d4f948006c89a5fd6586cf335b771963ed839a7d06dd22a",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/info.php",
-      "bytes": 2022,
-      "sha256": "ffa4d0396f18cb3c16dda43fa76bf69b53a04dfa76777b9badecfd1d5c212de6",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/low.php",
-      "bytes": 221,
-      "sha256": "d9839b61e112df946429ec3b8f2de8a3e4f0ac741842fcd34cce0a1ab3363861",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/medium.php",
-      "bytes": 395,
-      "sha256": "634fdfb18bea35460f920bc4e22a5501975f61eb361886f093edf715895cbd17",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/help/help.php",
-      "bytes": 2885,
-      "sha256": "b735c93f55af9caf2e28ea7d6230a814d39f2d8e822181d740e34ef071815944",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/index.php",
-      "bytes": 2394,
-      "sha256": "44547e1f38882ac18196631a798fb1a569baa46a0d2f755c41f9dd7c7ddd0a86",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/session-input.php",
-      "bytes": 880,
-      "sha256": "b40d45f4c77728fdda9660f46cf5269ea6376e4a2beb7658ab10f0d6bad751cf",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/high.php",
-      "bytes": 1459,
-      "sha256": "a0515122d362ebd188ad7c85a313d72faf6ae373052162fb1e324e7834648374",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/impossible.php",
-      "bytes": 1854,
-      "sha256": "f4dcc92946933a31b0e93362a184ff776da9736036e99bec79f119cc2128aa8c",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/low.php",
-      "bytes": 1650,
-      "sha256": "652bb44d14a9d81c9245f05ed8440beecf7977e982e00d3ddb916126a72e85bf",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/medium.php",
-      "bytes": 1952,
-      "sha256": "dd81afdddf5817294f2eea11ffaf21b2aad90cb768cc3d57ef9b6d0f96020db4",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/test.php",
-      "bytes": 328,
-      "sha256": "5649cc5ab1e7139daad006bfbbd50920e5b1c88b0888665054e067d1781200cf",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/cookie-input.php",
-      "bytes": 805,
-      "sha256": "202b06dc715966364e727582f1e129db7c1f5692e6b2ca9a3eae4066ed19e4b5",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/help/help.php",
-      "bytes": 3143,
-      "sha256": "b6111a6931bb1c0143ff5a165a68be4907d63ad986cdffe763009f985b42a493",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/index.php",
-      "bytes": 3206,
-      "sha256": "db7227cd7e81a7a41d65e517a5e71656a9aae981cbbc5ecf47ffbef1bba5d3dc",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/high.php",
-      "bytes": 1566,
-      "sha256": "35165a2b85a80880b566a4605d2b23af5eefa5fff12e5b13961789dc4fafdc82",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/impossible.php",
-      "bytes": 1778,
-      "sha256": "ccd72dcc781d921f3acbc02da2609018f2d604921a51e74d6b097624ddc18f83",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/low.php",
-      "bytes": 1413,
-      "sha256": "28e34b5f7f4dd2ae1a38b1fae4c1bf67aaf3b98791c4a6c7560e322d1079f73a",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/medium.php",
-      "bytes": 1527,
-      "sha256": "6d2e04fab2e805f39629f6a8cc77e42671ebd13c0cba1bf3c00a9baa920efa4d",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/help/help.php",
-      "bytes": 2441,
-      "sha256": "afc40ad49132691c3fe2b5d02976a2e75e72b4266fa69eec6b50e96dee424de2",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/index.php",
-      "bytes": 2203,
-      "sha256": "a4246bd6e6d827b7b060dcc9e847139c7f5d53bc893a478bc47dd12c1b9bb865",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/high.php",
-      "bytes": 1117,
-      "sha256": "6e072f79ebde0d265c85306f4b761304e1977ca41f6b2e384b6a8b71b3104594",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/impossible.php",
-      "bytes": 2271,
-      "sha256": "82bf663396331b36ccdafdb628a71bec5d82d7f4e7652295b37b5e538781abf6",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/low.php",
-      "bytes": 511,
-      "sha256": "a958136c538b253829ffbb8d8e6e7daee5061b31a531c4b9bcc99e8d2099503f",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/medium.php",
-      "bytes": 965,
-      "sha256": "3ad92d2c7effadbb079f8527ec46a152afd4a3fb3e21ed03ac5cfe2bd8175781",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/view_help.php",
-      "bytes": 1115,
-      "sha256": "2976b32d8d934c3ab135aa5729c594dbb4ca3bb98ed320d96f7ee371dc23d616",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/view_source.php",
-      "bytes": 2705,
-      "sha256": "cb03e98bd2485a0038d5133c5781bc2e035dae701f9bbf88888e2d69855cdd42",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/view_source_all.php",
-      "bytes": 3053,
-      "sha256": "db86dcfc8708338f0a2a2ccb76b987e1bb726d634aa69aa9645b3bbab38eac59",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/help/help.php",
-      "bytes": 2129,
-      "sha256": "f42bd5d71841529d7e287f649b0447ebe51b68597b239aa6571e3856e153023b",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/index.php",
-      "bytes": 1412,
-      "sha256": "f47075b86fc6ce2a19021b5e51fe2dd5ad861decfea6f88f457fde7bacadbc4b",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/high.php",
-      "bytes": 395,
-      "sha256": "7b1a9485cd2a4364b2d82429c8e693c2d0896dbf925ce79f678287eecd830965",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/impossible.php",
-      "bytes": 255,
-      "sha256": "ad4a4e7ff2bc9ef9cdd5963846fb7987a9fb0d48b7a0674522af1faf4c6a1889",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/low.php",
-      "bytes": 289,
-      "sha256": "c88680e13f976f129b956cee00a7c426b6a29da9e678677b7d2881109f02b2d0",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/medium.php",
-      "bytes": 145,
-      "sha256": "b417f65ece3b5215560c74a7de99963b3a3b56a6defed0d81b6bfa3b83d68189",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/help/help.php",
-      "bytes": 3442,
-      "sha256": "0741f5bcba1cfe564a7e728d45c4ad5e94b33b6481201e7134ef44cd45b2335c",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/index.php",
-      "bytes": 2412,
-      "sha256": "42999c6361efcd1846182858ca16f8cc61ff9cca7326dfa6fd57f7edd28e02ee",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/high.php",
-      "bytes": 356,
-      "sha256": "b9d7b82cfbb5b208e0abfd63694b9388ab23333065086a056c8737ee347eb8c0",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/impossible.php",
-      "bytes": 83,
-      "sha256": "afc52f50b776249510940a7599afdcb4bbb3f8ddc86d70761a5ce95f6fda19eb",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/low.php",
-      "bytes": 48,
-      "sha256": "7fdc47cbbcdaa9abd594671ea46babfb7a370a7a91687ed77a57118de53df681",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/medium.php",
-      "bytes": 289,
-      "sha256": "06703f7929e8fee8042fa2193c2da91049f98cc44af22029e5324ee45bcd4356",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/help/help.php",
-      "bytes": 2702,
-      "sha256": "97254d1f7972144e555104ce974c664ccc6c8a456a26e39204029d8997404fe7",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/index.php",
-      "bytes": 1910,
-      "sha256": "ae06691fb578cd9af417656ebb5ae37181a95e0de9fafdb55776e352799c6342",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/high.php",
-      "bytes": 315,
-      "sha256": "1df9d34ce72f26e3f9cdf4878a23094e194dbabda0d2091547702a51f2851612",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/impossible.php",
-      "bytes": 413,
-      "sha256": "6cff3122f97aec856e57134f497cb79079929d7efa1aca3eb75748ea3cc28dd3",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/low.php",
-      "bytes": 229,
-      "sha256": "fb3c6fd9937697d4473cb9a2a9267df44b7e8620b16a4189189e76455d351833",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/medium.php",
-      "bytes": 288,
-      "sha256": "b2b44ca0f6dd017a5a81a3461668072e15b4481b0c5eebf6da42abcbc94830ad",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/help/help.php",
-      "bytes": 2648,
-      "sha256": "583380dc0a4a176c474a1c1a996540f4da974928d9ac83620f31a33ec9a3f94c",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/index.php",
-      "bytes": 2870,
-      "sha256": "88c6ade99cb248f5ae211a49cc23f56d48fe07c6e2d63175f76116e3560a8df5",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/high.php",
-      "bytes": 1338,
-      "sha256": "1b89419284977372e3f2093cd543202f399ef6bf244012c27ba8ada9c037bc40",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/impossible.php",
-      "bytes": 1364,
-      "sha256": "aa8c2d4ea5e990441070a57a33c92afb7562ecb1fa621a056624d40263cbd5be",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/low.php",
-      "bytes": 1208,
-      "sha256": "fd08b4c5d29111581d0ce36ce2a54febd236d4ed3bd7b64d53d6eae9b0f433a0",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/medium.php",
-      "bytes": 1311,
-      "sha256": "e4a44437fd9cdafff38a896622075fa8e35531d25e6ebda33cd364bc36649993",
-      "mtime": "2026-05-19T06:32:29+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/app.go",
-      "bytes": 2586,
-      "sha256": "97d1535bf82c9d59cb246d1473545fa11b4dea5552229db8539165bf0226813e",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/setting/setting.go",
-      "bytes": 1851,
-      "sha256": "090a82e4ab8abe85ca2d82b8ed9595ec8718c9ebf0cd65aeaef837a00025b05c",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/setup/function.go",
-      "bytes": 1644,
-      "sha256": "96a9171b9c0793f5e4d24d2bb98f5aa9900246c8a3f1697a71723a1ccf227c50",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/setup/setup.go",
-      "bytes": 2527,
-      "sha256": "b65848426f3d7e03d46bbcea3ed8826e3a802ca9dbb321a3a2b56146f97eb9b4",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/user/session/session.go",
-      "bytes": 1769,
-      "sha256": "8d4672fadeed4bb20befd11f01fd357e04ea9bd512fdda2e4121a365389f078b",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/user/user.go",
-      "bytes": 3835,
-      "sha256": "63e043f8b9da0ddc63d9f6d2d00e4f72211c5c4bf25850a51c25a5117fa34048",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/util/config/config.go",
-      "bytes": 579,
-      "sha256": "3e67090eacfb80049ea1e29ef416677b4dffc61d36630216892064aa7ce89b54",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/util/cookie.go",
-      "bytes": 1016,
-      "sha256": "fddf1fcd73debe746b22ab1680fc4501ac12fa902ba6086f434f0daf487f7f58",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/util/database/database.go",
-      "bytes": 1304,
-      "sha256": "5027740f8721c4eb52622ea7b12cda0b773e8aeb4b7a2fb066b683ae759be699",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/util/http.go",
-      "bytes": 209,
-      "sha256": "367f3b9dec70aa522e0416b48667acf03aec7047342235a17b3153091d98dc05",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/util/middleware/middleware.go",
-      "bytes": 1824,
-      "sha256": "4eec96fc01dbf0e0c6a7409a20b23936476076de854fdc8e1247e2c51e6bf4f2",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/util/template.go",
-      "bytes": 1152,
-      "sha256": "ce9520341dcc25c6df49eb23096cc98dd2adc6b9becbde9ce1bbad3ca54d8d68",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/csa/csa.go",
-      "bytes": 1345,
-      "sha256": "fc21c397c8cbfad9dcca0253ca7e66d8f3b2eb08c465f2c9355ac3b68b4f4928",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/idor/function.go",
-      "bytes": 1533,
-      "sha256": "7777a612e1d371044228338827bd3c31886b94f8ddc624e5fcbdc28def3c5101",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/idor/idor.go",
-      "bytes": 3993,
-      "sha256": "d771cee94985df1c16cc1ac324e3d8d6f9fa691048282b9415f42d5a6729a013",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/sqli/function.go",
-      "bytes": 1663,
-      "sha256": "b5a987a2bc057e0bdea4a546b3673450cc7ac91ad8587f7510d99f98760f472f",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/sqli/sqli.go",
-      "bytes": 2035,
-      "sha256": "72f954d4f873c21c5895dd3f71606e3108daaf342bac0790ac3ecf3ffccb6251",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/xss/function.go",
-      "bytes": 938,
-      "sha256": "cbc86e7a2c44e207095e55894ef1c01aef3cf1fab78b4e199743c569f1e56f49",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/xss/xss.go",
-      "bytes": 2707,
-      "sha256": "cc29fef66f841a041388767b907c78d998f8538f89d9919fae905021b4701c6d",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/govwa/vulnerability/xxe/xxe.go",
-      "bytes": 64,
-      "sha256": "01cdb2dd7950fc2163801281016a4648a82a19471988ee31f7c2d39a4de1ee9d",
-      "mtime": "2026-05-19T06:32:35+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/assets/js/chart/chart-data-morris.js",
-      "bytes": 3718,
-      "sha256": "a5511ae7a5614f9f2dd89625bce94d6b794a675dae4987259d087a8d2e8e2693",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/assets/js/tour/redirects-steps.js",
-      "bytes": 648,
-      "sha256": "16babf9b88e186cb4e2a7ab896a78494f6d4a88737c903eb1e23e35579ac651b",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/data/allocations-dao.js",
-      "bytes": 3928,
-      "sha256": "c6aebc971ce7f9c8b2a8f0864a500497de25a3ea0318ef94ecd57cadf6e789ea",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/data/benefits-dao.js",
-      "bytes": 1240,
-      "sha256": "0ac30b097e016eeffb10e1c72d9c657153d3ce67e7b3f4756b2cb127d94181d7",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/data/contributions-dao.js",
-      "bytes": 2791,
-      "sha256": "363065e8b3c32f0997ce2dcb17341eb3e40b7f43b00b72c576dfebf73f551c85",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/data/memos-dao.js",
-      "bytes": 1107,
-      "sha256": "6582195bd913c2d60d63e9b519f9508a3319e07e158fd0c6f31dcbc50a80e8cf",
-      "mtime": "2026-05-19T06:32:38+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/data/profile-dao.js",
-      "bytes": 3506,
-      "sha256": "80429a5df579867401a59b1cbd9c1d74f88d5548780fbd909e9504876c1968cc",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/data/research-dao.js",
-      "bytes": 750,
-      "sha256": "f1cf267e56080fc94943ad7d83802b4e9db9420687fac49f84dbc0e45dfa88ac",
-      "mtime": "2026-05-19T06:32:38+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/data/user-dao.js",
-      "bytes": 4078,
-      "sha256": "577fb140933a50e010a4bbcb74e975f678d7f3a989467e4d113926f35c042e64",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/allocations.js",
-      "bytes": 915,
-      "sha256": "b5b7da1a6b595799cf6cca402756dd9a3f6e2a8b5d712c1989d23b7f01f349a6",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/benefits.js",
-      "bytes": 1340,
-      "sha256": "bc5516b35ba21884915b88b3f810441e616f068d8a0cf756b143185d5aeda2d2",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/contributions.js",
-      "bytes": 2485,
-      "sha256": "196bdeaa22da4cfe8a851b1b932710b2fcedd21f14ed75d70b739ba759a01003",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/error.js",
-      "bytes": 281,
-      "sha256": "452dc61f9f06a31ea4305edb2e573fc940428615841533b59320792fcfb6fb3f",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/index.js",
-      "bytes": 3149,
-      "sha256": "3ab970b2888bc1501515db24a83cc7851ac9c09d00948c652300401515185eb5",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/memos.js",
-      "bytes": 824,
-      "sha256": "c3543f308f24083436e25e3a72210ad31e611db5c93268d8dd0e340095e132c9",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/profile.js",
-      "bytes": 3633,
-      "sha256": "18575bf3d3710906e57e09e6036e40fd3986bdcca436ed0e2a2875b41f0f2aca",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/research.js",
-      "bytes": 1071,
-      "sha256": "e399f3c70436fa160f00835626bf50f88980268fcd143436af97c9d2297c1d92",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/session.js",
-      "bytes": 10199,
-      "sha256": "e53e38b6eea76b026efaacde07f694e7a2eca005de4083fb74f9393d432a5b25",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/nodegoat/app/routes/tutorial.js",
-      "bytes": 637,
-      "sha256": "502e0b959b37cbc844d15eadd7a78a40b5281155fcf8d532f0e4abdd2fee8eb9",
-      "mtime": "2026-05-19T06:32:39+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_js_fs.js",
-      "bytes": 157,
-      "sha256": "5c41306ccc85e39e79a84c110f4703dbd3fd32587ee1b9abfab1d48dac551b6f",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_js_send.js",
-      "bytes": 102,
-      "sha256": "18e4bc75706d43abcb81102092a5f4b50f7ba6d9b07e4e7c4f2843f6e7603652",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_open_1.py",
-      "bytes": 177,
-      "sha256": "b8c8dd5ca5229c07a018af9aa113b0e16270634b9dffdbbc00b0dc263362d59e",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_open_2.py",
-      "bytes": 131,
-      "sha256": "4b5e7bb3e10cf2b694dd6074cfbda8a8ba08bea65b4d4322b42eeeff1bed1eea",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_os_join.py",
-      "bytes": 168,
-      "sha256": "5be87ee70198b50a919579fb6370067aefcc53e0aacd5e90fa56156f07f24c52",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_pathlib.py",
-      "bytes": 141,
-      "sha256": "1a5f5ba7096722743d87cf33d456003cd7430a6b30bff536a69f241ea7517759",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_php_include.php",
-      "bytes": 96,
-      "sha256": "c38a04716f76c5fb619ff1b39d67f01fb64ba9e3e819d082fd39ae34adb37946",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_shutil.py",
-      "bytes": 118,
-      "sha256": "dbe985339fa284d5d6fab8e56dd37747c02f4016763af5952aaedac00063ed93",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_allowlist.py",
-      "bytes": 202,
-      "sha256": "06df7437dce63b73bf35e2d44b3491679e75d60de457fbce69c4e71196d2de24",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_basename.py",
-      "bytes": 312,
-      "sha256": "ef6ecc4286ea8837545d7a5f0e47239ece4d30e9d6b9bdcbb7ce80cab6ae578d",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_hardcoded_path.py",
-      "bytes": 129,
-      "sha256": "952fc00cc7e0006ca63bdb69cb2bc7a0c3e46595de545b83952130f01ad1d271",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_js_static.js",
-      "bytes": 147,
-      "sha256": "0a6c1f3dc90ae339b3dfe023ee2548573df79a4407cf1a9b166831fc75ff8f46",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_no_user_input.py",
-      "bytes": 101,
-      "sha256": "fe694b01cc7f2f28681acb31fb632c0ba995cc58bba59958aecf5f1fe9c05285",
-      "mtime": "2026-05-19T02:59:33+00:00"
-    },
-    {
-      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/des_encrypt.py",
-      "bytes": 112,
-      "sha256": "a8d576a4c6cddf48dfac60ea65dce668d724db742acbbe981558b6124e1fb1a9",
-      "mtime": "2026-05-19T03:01:02+00:00"
     },
     {
       "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/ecb_mode.py",
@@ -14514,246 +12984,6 @@
       "bytes": 5864,
       "sha256": "094439345601ddb8d92dba24c9ee4df798bfede03f26ae78a978693cfb3f3100",
       "mtime": "2026-03-19T23:02:23+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_dependency_models.py",
-      "bytes": 6312,
-      "sha256": "2717e30a5ee1909b3a9b9b8618978f79ae57ba2842f2af0f217079e0b2f6c617",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_graph_service.py",
-      "bytes": 15683,
-      "sha256": "cdd345f379b80a518758b91e0ac91ff7f73f8d6e9bf8c59f45746088c5982ce2",
-      "mtime": "2026-08-16T13:10:31+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_health_checks.py",
-      "bytes": 5055,
-      "sha256": "e53137c231d9ace99249d327337d97214aaaeae6f01af4702781905bdcb00c5c",
-      "mtime": "2026-08-16T12:15:00+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_license_cache.py",
-      "bytes": 12839,
-      "sha256": "4b0bb329f4ec347e678e539b5f5451eadf61b7bf0c0a5a9c5608f458dfef8f5e",
-      "mtime": "2026-08-16T12:04:45+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_license_policy.py",
-      "bytes": 15036,
-      "sha256": "40fe1cb44dd6675d67a8b1218c3b1e1ae2a27a82e28c7813cb3cde0b11ebc86f",
-      "mtime": "2026-08-16T11:46:44+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_no_cache_env.py",
-      "bytes": 2284,
-      "sha256": "2b68c231d1c21b8d0563a230782000103c8230445bd45a986d33a23da24ab169",
-      "mtime": "2026-08-16T12:04:55+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_pypi_name_url.py",
-      "bytes": 3602,
-      "sha256": "1e996d7b6ca27cd4600b0348d9f47dc2c538d97ea6fae7b64e8b8e5a28087a8c",
-      "mtime": "2026-08-16T11:29:36+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_requirements_sync_jail.py",
-      "bytes": 1392,
-      "sha256": "afe7a396179b7d6beece4c31157ffe082c5503917baadd2749317eae27ebce13",
-      "mtime": "2026-08-16T10:48:04+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_sbom_closure.py",
-      "bytes": 5223,
-      "sha256": "f0729bde5ffe7beed7733eb82dd7d3386e7dc8346df6b956f15490ce14c18585",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_sbom_generator.py",
-      "bytes": 14599,
-      "sha256": "c1fa2b4bcdd3a364d13e52cd0eebe2d27015f7d91ff020d74f14efe3be6b06c8",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_vulnerability_checker_network.py",
-      "bytes": 17219,
-      "sha256": "17bbe605c192c96ac41b9b3092ee14b6a2f2a429ce49c5aefbce7c47e66ff404",
-      "mtime": "2026-08-16T12:15:11+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/OOP/__init__.py",
-      "bytes": 25,
-      "sha256": "25a8878ccf00a8dee60037bf60f43d3383ed77564e36d27b4048896eb47f0623",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_cir_metrics.py",
-      "bytes": 7591,
-      "sha256": "834cbfe2397b376fb7127a695ab609e03f4f49b97250e9341e62a7324a8ae786",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_cir_oop_bridge.py",
-      "bytes": 4388,
-      "sha256": "6072e3fda7d9b82277b1f3a22d43b5623a908faac0d4e55b0d7d31570f4759b7",
-      "mtime": "2026-07-19T03:39:44+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_coupling_assignment_tracking.py",
-      "bytes": 3398,
-      "sha256": "9c00e4889744305385bd00bc1c990c1b21b567d8332c20bb622c9348b80de457",
-      "mtime": "2026-08-13T11:26:19+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_oop_analyzer.py",
-      "bytes": 5794,
-      "sha256": "1e288d3d190c7372d3adc85dd2dfe610646711dc37664abbabcc6e13725dd192",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_oop_models.py",
-      "bytes": 4840,
-      "sha256": "4697b37415e790929ee303fff3a7492a9dc302894525a94123361c6ba75d441b",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/__init__.py",
-      "bytes": 89,
-      "sha256": "d8337a8ee9abd11c70cc946f27b992c4573bb2befd7489b1d4ebf514b1b99ed9",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_cache_analyzer_service.py",
-      "bytes": 20291,
-      "sha256": "08c520ef35c6ce7b06027b8d5b444b0191e3d0d2e3cf6686187442317099e726",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_cpu_profiler_service.py",
-      "bytes": 26370,
-      "sha256": "5739d54439e312ac4d646d35034e6fc81f403cd416ecf210e5105431fb980720",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_database_analyzer_service.py",
-      "bytes": 24308,
-      "sha256": "301ae16e34acb219b125d9cc8632cd45e389dc8d4d184105a2d199010f7418b6",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_memory_profiler_service.py",
-      "bytes": 23380,
-      "sha256": "29b80c2430e60824e6665ab26227ce71c5141b214ffa5423a308cdec008884ff",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_performance_models.py",
-      "bytes": 25137,
-      "sha256": "becf452a969b3bce891e30e06dcbdf274b3490c130dd4ff4d5f887b43d17471f",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_performance_utils.py",
-      "bytes": 21508,
-      "sha256": "c932ae3adf0ccc9d3be63c3eff7c241948e780d6d378586b9d782a59708c3309",
-      "mtime": "2026-08-16T11:04:06+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_static_performance_service.py",
-      "bytes": 21040,
-      "sha256": "9ffab21641e4efdfbbf8e701dac3f3f0d7d7c8105e7b7aa2437076ab1aa22dab",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_confined_walk.py",
-      "bytes": 12647,
-      "sha256": "826baa95bfea4815b95600eb98785f6ad8f0e4b53f4b987b352bd289fea3a621",
-      "mtime": "2026-08-16T11:21:08+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_cpp_analyzer.py",
-      "bytes": 5195,
-      "sha256": "c770c8ac157d2663a75132dc0f1f864fe10ac0e017b90fcf669b3138741df037",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_csharp_analyzer.py",
-      "bytes": 10606,
-      "sha256": "a5da582a894534d12e70e74d790442597e09fdaea510889a8d830d2378e3ce8b",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_go_analyzer.py",
-      "bytes": 10848,
-      "sha256": "5790a6f63aa3ad4921309a73cab4a2d97dfd0635bbeed52ae218018fdc13262d",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_java_analyzer.py",
-      "bytes": 10351,
-      "sha256": "c846705a164a680ff04fb18eefb7f04247912bf189e7de83372e8a21440ac7f9",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_js_analyzer.py",
-      "bytes": 21509,
-      "sha256": "3c56de00e6986f255e6e869509f9b283d5564377e15f20282b029a220c0a2ace",
-      "mtime": "2026-08-16T13:18:54+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_js_security_rules.py",
-      "bytes": 9075,
-      "sha256": "ad55c95c30f3fa991d3ba6356f6b2c8be9558fa4018037d871979c047250afe2",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_php_analyzer.py",
-      "bytes": 10114,
-      "sha256": "daecb0ce862698a10799ef804c80d3eef487ee53e53129c8ddb66e0e9547831d",
-      "mtime": "2026-08-16T13:07:23+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_ruby_analyzer.py",
-      "bytes": 9579,
-      "sha256": "a58f954ba2cb209184ccb456216841ed85f4267f2603bba52eaa2bcc9a27f25a",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_rust_analyzer.py",
-      "bytes": 5647,
-      "sha256": "582ba58d0ce1119cf390bdb25904cf40d12781110b6d3befff9626b1ccacbdcd",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_shell_analyzer.py",
-      "bytes": 20058,
-      "sha256": "59ad44cd76378a581873fa16c7d5b59936277d7f0e8cf8e85565d9bf26a7bb17",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_ts_analyzer.py",
-      "bytes": 22703,
-      "sha256": "c238fdfdb136d02ad28beea3a8ce9b427cabea4bd160a667d1b205394476fc0c",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Taint/__init__.py",
-      "bytes": 0,
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "mtime": "2026-05-19T23:46:37+00:00"
-    },
-    {
-      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Taint/test_taint_engine.py",
-      "bytes": 7489,
-      "sha256": "89bcf8d2bbf187502baf638753d76f372460cc6cb2347e73df127bc7bdfdc150",
-      "mtime": "2026-05-19T23:46:37+00:00"
     },
     {
       "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/__init__.py",
@@ -25538,6 +23768,2400 @@
       "disposition": "clean",
       "bytes": 1875,
       "sha256": "1aeb9907157b2722749ee49b896eb0db98cdbdd07a9cdcf4252f8a286f486b2d"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/__init__.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2326,
+      "sha256": "731b7614516b4f17edffb1fac8a4bdb900159f2fec9685dfb656ae0bf4f5ab7a"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/models/__init__.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 885,
+      "sha256": "4543ca2f356fc18d5969c474c62b29ea19e9da7e0d2330afe4ed71eb14cb9bca"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/models/_accessibility_enums.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4868,
+      "sha256": "283fa7ae6b46f5eb00aceec38aa344e6d4fcba64f2a481557f75bc9d53924065"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/models/_accessibility_report_models.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 15374,
+      "sha256": "9cbe860afac968e9b97de20f484b53341903fd84640ea6f961c37281cfba5b69"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/models/accessibility_models.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1592,
+      "sha256": "f1fd14fe2982b28cffdfba7f02e2ca34586f29178db193bfac3317fc5bab99cc"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/__init__.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 636,
+      "sha256": "a944bdd1a1a594455815df8be7f1d3870595cfd63636ed0ca7ff10e0754537cd"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_aria_validator_checks.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11839,
+      "sha256": "88d263d7ce4532942b0b90af4c221260f3aeac09192f76829c50a2de890c3a5d"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_aria_validator_tiers.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 13657,
+      "sha256": "8ccc20ed0bd97fd4bdc1f8857c6a7899e6e252f5e047f5b4cab6fc71a595ce82"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_color_contrast_math.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4041,
+      "sha256": "c816be5ed670841b23cf5bb0ff4c3f7ba1cb40c583e8ae9dc7bf54101bf464dd"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_color_contrast_page.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4574,
+      "sha256": "52d2651487356351a9f92bd54a75b0afe8e8187c5c3f256a15fa782ceca003bf"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_component_criticality.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6993,
+      "sha256": "1a10089e02690f5d30066942754fc5a799e204fde70c0b222ac40a8e2b3717ca"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_focus_order_spatial.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3777,
+      "sha256": "f1b0af46535cfc9009716289f27843de3bfa5060b59e94537d21ed9aed34a663"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_keyboard_nav_checks.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10743,
+      "sha256": "91e4fe7104253edcb75dfad049c6cfda1ba7cbdcbd5645fa7029b9be1376a57d"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_screen_reader_checks.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8503,
+      "sha256": "4f7b759dd7b6c76d94c50568647654832a9360e72bc1e932dc39d50feea0916d"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_screen_reader_checks_part2.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5262,
+      "sha256": "c38862949feb7c006565474f7a66f0cfcbc5538bff402f2c71434e6c50ed3674"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_wcag_checks.py",
+      "completed_at": "2026-08-17T01:34:43+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8857,
+      "sha256": "a0045e59e2a3d67f223eec70cf43006d8672390dd09045a3ea8d23c55d8ba5b0"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_wcag_checks_part2.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5715,
+      "sha256": "fb53f1bf82e5da358041588808f2667b72c6e71079febb3e194d4b3301ba5d99"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/_wcag_criteria.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6488,
+      "sha256": "0880f37694a6ed329098a41f1b561af304bd7cb0d6a9bc7ed9981ba484c0ddb3"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/aria_validator.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [
+        "CH-0066"
+      ],
+      "disposition": "residual",
+      "bytes": 6897,
+      "sha256": "5b1b9fafe0accd9cc72a09649a57fc86efb1c3a62107a6e6f4360b1939437d11"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/color_contrast.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [
+        "CH-0066"
+      ],
+      "disposition": "residual",
+      "bytes": 7760,
+      "sha256": "4b9d15764c235929f26dc61ffd9084c8021ce0cafe745f8bf4ca676849c55763"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/keyboard_nav.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [
+        "CH-0066"
+      ],
+      "disposition": "residual",
+      "bytes": 5745,
+      "sha256": "a6dbdac7fe4f0a24d41fab0026460f339972e1310ec01c24f5ad6d385d88ff85"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/screen_reader.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [
+        "CH-0066"
+      ],
+      "disposition": "residual",
+      "bytes": 4499,
+      "sha256": "28d191d6e744f6b4231088d30c30e6e130d27332edae54bdae1e6d9e88af806a"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/services/wcag_validator.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [
+        "CH-0066"
+      ],
+      "disposition": "residual",
+      "bytes": 7862,
+      "sha256": "b9395e07715fb44c2730d980b229bd16bf8c86b6c7004471cc101cd59b1148e6"
+    },
+    {
+      "path": "Asgard/Freya/Accessibility/utilities/__init__.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 84,
+      "sha256": "3b5683b8b71987e51b2a62c5fd7cb2333092ff90365a32bab6886835cff4581c"
+    },
+    {
+      "path": "Asgard/Freya/Config/__init__.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 714,
+      "sha256": "fa8702b8db0582c239db237ea51911a60184fe9b5d137ebeac16b7258026f3d3"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/__init__.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1463,
+      "sha256": "ce83482f2d4cd4a815ff124bec6a70904e6dbab7cff1801280c51d1c2872e621"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/models/__init__.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 492,
+      "sha256": "99cefb22014f899ce0964be985d9048cc8235a4e0bc5fc14eab24a9de63ea024"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/models/alignment_models.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2059,
+      "sha256": "79bf1edd2a932a053f3b277f346f2a3168ebc669f758ee0fba05f80530103cef"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/models/ir_models.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2583,
+      "sha256": "cea7f8ccbe66ff1383a16800993be81fdf14ed534bb126eef3b4e73ed6448060"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/services/__init__.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 244,
+      "sha256": "8dd4455092c05a3c77fd91a980192d14eb6c351e7ae3043254e162a0dde52791"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/services/_discover_helpers.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4327,
+      "sha256": "35c6a9b2674f7d9a08fb86f5279c94f0f426aca12fc0c9061dbfda540e82ff29"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/services/_ir_avro_helpers.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3474,
+      "sha256": "5178fc44f140087aa34a9b220c5252e929db8d6d259566728ae098952bd5bec9"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/services/_ir_graphql_helpers.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3119,
+      "sha256": "ffaff491cda654204f590de3b7701b3fd8ba81011b11ff228bbd1b5b35615832"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/services/_ir_openapi_helpers.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4109,
+      "sha256": "bcf785d14394bb469fcb69645f3c81a1a3feb81f00e2bdafb9850c24eacce57e"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/services/_ir_protobuf_helpers.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3886,
+      "sha256": "9b97caa41294b74542e2f1d0623b2dd353f35fbe52cbfe5a530f0c0d93b88824"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/services/_ir_sql_helpers.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2363,
+      "sha256": "0feca1ed49f48170751641c5016851a52f30aaac837eff07e875e98f7b1c7b55"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/services/_lexical_helpers.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 989,
+      "sha256": "8e7c5d5afab4f9cf9fff895eab035fec596071f7fe699a43ecc0e6d23f45af31"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/services/_type_matrix_helpers.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2804,
+      "sha256": "a60c504649908a2cf7bbc3ded05e2dc136c63a57066682f9f5933c80ad295d14"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/services/alignment_checker_service.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8479,
+      "sha256": "0a50c23e8c92c96249a19598a5764840a9998c41395ef610b6188ba8d24b8be8"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/services/ir_builder_service.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2330,
+      "sha256": "956f1dce9d2bd5818bdc12b19b62cd55c65258e49951a6de83de3df71d0c498c"
+    },
+    {
+      "path": "Asgard/Forseti/Alignment/utilities/__init__.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard/Forseti/AsyncAPI/__init__.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1846,
+      "sha256": "33249e98a87a5e8fbb7b43a24f5cc13bcfd88a3533fab47068785bcb9b4cc2c5"
+    },
+    {
+      "path": "Asgard/Forseti/AsyncAPI/models/__init__.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 742,
+      "sha256": "4cf490cd9cf9f01421109629335aa564d71f4860a1b7cb5e11e46b63e62530a1"
+    },
+    {
+      "path": "Asgard/Forseti/AsyncAPI/models/_asyncapi_base_models.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7999,
+      "sha256": "1572445add3927839d7fac26b66f6bae49755dc1d6fd9667d85a3e8f2bc07780"
+    },
+    {
+      "path": "Asgard/Forseti/AsyncAPI/models/asyncapi_models.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5728,
+      "sha256": "3783d772a1da1cedb3e4579f502662c6dacb572b5f329bbdff274c9d2948400f"
+    },
+    {
+      "path": "Asgard/Forseti/AsyncAPI/services/__init__.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 339,
+      "sha256": "7275776476adbd63ce32d462617b3a08aafe99b19e631a9907d9fe10d9e455c5"
+    },
+    {
+      "path": "Asgard/Forseti/AsyncAPI/services/_asyncapi_parser_helpers.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5564,
+      "sha256": "2102ddc5e1b509d766b52905c4e98ec31eec799cd35d94d2ae2b55f2e7517e2f"
+    },
+    {
+      "path": "Asgard/Forseti/AsyncAPI/services/_asyncapi_validator_helpers.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10633,
+      "sha256": "6c7d7831253383537c4e9bef58c4f60f07f279fc11ee4cb107f8587c077d0c4d"
+    },
+    {
+      "path": "Asgard/Forseti/AsyncAPI/services/asyncapi_diff_service.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4161,
+      "sha256": "83786a5905203eef416ef0fe4272c0b7c64bad22bee643fa8d40d35a3d938eaa"
+    },
+    {
+      "path": "Asgard/Forseti/AsyncAPI/services/asyncapi_parser_service.py",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7717,
+      "sha256": "e8b6f6ca3f8853cda6af0edaf68a47e5cb18caa35545e000012ea99c6396f21d"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/include.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2036,
+      "sha256": "3a4ba603ca2f0ed578ae3b489410698ce205f24834c4fc8fd31fa0b72a5928aa"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/index.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 995,
+      "sha256": "e88ff0889422b4936bc24fb88ca5f2e291d2b31a17550f433a42c6a8208bd655"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/high.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 236,
+      "sha256": "75a4014e0f38e9c44f7c323d8faccd11f82d58a1fdd88840b749d00f1e9e517b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/impossible.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 353,
+      "sha256": "66fa964b231cfb7dfc67d39bbfb2532bf1cd0449579152c4d675b617100b69ba"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/low.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 73,
+      "sha256": "ac675d111bc8f81ac257f68563d5f26ece31afad7021a469d2c51babff867dad"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/fi/source/medium.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 222,
+      "sha256": "9f99e5345df6c33c8cc043db16c8ec0bf1d83dd93d5115417267bb1d7fcc83ba"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/help/help.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3365,
+      "sha256": "cbe69563f7229929e9a63d774bdf09a23b2a4673e9c2a463e446ae81726ad011"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/index.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3309,
+      "sha256": "76fb3fdbae08eb8fe0233438057c050a9fd59eeef4a11f6442158152b491e23c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/high.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 126,
+      "sha256": "78e518885940c4be182298b94e6864213dd4f9a6df987b4b107cc706bef59342"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/impossible.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/low.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4182,
+      "sha256": "bdcc3908cc8b1d5a0a8eec50c54229ed566e5bacc411f490f7e388bdf0179f4c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/javascript/source/medium.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 128,
+      "sha256": "6b15e110d6818aa41d73bb87be7e5fab263df017696d38417c94be4ea0026427"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/help/help.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2857,
+      "sha256": "a7b3dd493d4277b6905614e727e3218d25497082b0fe35bb4968fb994f4bdbab"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/index.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2124,
+      "sha256": "02467fc7da918bac2509da159cf49f9dce48623aff128a6333d3c45535f050cd"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/high.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 398,
+      "sha256": "2d6d53feca779f9c93303a2e0a975882a033ab42ba545acd457555580fe05072"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/impossible.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 483,
+      "sha256": "82c04f35908168ad2d4f948006c89a5fd6586cf335b771963ed839a7d06dd22a"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/info.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2022,
+      "sha256": "ffa4d0396f18cb3c16dda43fa76bf69b53a04dfa76777b9badecfd1d5c212de6"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/low.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 221,
+      "sha256": "d9839b61e112df946429ec3b8f2de8a3e4f0ac741842fcd34cce0a1ab3363861"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/open_redirect/source/medium.php",
+      "completed_at": "2026-08-17T01:34:44+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 395,
+      "sha256": "634fdfb18bea35460f920bc4e22a5501975f61eb361886f093edf715895cbd17"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/help/help.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2885,
+      "sha256": "b735c93f55af9caf2e28ea7d6230a814d39f2d8e822181d740e34ef071815944"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/index.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2394,
+      "sha256": "44547e1f38882ac18196631a798fb1a569baa46a0d2f755c41f9dd7c7ddd0a86"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/session-input.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 880,
+      "sha256": "b40d45f4c77728fdda9660f46cf5269ea6376e4a2beb7658ab10f0d6bad751cf"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/high.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1459,
+      "sha256": "a0515122d362ebd188ad7c85a313d72faf6ae373052162fb1e324e7834648374"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/impossible.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1854,
+      "sha256": "f4dcc92946933a31b0e93362a184ff776da9736036e99bec79f119cc2128aa8c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/low.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1650,
+      "sha256": "652bb44d14a9d81c9245f05ed8440beecf7977e982e00d3ddb916126a72e85bf"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/source/medium.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1952,
+      "sha256": "dd81afdddf5817294f2eea11ffaf21b2aad90cb768cc3d57ef9b6d0f96020db4"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli/test.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 328,
+      "sha256": "5649cc5ab1e7139daad006bfbbd50920e5b1c88b0888665054e067d1781200cf"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/cookie-input.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 805,
+      "sha256": "202b06dc715966364e727582f1e129db7c1f5692e6b2ca9a3eae4066ed19e4b5"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/help/help.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3143,
+      "sha256": "b6111a6931bb1c0143ff5a165a68be4907d63ad986cdffe763009f985b42a493"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/index.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3206,
+      "sha256": "db7227cd7e81a7a41d65e517a5e71656a9aae981cbbc5ecf47ffbef1bba5d3dc"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/high.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1566,
+      "sha256": "35165a2b85a80880b566a4605d2b23af5eefa5fff12e5b13961789dc4fafdc82"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/impossible.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1778,
+      "sha256": "ccd72dcc781d921f3acbc02da2609018f2d604921a51e74d6b097624ddc18f83"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/low.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1413,
+      "sha256": "28e34b5f7f4dd2ae1a38b1fae4c1bf67aaf3b98791c4a6c7560e322d1079f73a"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/sqli_blind/source/medium.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1527,
+      "sha256": "6d2e04fab2e805f39629f6a8cc77e42671ebd13c0cba1bf3c00a9baa920efa4d"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/help/help.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2441,
+      "sha256": "afc40ad49132691c3fe2b5d02976a2e75e72b4266fa69eec6b50e96dee424de2"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/index.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2203,
+      "sha256": "a4246bd6e6d827b7b060dcc9e847139c7f5d53bc893a478bc47dd12c1b9bb865"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/high.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1117,
+      "sha256": "6e072f79ebde0d265c85306f4b761304e1977ca41f6b2e384b6a8b71b3104594"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/impossible.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2271,
+      "sha256": "82bf663396331b36ccdafdb628a71bec5d82d7f4e7652295b37b5e538781abf6"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/low.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 511,
+      "sha256": "a958136c538b253829ffbb8d8e6e7daee5061b31a531c4b9bcc99e8d2099503f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/upload/source/medium.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 965,
+      "sha256": "3ad92d2c7effadbb079f8527ec46a152afd4a3fb3e21ed03ac5cfe2bd8175781"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/view_help.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1115,
+      "sha256": "2976b32d8d934c3ab135aa5729c594dbb4ca3bb98ed320d96f7ee371dc23d616"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/view_source.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2705,
+      "sha256": "cb03e98bd2485a0038d5133c5781bc2e035dae701f9bbf88888e2d69855cdd42"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/view_source_all.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3053,
+      "sha256": "db86dcfc8708338f0a2a2ccb76b987e1bb726d634aa69aa9645b3bbab38eac59"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/help/help.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2129,
+      "sha256": "f42bd5d71841529d7e287f649b0447ebe51b68597b239aa6571e3856e153023b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/index.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1412,
+      "sha256": "f47075b86fc6ce2a19021b5e51fe2dd5ad861decfea6f88f457fde7bacadbc4b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/high.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 395,
+      "sha256": "7b1a9485cd2a4364b2d82429c8e693c2d0896dbf925ce79f678287eecd830965"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/impossible.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 255,
+      "sha256": "ad4a4e7ff2bc9ef9cdd5963846fb7987a9fb0d48b7a0674522af1faf4c6a1889"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/low.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 289,
+      "sha256": "c88680e13f976f129b956cee00a7c426b6a29da9e678677b7d2881109f02b2d0"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/weak_id/source/medium.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 145,
+      "sha256": "b417f65ece3b5215560c74a7de99963b3a3b56a6defed0d81b6bfa3b83d68189"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/help/help.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3442,
+      "sha256": "0741f5bcba1cfe564a7e728d45c4ad5e94b33b6481201e7134ef44cd45b2335c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/index.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2412,
+      "sha256": "42999c6361efcd1846182858ca16f8cc61ff9cca7326dfa6fd57f7edd28e02ee"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/high.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 356,
+      "sha256": "b9d7b82cfbb5b208e0abfd63694b9388ab23333065086a056c8737ee347eb8c0"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/impossible.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 83,
+      "sha256": "afc52f50b776249510940a7599afdcb4bbb3f8ddc86d70761a5ce95f6fda19eb"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/low.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 48,
+      "sha256": "7fdc47cbbcdaa9abd594671ea46babfb7a370a7a91687ed77a57118de53df681"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_d/source/medium.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 289,
+      "sha256": "06703f7929e8fee8042fa2193c2da91049f98cc44af22029e5324ee45bcd4356"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/help/help.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2702,
+      "sha256": "97254d1f7972144e555104ce974c664ccc6c8a456a26e39204029d8997404fe7"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/index.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1910,
+      "sha256": "ae06691fb578cd9af417656ebb5ae37181a95e0de9fafdb55776e352799c6342"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/high.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 315,
+      "sha256": "1df9d34ce72f26e3f9cdf4878a23094e194dbabda0d2091547702a51f2851612"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/impossible.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 413,
+      "sha256": "6cff3122f97aec856e57134f497cb79079929d7efa1aca3eb75748ea3cc28dd3"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/low.php",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 229,
+      "sha256": "fb3c6fd9937697d4473cb9a2a9267df44b7e8620b16a4189189e76455d351833"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Headers/services/_header_context.py",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2843,
+      "sha256": "eb14ef454dc4bb2ceb2480d1d5ec1a72a8c40a8a8d58cd473191a13aa0d7ab06"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Headers/services/_header_patterns.py",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5012,
+      "sha256": "3aaeff9636550bd78268cd5f705fb48473aee00f9606c1f8be9d1cad45f4dc78"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Headers/services/cors_analyzer.py",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8130,
+      "sha256": "cfdc85705b9449a593498294538c80cc1dee677b2147c3b89db155372c634998"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Headers/services/csp_analyzer.py",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5952,
+      "sha256": "91da62f78ab5b54ac312de5699c4302dd01836defaaf8ac17eff24ae1e1a0d76"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Headers/services/header_validator.py",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10943,
+      "sha256": "483300f8c33eb4835c1f4a74d6c9f7598faef237e2361a90e59e6f47b67fa73c"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Headers/services/headers_analyzer.py",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10477,
+      "sha256": "97a3b5fe8522affea4138faeb9541ea3df5b2c570a164829c1879d92af396718"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Headers/utilities/__init__.py",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 526,
+      "sha256": "48e8ae0761843f8e9b8e7ba0a4262cee016bd77cc34facbd9703e2bb59ae8bed"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Headers/utilities/csp_parser.py",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8759,
+      "sha256": "28c32e3d7e2e585212f76c13fd396ec3a3b6de1a37906f03571ef08fc61d878a"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Hotspots/__init__.py",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1719,
+      "sha256": "4c0ae1e67d898059f0843ab638a752b8ddfdcdacd3c5c101716a143051865275"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Hotspots/models/__init__.py",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 376,
+      "sha256": "45bffd12346355fab7633b0b63c2957aa9d34b43d32a4bd4d3f40e65f60cb56d"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Hotspots/models/hotspot_models.py",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7867,
+      "sha256": "0b8bbf89d71e84d4d09c9ed5f9ff8e76adabef458aea12983e878d6611759f8d"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Hotspots/services/__init__.py",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 169,
+      "sha256": "75f6bb71b052c0b7848d9a6a5657d422420dbe37d1fec72d88a8016767b266a0"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Hotspots/services/_ast_hotspot_checks.py",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 12960,
+      "sha256": "710fb90294b3cdcaeb849548692158019f6766a09944f498df36aff60d65d117"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Hotspots/services/_regex_hotspot_checks.py",
+      "completed_at": "2026-08-17T01:34:45+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5210,
+      "sha256": "2202ae97d8fab148acd747bf28cba776bf65f819ea73f4caeee1bd909476ee81"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Hotspots/services/hotspot_detector.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [
+        "CH-0078"
+      ],
+      "disposition": "residual",
+      "bytes": 9055,
+      "sha256": "8660c6e240b8184db3289fe392c97693e43088d3d29e0078c4aeee648535f7c2"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Hotspots/services/hotspot_review.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4097,
+      "sha256": "e2b5a3d5171891ddf9f4e8768a036c63438004a69ff852ed7ff0711eb8c297ba"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Hotspots/services/pr_summary.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2708,
+      "sha256": "3af788869fdd42d59333f0b853c8238c8427ef7bf0148422063425817c9a560c"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/InfoDisclosure/__init__.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1078,
+      "sha256": "7edceafe91f790464be75a3ee989012a956c670d2ff7c038419a4553cca32c7d"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/InfoDisclosure/models/__init__.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 339,
+      "sha256": "d5e4e153e5d4d1838804c64e96ad0328b2cfba93de8742a2817d8dae4ed1305d"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/InfoDisclosure/models/info_disclosure_models.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1047,
+      "sha256": "460c69d569b961a3064c3a37d158cb724ebbd44e5b44be568eb6fc3d1bd4366b"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/InfoDisclosure/services/__init__.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 144,
+      "sha256": "c9753c946d2b49a7e6536566fa14b30f94fe51544224c432d7f9c8e5bcf96c0b"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/InfoDisclosure/services/info_disclosure_scanner.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [
+        "CH-0078"
+      ],
+      "disposition": "residual",
+      "bytes": 6949,
+      "sha256": "1e243d77f74b2bc2867a861b19596e004e126c52a2e8450081f867c40e0985fa"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Infrastructure/__init__.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1365,
+      "sha256": "88bc9e738cadf40d8e6d6526e68cf91af9195a1ab04840faaaa493cb2dda5b8d"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Infrastructure/models/__init__.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 351,
+      "sha256": "599ba4597373284854ec8943b31d187b8bdc9aa25bade9f8db629d7397bea0c8"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Infrastructure/models/infra_models.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11779,
+      "sha256": "8607079508430069ed3b9e7a7e6bdb4fca37e4721fa35bd8f385db6924834aec"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Infrastructure/services/__init__.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 588,
+      "sha256": "e6ac460128a99e06cae4ba8990d8f0b43a0bf4705b8984d42dadb80a122a8b30"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Infrastructure/services/_config_patterns.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11661,
+      "sha256": "e4a455c87f72f1899f088e0b4b50f4663eae3270ab02316f1b3c182aa57d6bdc"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Infrastructure/services/_credential_patterns.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7500,
+      "sha256": "84b86ebd7be99f81c90587188660a0d78706e3a7931e7f143a77e0324fc27ccf"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Infrastructure/services/_hardening_patterns.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10544,
+      "sha256": "c249cc017d106cbf3d230ef23d67c41cb22004fe99a80b9e0b2c46f274da1a88"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/Infrastructure/services/config_validator.py",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6262,
+      "sha256": "af28c3d408a893aaa25b037bcc7f0a8605ebc20b044807c1ab5fa2f076d53c8d"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_r/source/medium.php",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 288,
+      "sha256": "b2b44ca0f6dd017a5a81a3461668072e15b4481b0c5eebf6da42abcbc94830ad"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/help/help.php",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2648,
+      "sha256": "583380dc0a4a176c474a1c1a996540f4da974928d9ac83620f31a33ec9a3f94c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/index.php",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2870,
+      "sha256": "88c6ade99cb248f5ae211a49cc23f56d48fe07c6e2d63175f76116e3560a8df5"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/high.php",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1338,
+      "sha256": "1b89419284977372e3f2093cd543202f399ef6bf244012c27ba8ada9c037bc40"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/impossible.php",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1364,
+      "sha256": "aa8c2d4ea5e990441070a57a33c92afb7562ecb1fa621a056624d40263cbd5be"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/low.php",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1208,
+      "sha256": "fd08b4c5d29111581d0ce36ce2a54febd236d4ed3bd7b64d53d6eae9b0f433a0"
+    },
+    {
+      "path": "Asgard_Test/fixtures/dvwa/vulnerabilities/xss_s/source/medium.php",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1311,
+      "sha256": "e4a44437fd9cdafff38a896622075fa8e35531d25e6ebda33cd364bc36649993"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/app.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2586,
+      "sha256": "97d1535bf82c9d59cb246d1473545fa11b4dea5552229db8539165bf0226813e"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/setting/setting.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1851,
+      "sha256": "090a82e4ab8abe85ca2d82b8ed9595ec8718c9ebf0cd65aeaef837a00025b05c"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/setup/function.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1644,
+      "sha256": "96a9171b9c0793f5e4d24d2bb98f5aa9900246c8a3f1697a71723a1ccf227c50"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/setup/setup.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2527,
+      "sha256": "b65848426f3d7e03d46bbcea3ed8826e3a802ca9dbb321a3a2b56146f97eb9b4"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/user/session/session.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1769,
+      "sha256": "8d4672fadeed4bb20befd11f01fd357e04ea9bd512fdda2e4121a365389f078b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/user/user.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3835,
+      "sha256": "63e043f8b9da0ddc63d9f6d2d00e4f72211c5c4bf25850a51c25a5117fa34048"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/util/config/config.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 579,
+      "sha256": "3e67090eacfb80049ea1e29ef416677b4dffc61d36630216892064aa7ce89b54"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/util/cookie.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1016,
+      "sha256": "fddf1fcd73debe746b22ab1680fc4501ac12fa902ba6086f434f0daf487f7f58"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/util/database/database.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1304,
+      "sha256": "5027740f8721c4eb52622ea7b12cda0b773e8aeb4b7a2fb066b683ae759be699"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/util/http.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 209,
+      "sha256": "367f3b9dec70aa522e0416b48667acf03aec7047342235a17b3153091d98dc05"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/util/middleware/middleware.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1824,
+      "sha256": "4eec96fc01dbf0e0c6a7409a20b23936476076de854fdc8e1247e2c51e6bf4f2"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/util/template.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1152,
+      "sha256": "ce9520341dcc25c6df49eb23096cc98dd2adc6b9becbde9ce1bbad3ca54d8d68"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/csa/csa.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1345,
+      "sha256": "fc21c397c8cbfad9dcca0253ca7e66d8f3b2eb08c465f2c9355ac3b68b4f4928"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/idor/function.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1533,
+      "sha256": "7777a612e1d371044228338827bd3c31886b94f8ddc624e5fcbdc28def3c5101"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/idor/idor.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3993,
+      "sha256": "d771cee94985df1c16cc1ac324e3d8d6f9fa691048282b9415f42d5a6729a013"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/sqli/function.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1663,
+      "sha256": "b5a987a2bc057e0bdea4a546b3673450cc7ac91ad8587f7510d99f98760f472f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/sqli/sqli.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2035,
+      "sha256": "72f954d4f873c21c5895dd3f71606e3108daaf342bac0790ac3ecf3ffccb6251"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/xss/function.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 938,
+      "sha256": "cbc86e7a2c44e207095e55894ef1c01aef3cf1fab78b4e199743c569f1e56f49"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/xss/xss.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2707,
+      "sha256": "cc29fef66f841a041388767b907c78d998f8538f89d9919fae905021b4701c6d"
+    },
+    {
+      "path": "Asgard_Test/fixtures/govwa/vulnerability/xxe/xxe.go",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 64,
+      "sha256": "01cdb2dd7950fc2163801281016a4648a82a19471988ee31f7c2d39a4de1ee9d"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/assets/js/chart/chart-data-morris.js",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3718,
+      "sha256": "a5511ae7a5614f9f2dd89625bce94d6b794a675dae4987259d087a8d2e8e2693"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/assets/js/tour/redirects-steps.js",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 648,
+      "sha256": "16babf9b88e186cb4e2a7ab896a78494f6d4a88737c903eb1e23e35579ac651b"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/data/allocations-dao.js",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3928,
+      "sha256": "c6aebc971ce7f9c8b2a8f0864a500497de25a3ea0318ef94ecd57cadf6e789ea"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/data/benefits-dao.js",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1240,
+      "sha256": "0ac30b097e016eeffb10e1c72d9c657153d3ce67e7b3f4756b2cb127d94181d7"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/data/contributions-dao.js",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2791,
+      "sha256": "363065e8b3c32f0997ce2dcb17341eb3e40b7f43b00b72c576dfebf73f551c85"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/data/memos-dao.js",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1107,
+      "sha256": "6582195bd913c2d60d63e9b519f9508a3319e07e158fd0c6f31dcbc50a80e8cf"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/data/profile-dao.js",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3506,
+      "sha256": "80429a5df579867401a59b1cbd9c1d74f88d5548780fbd909e9504876c1968cc"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/data/research-dao.js",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 750,
+      "sha256": "f1cf267e56080fc94943ad7d83802b4e9db9420687fac49f84dbc0e45dfa88ac"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/data/user-dao.js",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4078,
+      "sha256": "577fb140933a50e010a4bbcb74e975f678d7f3a989467e4d113926f35c042e64"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/allocations.js",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 915,
+      "sha256": "b5b7da1a6b595799cf6cca402756dd9a3f6e2a8b5d712c1989d23b7f01f349a6"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/benefits.js",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1340,
+      "sha256": "bc5516b35ba21884915b88b3f810441e616f068d8a0cf756b143185d5aeda2d2"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/contributions.js",
+      "completed_at": "2026-08-17T01:34:46+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2485,
+      "sha256": "196bdeaa22da4cfe8a851b1b932710b2fcedd21f14ed75d70b739ba759a01003"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/error.js",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 281,
+      "sha256": "452dc61f9f06a31ea4305edb2e573fc940428615841533b59320792fcfb6fb3f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/index.js",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3149,
+      "sha256": "3ab970b2888bc1501515db24a83cc7851ac9c09d00948c652300401515185eb5"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/memos.js",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 824,
+      "sha256": "c3543f308f24083436e25e3a72210ad31e611db5c93268d8dd0e340095e132c9"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/profile.js",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3633,
+      "sha256": "18575bf3d3710906e57e09e6036e40fd3986bdcca436ed0e2a2875b41f0f2aca"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/research.js",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1071,
+      "sha256": "e399f3c70436fa160f00835626bf50f88980268fcd143436af97c9d2297c1d92"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/session.js",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10199,
+      "sha256": "e53e38b6eea76b026efaacde07f694e7a2eca005de4083fb74f9393d432a5b25"
+    },
+    {
+      "path": "Asgard_Test/fixtures/nodegoat/app/routes/tutorial.js",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 637,
+      "sha256": "502e0b959b37cbc844d15eadd7a78a40b5281155fcf8d532f0e4abdd2fee8eb9"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_js_fs.js",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 157,
+      "sha256": "5c41306ccc85e39e79a84c110f4703dbd3fd32587ee1b9abfab1d48dac551b6f"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_js_send.js",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 102,
+      "sha256": "18e4bc75706d43abcb81102092a5f4b50f7ba6d9b07e4e7c4f2843f6e7603652"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_open_1.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 177,
+      "sha256": "b8c8dd5ca5229c07a018af9aa113b0e16270634b9dffdbbc00b0dc263362d59e"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_open_2.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 131,
+      "sha256": "4b5e7bb3e10cf2b694dd6074cfbda8a8ba08bea65b4d4322b42eeeff1bed1eea"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_os_join.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 168,
+      "sha256": "5be87ee70198b50a919579fb6370067aefcc53e0aacd5e90fa56156f07f24c52"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_pathlib.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 141,
+      "sha256": "1a5f5ba7096722743d87cf33d456003cd7430a6b30bff536a69f241ea7517759"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_php_include.php",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 96,
+      "sha256": "c38a04716f76c5fb619ff1b39d67f01fb64ba9e3e819d082fd39ae34adb37946"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/bad/pt_shutil.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 118,
+      "sha256": "dbe985339fa284d5d6fab8e56dd37747c02f4016763af5952aaedac00063ed93"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_allowlist.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 202,
+      "sha256": "06df7437dce63b73bf35e2d44b3491679e75d60de457fbce69c4e71196d2de24"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_basename.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 312,
+      "sha256": "ef6ecc4286ea8837545d7a5f0e47239ece4d30e9d6b9bdcbb7ce80cab6ae578d"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_hardcoded_path.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 129,
+      "sha256": "952fc00cc7e0006ca63bdb69cb2bc7a0c3e46595de545b83952130f01ad1d271"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_js_static.js",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 147,
+      "sha256": "0a6c1f3dc90ae339b3dfe023ee2548573df79a4407cf1a9b166831fc75ff8f46"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE22_PathTraversal/safe/safe_no_user_input.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 101,
+      "sha256": "fe694b01cc7f2f28681acb31fb632c0ba995cc58bba59958aecf5f1fe9c05285"
+    },
+    {
+      "path": "Asgard_Test/fixtures/owasp/CWE327_WeakCrypto/bad/des_encrypt.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 112,
+      "sha256": "a8d576a4c6cddf48dfac60ea65dce668d724db742acbbe981558b6124e1fb1a9"
+    },
+    {
+      "path": "Asgard/Reporting/History/__init__.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1725,
+      "sha256": "75ad9a8c5c128107095a0e4772afdef79d973355bff56755b373a7019bc5b3da"
+    },
+    {
+      "path": "Asgard/Reporting/History/infrastructure/__init__.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 48,
+      "sha256": "ed0a0a56367de6da36ad1d3c020ef9d5f7cb3ab57043aff8af630e92c6d94b2b"
+    },
+    {
+      "path": "Asgard/Reporting/History/infrastructure/persistence/__init__.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 60,
+      "sha256": "f41767743e5afd30c5762cccd04736dddcb20253bf47c43452703231603154ff"
+    },
+    {
+      "path": "Asgard/Reporting/History/infrastructure/persistence/history_schema.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3699,
+      "sha256": "91cfe0f704869ee08c5f5c899e863f867229cf6aa6d62e49653b03bb456eea70"
+    },
+    {
+      "path": "Asgard/Reporting/History/models/__init__.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 311,
+      "sha256": "d1154e1e48237229497e5fcd9d11c93fa63ffff19ed72dfbf65b2614f26a4895"
+    },
+    {
+      "path": "Asgard/Reporting/History/models/history_models.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4991,
+      "sha256": "3027806a48b1ca517cc9b64a9f2b1077faf3c9f2000c9a62fe8155bfc2bb4a9d"
+    },
+    {
+      "path": "Asgard/Reporting/History/services/__init__.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 443,
+      "sha256": "29fa2e7514f458aef9f846f18f417bb52643f3efbd206823ef0beb06d870fc96"
+    },
+    {
+      "path": "Asgard/Reporting/History/services/_history_db.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 701,
+      "sha256": "525ddc1ebcbbbf78837024503a4bc6ffbc76f6b8e8e7306202e0268ef9c1919f"
+    },
+    {
+      "path": "Asgard/Reporting/History/services/_history_repository.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4743,
+      "sha256": "1d6a09ddbdcf54194ac9a3aef35976e251b471d916118d304f02e94b77349c5f"
+    },
+    {
+      "path": "Asgard/Reporting/History/services/history_store.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3404,
+      "sha256": "7acdd11f54e1603f324957c57086e335e9d13e3f453e9131a880689474a68db2"
+    },
+    {
+      "path": "Asgard/Reporting/History/services/reporting_analyzer.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5248,
+      "sha256": "209275cc4ae1a956358f2a37ab8bb02f83fe32a5a272cde38599fe2cbf5dc670"
+    },
+    {
+      "path": "Asgard/Reporting/History/services/savd_metrics.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4088,
+      "sha256": "e2e3a35252a9a95d4e5a24bf993f5e7d17c84eba4ba4a359a5293b524a98655e"
+    },
+    {
+      "path": "Asgard/Reporting/PRDecoration/__init__.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1905,
+      "sha256": "4516281191202bab660a85790d725d12a664d4dc0e9dae50c50f01e272246cae"
+    },
+    {
+      "path": "Asgard/Reporting/PRDecoration/models/__init__.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 295,
+      "sha256": "6e1805d9b617f09bd077588d976d1c9b1e605b3cb4996006babfc531889a1564"
+    },
+    {
+      "path": "Asgard/Reporting/PRDecoration/models/decoration_models.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [
+        "CH-0093"
+      ],
+      "disposition": "confirmed",
+      "bytes": 3760,
+      "sha256": "bd8cc41c05c18ff43b2765f830bdc3cf91e031dcecc82b39f521050ed7fe9b37"
+    },
+    {
+      "path": "Asgard/Reporting/PRDecoration/services/__init__.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 268,
+      "sha256": "07356cb9ba19db3fc6cd80f9e1b838eedb10fdf9524a35c74a7ad96b82553b23"
+    },
+    {
+      "path": "Asgard/Reporting/PRDecoration/services/_http_safety.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [
+        "CH-0093"
+      ],
+      "disposition": "confirmed",
+      "bytes": 1893,
+      "sha256": "6095770bfd41c7b58049bf9b9e6d97b131b74190a431ccf2a93b567a5a21837b"
+    },
+    {
+      "path": "Asgard/Reporting/PRDecoration/services/gitlab_decorator.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [
+        "CH-0093"
+      ],
+      "disposition": "confirmed",
+      "bytes": 9008,
+      "sha256": "1cc470be7b69b3846a10bef8bd3ec6f284f44133f92b725a56fabcff5f194b88"
+    },
+    {
+      "path": "Asgard/Reporting/__init__.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1292,
+      "sha256": "d9c0ae046acea2edecdc7d185336695368d41fdbaceb855765200d15c24540e6"
+    },
+    {
+      "path": "Asgard/Reporting/_github_format_helpers.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [
+        "CH-0094"
+      ],
+      "disposition": "confirmed",
+      "bytes": 6307,
+      "sha256": "81bbefa2cd4cdef13c53b586f6049fa708486f13265b561c535adb574b337cdf"
+    },
+    {
+      "path": "Asgard/Reporting/_html_report_builders.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [
+        "CH-0046"
+      ],
+      "disposition": "residual",
+      "bytes": 4534,
+      "sha256": "c854f194bf88c637efaad36fd69477d557ec8c38fbb462327dad21592b70235a"
+    },
+    {
+      "path": "Asgard/Reporting/_html_templates.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5421,
+      "sha256": "25ba29410a76f20f542a1e7ff5d6a7a2b968104f1c8862fd5c4fa92868b7d9c8"
+    },
+    {
+      "path": "Asgard/Reporting/html_generator.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [
+        "CH-0046"
+      ],
+      "disposition": "residual",
+      "bytes": 7798,
+      "sha256": "6ab8c45a7a3637f10b168376027ededcd224632ab339635c396a18afe3618ace"
+    },
+    {
+      "path": "Asgard/Verdandi/APM/__init__.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1373,
+      "sha256": "839a7cb715828fc5b9a052ecd0ec697e3b9786084be1405dfe7ef9eb3687c654"
+    },
+    {
+      "path": "Asgard/Verdandi/APM/models/__init__.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 392,
+      "sha256": "5f5f81be322622af2f348fd77ba7c86cba54d4e8314f2bf5b332580c0902fa57"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_dependency_models.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6312,
+      "sha256": "2717e30a5ee1909b3a9b9b8618978f79ae57ba2842f2af0f217079e0b2f6c617"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_graph_service.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 15683,
+      "sha256": "cdd345f379b80a518758b91e0ac91ff7f73f8d6e9bf8c59f45746088c5982ce2"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_health_checks.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5055,
+      "sha256": "e53137c231d9ace99249d327337d97214aaaeae6f01af4702781905bdcb00c5c"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_license_cache.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 12839,
+      "sha256": "4b0bb329f4ec347e678e539b5f5451eadf61b7bf0c0a5a9c5608f458dfef8f5e"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_license_policy.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 15036,
+      "sha256": "40fe1cb44dd6675d67a8b1218c3b1e1ae2a27a82e28c7813cb3cde0b11ebc86f"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_no_cache_env.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2284,
+      "sha256": "2b68c231d1c21b8d0563a230782000103c8230445bd45a986d33a23da24ab169"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_pypi_name_url.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3602,
+      "sha256": "1e996d7b6ca27cd4600b0348d9f47dc2c538d97ea6fae7b64e8b8e5a28087a8c"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_requirements_sync_jail.py",
+      "completed_at": "2026-08-17T01:34:47+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1392,
+      "sha256": "afe7a396179b7d6beece4c31157ffe082c5503917baadd2749317eae27ebce13"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_sbom_closure.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5223,
+      "sha256": "f0729bde5ffe7beed7733eb82dd7d3386e7dc8346df6b956f15490ce14c18585"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_sbom_generator.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 14599,
+      "sha256": "c1fa2b4bcdd3a364d13e52cd0eebe2d27015f7d91ff020d74f14efe3be6b06c8"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_vulnerability_checker_network.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 17219,
+      "sha256": "17bbe605c192c96ac41b9b3092ee14b6a2f2a429ce49c5aefbce7c47e66ff404"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/OOP/__init__.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 25,
+      "sha256": "25a8878ccf00a8dee60037bf60f43d3383ed77564e36d27b4048896eb47f0623"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_cir_metrics.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7591,
+      "sha256": "834cbfe2397b376fb7127a695ab609e03f4f49b97250e9341e62a7324a8ae786"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_cir_oop_bridge.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4388,
+      "sha256": "6072e3fda7d9b82277b1f3a22d43b5623a908faac0d4e55b0d7d31570f4759b7"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_coupling_assignment_tracking.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3398,
+      "sha256": "9c00e4889744305385bd00bc1c990c1b21b567d8332c20bb622c9348b80de457"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_oop_analyzer.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5794,
+      "sha256": "1e288d3d190c7372d3adc85dd2dfe610646711dc37664abbabcc6e13725dd192"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/OOP/test_oop_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4840,
+      "sha256": "4697b37415e790929ee303fff3a7492a9dc302894525a94123361c6ba75d441b"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/__init__.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 89,
+      "sha256": "d8337a8ee9abd11c70cc946f27b992c4573bb2befd7489b1d4ebf514b1b99ed9"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_cache_analyzer_service.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 20291,
+      "sha256": "08c520ef35c6ce7b06027b8d5b444b0191e3d0d2e3cf6686187442317099e726"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_cpu_profiler_service.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 26370,
+      "sha256": "5739d54439e312ac4d646d35034e6fc81f403cd416ecf210e5105431fb980720"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_database_analyzer_service.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 24308,
+      "sha256": "301ae16e34acb219b125d9cc8632cd45e389dc8d4d184105a2d199010f7418b6"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_memory_profiler_service.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 23380,
+      "sha256": "29b80c2430e60824e6665ab26227ce71c5141b214ffa5423a308cdec008884ff"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_performance_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 25137,
+      "sha256": "becf452a969b3bce891e30e06dcbdf274b3490c130dd4ff4d5f887b43d17471f"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_performance_utils.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 21508,
+      "sha256": "c932ae3adf0ccc9d3be63c3eff7c241948e780d6d378586b9d782a59708c3309"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Performance/test_static_performance_service.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 21040,
+      "sha256": "9ffab21641e4efdfbbf8e701dac3f3f0d7d7c8105e7b7aa2437076ab1aa22dab"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/__init__.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_confined_walk.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 12647,
+      "sha256": "826baa95bfea4815b95600eb98785f6ad8f0e4b53f4b987b352bd289fea3a621"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_cpp_analyzer.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5195,
+      "sha256": "c770c8ac157d2663a75132dc0f1f864fe10ac0e017b90fcf669b3138741df037"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_csharp_analyzer.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10606,
+      "sha256": "a5da582a894534d12e70e74d790442597e09fdaea510889a8d830d2378e3ce8b"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_go_analyzer.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10848,
+      "sha256": "5790a6f63aa3ad4921309a73cab4a2d97dfd0635bbeed52ae218018fdc13262d"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_java_analyzer.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10351,
+      "sha256": "c846705a164a680ff04fb18eefb7f04247912bf189e7de83372e8a21440ac7f9"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_js_analyzer.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 21509,
+      "sha256": "3c56de00e6986f255e6e869509f9b283d5564377e15f20282b029a220c0a2ace"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_js_security_rules.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9075,
+      "sha256": "ad55c95c30f3fa991d3ba6356f6b2c8be9558fa4018037d871979c047250afe2"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_php_analyzer.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10114,
+      "sha256": "daecb0ce862698a10799ef804c80d3eef487ee53e53129c8ddb66e0e9547831d"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_ruby_analyzer.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9579,
+      "sha256": "a58f954ba2cb209184ccb456216841ed85f4267f2603bba52eaa2bcc9a27f25a"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_rust_analyzer.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5647,
+      "sha256": "582ba58d0ce1119cf390bdb25904cf40d12781110b6d3befff9626b1ccacbdcd"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_shell_analyzer.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 20058,
+      "sha256": "59ad44cd76378a581873fa16c7d5b59936277d7f0e8cf8e85565d9bf26a7bb17"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Languages/test_ts_analyzer.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 22703,
+      "sha256": "c238fdfdb136d02ad28beea3a8ce9b427cabea4bd160a667d1b205394476fc0c"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Taint/__init__.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "Asgard_Test/tests_Bragi/L0_Mocked/Quality/Taint/test_taint_engine.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7489,
+      "sha256": "89bcf8d2bbf187502baf638753d76f372460cc6cb2347e73df127bc7bdfdc150"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/analysis_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6573,
+      "sha256": "9c968a74d52236348165f0121cdd8a7a25c985fcecb5bb7030262e1bc39c1427"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/blocking_async_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6192,
+      "sha256": "811b77dca889e62369bc7c15bf4c7ea4943c39b0fcd932abc321e3207681775f"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/complexity_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10456,
+      "sha256": "7da682d558b427530d80b1f12386d7155ad143790d41ba53f6df4590976c26f5"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/daemon_thread_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6287,
+      "sha256": "cc9be963905c749b58bf802f560954381fe61b0eb8b015dd2bb65ed72246c67e"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/datetime_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7093,
+      "sha256": "e4c41e8722f2c423e489fd371355a030ff8bbc4b2571f4b6320a6bd7b030363e"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/debt_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 15292,
+      "sha256": "602d14ed243986d2b70a0c9892bed28d3707dd77608eab943699f1b451a3bf96"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/documentation_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7491,
+      "sha256": "72d5db70fcb94687f8933f311eece4e35dedc6ffefa17a71d4c344350040a9ef"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/duplication_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8363,
+      "sha256": "de5e19c4cdf292c5b1dcca3ce5f949dbd3a3f8e992a0077fc77cca0c9c34112d"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/env_fallback_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [
+        "CH-0043"
+      ],
+      "disposition": "confirmed",
+      "bytes": 9101,
+      "sha256": "6e8f7cb481a9244f5133990e6267f6490dc0d02bf99dd64e02fd2bd32b094e3b"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/error_handling_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7017,
+      "sha256": "e505712a3d8768127a029c0e4e1e7bc64ae6446288f0bbe4ba1c13c5499eeda7"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/future_leak_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5903,
+      "sha256": "c2daa140469f89312051c916648b47fb1c91d23241f0d50f9fb57ff479a8a013"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/lazy_import_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6414,
+      "sha256": "8afd33583dc3ede3dff4ebf0e5d50c8da89a718f3ca17587d9a08f4faae60264"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/library_usage_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5653,
+      "sha256": "ac7408e6e6cb09dd77d79f19be2bfcf6c14a245b60ab8a41a4080ab1b9dffa1c"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/maintainability_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11692,
+      "sha256": "30a68e687e7a114b666a5ae503513ac768691f7d8f32897dfa368787e6e10a86"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/naming_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4680,
+      "sha256": "93ddb1bf8a38ad923181aa31f4dfec603b899c7ab2fca6d14d9b348723b8992b"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/race_condition_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6193,
+      "sha256": "3b968f28d4d69385b6df67111c90415f78443702d21f4b4d9d87b3e3d5a61251"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/resource_cleanup_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6973,
+      "sha256": "f38c3a4404631808155413bd42095588392c5d3cf2700887be83c043307083da"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/smell_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7629,
+      "sha256": "0b9d835f7bd0a2fb7a05abf5ebb62c52ee7cfc583f50909156ddc2222b063f89"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/syntax_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6036,
+      "sha256": "db8259fc7618f0bbb70095777f3dc6ede82ba494b7e6ed6711d4954ccaedb449"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/thread_safety_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6067,
+      "sha256": "7e00ced5c821b6f192e8bf9fa559fb1bdc168ae2fa2cfc1f2e4d859974118204"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/type_check_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 11437,
+      "sha256": "8d104ba2aad0b65cc4ba24861eabd1c6790805460eae43afd6241ef2128e311f"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/models/typing_models.py",
+      "completed_at": "2026-08-17T01:34:48+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8269,
+      "sha256": "ec11d12b9effdf3637b6a472bdbf0c0003dc92f7dead32d34520208216b27822"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/services/_lazy_import_report.py",
+      "completed_at": "2026-08-17T01:34:49+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6628,
+      "sha256": "54221a0b724e66e12d758981790703921fb83fd2b986bbbf9f2146801690f012"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/services/_lazy_import_visitor.py",
+      "completed_at": "2026-08-17T01:34:49+00:00",
+      "finding_ids": [
+        "CHC-0007"
+      ],
+      "disposition": "clean",
+      "bytes": 8206,
+      "sha256": "132e06291de4f9423fcbfac0a664f3bcaa2219a0312fd68dd9ed7e0a69544875"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/services/_library_usage_report.py",
+      "completed_at": "2026-08-17T01:34:49+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4136,
+      "sha256": "ce64a40d9ed571818b1cbc24fecae1b08567f43cd6d38fa2632ce6bebe265be6"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/services/_library_usage_visitor.py",
+      "completed_at": "2026-08-17T01:34:49+00:00",
+      "finding_ids": [
+        "CHC-0007"
+      ],
+      "disposition": "clean",
+      "bytes": 3659,
+      "sha256": "990e25f51a8ddb03d90dd6077993321a1dfe04a0808486081fdcf54ff62bf16b"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/services/_maintainability_helpers.py",
+      "completed_at": "2026-08-17T01:34:49+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4185,
+      "sha256": "af2133c4acbfe56a08ee4c2049f0064811474c8c775cd8eeb1ececa42b4aab65"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/services/_maintainability_report.py",
+      "completed_at": "2026-08-17T01:34:49+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6244,
+      "sha256": "9ded3d9334ffb989fd2d0995fbadc85a97f7f13b3ada3fa1a5ffc369e9d65ab8"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/services/_maintainability_visitor.py",
+      "completed_at": "2026-08-17T01:34:49+00:00",
+      "finding_ids": [
+        "CHC-0007"
+      ],
+      "disposition": "clean",
+      "bytes": 8030,
+      "sha256": "395fbdd056b38b748d1ed79025f93e9c9c6a2807a7bf90abba671338d21bb181"
+    },
+    {
+      "path": "Asgard/Bragi/Quality/services/_naming_helpers.py",
+      "completed_at": "2026-08-17T01:34:49+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3784,
+      "sha256": "4e92d9e74fdf8084cd34af1a66c5728bdc48cf6476781c856625ce609860659b"
     }
   ]
 }
