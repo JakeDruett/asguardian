@@ -311,7 +311,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 ### CH-0103 — Residual (Jenkins env keys)
 
 - **Leftover status:** Fixed
-- **Fixed in:** PENDING
+- **Fixed in:** 0c2402d
 - **Implementation note:** Jenkins env keys must match [A-Za-z_][A-Za-z0-9_]*; hostile keys raise.
 - **Original sink (closed):** `generate_jenkins` calls `harden_steps`; `_jenkins_safe_script` refuses triple-quote/CR; values go through `_jenkins_groovy_string` (quoted `sh(...)`, not raw triple-quoted). Tests refuse triple-quote breakout in `run`.
 - **Leftover:** `config.env` keys interpolated raw into the Groovy `environment` block (~596-597). A key with newline or quote breaks out.

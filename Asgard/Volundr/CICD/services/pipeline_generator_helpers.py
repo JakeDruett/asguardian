@@ -13,6 +13,7 @@ Zero-trust by construction (DEEPTHINK_04):
   SBOM, harden-runner egress hardening, and build/deploy trust split.
 """
 
+import re
 from typing import Any, Dict, List, Optional, Tuple, cast
 
 import yaml  # type: ignore[import-untyped]
@@ -594,6 +595,8 @@ def generate_jenkins(config: PipelineConfig) -> str:
     if config.env:
         lines.append("    environment {")
         for key, value in config.env.items():
+            if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", str(key)):
+                raise ValueError("Refusing Jenkins env key: must match [A-Za-z_][A-Za-z0-9_]*")
             lines.append(f"        {key} = {_jenkins_groovy_string(value, 'env')}")
         lines.append("    }")
         lines.append("")

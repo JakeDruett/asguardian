@@ -504,6 +504,19 @@ class TestProvenanceAndSBOM:
         with pytest.raises(ValueError, match="'''"):
             generate_jenkins(config)
 
+    def test_jenkins_refuses_hostile_env_key(self):
+        config = PipelineConfig(
+            name="CI",
+            platform=CICDPlatform.JENKINS,
+            env={"FOO\nsh 'id'": "bar"},
+            stages=[PipelineStage(
+                name="Build",
+                steps=[StepConfig(name="x", run="make")],
+            )],
+        )
+        with pytest.raises(ValueError, match="env key"):
+            generate_jenkins(config)
+
     def test_jenkins_emits_quoted_sh_not_raw_triple_quotes(self):
         config = PipelineConfig(
             name="CI",
