@@ -70,7 +70,12 @@ def _to_utf8_bytes(lines: Optional[Sequence[str]], file_path: Union[str, Path]) 
         except Exception:
             return None
     try:
-        raw = Path(file_path).read_bytes()
+        path = Path(file_path)
+        if path.is_file() and path.stat().st_size > MAX_PARSE_BYTES:
+            return None
+        raw = path.read_bytes()
+        if len(raw) > MAX_PARSE_BYTES:
+            return None
     except OSError:
         return None
     # Round-trip to guarantee valid UTF-8 for the parser.
