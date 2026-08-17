@@ -2,491 +2,11 @@
   "version": 1,
   "repo_root": ".",
   "generated_at": "2026-08-17T00:40:38+00:00",
-  "updated_at": "2026-08-17T01:17:01+00:00",
+  "updated_at": "2026-08-17T01:20:59+00:00",
   "planning_dir": "_Docs/Planning",
   "plan_path": "_Docs/Planning/CyberHardeningConfirm.md",
   "total_discovered": 3938,
   "remaining": [
-    {
-      "path": "Asgard/Bragi/CodeFix/__init__.py",
-      "bytes": 1006,
-      "sha256": "b02aa100c21dc135ae94fd6b04f3c2462674e5dcd079172b00e9646d1fbb51e5",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/CodeFix/models/__init__.py",
-      "bytes": 281,
-      "sha256": "aed9856e4dda6e51adc4ced6d853b4d92525f932f2cf88db0ebd26ec6ec84698",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/CodeFix/models/codefix_models.py",
-      "bytes": 1550,
-      "sha256": "f194e44569b9e35e47d26192ff768579e7218c5740773a85cd8e8dc508236b88",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/CodeFix/services/__init__.py",
-      "bytes": 143,
-      "sha256": "66991e41431b724b3484995f1710e20041f7ac68ad5fb13b218382c328e3a9e2",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/CodeFix/services/_codefix_builders.py",
-      "bytes": 13340,
-      "sha256": "30bb3311b9bd22f003a8e2c0fe8dba1ea900d17a552ff084659700a2ed03e7f7",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/CodeFix/services/codefix_service.py",
-      "bytes": 4509,
-      "sha256": "5d4b70cc067d9348f38890d092c8c95efb9d8c0be84ef01dfdbd28c2bb9b4e5d",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Coverage/__init__.py",
-      "bytes": 932,
-      "sha256": "e89cbe5e4fb13d88e79d7680c2c27bbad94498f31a020853d6c48a908787ca0d",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Coverage/models/__init__.py",
-      "bytes": 522,
-      "sha256": "abe732c962418b8ca9cb87be94923b9af8be9ee90d190829f3755d29ba221820",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Coverage/models/coverage_models.py",
-      "bytes": 6872,
-      "sha256": "2731eeff33df24e71b494527f728eeb1eface9c965913ebb7e58ef7d14aaf9cb",
-      "mtime": "2026-07-19T03:39:44+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Coverage/services/__init__.py",
-      "bytes": 382,
-      "sha256": "d184fc7def581f89f06a73b594aec2e7b8ca680450efe22c0c1b4a1265bc4d86",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Coverage/services/_coverage_reporter.py",
-      "bytes": 8104,
-      "sha256": "01ee2cb814b71fdfd2dfbad661102aa16fdd4155cc9f2f396e00dbea66b2e8a6",
-      "mtime": "2026-08-16T13:24:18+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Coverage/services/_gap_analysis_helpers.py",
-      "bytes": 5627,
-      "sha256": "9e3d296a405c43c8f5a7da9a0e31335f14d3962a3693a933c91fddcc71816285",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Coverage/services/_multilang_gap_helpers.py",
-      "bytes": 4942,
-      "sha256": "f5cae0235ebc6b93b218435989291264921582fa640120e8118729e916a7e8e5",
-      "mtime": "2026-07-19T03:39:44+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Coverage/services/_suggestion_builders.py",
-      "bytes": 7779,
-      "sha256": "3919425bdeaed16a6a64d1f356885be46a5bb7ffc915602c0e7bd2e25da5b75b",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Coverage/services/coverage_analyzer.py",
-      "bytes": 5357,
-      "sha256": "75ebd9ec4f04da82118f52d7ab6123e5c8417dd82e58d4d8e35481d35e06ab56",
-      "mtime": "2026-07-19T03:39:44+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Coverage/services/gap_analyzer.py",
-      "bytes": 5752,
-      "sha256": "47d67138bd819f71af09b1a6d6ae100be6ed5e77f2858f8fc34f5067f113f4dc",
-      "mtime": "2026-07-19T03:39:44+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Coverage/services/suggestion_engine.py",
-      "bytes": 3232,
-      "sha256": "5bda4851e3f2eaa44dc212dbd4d99c93468fbca3069b88b863fac9b3764df3c3",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Coverage/utilities/__init__.py",
-      "bytes": 375,
-      "sha256": "ea602f901d859d9dee22710561d194d4e5666d01905254bfc8e044ca8cde2107",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Coverage/utilities/method_extractor.py",
-      "bytes": 8196,
-      "sha256": "188c73b50023e9c7dde54f35c7f2efbc00040ec7b18ac17362cf16a43c9d4406",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Coverage/utilities/multilang_extractor.py",
-      "bytes": 8141,
-      "sha256": "459e5b3a6ced2dd1be0008fc7413bec5ceafe65a06b8cb8fcde831e54d1ed358",
-      "mtime": "2026-07-19T03:39:44+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/__init__.py",
-      "bytes": 2659,
-      "sha256": "51d1a9071826f50e30971016549c54199b7603a07a8b72ba0b36c1b7e89c2d5b",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/models/__init__.py",
-      "bytes": 1334,
-      "sha256": "f78bf54a6bbfc03fe24da4c51129fe21a3993cb7c4da41d1a23718520ef9be69",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/models/dependency_models.py",
-      "bytes": 10065,
-      "sha256": "71b3ab63c863d68002b93a23ab1b9a82d0867552e957c68aa8feefee324d77ba",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/models/requirements_models.py",
-      "bytes": 5589,
-      "sha256": "f76b8e1ebc8faf20014784f28899f06115089b8197f656bed38060528f99d4ae",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/models/sbom_models.py",
-      "bytes": 3395,
-      "sha256": "235845444ec0c6d77e06b9758f45a8e4d9d46aa62def19f1aaee9946658c769b",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/__init__.py",
-      "bytes": 1237,
-      "sha256": "349564074b273b30f0942cccb4b3900bf27181d3e6aa7b360b692ec242188c58",
-      "mtime": "2026-07-18T04:59:54+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/_cvss.py",
-      "bytes": 3017,
-      "sha256": "a9712420fe530063e00f3da9fe76551ea0aa0312b1038b7d1d12ea5dd2933d65",
-      "mtime": "2026-07-18T04:59:54+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/_dependency_reporter.py",
-      "bytes": 6353,
-      "sha256": "d68287ab9b99f97c0e04cd8efb82635ec2523a9a8d1ccb18b25a658e4621a16a",
-      "mtime": "2026-08-16T13:24:18+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/_license_policy.py",
-      "bytes": 15731,
-      "sha256": "6ca17e4f71267b8dca20eaac5a81ead21fb849c9663db0fba76253be5db3f773",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/_license_reporter.py",
-      "bytes": 6701,
-      "sha256": "3d64151855e319a50d9e7bc1393240e9fda4737c122182c97e544e86bcff7b9b",
-      "mtime": "2026-08-16T13:24:18+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/_modularity_helpers.py",
-      "bytes": 7320,
-      "sha256": "a6e3dfa767b72e0e0a3a3b8142d13dbe463c94d1b5eed673b10c453fe1814a86",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/_package_health.py",
-      "bytes": 4503,
-      "sha256": "c31c59358099cc26a80a355c114d01de49b5b8850a0ed5f63de0ff57a3841251",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/_requirements_data.py",
-      "bytes": 5887,
-      "sha256": "c634191308093714d5f2eb30cb8506498e126ccfc58fa55bcaea712d9c41cd5d",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/_requirements_reporter.py",
-      "bytes": 6181,
-      "sha256": "21f372ff5363c309cbdcaa66a227e38a038f4cb85508b91ff26556d80bc91754",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/_sbom_formatters.py",
-      "bytes": 6873,
-      "sha256": "57495f3f03748c8ef5c8e84e3c118ff6eae2bb4b6de00336cf9c7c9e5dff7a14",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/_sbom_parsers.py",
-      "bytes": 9269,
-      "sha256": "e590886d9ca4c6424b22ca3e01b8d6aa200caf536b566a74231d11f161d932fc",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/cycle_detector.py",
-      "bytes": 6389,
-      "sha256": "d9b81b4876aff6e5ac328af6c9158194ab6381be6dc82eb4ea8dfd254d5a3cde",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/dependency_analyzer.py",
-      "bytes": 6215,
-      "sha256": "fe19f89c9711bdd3bc69fd45c4596a2f447b33cdc6f71b758424a13639b1be5b",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/graph_builder.py",
-      "bytes": 7692,
-      "sha256": "915d9554f242e578379c4fcaea8bcf29e005738f02782f8877219b6dbf0d2d15",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/import_analyzer.py",
-      "bytes": 10482,
-      "sha256": "0d12b926963b5328d2357b4b1573d845fd918d4d3b4b4a3f2ddc13df915cda4d",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/modularity_analyzer.py",
-      "bytes": 5771,
-      "sha256": "937851f302359d875f968158bf9e5c50faea3eb2281485e95757fc9d287253a9",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/sbom_generator.py",
-      "bytes": 8481,
-      "sha256": "f956e8d7da92ef1cf37176adda874bb4068610557eb020380000dd7b25cc39fb",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/services/vulnerability_checker.py",
-      "bytes": 15913,
-      "sha256": "23ca7803a7204dd2ee10fe7bed68de2727625d330a4efcf214dbb6ef98b15f50",
-      "mtime": "2026-08-16T12:12:22+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/utilities/__init__.py",
-      "bytes": 406,
-      "sha256": "a17738d0c065b1241ee9a97a7a2eb2dcdbe4644d455b16d06e9d45bef276dec5",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Dependencies/utilities/graph_utils.py",
-      "bytes": 5257,
-      "sha256": "772c4937284e15887ce5b6b30635aea4d90993d044ec0977764e3b2e6fd5af89",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/__init__.py",
-      "bytes": 2227,
-      "sha256": "cbce479cf363c7be8b03e63d691f956ae2fb0fc74f1ff858db8cffdae73f5f02",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/models/__init__.py",
-      "bytes": 541,
-      "sha256": "7c916ae01b755c2171723332881b9dd4aa29245bebbc768e52d445ff7673edf7",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/models/_oop_class_metrics.py",
-      "bytes": 8334,
-      "sha256": "d143b94c9b82302ac856b02693432082f2313b9b52025d048c1a9dc9c5bea3e5",
-      "mtime": "2026-07-19T03:39:44+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/models/_oop_enums.py",
-      "bytes": 1580,
-      "sha256": "d8ea92e8c3d45517217fa2a55c8637f9650665e4466fd71a42b2e365dbdfc8c6",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/models/_oop_report.py",
-      "bytes": 5978,
-      "sha256": "c09f0e0b413d1177aae56f6446204f0eab8984bec5e46c0c0e51b6ed71d62ad9",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/models/oop_models.py",
-      "bytes": 1347,
-      "sha256": "ca0bb1030ce28cad5c8f21f8c5a6ff42f4ff51639322c2e75b4742a4cc1813d6",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/services/__init__.py",
-      "bytes": 570,
-      "sha256": "bf9b9352544f6e6a8116b427052390405bf51ae0bd845a063e76274ee3281aa6",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/services/_cir_oop_bridge.py",
-      "bytes": 3895,
-      "sha256": "847f154eb77dbac2c26c48169128e24c57c5b891ed4dbf54e3281e364871cea4",
-      "mtime": "2026-07-19T03:39:44+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/services/_cohesion_helpers.py",
-      "bytes": 5322,
-      "sha256": "fbf9000ec99793f79f9df141a6ad9029d584cf1be5deaf14ff7787eab3335269",
-      "mtime": "2026-07-18T01:42:20+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/services/_cohesion_thresholds.py",
-      "bytes": 2942,
-      "sha256": "587d9261063ce04a7475930815d71b82218a35c42d83a68464da1228ecc92c82",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/services/_coupling_visitor.py",
-      "bytes": 7588,
-      "sha256": "a30d1ec677e417f69c471de6fb43dfac0c30bd117bb4fd0851baa0a364974024",
-      "mtime": "2026-08-13T11:26:19+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/services/_inheritance_helpers.py",
-      "bytes": 2783,
-      "sha256": "27aad92a197abfe95d58efca2ae050505125fa28eec7dcc44e1d484206956d19",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/services/_oop_merge.py",
-      "bytes": 4402,
-      "sha256": "1f50041cc8682c81024b6cc1874473728f40e8b685a0835c255a319d5b24cdec",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/services/_oop_reporter.py",
-      "bytes": 8282,
-      "sha256": "6e8b812cc74dfab5dca9f91a12a71b9829c2b4e34c5c9896fe57e7c1ea77baef",
-      "mtime": "2026-08-16T13:24:18+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/services/cir_metrics.py",
-      "bytes": 6395,
-      "sha256": "47c608e192a50e1cc0d6a3a481900be363b7311997e3f31db527fdf7a5162923",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/services/cohesion_analyzer.py",
-      "bytes": 7965,
-      "sha256": "8da9939cc60e5cd9512a92b4aa68a79659167f1fb7837a874537102e5145c21f",
-      "mtime": "2026-07-18T04:16:04+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/services/coupling_analyzer.py",
-      "bytes": 8523,
-      "sha256": "945d7880b1726f55e21a8acf43e92123c40ecc0366d648aa349430db420e0fdb",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/services/inheritance_analyzer.py",
-      "bytes": 7298,
-      "sha256": "43c76701362e8ddaf795f5c1b609b47e109b6759c799638df04c11001369f945",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/services/oop_analyzer.py",
-      "bytes": 11438,
-      "sha256": "4529119bc9c6c3d4198a79f07536c67c3e706a15606f088c1610554592c7a228",
-      "mtime": "2026-07-19T03:39:44+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/services/rfc_analyzer.py",
-      "bytes": 7805,
-      "sha256": "8735b9af22b40c4a3e101107909b9eb18e0ecb7d10ae29684a9796a534cc4622",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/utilities/__init__.py",
-      "bytes": 477,
-      "sha256": "cd5a23ccec93722e2df0792c513723f36819273cb5f4db66bbaca5b5612983ef",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/utilities/_class_functions.py",
-      "bytes": 4681,
-      "sha256": "4b1bc3011586de09de86f439489c142f6c39791948455169eabc65275200f26f",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/utilities/_class_visitors.py",
-      "bytes": 7191,
-      "sha256": "ff38c823242ed9c28ff52feccc6e896f7df112806260205d43057f4ba81517db",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/OOP/utilities/class_utils.py",
-      "bytes": 945,
-      "sha256": "b4b921641678c584238f87c236c3d976831cde463e3f26a33624cd1c6beb1e0d",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Performance/__init__.py",
-      "bytes": 2039,
-      "sha256": "b641432d2c3435d13631029f176dcae1722bd3947fdae0fd485eebcbca1008da",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Performance/models/__init__.py",
-      "bytes": 794,
-      "sha256": "cdec5b30f43e44d351461c8772bd97fe9357b55d73c454e91c33c9b53cf942c4",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Performance/models/_performance_findings.py",
-      "bytes": 5055,
-      "sha256": "f8f116bc1b2b802c86790142010e86eb1c0fa34111544ac711ba0dd227f936fc",
-      "mtime": "2026-05-19T23:46:14+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Performance/models/_performance_reports.py",
-      "bytes": 9905,
-      "sha256": "85f16f66cc8263a5576c0e521b1454a7e037752ecc614fe04fcc92895ac4fcc3",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Performance/models/performance_models.py",
-      "bytes": 933,
-      "sha256": "4655c0121e7c3f0e75d89342d01b7a648843e693a82b891e8a1329dfa016293f",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Performance/services/__init__.py",
-      "bytes": 904,
-      "sha256": "4597ffde7bc8cfcada58f0d196fcd7ee989630ee45adb9e50a1d09a6480050f7",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Performance/services/_cpu_patterns.py",
-      "bytes": 4301,
-      "sha256": "17641577562c4b0b33733e774a5b6e9e3b37fff132fbb2553c3863ee574e7502",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Performance/services/_static_performance_reporter.py",
-      "bytes": 4864,
-      "sha256": "af175c2537a337960117325af4e7600f4823e0bfc0db5a61cc4512f3a7db107a",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Performance/services/cache_analyzer_service.py",
-      "bytes": 10618,
-      "sha256": "6ffba2f2ac23f132280d4f5509703224a157e5d2778d1060b81b1f52215e98a3",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Performance/services/cpu_profiler_service.py",
-      "bytes": 8271,
-      "sha256": "11743f7828108010ef9d880b0c1f6b63e7c52b07b65e1acfb2e098ffc56647da",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Bragi/Performance/services/database_analyzer_service.py",
-      "bytes": 9832,
-      "sha256": "48209b33b9e062563b9b761bf72219d040de880d7d66e47428c9db563c648d94",
-      "mtime": "2026-05-19T23:46:27+00:00"
-    },
     {
       "path": "Asgard/Bragi/Performance/services/memory_profiler_service.py",
       "bytes": 9938,
@@ -24372,6 +23892,680 @@
       "disposition": "residual",
       "bytes": 5979,
       "sha256": "a3b05aff08d06905f832df21601fa40273dafd3d02bf10a90e7e80a1bcbe346d"
+    },
+    {
+      "path": "Asgard/Bragi/CodeFix/__init__.py",
+      "completed_at": "2026-08-17T01:20:52+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1006,
+      "sha256": "b02aa100c21dc135ae94fd6b04f3c2462674e5dcd079172b00e9646d1fbb51e5"
+    },
+    {
+      "path": "Asgard/Bragi/CodeFix/models/__init__.py",
+      "completed_at": "2026-08-17T01:20:52+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 281,
+      "sha256": "aed9856e4dda6e51adc4ced6d853b4d92525f932f2cf88db0ebd26ec6ec84698"
+    },
+    {
+      "path": "Asgard/Bragi/CodeFix/models/codefix_models.py",
+      "completed_at": "2026-08-17T01:20:52+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1550,
+      "sha256": "f194e44569b9e35e47d26192ff768579e7218c5740773a85cd8e8dc508236b88"
+    },
+    {
+      "path": "Asgard/Bragi/CodeFix/services/__init__.py",
+      "completed_at": "2026-08-17T01:20:52+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 143,
+      "sha256": "66991e41431b724b3484995f1710e20041f7ac68ad5fb13b218382c328e3a9e2"
+    },
+    {
+      "path": "Asgard/Bragi/CodeFix/services/_codefix_builders.py",
+      "completed_at": "2026-08-17T01:20:52+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 13340,
+      "sha256": "30bb3311b9bd22f003a8e2c0fe8dba1ea900d17a552ff084659700a2ed03e7f7"
+    },
+    {
+      "path": "Asgard/Bragi/CodeFix/services/codefix_service.py",
+      "completed_at": "2026-08-17T01:20:52+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4509,
+      "sha256": "5d4b70cc067d9348f38890d092c8c95efb9d8c0be84ef01dfdbd28c2bb9b4e5d"
+    },
+    {
+      "path": "Asgard/Bragi/Coverage/__init__.py",
+      "completed_at": "2026-08-17T01:20:52+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 932,
+      "sha256": "e89cbe5e4fb13d88e79d7680c2c27bbad94498f31a020853d6c48a908787ca0d"
+    },
+    {
+      "path": "Asgard/Bragi/Coverage/models/__init__.py",
+      "completed_at": "2026-08-17T01:20:52+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 522,
+      "sha256": "abe732c962418b8ca9cb87be94923b9af8be9ee90d190829f3755d29ba221820"
+    },
+    {
+      "path": "Asgard/Bragi/Coverage/models/coverage_models.py",
+      "completed_at": "2026-08-17T01:20:52+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6872,
+      "sha256": "2731eeff33df24e71b494527f728eeb1eface9c965913ebb7e58ef7d14aaf9cb"
+    },
+    {
+      "path": "Asgard/Bragi/Coverage/services/__init__.py",
+      "completed_at": "2026-08-17T01:20:53+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 382,
+      "sha256": "d184fc7def581f89f06a73b594aec2e7b8ca680450efe22c0c1b4a1265bc4d86"
+    },
+    {
+      "path": "Asgard/Bragi/Coverage/services/_coverage_reporter.py",
+      "completed_at": "2026-08-17T01:20:53+00:00",
+      "finding_ids": [
+        "CH-0019"
+      ],
+      "disposition": "residual",
+      "bytes": 8104,
+      "sha256": "01ee2cb814b71fdfd2dfbad661102aa16fdd4155cc9f2f396e00dbea66b2e8a6"
+    },
+    {
+      "path": "Asgard/Bragi/Coverage/services/_gap_analysis_helpers.py",
+      "completed_at": "2026-08-17T01:20:53+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5627,
+      "sha256": "9e3d296a405c43c8f5a7da9a0e31335f14d3962a3693a933c91fddcc71816285"
+    },
+    {
+      "path": "Asgard/Bragi/Coverage/services/_multilang_gap_helpers.py",
+      "completed_at": "2026-08-17T01:20:53+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4942,
+      "sha256": "f5cae0235ebc6b93b218435989291264921582fa640120e8118729e916a7e8e5"
+    },
+    {
+      "path": "Asgard/Bragi/Coverage/services/_suggestion_builders.py",
+      "completed_at": "2026-08-17T01:20:53+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7779,
+      "sha256": "3919425bdeaed16a6a64d1f356885be46a5bb7ffc915602c0e7bd2e25da5b75b"
+    },
+    {
+      "path": "Asgard/Bragi/Coverage/services/coverage_analyzer.py",
+      "completed_at": "2026-08-17T01:20:53+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5357,
+      "sha256": "75ebd9ec4f04da82118f52d7ab6123e5c8417dd82e58d4d8e35481d35e06ab56"
+    },
+    {
+      "path": "Asgard/Bragi/Coverage/services/gap_analyzer.py",
+      "completed_at": "2026-08-17T01:20:53+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5752,
+      "sha256": "47d67138bd819f71af09b1a6d6ae100be6ed5e77f2858f8fc34f5067f113f4dc"
+    },
+    {
+      "path": "Asgard/Bragi/Coverage/services/suggestion_engine.py",
+      "completed_at": "2026-08-17T01:20:53+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3232,
+      "sha256": "5bda4851e3f2eaa44dc212dbd4d99c93468fbca3069b88b863fac9b3764df3c3"
+    },
+    {
+      "path": "Asgard/Bragi/Coverage/utilities/__init__.py",
+      "completed_at": "2026-08-17T01:20:53+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 375,
+      "sha256": "ea602f901d859d9dee22710561d194d4e5666d01905254bfc8e044ca8cde2107"
+    },
+    {
+      "path": "Asgard/Bragi/Coverage/utilities/method_extractor.py",
+      "completed_at": "2026-08-17T01:20:53+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8196,
+      "sha256": "188c73b50023e9c7dde54f35c7f2efbc00040ec7b18ac17362cf16a43c9d4406"
+    },
+    {
+      "path": "Asgard/Bragi/Coverage/utilities/multilang_extractor.py",
+      "completed_at": "2026-08-17T01:20:54+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8141,
+      "sha256": "459e5b3a6ced2dd1be0008fc7413bec5ceafe65a06b8cb8fcde831e54d1ed358"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/__init__.py",
+      "completed_at": "2026-08-17T01:20:54+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2659,
+      "sha256": "51d1a9071826f50e30971016549c54199b7603a07a8b72ba0b36c1b7e89c2d5b"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/models/__init__.py",
+      "completed_at": "2026-08-17T01:20:54+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1334,
+      "sha256": "f78bf54a6bbfc03fe24da4c51129fe21a3993cb7c4da41d1a23718520ef9be69"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/models/dependency_models.py",
+      "completed_at": "2026-08-17T01:20:54+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10065,
+      "sha256": "71b3ab63c863d68002b93a23ab1b9a82d0867552e957c68aa8feefee324d77ba"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/models/requirements_models.py",
+      "completed_at": "2026-08-17T01:20:54+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5589,
+      "sha256": "f76b8e1ebc8faf20014784f28899f06115089b8197f656bed38060528f99d4ae"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/models/sbom_models.py",
+      "completed_at": "2026-08-17T01:20:54+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3395,
+      "sha256": "235845444ec0c6d77e06b9758f45a8e4d9d46aa62def19f1aaee9946658c769b"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/__init__.py",
+      "completed_at": "2026-08-17T01:20:54+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1237,
+      "sha256": "349564074b273b30f0942cccb4b3900bf27181d3e6aa7b360b692ec242188c58"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/_cvss.py",
+      "completed_at": "2026-08-17T01:20:54+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3017,
+      "sha256": "a9712420fe530063e00f3da9fe76551ea0aa0312b1038b7d1d12ea5dd2933d65"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/_dependency_reporter.py",
+      "completed_at": "2026-08-17T01:20:54+00:00",
+      "finding_ids": [
+        "CH-0019"
+      ],
+      "disposition": "confirmed",
+      "bytes": 6353,
+      "sha256": "d68287ab9b99f97c0e04cd8efb82635ec2523a9a8d1ccb18b25a658e4621a16a"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/_license_policy.py",
+      "completed_at": "2026-08-17T01:20:54+00:00",
+      "finding_ids": [
+        "CH-0038"
+      ],
+      "disposition": "confirmed",
+      "bytes": 15731,
+      "sha256": "6ca17e4f71267b8dca20eaac5a81ead21fb849c9663db0fba76253be5db3f773"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/_license_reporter.py",
+      "completed_at": "2026-08-17T01:20:55+00:00",
+      "finding_ids": [
+        "CH-0019"
+      ],
+      "disposition": "confirmed",
+      "bytes": 6701,
+      "sha256": "3d64151855e319a50d9e7bc1393240e9fda4737c122182c97e544e86bcff7b9b"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/_modularity_helpers.py",
+      "completed_at": "2026-08-17T01:20:55+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7320,
+      "sha256": "a6e3dfa767b72e0e0a3a3b8142d13dbe463c94d1b5eed673b10c453fe1814a86"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/_package_health.py",
+      "completed_at": "2026-08-17T01:20:55+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4503,
+      "sha256": "c31c59358099cc26a80a355c114d01de49b5b8850a0ed5f63de0ff57a3841251"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/_requirements_data.py",
+      "completed_at": "2026-08-17T01:20:55+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5887,
+      "sha256": "c634191308093714d5f2eb30cb8506498e126ccfc58fa55bcaea712d9c41cd5d"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/_requirements_reporter.py",
+      "completed_at": "2026-08-17T01:20:55+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6181,
+      "sha256": "21f372ff5363c309cbdcaa66a227e38a038f4cb85508b91ff26556d80bc91754"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/_sbom_formatters.py",
+      "completed_at": "2026-08-17T01:20:55+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6873,
+      "sha256": "57495f3f03748c8ef5c8e84e3c118ff6eae2bb4b6de00336cf9c7c9e5dff7a14"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/_sbom_parsers.py",
+      "completed_at": "2026-08-17T01:20:55+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9269,
+      "sha256": "e590886d9ca4c6424b22ca3e01b8d6aa200caf536b566a74231d11f161d932fc"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/cycle_detector.py",
+      "completed_at": "2026-08-17T01:20:55+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6389,
+      "sha256": "d9b81b4876aff6e5ac328af6c9158194ab6381be6dc82eb4ea8dfd254d5a3cde"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/dependency_analyzer.py",
+      "completed_at": "2026-08-17T01:20:55+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6215,
+      "sha256": "fe19f89c9711bdd3bc69fd45c4596a2f447b33cdc6f71b758424a13639b1be5b"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/graph_builder.py",
+      "completed_at": "2026-08-17T01:20:55+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7692,
+      "sha256": "915d9554f242e578379c4fcaea8bcf29e005738f02782f8877219b6dbf0d2d15"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/import_analyzer.py",
+      "completed_at": "2026-08-17T01:20:55+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 10482,
+      "sha256": "0d12b926963b5328d2357b4b1573d845fd918d4d3b4b4a3f2ddc13df915cda4d"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/modularity_analyzer.py",
+      "completed_at": "2026-08-17T01:20:55+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5771,
+      "sha256": "937851f302359d875f968158bf9e5c50faea3eb2281485e95757fc9d287253a9"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/sbom_generator.py",
+      "completed_at": "2026-08-17T01:20:56+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8481,
+      "sha256": "f956e8d7da92ef1cf37176adda874bb4068610557eb020380000dd7b25cc39fb"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/services/vulnerability_checker.py",
+      "completed_at": "2026-08-17T01:20:56+00:00",
+      "finding_ids": [
+        "CH-0036"
+      ],
+      "disposition": "confirmed",
+      "bytes": 15913,
+      "sha256": "23ca7803a7204dd2ee10fe7bed68de2727625d330a4efcf214dbb6ef98b15f50"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/utilities/__init__.py",
+      "completed_at": "2026-08-17T01:20:56+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 406,
+      "sha256": "a17738d0c065b1241ee9a97a7a2eb2dcdbe4644d455b16d06e9d45bef276dec5"
+    },
+    {
+      "path": "Asgard/Bragi/Dependencies/utilities/graph_utils.py",
+      "completed_at": "2026-08-17T01:20:56+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5257,
+      "sha256": "772c4937284e15887ce5b6b30635aea4d90993d044ec0977764e3b2e6fd5af89"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/__init__.py",
+      "completed_at": "2026-08-17T01:20:56+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2227,
+      "sha256": "cbce479cf363c7be8b03e63d691f956ae2fb0fc74f1ff858db8cffdae73f5f02"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/models/__init__.py",
+      "completed_at": "2026-08-17T01:20:56+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 541,
+      "sha256": "7c916ae01b755c2171723332881b9dd4aa29245bebbc768e52d445ff7673edf7"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/models/_oop_class_metrics.py",
+      "completed_at": "2026-08-17T01:20:56+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 8334,
+      "sha256": "d143b94c9b82302ac856b02693432082f2313b9b52025d048c1a9dc9c5bea3e5"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/models/_oop_enums.py",
+      "completed_at": "2026-08-17T01:20:56+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1580,
+      "sha256": "d8ea92e8c3d45517217fa2a55c8637f9650665e4466fd71a42b2e365dbdfc8c6"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/models/_oop_report.py",
+      "completed_at": "2026-08-17T01:20:56+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5978,
+      "sha256": "c09f0e0b413d1177aae56f6446204f0eab8984bec5e46c0c0e51b6ed71d62ad9"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/models/oop_models.py",
+      "completed_at": "2026-08-17T01:20:56+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 1347,
+      "sha256": "ca0bb1030ce28cad5c8f21f8c5a6ff42f4ff51639322c2e75b4742a4cc1813d6"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/services/__init__.py",
+      "completed_at": "2026-08-17T01:20:56+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 570,
+      "sha256": "bf9b9352544f6e6a8116b427052390405bf51ae0bd845a063e76274ee3281aa6"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/services/_cir_oop_bridge.py",
+      "completed_at": "2026-08-17T01:20:56+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 3895,
+      "sha256": "847f154eb77dbac2c26c48169128e24c57c5b891ed4dbf54e3281e364871cea4"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/services/_cohesion_helpers.py",
+      "completed_at": "2026-08-17T01:20:56+00:00",
+      "finding_ids": [
+        "CHC-0007"
+      ],
+      "disposition": "new-findings",
+      "bytes": 5322,
+      "sha256": "fbf9000ec99793f79f9df141a6ad9029d584cf1be5deaf14ff7787eab3335269"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/services/_cohesion_thresholds.py",
+      "completed_at": "2026-08-17T01:20:57+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2942,
+      "sha256": "587d9261063ce04a7475930815d71b82218a35c42d83a68464da1228ecc92c82"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/services/_coupling_visitor.py",
+      "completed_at": "2026-08-17T01:20:57+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 7588,
+      "sha256": "a30d1ec677e417f69c471de6fb43dfac0c30bd117bb4fd0851baa0a364974024"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/services/_inheritance_helpers.py",
+      "completed_at": "2026-08-17T01:20:57+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2783,
+      "sha256": "27aad92a197abfe95d58efca2ae050505125fa28eec7dcc44e1d484206956d19"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/services/_oop_merge.py",
+      "completed_at": "2026-08-17T01:20:57+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4402,
+      "sha256": "1f50041cc8682c81024b6cc1874473728f40e8b685a0835c255a319d5b24cdec"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/services/_oop_reporter.py",
+      "completed_at": "2026-08-17T01:20:57+00:00",
+      "finding_ids": [
+        "CH-0019"
+      ],
+      "disposition": "confirmed",
+      "bytes": 8282,
+      "sha256": "6e8b812cc74dfab5dca9f91a12a71b9829c2b4e34c5c9896fe57e7c1ea77baef"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/services/cir_metrics.py",
+      "completed_at": "2026-08-17T01:20:57+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 6395,
+      "sha256": "47c608e192a50e1cc0d6a3a481900be363b7311997e3f31db527fdf7a5162923"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/services/cohesion_analyzer.py",
+      "completed_at": "2026-08-17T01:20:57+00:00",
+      "finding_ids": [
+        "CHC-0007"
+      ],
+      "disposition": "new-findings",
+      "bytes": 7965,
+      "sha256": "8da9939cc60e5cd9512a92b4aa68a79659167f1fb7837a874537102e5145c21f"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/services/coupling_analyzer.py",
+      "completed_at": "2026-08-17T01:20:57+00:00",
+      "finding_ids": [
+        "CHC-0007"
+      ],
+      "disposition": "new-findings",
+      "bytes": 8523,
+      "sha256": "945d7880b1726f55e21a8acf43e92123c40ecc0366d648aa349430db420e0fdb"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/services/inheritance_analyzer.py",
+      "completed_at": "2026-08-17T01:20:57+00:00",
+      "finding_ids": [
+        "CHC-0007"
+      ],
+      "disposition": "new-findings",
+      "bytes": 7298,
+      "sha256": "43c76701362e8ddaf795f5c1b609b47e109b6759c799638df04c11001369f945"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/services/oop_analyzer.py",
+      "completed_at": "2026-08-17T01:20:57+00:00",
+      "finding_ids": [
+        "CHC-0007"
+      ],
+      "disposition": "new-findings",
+      "bytes": 11438,
+      "sha256": "4529119bc9c6c3d4198a79f07536c67c3e706a15606f088c1610554592c7a228"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/services/rfc_analyzer.py",
+      "completed_at": "2026-08-17T01:20:57+00:00",
+      "finding_ids": [
+        "CHC-0007"
+      ],
+      "disposition": "new-findings",
+      "bytes": 7805,
+      "sha256": "8735b9af22b40c4a3e101107909b9eb18e0ecb7d10ae29684a9796a534cc4622"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/utilities/__init__.py",
+      "completed_at": "2026-08-17T01:20:57+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 477,
+      "sha256": "cd5a23ccec93722e2df0792c513723f36819273cb5f4db66bbaca5b5612983ef"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/utilities/_class_functions.py",
+      "completed_at": "2026-08-17T01:20:58+00:00",
+      "finding_ids": [
+        "CHC-0007"
+      ],
+      "disposition": "new-findings",
+      "bytes": 4681,
+      "sha256": "4b1bc3011586de09de86f439489c142f6c39791948455169eabc65275200f26f"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/utilities/_class_visitors.py",
+      "completed_at": "2026-08-17T01:20:58+00:00",
+      "finding_ids": [
+        "CHC-0007"
+      ],
+      "disposition": "new-findings",
+      "bytes": 7191,
+      "sha256": "ff38c823242ed9c28ff52feccc6e896f7df112806260205d43057f4ba81517db"
+    },
+    {
+      "path": "Asgard/Bragi/OOP/utilities/class_utils.py",
+      "completed_at": "2026-08-17T01:20:58+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 945,
+      "sha256": "b4b921641678c584238f87c236c3d976831cde463e3f26a33624cd1c6beb1e0d"
+    },
+    {
+      "path": "Asgard/Bragi/Performance/__init__.py",
+      "completed_at": "2026-08-17T01:20:58+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 2039,
+      "sha256": "b641432d2c3435d13631029f176dcae1722bd3947fdae0fd485eebcbca1008da"
+    },
+    {
+      "path": "Asgard/Bragi/Performance/models/__init__.py",
+      "completed_at": "2026-08-17T01:20:58+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 794,
+      "sha256": "cdec5b30f43e44d351461c8772bd97fe9357b55d73c454e91c33c9b53cf942c4"
+    },
+    {
+      "path": "Asgard/Bragi/Performance/models/_performance_findings.py",
+      "completed_at": "2026-08-17T01:20:58+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 5055,
+      "sha256": "f8f116bc1b2b802c86790142010e86eb1c0fa34111544ac711ba0dd227f936fc"
+    },
+    {
+      "path": "Asgard/Bragi/Performance/models/_performance_reports.py",
+      "completed_at": "2026-08-17T01:20:58+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 9905,
+      "sha256": "85f16f66cc8263a5576c0e521b1454a7e037752ecc614fe04fcc92895ac4fcc3"
+    },
+    {
+      "path": "Asgard/Bragi/Performance/models/performance_models.py",
+      "completed_at": "2026-08-17T01:20:58+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 933,
+      "sha256": "4655c0121e7c3f0e75d89342d01b7a648843e693a82b891e8a1329dfa016293f"
+    },
+    {
+      "path": "Asgard/Bragi/Performance/services/__init__.py",
+      "completed_at": "2026-08-17T01:20:58+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 904,
+      "sha256": "4597ffde7bc8cfcada58f0d196fcd7ee989630ee45adb9e50a1d09a6480050f7"
+    },
+    {
+      "path": "Asgard/Bragi/Performance/services/_cpu_patterns.py",
+      "completed_at": "2026-08-17T01:20:58+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4301,
+      "sha256": "17641577562c4b0b33733e774a5b6e9e3b37fff132fbb2553c3863ee574e7502"
+    },
+    {
+      "path": "Asgard/Bragi/Performance/services/_static_performance_reporter.py",
+      "completed_at": "2026-08-17T01:20:58+00:00",
+      "finding_ids": [],
+      "disposition": "clean",
+      "bytes": 4864,
+      "sha256": "af175c2537a337960117325af4e7600f4823e0bfc0db5a61cc4512f3a7db107a"
+    },
+    {
+      "path": "Asgard/Bragi/Performance/services/cache_analyzer_service.py",
+      "completed_at": "2026-08-17T01:20:58+00:00",
+      "finding_ids": [
+        "CH-0040"
+      ],
+      "disposition": "confirmed",
+      "bytes": 10618,
+      "sha256": "6ffba2f2ac23f132280d4f5509703224a157e5d2778d1060b81b1f52215e98a3"
+    },
+    {
+      "path": "Asgard/Bragi/Performance/services/cpu_profiler_service.py",
+      "completed_at": "2026-08-17T01:20:59+00:00",
+      "finding_ids": [
+        "CH-0040"
+      ],
+      "disposition": "confirmed",
+      "bytes": 8271,
+      "sha256": "11743f7828108010ef9d880b0c1f6b63e7c52b07b65e1acfb2e098ffc56647da"
+    },
+    {
+      "path": "Asgard/Bragi/Performance/services/database_analyzer_service.py",
+      "completed_at": "2026-08-17T01:20:59+00:00",
+      "finding_ids": [
+        "CH-0040"
+      ],
+      "disposition": "confirmed",
+      "bytes": 9832,
+      "sha256": "48209b33b9e062563b9b761bf72219d040de880d7d66e47428c9db563c648d94"
     }
   ]
 }

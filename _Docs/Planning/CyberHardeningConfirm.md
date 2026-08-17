@@ -271,7 +271,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | Critical | 0 | 0 | 0 | 0 | 0 | 0 |
 | High     | 0 | 6 | 2 | 22 | 0 | 0 |
 | Medium   | 0 | 13 | 4 | 46 | 0 | 0 |
-| Low      | 0 | 6 | 0 | 16 | 0 | 0 |
+| Low      | 0 | 6 | 1 | 16 | 0 | 0 |
 | Info     | 0 | 2 | 0 | 3 | 0 | 0 |
 
 ## Reopened / residual detail
@@ -514,14 +514,51 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 - **Fix wave:** W3
 
 
+### CHC-0007 — Python OOP AST parse/walk/LCOM still unbounded
+
+- **Status:** Open
+- **Severity:** Low
+- **Confidence:** High
+- **CWE / class:** CWE-400
+- **Primary file:** `Asgard/Bragi/OOP/utilities/_class_functions.py`
+- **Also on trace:** `Asgard/Bragi/OOP/utilities/_class_visitors.py`, `Asgard/Bragi/OOP/services/cohesion_analyzer.py`, `coupling_analyzer.py`, `rfc_analyzer.py`, `inheritance_analyzer.py`, `oop_analyzer.py`, `_cohesion_helpers.py`
+- **Related original:** CH-0016, CH-0022
+- **Location:** `extract_classes_from_file` / `ClassExtractor.visit` / LCOM pairwise
+- **Trace:** `heimdall oop` → 4× `scan_directory` → `read_text`+`ast.parse`+recursive visit → uncapped LCOM O(n²)
+- **Impact:** Hostile/huge `.py` DoS of the Python OOP analyzers (CPU/RAM/RecursionError). Not RCE. File symlink can pull outside-tree content into metrics.
+- **Evidence:** CIR path has byte/line/walk/LCOM caps; Python AST path has none. `OOPConfig` has no max file/nodes.
+- **Planned fix:** Cap source bytes/lines before `ast.parse`; skip oversize/symlink files; iterative walk + node budget; apply `MAX_LCOM4_METHODS` in `_cohesion_helpers`; one shared tree per file. Tests: >1 MiB skip; >128 methods skip LCOM.
+- **Fix wave:** W4
+
+
 ## Confirmation progress
 
-Updated: 2026-08-17T01:16:54+00:00
-- remaining: 3730
-- completed: 208
-- last CHC ID: CHC-0006
+Updated: 2026-08-17T01:20:52+00:00
+- remaining: 3650
+- completed: 288
+- last CHC ID: CHC-0007
 - All live original CH-XXXX have verdicts (CH-0029 Skipped).
-- Batch 6: Architecture package + Calibration profiles + leftover residual files (~80).
-- **RESUME:** remaining=3730. Next: `python3 scripts/cyberhardening_inventory.py --workspace CyberHardeningConfirm next 8` (lexicographic after Architecture/Calibration). Then Bragi CodeFix/Coverage/Dependencies remainder, Forseti, Freya, Heimdall, Verdandi, Volundr, Asgard_Test (~majority), FutureItems leftovers, scripts.
-- Do not rebuild confirmation inventory unless todo missing. Do not `init` original workspace. Do not implement.
-- Commands: `python3 scripts/cyberhardening_inventory.py --workspace CyberHardeningConfirm status` / `next 8`
+- Batches 1–7: finding primaries + Architecture/Calibration/CodeFix/Coverage/Dependencies/OOP/Performance start.
+
+## RESUME (session cap)
+
+Confirmation is **not done**. remaining=3650.
+
+Successor:
+1. Read `_Docs/Planning/CyberHardeningConfirm.md` Confirmation progress + New findings.
+2. Do **not** rebuild confirmation inventory. Do **not** `init` the original CyberHardening workspace.
+3. Continue: `python3 scripts/cyberhardening_inventory.py --workspace CyberHardeningConfirm next 8`
+4. Next paths:
+Asgard/Bragi/Performance/services/memory_profiler_service.py
+Asgard/Bragi/Performance/services/static_performance_service.py
+Asgard/Bragi/Performance/utilities/__init__.py
+Asgard/Bragi/Performance/utilities/_performance_ast_utils.py
+Asgard/Bragi/Quality/BugDetection/__init__.py
+Asgard/Bragi/Quality/BugDetection/models/__init__.py
+Asgard/Bragi/Quality/BugDetection/models/bug_models.py
+Asgard/Bragi/Quality/BugDetection/services/__init__.py
+5. Then remaining Bragi Performance/Quality/QualityGate/Ratings, Forseti, Freya, Heimdall, Verdandi, Volundr, Asgard CLI/common/config, Asgard_Test (majority), FutureItems leftovers, scripts.
+6. Merge verdicts into this plan + confirmation ledger, then `done PATH`.
+7. When remaining=0 after a refresh `init`, run Phase 4 close-out.
+
+Do not implement. Do not ask whether to continue.
