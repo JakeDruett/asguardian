@@ -65,13 +65,17 @@ class BaselineEntry:
             return False
 
         if fuzzy:
+            from Asgard.Baseline._baseline_helpers import is_usable_fuzzy_message
+
             self_file = self.location.rsplit(':', 1)[0] if ':' in self.location else self.location
             other_file = location.rsplit(':', 1)[0] if ':' in location else location
             if self_file != other_file:
                 return False
-            if message and self.message:
-                return self.message in message or message in self.message
-            return True
+            query = message or ""
+            stored = self.message or ""
+            if not is_usable_fuzzy_message(query) or not is_usable_fuzzy_message(stored):
+                return False
+            return stored in query or query in stored
         else:
             return self.location == location
 

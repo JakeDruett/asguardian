@@ -119,3 +119,4 @@
 {"id":"CHC-0010","at":"2026-08-17T17:25:00Z","commit":"47280b3","wave":"W2","summary":"Jail taint stub YAML names under stubs dir"}
 {"id":"CHC-0004","at":"2026-08-17T17:30:00Z","commit":"bfa0ced","wave":"W2","summary":"Jail generated artifact writes under output_dir"}
 {"id":"CHC-0013","at":"2026-08-17T17:35:00Z","commit":"4cf7629","wave":"W2","summary":"Allowlist helm --environment and jail values path"}
+{"id":"CHC-0006","at":"2026-08-17T17:50:00Z","commit":"94f7745","wave":"W3","summary":"Refuse empty fuzzy baseline keys on common stack"}
