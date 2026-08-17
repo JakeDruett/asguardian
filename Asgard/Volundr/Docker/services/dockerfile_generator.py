@@ -530,17 +530,14 @@ class DockerfileGenerator:
         filename: str = "Dockerfile",
     ) -> str:
         """Save generated Dockerfile (and companion files) to disk."""
-        target_dir = output_dir or self.output_dir
-        os.makedirs(target_dir, exist_ok=True)
-        file_path = os.path.join(target_dir, filename)
+        from Asgard.Volundr._output_jail import confine_output_file
 
-        with open(file_path, "w", encoding="utf-8") as f:
-            f.write(docker_config.dockerfile_content or "")
+        target_dir = output_dir or self.output_dir
+        dest = confine_output_file(target_dir, filename)
+        dest.write_text(docker_config.dockerfile_content or "", encoding="utf-8")
 
         if docker_config.dockerignore_content:
-            with open(
-                os.path.join(target_dir, ".dockerignore"), "w", encoding="utf-8"
-            ) as f:
-                f.write(docker_config.dockerignore_content)
+            ignore = confine_output_file(target_dir, ".dockerignore")
+            ignore.write_text(docker_config.dockerignore_content, encoding="utf-8")
 
-        return file_path
+        return str(dest)

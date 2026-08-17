@@ -263,16 +263,14 @@ class ComposeProjectGenerator:
         output_dir: Optional[str] = None,
         filename: str = "docker-compose.yaml",
     ) -> str:
-        target_dir = output_dir or self.output_dir
-        os.makedirs(target_dir, exist_ok=True)
-        file_path = os.path.join(target_dir, filename)
+        from Asgard.Volundr._output_jail import confine_output_file
 
-        with open(file_path, "w", encoding="utf-8") as f:
-            f.write(config.compose_content)
+        target_dir = output_dir or self.output_dir
+        dest = confine_output_file(target_dir, filename)
+        dest.write_text(config.compose_content, encoding="utf-8")
 
         if config.override_content:
-            override_path = os.path.join(target_dir, "docker-compose.override.yaml")
-            with open(override_path, "w", encoding="utf-8") as f:
-                f.write(config.override_content)
+            override = confine_output_file(target_dir, "docker-compose.override.yaml")
+            override.write_text(config.override_content, encoding="utf-8")
 
-        return file_path
+        return str(dest)

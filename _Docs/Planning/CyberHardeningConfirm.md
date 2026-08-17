@@ -505,7 +505,10 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ### CHC-0004 — Dockerfile `save_to_file` joins unsanitized `filename`
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** bfa0ced
+- **Fixed at:** 2026-08-17T17:30:00Z
+- **Implementation note:** `confine_output_file` rejects empty/abs/`..` and requires resolve+is_relative_to; wired into Docker/Compose/GitOps/K8s/Kustomize writers.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-22
@@ -695,17 +698,17 @@ Updated: 2026-08-17T02:45:00+00:00
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 3    | 2     | 0             |
-| Medium   | 5    | 3     | 0             |
+| Medium   | 4    | 4     | 0             |
 | Low      | 1    | 0     | 0             |
 | Info     | 0    | 0     | 0             |
 
-CHC Open remaining: CHC-0004, CHC-0005, CHC-0006, CHC-0007, CHC-0008, CHC-0009, CHC-0011, CHC-0013. Residual leftovers still Open.
+CHC Open remaining: CHC-0005, CHC-0006, CHC-0007, CHC-0008, CHC-0009, CHC-0011, CHC-0013. Residual leftovers still Open.
 
 ## Implementation progress
 
-- Open CHC: 8
-- Fixed CHC: 5 (0001, 0002, 0003, 0010, 0012)
+- Open CHC: 7
+- Fixed CHC: 6 (0001, 0002, 0003, 0004, 0010, 0012)
 - Residual leftovers: 31 Open
 - Current wave: W2
-- Next: CHC-0004, CHC-0013, then W3
+- Next: CHC-0013, then W3
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`

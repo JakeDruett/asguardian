@@ -177,12 +177,12 @@ class ComposeGenerator:
         output_dir: Optional[str] = None,
         filename: str = "docker-compose.yml",
     ) -> str:
+        from Asgard.Volundr._output_jail import confine_output_file
+
         target_dir = output_dir or self.output_dir
-        os.makedirs(target_dir, exist_ok=True)
-        file_path = os.path.join(target_dir, filename)
-        with open(file_path, "w", encoding="utf-8") as f:
-            f.write(docker_config.compose_content or "")
-        return file_path
+        dest = confine_output_file(target_dir, filename)
+        dest.write_text(docker_config.compose_content or "", encoding="utf-8")
+        return str(dest)
 
 
 __all__: List[str] = ["ComposeGenerator"]

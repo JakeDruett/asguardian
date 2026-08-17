@@ -131,12 +131,11 @@ class OverlayGenerator:
     def save_to_directory(
         self, kustomization: GeneratedKustomization, output_dir: Optional[str] = None
     ) -> str:
-        target_dir = output_dir or self.output_dir
+        from Asgard.Volundr._output_jail import confine_output_file
 
+        target_dir = output_dir or self.output_dir
         for file_path, content in kustomization.files.items():
-            full_path = os.path.join(target_dir, file_path)
-            os.makedirs(os.path.dirname(full_path), exist_ok=True)
-            with open(full_path, "w", encoding="utf-8") as f:
-                f.write(content)
+            dest = confine_output_file(target_dir, file_path)
+            dest.write_text(content, encoding="utf-8")
 
         return target_dir

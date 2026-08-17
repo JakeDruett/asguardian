@@ -219,12 +219,11 @@ class FluxGenerator:
     def save_to_directory(
         self, config: GeneratedGitOpsConfig, output_dir: Optional[str] = None
     ) -> str:
-        target_dir = output_dir or self.output_dir
-        os.makedirs(target_dir, exist_ok=True)
+        from Asgard.Volundr._output_jail import confine_output_file
 
+        target_dir = output_dir or self.output_dir
         for file_path, content in config.files.items():
-            full_path = os.path.join(target_dir, file_path)
-            with open(full_path, "w", encoding="utf-8") as f:
-                f.write(content)
+            dest = confine_output_file(target_dir, file_path)
+            dest.write_text(content, encoding="utf-8")
 
         return target_dir
