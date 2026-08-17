@@ -49,3 +49,20 @@
 {"path":"Asgard/Volundr/CICD/services/action_pins.py","at":"2026-08-17T00:56:31+00:00","disposition":"confirmed","finding_ids":["CH-0001"],"summary":"KNOWN_ACTION_PINS live; residual remains in generators"}
 {"path":"Asgard/Volundr/CICD/services/context_hardening.py","at":"2026-08-17T00:56:31+00:00","disposition":"residual","finding_ids":["CH-0103"],"summary":"harden_steps called; env keys not this helper"}
 {"path":"Asgard/Volundr/Docker/models/docker_models.py","at":"2026-08-17T00:56:31+00:00","disposition":"residual","finding_ids":["CH-0102"],"summary":"SecretMount has no validator"}
+{"path":"Asgard/Baseline/_baseline_operations.py","at":"2026-08-17T01:01:29+00:00","disposition":"confirmed","finding_ids":["CH-0012"],"summary":"empty fuzzy wildcard closed on Asgard.Baseline"}
+{"path":"Asgard/Bragi/QualityGate/baseline_store.py","at":"2026-08-17T01:01:29+00:00","disposition":"residual","finding_ids":["CH-0051"],"summary":"HMAC fail-closed; sibling .key leftover"}
+{"path":"Asgard/Dashboard/services/html_renderer.py","at":"2026-08-17T01:01:29+00:00","disposition":"confirmed","finding_ids":["CH-0055"],"summary":"esc() on path/issue/title; no user href/src"}
+{"path":"Asgard/Freya/Integration/services/html_reporter.py","at":"2026-08-17T01:01:29+00:00","disposition":"confirmed","finding_ids":["CH-0067"],"summary":"esc/html_link/safe_src on HTML and JUnit"}
+{"path":"Asgard/Freya/Integration/services/_crawler_report.py","at":"2026-08-17T01:01:29+00:00","disposition":"confirmed","finding_ids":["CH-0067","CH-0069"],"summary":"HTML escaped; auth password/token/cookie redacted"}
+{"path":"Asgard/Heimdall/Security/FileIntegrity/services/file_integrity_checker.py","at":"2026-08-17T01:01:29+00:00","disposition":"confirmed","finding_ids":["CH-0076"],"summary":"HMAC baseline; adds counted; fail-closed"}
+{"path":"Asgard/Heimdall/Security/services/static_security_service.py","at":"2026-08-17T01:01:29+00:00","disposition":"confirmed","finding_ids":["CH-0077"],"summary":"domain_errors fail is_passing"}
+{"path":".gitignore","at":"2026-08-17T01:01:29+00:00","disposition":"confirmed","finding_ids":["CH-0023"],"summary":"CLAUDE.md ignored"}
+{"path":"Asgard/Freya/Links/services/link_validator.py","at":"2026-08-17T01:01:29+00:00","disposition":"residual","finding_ids":["CH-0071"],"summary":"HEAD allowlisted; seed page.goto leftover"}
+{"path":"Asgard/Heimdall/Security/triage/services/triage_adapter.py","at":"2026-08-17T01:01:29+00:00","disposition":"confirmed","finding_ids":["CH-0082"],"summary":"opt-in only; default sends nothing"}
+{"path":"Asgard/Shared/Init/linter_initializer.py","at":"2026-08-17T01:01:29+00:00","disposition":"confirmed","finding_ids":["CH-0096"],"summary":"project_name allowlist before interpolate"}
+{"path":"Asgard/Shared/Issues/services/_issue_repository.py","at":"2026-08-17T01:01:29+00:00","disposition":"confirmed","finding_ids":["CH-0097"],"summary":"project_path scoped get/mutate"}
+{"path":"Asgard/Volundr/Helm/services/_chart_generator_templates.py","at":"2026-08-17T01:01:29+00:00","disposition":"confirmed","finding_ids":["CH-0104"],"summary":"chart name allowlist before define/include"}
+{"path":"Asgard/Volundr/Terraform/services/_module_builder_blocks.py","at":"2026-08-17T01:01:29+00:00","disposition":"residual","finding_ids":["CH-0108"],"summary":"no open CIDR; leftover raw HCL type/value"}
+{"path":"_FutureItems-Security/Tools_Security/.github/workflows/security-scan.yml","at":"2026-08-17T01:01:29+00:00","disposition":"residual","finding_ids":["CH-0110"],"summary":"no cd/continue-on-error; empty JSON still green"}
+{"path":"_FutureItems-Security/Tools_Security/cors_checker.py","at":"2026-08-17T01:01:29+00:00","disposition":"confirmed","finding_ids":["CH-0112"],"summary":"validate_target_url before urlopen"}
+{"path":"_FutureItems-Security/Tools_Security/dns_security_checker.py","at":"2026-08-17T01:01:29+00:00","disposition":"confirmed","finding_ids":["CH-0113"],"summary":"validate_dns_name then dig -- domain"}

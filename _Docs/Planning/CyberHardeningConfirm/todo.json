@@ -2,7 +2,7 @@
   "version": 1,
   "repo_root": ".",
   "generated_at": "2026-08-17T00:40:38+00:00",
-  "updated_at": "2026-08-17T00:56:33+00:00",
+  "updated_at": "2026-08-17T01:01:30+00:00",
   "planning_dir": "_Docs/Planning",
   "plan_path": "_Docs/Planning/CyberHardeningConfirm.md",
   "total_discovered": 3938,
@@ -48,12 +48,6 @@
       "bytes": 3705,
       "sha256": "4f85d624668ff528bc9939eac4cd6a11d2c8a0e1cf09f10bfbd1f3460c4f5bff",
       "mtime": "2026-08-16T12:22:56+00:00"
-    },
-    {
-      "path": "Asgard/Baseline/_baseline_operations.py",
-      "bytes": 3514,
-      "sha256": "918bf71f52c40d9dd5274126086ffd4be85166194c9bbdeed1c785ac47344f00",
-      "mtime": "2026-08-16T11:43:52+00:00"
     },
     {
       "path": "Asgard/Baseline/_baseline_report.py",
@@ -2228,12 +2222,6 @@
       "mtime": "2026-08-16T12:22:54+00:00"
     },
     {
-      "path": "Asgard/Bragi/QualityGate/baseline_store.py",
-      "bytes": 7762,
-      "sha256": "8f12b254caa6c1c35d7d47ba8eb5f0bafe51566e3b8747d519cf185b68cc5830",
-      "mtime": "2026-08-16T11:41:54+00:00"
-    },
-    {
       "path": "Asgard/Bragi/QualityGate/fingerprint.py",
       "bytes": 8154,
       "sha256": "e293c6f5c247a3a94f1f7124e5ed4c77255fa7a5fae22febfdcd2015d1f35d60",
@@ -2454,12 +2442,6 @@
       "bytes": 5393,
       "sha256": "faef1f3b6f750dbe331e3e3fe18943ea7e32ebc5e852cee8deca4263ea0c7c1b",
       "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Dashboard/services/html_renderer.py",
-      "bytes": 5970,
-      "sha256": "29471c5d6e67b357e5e5f9776d3dc77bf4bd069e55e92216ae95480983f4e0bc",
-      "mtime": "2026-08-16T13:14:55+00:00"
     },
     {
       "path": "Asgard/Forseti/Alignment/__init__.py",
@@ -4130,12 +4112,6 @@
       "mtime": "2026-07-18T01:42:20+00:00"
     },
     {
-      "path": "Asgard/Freya/Integration/services/_crawler_report.py",
-      "bytes": 15851,
-      "sha256": "b6b4d64c68ca9eb74bc229299dee9576ede600a5efefa795bb69222e0e38029f",
-      "mtime": "2026-08-16T13:19:34+00:00"
-    },
-    {
       "path": "Asgard/Freya/Integration/services/_playwright_presets.py",
       "bytes": 3128,
       "sha256": "2a8374eee0d3a89f8971b0915cc1b4e557e4a2b9c49c9524398db70d9895713e",
@@ -4170,12 +4146,6 @@
       "bytes": 6235,
       "sha256": "77f229fcfbd12dd4c15896cd8cfda80cbbccb69c50014279d50a66ddd09dcd32",
       "mtime": "2026-08-16T10:14:54+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Integration/services/html_reporter.py",
-      "bytes": 24440,
-      "sha256": "af067ddda511ee89a42c414c4ee9e31444f2fccf6ff96cd660c2daabfe28eeee",
-      "mtime": "2026-08-16T13:19:02+00:00"
     },
     {
       "path": "Asgard/Freya/Integration/services/playwright_utils.py",
@@ -4224,12 +4194,6 @@
       "bytes": 8298,
       "sha256": "ecdd70e5f85efc19987ef172dcd09e9b214bafe50054f8c37539b6eee38ce80f",
       "mtime": "2026-08-16T10:25:08+00:00"
-    },
-    {
-      "path": "Asgard/Freya/Links/services/link_validator.py",
-      "bytes": 10856,
-      "sha256": "f595affde65eaa46a5b1ce9e2deaa706cafc75d3d503e6a58e04ac257902f905",
-      "mtime": "2026-08-16T10:25:43+00:00"
     },
     {
       "path": "Asgard/Freya/Performance/__init__.py",
@@ -5274,12 +5238,6 @@
       "bytes": 140,
       "sha256": "94aa1df224b6b0cdc66a164a329860d47ef3432d14a5a08db566791dfef1bab9",
       "mtime": "2026-05-16T13:42:57+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/FileIntegrity/services/file_integrity_checker.py",
-      "bytes": 7999,
-      "sha256": "e9d89b9548384093108c18b580736b40ce14c4634eaef46d62b4f3fe16005263",
-      "mtime": "2026-08-16T11:37:58+00:00"
     },
     {
       "path": "Asgard/Heimdall/Security/Frontend/__init__.py",
@@ -6356,12 +6314,6 @@
       "mtime": "2026-08-16T12:58:24+00:00"
     },
     {
-      "path": "Asgard/Heimdall/Security/services/static_security_service.py",
-      "bytes": 10860,
-      "sha256": "d858f3bb6265b8aab0415819a740e1da609e04c09fa9e6c00ac2760a499d764c",
-      "mtime": "2026-08-16T11:35:57+00:00"
-    },
-    {
       "path": "Asgard/Heimdall/Security/triage/__init__.py",
       "bytes": 836,
       "sha256": "503e288974a1f7265dc21d6db13c2b47dbf3ada2790409ae2da3979774a44829",
@@ -6384,12 +6336,6 @@
       "bytes": 0,
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "mtime": "2026-07-19T07:26:04+00:00"
-    },
-    {
-      "path": "Asgard/Heimdall/Security/triage/services/triage_adapter.py",
-      "bytes": 9687,
-      "sha256": "ab71bdcdafe3542c8fe520f432e718a6b3a047c2f1eaad5881707263ce840510",
-      "mtime": "2026-08-16T12:00:55+00:00"
     },
     {
       "path": "Asgard/Heimdall/Security/triage/services/triage_cache.py",
@@ -7178,12 +7124,6 @@
       "mtime": "2026-05-19T23:46:14+00:00"
     },
     {
-      "path": "Asgard/Shared/Init/linter_initializer.py",
-      "bytes": 8913,
-      "sha256": "fee74bd5afa718dfc97443bdd9f3e7b13d347a81d786c2ef8fda39c605298c5e",
-      "mtime": "2026-08-16T10:17:24+00:00"
-    },
-    {
       "path": "Asgard/Shared/Init/templates.py",
       "bytes": 1329,
       "sha256": "747e10f93e477b1f27fcfa6343a1d2cd864f1f23a6c828ea2529b6142186672d",
@@ -7242,12 +7182,6 @@
       "bytes": 4374,
       "sha256": "be1f7a14fd94e6fccae8e9d346eecdbe2b19747ab6adcfd3afc66d6e6b208968",
       "mtime": "2026-05-19T23:46:27+00:00"
-    },
-    {
-      "path": "Asgard/Shared/Issues/services/_issue_repository.py",
-      "bytes": 11628,
-      "sha256": "48b6af11e47e4c4d0a8f670ea9c446dae1b95ddd65ab6534f7ca2692129c4680",
-      "mtime": "2026-08-16T10:22:39+00:00"
     },
     {
       "path": "Asgard/Shared/Profiles/__init__.py",
@@ -8318,12 +8252,6 @@
       "mtime": "2026-03-22T07:53:59+00:00"
     },
     {
-      "path": "Asgard/Volundr/Helm/services/_chart_generator_templates.py",
-      "bytes": 5755,
-      "sha256": "eef02c17f955dc6e2fab834fa5ed63674acd28933b97fd98639b784428e5b651",
-      "mtime": "2026-03-21T02:08:06+00:00"
-    },
-    {
       "path": "Asgard/Volundr/Helm/services/chart_generator.py",
       "bytes": 14165,
       "sha256": "dd798879cdafdaeb1052554ea794519d5b9cebeb32c585fe7dc7891c8fbcbecc",
@@ -8562,12 +8490,6 @@
       "bytes": 160,
       "sha256": "63a1b0c98cbb2f55593499fcbe129222853e86a36e7a72e1d42690de554e1c8a",
       "mtime": "2026-03-11T07:29:48+00:00"
-    },
-    {
-      "path": "Asgard/Volundr/Terraform/services/_module_builder_blocks.py",
-      "bytes": 12676,
-      "sha256": "97f975fe01361cc979c52385673848aa7318122882a9d4efc605460fd33c79b9",
-      "mtime": "2026-08-16T10:39:10+00:00"
     },
     {
       "path": "Asgard/Volundr/Terraform/services/_module_builder_blocks_part2.py",
@@ -23060,12 +22982,6 @@
       "mtime": "2026-03-11T07:30:21+00:00"
     },
     {
-      "path": "_FutureItems-Security/Tools_Security/.github/workflows/security-scan.yml",
-      "bytes": 5062,
-      "sha256": "52074bebcb062636f6f619c506d86979e77abd31ee6f5ca345f7fbd3f5bb012c",
-      "mtime": "2026-08-16T12:32:29+00:00"
-    },
-    {
       "path": "_FutureItems-Security/Tools_Security/.pre-commit-hooks.yaml",
       "bytes": 1762,
       "sha256": "82cfbf687ea5b97d121ae7a6ad41da2dbbbbbdbe34e79238ec30d0f2ab3de32b",
@@ -23114,12 +23030,6 @@
       "mtime": "2026-03-21T01:50:07+00:00"
     },
     {
-      "path": "_FutureItems-Security/Tools_Security/cors_checker.py",
-      "bytes": 11075,
-      "sha256": "d33204033f3086337dab0dfc5be46a958f374100461fba03b3e4a2e283cc4601",
-      "mtime": "2026-08-16T10:45:59+00:00"
-    },
-    {
       "path": "_FutureItems-Security/Tools_Security/data_exfil_detector.py",
       "bytes": 14725,
       "sha256": "c3dd2d8243267aa62dbe037b1fe31e0a62cda690350c99c5b65de68828c5a3da",
@@ -23136,12 +23046,6 @@
       "bytes": 17741,
       "sha256": "9932ad158097f96e2c8501df66a79d8bc33069ce34e84e4c5ffcab0b6e3dff25",
       "mtime": "2026-03-21T01:50:07+00:00"
-    },
-    {
-      "path": "_FutureItems-Security/Tools_Security/dns_security_checker.py",
-      "bytes": 14866,
-      "sha256": "27b11806134bb2f9f1230e6a77f99db40f57f58dea23107f91c3e292d7630911",
-      "mtime": "2026-08-16T10:31:07+00:00"
     },
     {
       "path": "_FutureItems-Security/Tools_Security/encryption_analyzer.py",
@@ -23850,6 +23754,167 @@
       "disposition": "residual",
       "bytes": 10172,
       "sha256": "4cd3157ac611dfebe7b1dddd097b2c43c70efc339118a63963516494c50c2cea"
+    },
+    {
+      "path": "Asgard/Baseline/_baseline_operations.py",
+      "completed_at": "2026-08-17T01:01:29+00:00",
+      "finding_ids": [
+        "CH-0012"
+      ],
+      "disposition": "confirmed",
+      "bytes": 3514,
+      "sha256": "918bf71f52c40d9dd5274126086ffd4be85166194c9bbdeed1c785ac47344f00"
+    },
+    {
+      "path": "Asgard/Bragi/QualityGate/baseline_store.py",
+      "completed_at": "2026-08-17T01:01:29+00:00",
+      "finding_ids": [
+        "CH-0051"
+      ],
+      "disposition": "residual",
+      "bytes": 7762,
+      "sha256": "8f12b254caa6c1c35d7d47ba8eb5f0bafe51566e3b8747d519cf185b68cc5830"
+    },
+    {
+      "path": "Asgard/Dashboard/services/html_renderer.py",
+      "completed_at": "2026-08-17T01:01:29+00:00",
+      "finding_ids": [
+        "CH-0055"
+      ],
+      "disposition": "confirmed",
+      "bytes": 5970,
+      "sha256": "29471c5d6e67b357e5e5f9776d3dc77bf4bd069e55e92216ae95480983f4e0bc"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/html_reporter.py",
+      "completed_at": "2026-08-17T01:01:29+00:00",
+      "finding_ids": [
+        "CH-0067"
+      ],
+      "disposition": "confirmed",
+      "bytes": 24440,
+      "sha256": "af067ddda511ee89a42c414c4ee9e31444f2fccf6ff96cd660c2daabfe28eeee"
+    },
+    {
+      "path": "Asgard/Freya/Integration/services/_crawler_report.py",
+      "completed_at": "2026-08-17T01:01:30+00:00",
+      "finding_ids": [
+        "CH-0067",
+        "CH-0069"
+      ],
+      "disposition": "confirmed",
+      "bytes": 15851,
+      "sha256": "b6b4d64c68ca9eb74bc229299dee9576ede600a5efefa795bb69222e0e38029f"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/FileIntegrity/services/file_integrity_checker.py",
+      "completed_at": "2026-08-17T01:01:30+00:00",
+      "finding_ids": [
+        "CH-0076"
+      ],
+      "disposition": "confirmed",
+      "bytes": 7999,
+      "sha256": "e9d89b9548384093108c18b580736b40ce14c4634eaef46d62b4f3fe16005263"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/services/static_security_service.py",
+      "completed_at": "2026-08-17T01:01:30+00:00",
+      "finding_ids": [
+        "CH-0077"
+      ],
+      "disposition": "confirmed",
+      "bytes": 10860,
+      "sha256": "d858f3bb6265b8aab0415819a740e1da609e04c09fa9e6c00ac2760a499d764c"
+    },
+    {
+      "path": "Asgard/Freya/Links/services/link_validator.py",
+      "completed_at": "2026-08-17T01:01:30+00:00",
+      "finding_ids": [
+        "CH-0071"
+      ],
+      "disposition": "residual",
+      "bytes": 10856,
+      "sha256": "f595affde65eaa46a5b1ce9e2deaa706cafc75d3d503e6a58e04ac257902f905"
+    },
+    {
+      "path": "Asgard/Heimdall/Security/triage/services/triage_adapter.py",
+      "completed_at": "2026-08-17T01:01:30+00:00",
+      "finding_ids": [
+        "CH-0082"
+      ],
+      "disposition": "confirmed",
+      "bytes": 9687,
+      "sha256": "ab71bdcdafe3542c8fe520f432e718a6b3a047c2f1eaad5881707263ce840510"
+    },
+    {
+      "path": "Asgard/Shared/Init/linter_initializer.py",
+      "completed_at": "2026-08-17T01:01:30+00:00",
+      "finding_ids": [
+        "CH-0096"
+      ],
+      "disposition": "confirmed",
+      "bytes": 8913,
+      "sha256": "fee74bd5afa718dfc97443bdd9f3e7b13d347a81d786c2ef8fda39c605298c5e"
+    },
+    {
+      "path": "Asgard/Shared/Issues/services/_issue_repository.py",
+      "completed_at": "2026-08-17T01:01:30+00:00",
+      "finding_ids": [
+        "CH-0097"
+      ],
+      "disposition": "confirmed",
+      "bytes": 11628,
+      "sha256": "48b6af11e47e4c4d0a8f670ea9c446dae1b95ddd65ab6534f7ca2692129c4680"
+    },
+    {
+      "path": "Asgard/Volundr/Helm/services/_chart_generator_templates.py",
+      "completed_at": "2026-08-17T01:01:30+00:00",
+      "finding_ids": [
+        "CH-0104"
+      ],
+      "disposition": "confirmed",
+      "bytes": 5755,
+      "sha256": "eef02c17f955dc6e2fab834fa5ed63674acd28933b97fd98639b784428e5b651"
+    },
+    {
+      "path": "Asgard/Volundr/Terraform/services/_module_builder_blocks.py",
+      "completed_at": "2026-08-17T01:01:30+00:00",
+      "finding_ids": [
+        "CH-0108"
+      ],
+      "disposition": "residual",
+      "bytes": 12676,
+      "sha256": "97f975fe01361cc979c52385673848aa7318122882a9d4efc605460fd33c79b9"
+    },
+    {
+      "path": "_FutureItems-Security/Tools_Security/.github/workflows/security-scan.yml",
+      "completed_at": "2026-08-17T01:01:30+00:00",
+      "finding_ids": [
+        "CH-0110"
+      ],
+      "disposition": "residual",
+      "bytes": 5062,
+      "sha256": "52074bebcb062636f6f619c506d86979e77abd31ee6f5ca345f7fbd3f5bb012c"
+    },
+    {
+      "path": "_FutureItems-Security/Tools_Security/cors_checker.py",
+      "completed_at": "2026-08-17T01:01:30+00:00",
+      "finding_ids": [
+        "CH-0112"
+      ],
+      "disposition": "confirmed",
+      "bytes": 11075,
+      "sha256": "d33204033f3086337dab0dfc5be46a958f374100461fba03b3e4a2e283cc4601"
+    },
+    {
+      "path": "_FutureItems-Security/Tools_Security/dns_security_checker.py",
+      "completed_at": "2026-08-17T01:01:30+00:00",
+      "finding_ids": [
+        "CH-0113"
+      ],
+      "disposition": "confirmed",
+      "bytes": 14866,
+      "sha256": "27b11806134bb2f9f1230e6a77f99db40f57f58dea23107f91c3e292d7630911"
     }
   ]
 }
