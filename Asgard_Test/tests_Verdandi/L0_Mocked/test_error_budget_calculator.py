@@ -158,8 +158,8 @@ class TestCalculateBasic:
         budget = calc.calculate(slo, metrics, now)
 
         assert budget.total_events == 0
-        assert budget.current_sli == 100.0  # Defaults to 100% when no data
-        assert budget.status == SLOComplianceStatus.COMPLIANT
+        assert budget.current_sli == 0.0
+        assert budget.status == SLOComplianceStatus.UNKNOWN
 
     def test_calculate_filters_by_window(self):
         """Test that calculation only includes metrics within window."""

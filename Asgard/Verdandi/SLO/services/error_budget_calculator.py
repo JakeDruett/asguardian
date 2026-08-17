@@ -79,7 +79,7 @@ class ErrorBudgetCalculator:
         bad_events = max(0, total_events - good_events - rejected_events)
 
         # Calculate current SLI
-        current_sli = (good_events / total_events * 100.0) if total_events > 0 else 100.0
+        current_sli = (good_events / total_events * 100.0) if total_events > 0 else 0.0
 
         # Calculate error budget
         error_budget_percent = 100.0 - slo.target
@@ -95,8 +95,12 @@ class ErrorBudgetCalculator:
         if allowed_failures == 0 and bad_events > 0:
             budget_consumed_percent = 100.0
 
-        # Determine status
-        status = self._determine_status(budget_consumed_percent)
+        # Determine status. Empty windows are unknown, not a perfect 100.
+        status = (
+            SLOComplianceStatus.UNKNOWN
+            if total_events == 0
+            else self._determine_status(budget_consumed_percent)
+        )
 
         # Calculate time remaining in window
         time_remaining = max(

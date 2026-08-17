@@ -200,7 +200,7 @@ class SLITracker:
                 "total_events": 0,
                 "good_events": 0,
                 "bad_events": 0,
-                "success_rate": 1.0,
+                "success_rate": 0.0,
                 "failure_rate": 0.0,
                 "measurement_count": 0,
             }
