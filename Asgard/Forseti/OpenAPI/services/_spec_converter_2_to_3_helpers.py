@@ -257,28 +257,46 @@ def convert_2_to_3_0(
     return converted
 
 
-def convert_nullable_to_type_array(obj: Any) -> None:
+def convert_nullable_to_type_array(obj: Any, *, _depth: int = 0, _seen: set | None = None) -> None:
     """Recursively convert nullable: true to type arrays (3.0 to 3.1)."""
+    if _seen is None:
+        _seen = set()
+    if _depth > 64:
+        return
+    if isinstance(obj, (dict, list)):
+        nid = id(obj)
+        if nid in _seen:
+            return
+        _seen.add(nid)
     if isinstance(obj, dict):
         if obj.get("nullable") is True and "type" in obj:
             obj["type"] = [obj["type"], "null"]
             del obj["nullable"]
         for value in obj.values():
-            convert_nullable_to_type_array(value)
+            convert_nullable_to_type_array(value, _depth=_depth + 1, _seen=_seen)
     elif isinstance(obj, list):
         for item in obj:
-            convert_nullable_to_type_array(item)
+            convert_nullable_to_type_array(item, _depth=_depth + 1, _seen=_seen)
 
 
-def convert_exclusive_bounds(obj: Any) -> None:
+def convert_exclusive_bounds(obj: Any, *, _depth: int = 0, _seen: set | None = None) -> None:
     """Convert exclusive bounds from boolean to number (3.0 to 3.1)."""
+    if _seen is None:
+        _seen = set()
+    if _depth > 64:
+        return
+    if isinstance(obj, (dict, list)):
+        nid = id(obj)
+        if nid in _seen:
+            return
+        _seen.add(nid)
     if isinstance(obj, dict):
         if obj.get("exclusiveMinimum") is True and "minimum" in obj:
             obj["exclusiveMinimum"] = obj.pop("minimum")
         if obj.get("exclusiveMaximum") is True and "maximum" in obj:
             obj["exclusiveMaximum"] = obj.pop("maximum")
         for value in obj.values():
-            convert_exclusive_bounds(value)
+            convert_exclusive_bounds(value, _depth=_depth + 1, _seen=_seen)
     elif isinstance(obj, list):
         for item in obj:
-            convert_exclusive_bounds(item)
+            convert_exclusive_bounds(item, _depth=_depth + 1, _seen=_seen)

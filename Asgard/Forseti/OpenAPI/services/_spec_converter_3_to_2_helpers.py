@@ -178,8 +178,17 @@ def convert_3_0_to_2(
     return converted
 
 
-def convert_type_array_to_nullable(obj: Any) -> None:
+def convert_type_array_to_nullable(obj: Any, *, _depth: int = 0, _seen: set | None = None) -> None:
     """Recursively convert type arrays to nullable: true (3.1 to 3.0)."""
+    if _seen is None:
+        _seen = set()
+    if _depth > 64:
+        return
+    if isinstance(obj, (dict, list)):
+        nid = id(obj)
+        if nid in _seen:
+            return
+        _seen.add(nid)
     if isinstance(obj, dict):
         if isinstance(obj.get("type"), list) and "null" in obj["type"]:
             types = [t for t in obj["type"] if t != "null"]
@@ -187,7 +196,7 @@ def convert_type_array_to_nullable(obj: Any) -> None:
                 obj["type"] = types[0]
                 obj["nullable"] = True
         for value in obj.values():
-            convert_type_array_to_nullable(value)
+            convert_type_array_to_nullable(value, _depth=_depth + 1, _seen=_seen)
     elif isinstance(obj, list):
         for item in obj:
-            convert_type_array_to_nullable(item)
+            convert_type_array_to_nullable(item, _depth=_depth + 1, _seen=_seen)

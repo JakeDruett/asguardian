@@ -103,17 +103,38 @@ def make_ref_resolver(document: dict[str, Any]) -> Resolver:
     return resolve
 
 
-def collect_refs(node: Any, acc: set[str]) -> None:
-    """Collect every local $ref string reachable from `node`."""
+_MAX_SPEC_WALK_DEPTH = 64
+
+
+def walk_spec(node: Any, visit, *, depth: int = 0, seen: Optional[set[int]] = None) -> None:
+    """Walk mappings/sequences with an id() seen-set and depth cap."""
+    if seen is None:
+        seen = set()
+    if depth > _MAX_SPEC_WALK_DEPTH:
+        return
+    if isinstance(node, (dict, list)):
+        nid = id(node)
+        if nid in seen:
+            return
+        seen.add(nid)
+    visit(node)
     if isinstance(node, dict):
-        ref = node.get("$ref")
-        if isinstance(ref, str):
-            acc.add(ref)
         for value in node.values():
-            collect_refs(value, acc)
+            walk_spec(value, visit, depth=depth + 1, seen=seen)
     elif isinstance(node, list):
         for item in node:
-            collect_refs(item, acc)
+            walk_spec(item, visit, depth=depth + 1, seen=seen)
+
+
+def collect_refs(node: Any, acc: set[str]) -> None:
+    """Collect every local $ref string reachable from `node`."""
+    def _visit(item: Any) -> None:
+        if isinstance(item, dict):
+            ref = item.get("$ref")
+            if isinstance(ref, str):
+                acc.add(ref)
+
+    walk_spec(node, _visit)
 
 
 def _deref(schema: dict[str, Any], resolver: Optional[Resolver]) -> dict[str, Any]:

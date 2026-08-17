@@ -582,7 +582,10 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ### CHC-0008 — OpenAPI/compat YAML alias cycles unbounded
 
-- **Status:** Open
+- **Status:** Fixed
+- **Fixed in:** 3460461
+- **Fixed at:** 2026-08-17T18:25:00Z
+- **Implementation note:** Spec walkers use id() seen-set + depth 64; converters refuse alias cycles. Tests plant self-aliased mapping.
 - **Severity:** Medium
 - **Confidence:** High
 - **CWE / class:** CWE-674 / CWE-400
@@ -710,17 +713,17 @@ Updated: 2026-08-17T02:45:00+00:00
 |----------|------|-------|---------------|
 | Critical | 0    | 0     | 0             |
 | High     | 1    | 4     | 0             |
-| Medium   | 2    | 6     | 0             |
+| Medium   | 1    | 7     | 0             |
 | Low      | 1    | 0     | 0             |
 | Info     | 0    | 0     | 0             |
 
-CHC Open remaining: CHC-0007, CHC-0008, CHC-0011. Residual leftovers still Open.
+CHC Open remaining: CHC-0007, CHC-0011. Residual leftovers still Open.
 
 ## Implementation progress
 
-- Open CHC: 3
-- Fixed CHC: 10
+- Open CHC: 2
+- Fixed CHC: 11
 - Residual leftovers: 31 Open
 - Current wave: W4
-- Next: CHC-0008, CHC-0011, CHC-0007
+- Next: CHC-0011, CHC-0007
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`

@@ -20,15 +20,24 @@ def get_all_refs(spec_data: dict[str, Any]) -> set[str]:
     """
     refs: set[str] = set()
 
-    def collect_refs(obj: Any) -> None:
+    def collect_refs(obj: Any, depth: int = 0, seen: Optional[set[int]] = None) -> None:
+        if seen is None:
+            seen = set()
+        if depth > 64:
+            return
+        if isinstance(obj, (dict, list)):
+            nid = id(obj)
+            if nid in seen:
+                return
+            seen.add(nid)
         if isinstance(obj, dict):
             if "$ref" in obj:
                 refs.add(obj["$ref"])
             for value in obj.values():
-                collect_refs(value)
+                collect_refs(value, depth + 1, seen)
         elif isinstance(obj, list):
             for item in obj:
-                collect_refs(item)
+                collect_refs(item, depth + 1, seen)
 
     collect_refs(spec_data)
     return refs
@@ -143,7 +152,16 @@ def resolve_pointer(root: dict[str, Any], ref: str) -> Optional[Any]:
 
 def iter_refs(spec_data: dict[str, Any]):
     """Yield (json_path, ref_string) for every $ref in the document."""
-    def walk(obj: Any, path: str):
+    def walk(obj: Any, path: str, depth: int = 0, seen: Optional[set[int]] = None):
+        if seen is None:
+            seen = set()
+        if depth > 64:
+            return
+        if isinstance(obj, (dict, list)):
+            nid = id(obj)
+            if nid in seen:
+                return
+            seen.add(nid)
         if isinstance(obj, dict):
             ref = obj.get("$ref")
             if isinstance(ref, str):
@@ -152,10 +170,10 @@ def iter_refs(spec_data: dict[str, Any]):
                 if key == "$ref":
                     continue
                 escaped = str(key).replace("~", "~0").replace("/", "~1")
-                yield from walk(value, f"{path}/{escaped}")
+                yield from walk(value, f"{path}/{escaped}", depth + 1, seen)
         elif isinstance(obj, list):
             for index, item in enumerate(obj):
-                yield from walk(item, f"{path}/{index}")
+                yield from walk(item, f"{path}/{index}", depth + 1, seen)
 
     yield from walk(spec_data, "")
 

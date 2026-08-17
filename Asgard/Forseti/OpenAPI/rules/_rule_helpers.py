@@ -132,10 +132,15 @@ def iter_schemas(
     $refs are followed at most once each when follow_refs is True.
     """
     seen = _seen_refs if _seen_refs is not None else set()
+    seen_ids: set[int] = set()
 
-    def walk(schema: Any, path: str, prop: Optional[str]) -> Iterator:
-        if not isinstance(schema, dict):
+    def walk(schema: Any, path: str, prop: Optional[str], depth: int = 0) -> Iterator:
+        if not isinstance(schema, dict) or depth > 64:
             return
+        nid = id(schema)
+        if nid in seen_ids:
+            return
+        seen_ids.add(nid)
         ref = schema.get("$ref")
         if isinstance(ref, str):
             if not follow_refs or ref in seen:
@@ -143,20 +148,20 @@ def iter_schemas(
             seen.add(ref)
             resolved = deref_node(document, schema, set(seen))
             if isinstance(resolved, dict) and resolved is not schema:
-                yield from walk(resolved, path, prop)
+                yield from walk(resolved, path, prop, depth + 1)
             return
         yield schema, path, prop
         for name, sub in (schema.get("properties") or {}).items():
-            yield from walk(sub, f"{path}/properties/{escape_pointer(name)}", name)
+            yield from walk(sub, f"{path}/properties/{escape_pointer(name)}", name, depth + 1)
         items = schema.get("items")
         if isinstance(items, dict):
-            yield from walk(items, f"{path}/items", prop)
+            yield from walk(items, f"{path}/items", prop, depth + 1)
         extra = schema.get("additionalProperties")
         if isinstance(extra, dict):
-            yield from walk(extra, f"{path}/additionalProperties", None)
+            yield from walk(extra, f"{path}/additionalProperties", None, depth + 1)
         for combiner in ("allOf", "anyOf", "oneOf"):
             for index, sub in enumerate(schema.get(combiner) or []):
-                yield from walk(sub, f"{path}/{combiner}/{index}", prop)
+                yield from walk(sub, f"{path}/{combiner}/{index}", prop, depth + 1)
         if isinstance(schema.get("not"), dict):
             yield from walk(schema["not"], f"{path}/not", prop)
 
