@@ -43,13 +43,13 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0013 | Medium | W3 | Confirmed |  | messages persisted as sha256; CLI/report omit raw |
 | CH-0014 | Low | W2 | Confirmed |  | refuse dest symlink; mkstemp+replace |
 | CH-0015 | Low | W3 | Confirmed |  | 64-hex SHA-256; remove_entry unique only |
-| CH-0016 | Low | W4 | (pending) | | `Asgard/Bragi/Architecture/cir/builder.py` |
-| CH-0017 | Medium | W4 | (pending) | | `Asgard/Bragi/Architecture/graph/service.py` |
-| CH-0018 | Low | W4 | (pending) | | `Asgard/Bragi/Architecture/graph/propagation.py` |
-| CH-0019 | Low | W5 | (pending) | | `Asgard/Bragi/Architecture/services/_arch_reporter_markdown.py` |
-| CH-0020 | Info | W5 | (pending) | | `Asgard/Bragi/Architecture/services/_architecture_config.py` |
-| CH-0021 | Low | W4 | (pending) | | `Asgard/Bragi/Architecture/services/_generic_solid_checks.py` |
-| CH-0022 | Medium | W4 | (pending) | | `Asgard/Bragi/Architecture/services/_treesitter_solid_checks.py` |
+| CH-0016 | Low | W4 | Confirmed |  | CIR size/walk/LCOM4 caps live |
+| CH-0017 | Medium | W4 | Residual | sibling .key HMAC plant | schema+HMAC on load; env-less sibling key forges |
+| CH-0018 | Low | W4 | Confirmed |  | sanitize_path_patterns caps globs |
+| CH-0019 | Low | W5 | Residual | two MD reporters unescaped | md_cell used on listed tables; layer/hexagonal reporters raw |
+| CH-0020 | Info | W5 | Residual | level/import lists untyped | file/size/layers checks exist; planned coerce incomplete |
+| CH-0021 | Low | W4 | Confirmed |  | bounded regex + skip lines >4096 |
+| CH-0022 | Medium | W4 | Confirmed |  | iterative walk + RecursionError contained |
 | CH-0023 | Info | W1 | Confirmed |  | CLAUDE.md gitignored with credential comment |
 | CH-0024 | High | W1 | Residual | textconv/filter drivers | named git-config vectors isolated; local textconv still runs |
 | CH-0025 | Low | W4 | Confirmed |  | hunk/blame caps return INSUFFICIENT_DATA |
@@ -59,29 +59,29 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0029 | — | — | Skipped | | withdrawn |
 | CH-0030 | Info | W5 | Confirmed |  | language allowlist; finite thresholds; positive weights |
 | CH-0031 | Low | W4 | Confirmed |  | ValidationError logged; ctor returns None |
-| CH-0032 | Medium | W3 | (pending) | | `Asgard/Bragi/Dependencies/services/_license_cache.py` |
+| CH-0032 | Medium | W3 | Confirmed |  | HMAC+version; miss on unsigned; CI use_cache=False |
 | CH-0033 | Medium | W1 | Confirmed |  | enable_network default False; https://pypi.org only; 10s timeout |
-| CH-0034 | Low | W2 | (pending) | | `Asgard/Bragi/Dependencies/services/license_checker.py` |
+| CH-0034 | Low | W2 | Confirmed |  | PEP503 + quote; path-like rejected |
 | CH-0035 | High | W2 | Confirmed |  | confine_sync_target jail; abs/.. rejected |
-| CH-0036 | Medium | W3 | (pending) | | `Asgard/Bragi/Dependencies/services/_vuln_cache.py` |
-| CH-0037 | Low | W2 | (pending) | | `Asgard/Bragi/Dependencies/services/_vuln_cache.py` |
-| CH-0038 | Medium | W3 | (pending) | | `Asgard/Bragi/Dependencies/models/license_models.py` |
-| CH-0039 | Low | W4 | (pending) | | `Asgard/Bragi/Dependencies/services/graph_service.py` |
+| CH-0036 | Medium | W3 | Confirmed |  | HMAC+schema; planted empty refetches |
+| CH-0037 | Low | W2 | Confirmed |  | hashed filename + is_relative_to |
+| CH-0038 | Medium | W3 | Confirmed |  | is_allowed default False; unknown deny |
+| CH-0039 | Low | W4 | Confirmed |  | HMAC+schema; miss on error |
 | CH-0040 | Medium | W2 | Confirmed |  | skip symlinks; inode cycle; jail resolve |
 | CH-0041 | Low | W2 | Confirmed |  | os.walk followlinks=False; no rglob |
 | CH-0042 | Medium | W2 | Confirmed |  | iter_language_files + size/finding caps |
-| CH-0043 | Medium | W3 | (pending) | | `Asgard/Bragi/Quality/languages/javascript/services/_js_security_rules.py` |
-| CH-0044 | Info | W5 | (pending) | | `Asgard/Bragi/Quality/languages/javascript/services/_js_rules.py` |
-| CH-0045 | Low | W4 | (pending) | | `Asgard/Bragi/Quality/languages/php/services/_php_rules.py` |
-| CH-0046 | Medium | W5 | (pending) | | `Asgard/Bragi/Quality/services/_code_smell_report_html.py` |
-| CH-0047 | Medium | W3 | (pending) | | `Asgard/Bragi/Quality/services/_debt_state_store.py` |
-| CH-0048 | Medium | W3 | (pending) | | `Asgard/Bragi/Quality/services/_incremental_cache.py` |
+| CH-0043 | Medium | W3 | Residual | Java/Go/C#/C++/shell still copy raw secret | JS/PHP/Ruby/Rust mask; other langs still code_snippet=line |
+| CH-0044 | Info | W5 | Confirmed |  | no-eval remediates to JSON.parse not Function |
+| CH-0045 | Low | W4 | Confirmed |  | bounded PHP regex + line cap |
+| CH-0046 | Medium | W5 | Confirmed |  | _esc on every interpolated smell field |
+| CH-0047 | Medium | W3 | Residual | sibling .key HMAC plant | unsigned JSON miss; env-less sibling key forges |
+| CH-0048 | Medium | W3 | Residual | sibling .key HMAC plant | HMAC+rehash; sibling key leftover; enabled default False |
 | CH-0049 | High | W1 | Confirmed |  | mypy/pyright runners isolated; planted plugins not loaded |
 | CH-0050 | High | W2 | Confirmed |  | pyrightconfig written only in isolated temp workdir |
 | CH-0051 | High | W3 | Residual | sibling .key + HMAC plant | unsigned JSON fail-closed; env-less sibling key still forges |
-| CH-0052 | Medium | W3 | (pending) | | `Asgard/Bragi/QualityGate/fingerprint.py` |
-| CH-0053 | Medium | W4 | (pending) | | `Asgard/Bragi/Quality/services/parallel_scanner.py` |
-| CH-0054 | Medium | W3 | (pending) | | `Asgard/Bragi/Ratings/services/ratings_calculator.py` |
+| CH-0052 | Medium | W3 | Confirmed |  | digest includes line+message; unsigned recomputed |
+| CH-0053 | Medium | W4 | Confirmed |  | spawn + named import; timeout kills workers |
+| CH-0054 | Medium | W3 | Confirmed |  | unmeasured → N/A; overall N/A if any missing |
 | CH-0055 | High | W5 | Confirmed |  | esc() on 404/path/issue fields; badge CSS allowlisted |
 | CH-0056 | Medium | W1 | Confirmed |  | default localhost; refuse 0.0.0.0/:: without --expose |
 | CH-0057 | Medium | W2 | Confirmed |  | confine_source_path before any read |
@@ -91,52 +91,52 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0061 | High | W1 | Confirmed |  | default 127.0.0.1; generated Flask debug=False |
 | CH-0062 | High | W1 | Confirmed |  | localhost default; http(s) upstream; path jail; same-host redirects |
 | CH-0063 | High | W1 | Confirmed |  | urljoin + path jail; encode params; same-host redirects |
-| CH-0064 | Medium | W5 | (pending) | | `Asgard/Forseti/Documentation/services/docs_generator.py` |
+| CH-0064 | Medium | W5 | Confirmed |  | title escaped; contact href allowlisted; no custom_css |
 | CH-0065 | Medium | W2 | Confirmed |  | sanitize_sql_default literals only |
 | CH-0066 | High | W1 | Residual | click/reload/login-submit follow first | start/login/enqueue/tester goto gated; click+reload navigate before allowlist |
 | CH-0067 | High | W5 | Confirmed |  | esc/html_link/safe_src/safe_css on HTML and JUnit |
 | CH-0068 | High | W2 | Confirmed |  | confine_storage_path on load/delete/version; tests for ../ and symlink |
 | CH-0069 | High | W3 | Confirmed |  | password/token/cookie redacted to **** on generate+save |
-| CH-0070 | Medium | W4 | (pending) | | `Asgard/Freya/Accessibility/services/_aria_validator_checks_part2.py` |
+| CH-0070 | Medium | W4 | Confirmed |  | page.evaluate static fn + id arg |
 | CH-0071 | Medium | W1 | Residual | seed page.goto ungated | HEAD+redirects allowlisted; seed navigation is not |
 | CH-0072 | High | W2 | Confirmed |  | sanitize_output_name + confine_output_path on every write |
-| CH-0073 | Medium | W3 | (pending) | | `Asgard/Freya/Scoring/services/grade_calculator.py` |
-| CH-0074 | Medium | W4 | (pending) | | `Asgard/Freya/Visual/services/_screenshot_capture_helpers.py` |
+| CH-0073 | Medium | W3 | Confirmed |  | empty scores → NA; unknown severity BLOCKER |
+| CH-0074 | Medium | W4 | Confirmed |  | hide_selectors via json.dumps arg not JS interpolate |
 | CH-0075 | Medium | W2 | Confirmed |  | validate_dns_domain then dig -- domain |
 | CH-0076 | High | W3 | Confirmed |  | HMAC baseline; adds set has_changes; fail-closed |
 | CH-0077 | High | W3 | Confirmed |  | domain_errors fail is_passing; CLI exit 1 |
 | CH-0078 | Medium | W2 | Residual | sibling scanners still rglob | owned walker confined; taint/log/scan_steps still rglob |
-| CH-0079 | Medium | W3 | (pending) | | `Asgard/Heimdall/Security/utilities/security_utils.py` |
-| CH-0080 | Medium | W3 | (pending) | | `Asgard/Heimdall/Security/services/_live_vulnerability_lookup.py` |
-| CH-0081 | Medium | W3 | (pending) | | `Asgard/Heimdall/Security/triage/services/triage_cache.py` |
+| CH-0079 | Medium | W3 | Confirmed |  | mask_secret last-2 / length-only; span redact |
+| CH-0080 | Medium | W3 | Confirmed |  | * not live-checked; unresolved or local CVE |
+| CH-0081 | Medium | W3 | Residual | sibling .key HMAC plant | unsigned miss; env-less sibling key forges |
 | CH-0082 | Low | W1 | Confirmed |  | default enable_assist=False; Claude not constructed |
-| CH-0083 | Medium | W4 | (pending) | | `Asgard/Heimdall/Security/services/_config_secrets_helpers.py` |
-| CH-0084 | Medium | W4 | (pending) | | `Asgard/Heimdall/Security/services/_injection_patterns.py` |
-| CH-0085 | Medium | W4 | (pending) | | `Asgard/Heimdall/Security/services/_secret_patterns.py` |
+| CH-0083 | Medium | W4 | Confirmed |  | whole-value placeholders; flatten depth/cycle-safe |
+| CH-0084 | Medium | W4 | Confirmed |  | bounded regex + 1MiB/4096 caps |
+| CH-0085 | Medium | W4 | Confirmed |  | FP whole-value only; testhost/AWS-test report |
 | CH-0086 | High | W1 | Confirmed |  | Bearer required; refuse 0.0.0.0 without --expose; path jail; 1MiB body |
-| CH-0087 | Low | W4 | (pending) | | `Asgard/Heimdall/Security/services/_supply_chain_analysis.py` |
-| CH-0088 | Medium | W3 | (pending) | | `Asgard/Heimdall/cli/handlers/ratings.py` |
-| CH-0089 | Medium | W3 | (pending) | | `Asgard/Heimdall/cli/handlers/syntax.py` |
-| CH-0090 | Medium | W3 | (pending) | | `Asgard/Heimdall/cli/handlers/scan.py` |
+| CH-0087 | Low | W4 | Confirmed |  | commented index-url does not suppress |
+| CH-0088 | Medium | W3 | Confirmed |  | D/E/NA/NOT_MEASURED/domain_errors exit 1 |
+| CH-0089 | Medium | W3 | Confirmed |  | --denied maps to prohibited_licenses |
+| CH-0090 | Medium | W3 | Confirmed |  | step ERROR sets overall_exit=1 |
 | CH-0091 | Medium | W2 | Confirmed |  | confine_eval_path on manifest joins |
-| CH-0092 | Medium | W3 | (pending) | | `Asgard/Heimdall/evaluation/calibration.py` |
+| CH-0092 | Medium | W3 | Residual | HMAC opt-in unsigned trust | jail+HMAC exist; unsigned JSON trusted if env unset |
 | CH-0093 | High | W1 | Confirmed |  | https API base; quote owner/repo; same-origin redirects; token not sent off-origin |
 | CH-0094 | High | W1 | Confirmed |  | percent-encode % CR/LF :/ :: ; strip C0 |
-| CH-0095 | Low | W4 | (pending) | | `Asgard/Heimdall/treesitter/file_context.py` |
+| CH-0095 | Low | W4 | Residual | FileParseContext.read_bytes unbounded | caps on parse_file; scan hot path reads whole file first |
 | CH-0096 | Medium | W1 | Confirmed |  | project_name allowlist ^[A-Za-z_][A-Za-z0-9_-]*$ |
 | CH-0097 | Medium | W1 | Confirmed |  | get/mutate WHERE issue_id AND project_path |
-| CH-0098 | Medium | W3 | (pending) | | `Asgard/Verdandi/Analysis/services/sla_checker.py` |
-| CH-0099 | Medium | W4 | (pending) | | `Asgard/Verdandi/Analysis/services/quantile_sketch.py` |
-| CH-0100 | Medium | W3 | (pending) | | `Asgard/Verdandi/Anomaly/services/baseline_comparator.py` |
-| CH-0101 | Low | W4 | (pending) | | `Asgard/Verdandi/APM/services/service_map_builder.py` |
+| CH-0098 | Medium | W3 | Residual | SLO empty still 100% | sla_checker empty→0; error_budget/sli still 100 |
+| CH-0099 | Medium | W4 | Confirmed |  | centroid/bucket caps + finite checks |
+| CH-0100 | Medium | W3 | Confirmed |  | invalid baseline → unknown/significant |
+| CH-0101 | Low | W4 | Residual | causal_normalizer cycle walks | service_map visited+cap; causal_normalizer still loops |
 | CH-0102 | High | W1 | Residual | SecretMount id/target | newline/# refused on listed fields; SecretMount interpolated unsanitized |
 | CH-0103 | High | W1 | Residual | Jenkins env keys | run/env values hardened; env keys still raw in Groovy environment {} |
 | CH-0104 | Medium | W1 | Confirmed |  | chart name ^[a-z0-9-]+$ before define/include |
 | CH-0105 | Medium | W1 | Confirmed |  | https vault_url; harden_service_map rejects privileged/floating |
 | CH-0106 | Medium | W2 | Confirmed |  | safe_pipeline_name + confine_pipeline_output |
-| CH-0107 | Medium | W3 | (pending) | | `Asgard/Volundr/Validation/models/suppression_models.py` |
+| CH-0107 | Medium | W3 | Confirmed |  | CI HMAC + refuse * targets + expiry required |
 | CH-0108 | Medium | W1 | Residual | raw HCL type/value | 0.0.0.0/0 gone; hcl_quoted on names; type/value still raw |
-| CH-0109 | Medium | W3 | (pending) | | `Asgard/common/_hash_cache.py` |
+| CH-0109 | Medium | W3 | Residual | sibling .key HMAC plant | unsigned miss + rehash; sibling key leftover |
 | CH-0110 | Medium | W1 | Residual | empty JSON still green | no cd/continue-on-error; critical gate never fails parse |
 | CH-0111 | Low | W3 | Residual | --protocols still CERT_NONE | default check CERT_REQUIRED; protocol probe still CERT_NONE |
 | CH-0112 | Medium | W1 | Confirmed |  | validate_target_url + safe opener before urlopen |
@@ -270,9 +270,9 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 |----------|----------|----------|----------------|-----------|----------------|---------|
 | Critical | 0 | 0 | 0 | 0 | 0 | 0 |
 | High     | 0 | 6 | 2 | 22 | 0 | 0 |
-| Medium   | 0 | 5 | 4 | 23 | 0 | 0 |
-| Low      | 0 | 3 | 0 | 8 | 0 | 0 |
-| Info     | 0 | 1 | 0 | 2 | 0 | 0 |
+| Medium   | 0 | 13 | 4 | 46 | 0 | 0 |
+| Low      | 0 | 6 | 0 | 16 | 0 | 0 |
+| Info     | 0 | 2 | 0 | 3 | 0 | 0 |
 
 ## Reopened / residual detail
 
@@ -379,6 +379,40 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 - **Planned leftover fix:** use default context or label the probe unauthenticated.
 
 
+### CH-0017 / CH-0047 / CH-0048 / CH-0081 / CH-0109 — Residual (sibling HMAC keys)
+
+Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the env key a planted sibling `.key` + matching HMAC forges the cache (arch bounds, debt state, incremental, triage, common FileHashCache).
+
+### CH-0019 — Residual (unconverted MD reporters)
+
+- **Original sink (closed):** listed architecture/coverage/license/oop tables use `md_cell`.
+- **Leftover:** `_layer_reporter.py` and `_hexagonal_reporter.py` still interpolate names/paths/messages raw.
+
+### CH-0020 — Residual (incomplete YAML coerce)
+
+- File/size/`layers` mapping checks exist. `level` / `allowed_imports` / `rules.max_module_fan_out` still untyped.
+
+### CH-0043 — Residual (other-language snippets)
+
+- JS/PHP/Ruby/Rust mask credential snippets. Java/Go/C#/C++/shell still set `code_snippet=line`.
+
+### CH-0092 — Residual (unsigned calibration map)
+
+- Path jail + HMAC exist. HMAC is opt-in (`HEIMDALL_CALIBRATION_HMAC_KEY`); unsigned JSON under CWD still loads if env unset.
+
+### CH-0095 — Residual (unbounded disk read)
+
+- `parse_file` stats first. `FileParseContext.parse` `read_bytes()` then checks size.
+
+### CH-0098 — Residual (SLO empty = healthy)
+
+- `sla_checker` empty → 0 / BREACHED. `error_budget_calculator` / `sli_tracker` still treat zero events as 100% / 1.0.
+
+### CH-0101 — Residual (causal cycle walks)
+
+- `service_map_builder` has visited + cap. `causal_normalizer._collect_subtree_ids` / `truncate_async` still walk cyclic parents.
+
+
 ## New findings
 
 ### CHC-0001 — Draft L8 still editable-installs the PR tree
@@ -482,10 +516,10 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 
 ## Confirmation progress
 
-Updated: 2026-08-17T01:05:55+00:00
-- remaining: 3852
-- completed: 86
+Updated: 2026-08-17T01:12:06+00:00
+- remaining: 3811
+- completed: 127
 - last CHC ID: CHC-0006
-- this batch: W2 Medium primaries + FutureItems SSL/API
-- next: remaining W3 Medium caches/fail-open + leftover Low/Info primaries, then rest of inventory
-- Commands: `python3 scripts/cyberhardening_inventory.py --workspace CyberHardeningConfirm status`
+- **All live original CH-XXXX have confirmation verdicts** (CH-0029 Skipped).
+- next: rest of inventory (non-primary files). Prefer remaining also-on-trace then lexicographic `next N`.
+- Resume pointer: remaining ~3800 after this pop. Continue `python3 scripts/cyberhardening_inventory.py --workspace CyberHardeningConfirm next 8`. Do not rebuild inventory. Do not implement.
