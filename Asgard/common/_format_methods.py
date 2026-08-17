@@ -5,6 +5,7 @@ Implements text, JSON, GitHub, Markdown, and HTML format methods
 used by UnifiedFormatter. Extracted to keep the main module under 300 lines.
 """
 
+import html as html_lib
 import json
 from datetime import datetime
 from typing import Any, Dict, List, Optional
@@ -121,13 +122,24 @@ def format_results_json(
     return json.dumps(data, indent=2, default=str)
 
 
+def _gha_escape(value: object) -> str:
+    text = "" if value is None else str(value)
+    return (
+        text.replace("%", "%25")
+        .replace("\r", "%0D")
+        .replace("\n", "%0A")
+        .replace(",", "%2C")
+        .replace(":", "%3A")
+    )
+
+
 def format_result_github(result: FormattedResult) -> str:
     """Format result as GitHub Actions annotation."""
     level = result.severity.github_level
     parts = [f"::{level}"]
 
     if result.file_path:
-        parts.append(f" file={result.file_path}")
+        parts.append(f" file={_gha_escape(result.file_path)}")
         if result.line_number:
             parts.append(f",line={result.line_number}")
             if result.column:
@@ -137,7 +149,7 @@ def format_result_github(result: FormattedResult) -> str:
     if result.code:
         message = f"[{result.code}] {message}"
 
-    parts.append(f"::{message}")
+    parts.append(f"::{_gha_escape(message)}")
     return "".join(parts)
 
 
@@ -234,15 +246,15 @@ def format_result_html(result: FormattedResult, verbose: bool) -> str:
     """Format result as HTML."""
     severity_class = f"severity-{result.severity.value}"
     html = f'<div class="result {severity_class}">'
-    html += f'<span class="severity">{result.severity.value.upper()}</span>'
+    html += f'<span class="severity">{html_lib.escape(result.severity.value.upper())}</span>'
 
     if result.location:
-        html += f'<span class="location">{result.location}</span>'
+        html += f'<span class="location">{html_lib.escape(result.location)}</span>'
 
-    html += f'<span class="message">{result.message}</span>'
+    html += f'<span class="message">{html_lib.escape(result.message)}</span>'
 
     if verbose and result.suggestion:
-        html += f'<div class="suggestion">{result.suggestion}</div>'
+        html += f'<div class="suggestion">{html_lib.escape(result.suggestion)}</div>'
 
     html += '</div>'
     return html
@@ -256,7 +268,7 @@ def format_results_html(
 ) -> str:
     """Format multiple results as HTML."""
     html = ['<div class="asgard-report">']
-    html.append(f'<h1>{title}</h1>')
+    html.append(f'<h1>{html_lib.escape(title)}</h1>')
 
     if summary:
         html.append(format_summary_html(summary, "Summary"))
@@ -278,6 +290,6 @@ def format_summary_html(stats: Dict[str, Any], title: str) -> str:
     html = [f'<div class="summary"><h2>{title}</h2><table>']
     for key, value in stats.items():
         display_key = key.replace("_", " ").title()
-        html.append(f'<tr><td>{display_key}</td><td>{value}</td></tr>')
+        html.append(f'<tr><td>{html_lib.escape(display_key)}</td><td>{html_lib.escape(str(value))}</td></tr>')
     html.append('</table></div>')
     return "\n".join(html)
