@@ -7,6 +7,7 @@ Report generation helpers for LayerAnalyzer.
 import json
 
 from Asgard.Bragi.Architecture.models.architecture_models import LayerReport
+from Asgard.Bragi.common._md_cell import md_cell
 
 
 def generate_text_report(result: LayerReport) -> str:
@@ -101,8 +102,8 @@ def generate_markdown_report(result: LayerReport) -> str:
 
     for layer in result.layers:
         lines.append(
-            f"| {layer.name} | {', '.join(layer.patterns)} | "
-            f"{', '.join(layer.allowed_dependencies) or '(none)'} |"
+            f"| {md_cell(layer.name)} | {md_cell(', '.join(layer.patterns))} | "
+            f"{md_cell(', '.join(layer.allowed_dependencies) or '(none)')} |"
         )
 
     lines.append("")
@@ -115,8 +116,8 @@ def generate_markdown_report(result: LayerReport) -> str:
 
         for v in result.violations:
             lines.append(
-                f"| {v.source_module} | {v.target_module} | "
-                f"{v.severity.value.upper()} | {v.message} |"
+                f"| {md_cell(v.source_module)} | {md_cell(v.target_module)} | "
+                f"{md_cell(v.severity.value.upper())} | {md_cell(v.message)} |"
             )
 
         lines.append("")

@@ -7,6 +7,7 @@ Report generation helpers for HexagonalAnalyzer.
 import json
 
 from Asgard.Bragi.Architecture.models.architecture_models import HexagonalReport
+from Asgard.Bragi.common._md_cell import md_cell
 
 
 def generate_text_report(result: HexagonalReport) -> str:
@@ -155,8 +156,8 @@ def generate_markdown_report(result: HexagonalReport) -> str:
             if len(p.abstract_methods) > 3:
                 methods += f" (+{len(p.abstract_methods) - 3})"
             lines.append(
-                f"| {p.name} | {p.direction.value} | "
-                f"{methods} | {p.file_path} |"
+                f"| {md_cell(p.name)} | {md_cell(p.direction.value)} | "
+                f"{md_cell(methods)} | {md_cell(p.file_path)} |"
             )
         lines.append("")
 
@@ -167,9 +168,9 @@ def generate_markdown_report(result: HexagonalReport) -> str:
         lines.append("|------|-----------|------|------------|")
         for a in result.adapters:
             lines.append(
-                f"| {a.name} | {a.implements_port} | "
-                f"{a.zone.value} | "
-                f"{', '.join(a.framework_imports) or '(none)'} |"
+                f"| {md_cell(a.name)} | {md_cell(a.implements_port)} | "
+                f"{md_cell(a.zone.value)} | "
+                f"{md_cell(', '.join(a.framework_imports) or '(none)')} |"
             )
         lines.append("")
 
@@ -192,9 +193,9 @@ def generate_markdown_report(result: HexagonalReport) -> str:
         lines.append("|----------|------------|-------------|---------|")
         for v in result.violations:
             lines.append(
-                f"| {v.severity.value.upper()} | "
-                f"{v.source_zone.value} | {v.target_zone.value} | "
-                f"{v.message} |"
+                f"| {md_cell(v.severity.value.upper())} | "
+                f"{md_cell(v.source_zone.value)} | {md_cell(v.target_zone.value)} | "
+                f"{md_cell(v.message)} |"
             )
         lines.append("")
 
