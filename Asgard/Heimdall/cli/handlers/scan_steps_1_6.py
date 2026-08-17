@@ -13,8 +13,8 @@ from Asgard.Bragi.Quality.services.type_checker import TypeChecker
 from Asgard.Heimdall.Security.models.security_models import SecurityScanConfig
 from Asgard.Heimdall.Security.services.static_security_service import StaticSecurityService
 from Asgard.Heimdall.cli.handlers._security_dispatch import (
+    collect_dispatch_scan,
     format_dispatch_text,
-    run_dispatch_scan,
 )
 
 
@@ -232,7 +232,8 @@ def _run_security_step(scan_path, exclude_patterns, include_tests, verbose, scan
         # `heimdall scan` surfaces the same taint flows `heimdall security
         # scan` would. Restricted to non-.py files to avoid double-counting
         # Python findings StaticSecurityService already reports.
-        dispatch_entries = run_dispatch_scan(scan_path, exclude_patterns)
+        dispatch_outcome = collect_dispatch_scan(scan_path, exclude_patterns)
+        dispatch_entries = dispatch_outcome.entries
         multilang_entries = [
             e for e in dispatch_entries
             if not str(e["file_path"]).endswith(".py")
@@ -244,14 +245,16 @@ def _run_security_step(scan_path, exclude_patterns, include_tests, verbose, scan
 
         combined_total = sec_total + multilang_total
         combined_critical = sec_critical + multilang_critical
+        incomplete = dispatch_outcome.incomplete
         scan_results["security"] = {
             "total_findings": combined_total,
             "critical": combined_critical,
             "static_service_findings": sec_total,
             "dispatch_multilang_findings": multilang_total,
-            "status": "PASS" if combined_total == 0 else "FAIL",
+            "status": "FAIL" if combined_total > 0 or incomplete else "PASS",
+            "incomplete": incomplete,
         }
-        if combined_total > 0:
+        if combined_total > 0 or incomplete:
             overall_exit = 1
         print(
             f"       {combined_total} findings ({combined_critical} critical)"

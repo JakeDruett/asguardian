@@ -313,10 +313,12 @@ class DispatchEngine:
             suffix in _JS_TS_EXTENSIONS or suffix in _JAVA_EXTENSIONS
             or suffix in _GO_EXTENSIONS or suffix in _C_EXTENSIONS
         ):
-            result.taint_flows, result.analysis_truncated = self._scan_cst_language(
+            flows, truncated, parse_failed = self._scan_cst_language(
                 source, file_path
             )
-            result.taint_flows = self._dedup(result.taint_flows)
+            result.taint_flows = self._dedup(flows)
+            result.analysis_truncated = truncated
+            result.parse_failed = parse_failed
             return result
 
         if suffix != ".py":
@@ -346,23 +348,20 @@ class DispatchEngine:
 
     def _scan_cst_language(
         self, source: str, file_path: Path,
-    ) -> Tuple[List[TaintFlow], bool]:
+    ) -> Tuple[List[TaintFlow], bool, bool]:
         """Route JS/TS/Java files through the tree-sitter CST taint engine.
 
-        Behind ``@with_ast_fallback``'s spirit (graceful degradation): when
-        tree-sitter or the grammar for this language is unavailable, or the
-        parse fails, this returns an empty list -- Layer 1 regex findings
-        (already collected by the caller) are still reported, but no
-        data-flow reasoning happens. This mirrors plan 01's "tree-sitter
-        stays optional" mandate: the test suite must pass without the
-        grammars installed.
+        Missing grammars, parse failures, and visitor crashes still return
+        no taint flows (Layer 1 regex findings stay). Those paths are
+        marked truncated/parse-failed so callers cannot treat an empty
+        CST pass as a complete clean scan.
         """
         lang = language_for_path(file_path)
         if lang is None or not is_engine_enabled(lang):
-            return [], False
+            return [], True, False
         ctx = FileParseContext.parse(file_path, source.splitlines(), lang)
         if ctx.root is None:
-            return [], False
+            return [], False, True
         if lang == "java":
             scan_fn = scan_java_source
             sibling_exts = _JAVA_SIBLING_EXTS
@@ -376,8 +375,11 @@ class DispatchEngine:
             scan_fn = scan_c_source
             sibling_exts = _C_SIBLING_EXTS
         else:
-            return [], False
-        alias_map, alias_origins = build_cst_alias_map_with_origins(ctx, lang)
+            return [], True, False
+        try:
+            alias_map, alias_origins = build_cst_alias_map_with_origins(ctx, lang)
+        except Exception:
+            return [], True, False
         truncated = False
         try:
             summary_index = self._cst_summary_index(file_path, lang, sibling_exts)
@@ -401,8 +403,8 @@ class DispatchEngine:
         except Exception:
             # A CST-rule failure must never crash the scan -- degrade to
             # "no taint findings for this file" (Layer 1 still reported).
-            flows = []
-        return flows, truncated
+            return [], True, False
+        return flows, truncated, False
 
     def _cst_summary_index(
         self, file_path: Path, lang: str, sibling_exts: frozenset,

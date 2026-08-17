@@ -10,6 +10,7 @@ order.
 
 import fnmatch
 from pathlib import Path
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Sequence
 
 from Asgard.Heimdall.Security.utilities._scan_utils import (
@@ -124,31 +125,39 @@ def count_lines_of_code(scan_path: Path,
     return total
 
 
-def run_dispatch_scan(
+@dataclass
+class DispatchScanOutcome:
+    """Findings plus whether any file's CST/AST analysis was incomplete."""
+    entries: List[Dict[str, Any]] = field(default_factory=list)
+    incomplete: bool = False
+    parse_failed_files: int = 0
+    truncated_files: int = 0
+
+
+def collect_dispatch_scan(
     scan_path: Path,
     exclude_patterns: Sequence[str] = (),
     include_test_context: bool = False,
     test_context_enabled: bool = True,
     strict_scan_paths: Sequence[str] = (),
-) -> List[Dict[str, Any]]:
-    """
-    Run the 3-layer DispatchEngine across every language it supports
-    (Python, JS/TS, Java — see ``_DISPATCH_SUPPORTED_EXTENSIONS``).
-
-    Returns display-ready finding dicts sorted by descending actionable
-    priority. Test-context findings are dropped unless
-    ``include_test_context`` is set (secrets/L1 findings always survive:
-    a live credential in a test file is just as compromised).
-    """
+) -> DispatchScanOutcome:
+    """Run DispatchEngine and record parse-failed / truncated files."""
     engine = DispatchEngine(
         is_test_context=None if test_context_enabled else False,
         strict_scan_paths=strict_scan_paths,
     )
-    entries: List[Dict[str, Any]] = []
+    outcome = DispatchScanOutcome()
+    entries = outcome.entries
 
     for path in _iter_code_files(scan_path, exclude_patterns,
                                  suffixes=_DISPATCH_SUPPORTED_EXTENSIONS):
         result = engine.scan_file(path)
+        if result.parse_failed:
+            outcome.parse_failed_files += 1
+            outcome.incomplete = True
+        if result.analysis_truncated:
+            outcome.truncated_files += 1
+            outcome.incomplete = True
         tag = classify_file_context(str(path), strict_scan_paths)
         tag_value = getattr(tag, "value", str(tag))
         is_test = str(tag_value).lower() != "production"
@@ -185,7 +194,56 @@ def run_dispatch_scan(
             ))
 
     entries.sort(key=lambda e: (-e["priority"], e["file_path"], e["line"]))
-    return entries
+    return outcome
+
+
+def mark_incomplete_security_report(result: Any, outcome: DispatchScanOutcome) -> None:
+    """Fail closed: incomplete CST must not look like score 100 / passing."""
+    if not outcome.incomplete:
+        return
+    errors = getattr(result, "domain_errors", None)
+    if errors is None:
+        result.domain_errors = []
+        errors = result.domain_errors
+    errors.append({
+        "domain": "cst_dispatch",
+        "exception_type": "incomplete",
+        "message": (
+            f"CST analysis incomplete (parse_failed={outcome.parse_failed_files}, "
+            f"truncated={outcome.truncated_files})"
+        ),
+    })
+    if float(getattr(result, "security_score", 100) or 0) >= 100:
+        result.security_score = 0.0
+        if hasattr(result, "legacy_score"):
+            result.legacy_score = 0.0
+        if hasattr(result, "security_score_v2"):
+            result.security_score_v2 = 0.0
+
+
+def run_dispatch_scan(
+    scan_path: Path,
+    exclude_patterns: Sequence[str] = (),
+    include_test_context: bool = False,
+    test_context_enabled: bool = True,
+    strict_scan_paths: Sequence[str] = (),
+) -> List[Dict[str, Any]]:
+    """
+    Run the 3-layer DispatchEngine across every language it supports
+    (Python, JS/TS, Java — see ``_DISPATCH_SUPPORTED_EXTENSIONS``).
+
+    Returns display-ready finding dicts sorted by descending actionable
+    priority. Test-context findings are dropped unless
+    ``include_test_context`` is set (secrets/L1 findings always survive:
+    a live credential in a test file is just as compromised).
+    """
+    return collect_dispatch_scan(
+        scan_path,
+        exclude_patterns=exclude_patterns,
+        include_test_context=include_test_context,
+        test_context_enabled=test_context_enabled,
+        strict_scan_paths=strict_scan_paths,
+    ).entries
 
 
 def _entry(rule_id, severity, confidence, file_path, line, message, cwe,

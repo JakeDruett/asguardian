@@ -23,13 +23,16 @@ def _collect_multilang_flows(scan_path: Path, exclude_patterns):
     engine = DispatchEngine()
     flows = []
     files_seen = 0
+    incomplete = False
     for path in _iter_code_files(
         scan_path, exclude_patterns, suffixes=_MULTILANG_TAINT_EXTENSIONS
     ):
         files_seen += 1
         result = engine.scan_file(path)
+        if result.parse_failed or result.analysis_truncated:
+            incomplete = True
         flows.extend(result.taint_flows)
-    return flows, files_seen
+    return flows, files_seen, incomplete
 
 
 def run_taint_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
@@ -55,7 +58,7 @@ def run_taint_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
         analyzer = TaintAnalyzer(config)
         report = analyzer.scan()
 
-        multilang_flows, multilang_files = _collect_multilang_flows(
+        multilang_flows, multilang_files, multilang_incomplete = _collect_multilang_flows(
             scan_path, exclude_patterns
         )
         min_severity_order = {"low": 0, "medium": 1, "high": 2, "critical": 3}
@@ -158,6 +161,8 @@ def run_taint_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
             lines.append("=" * 70)
             print("\n".join(lines))
 
+        if multilang_incomplete:
+            return 1
         return 1 if report.critical_count > 0 or report.high_count > 0 else 0
 
     except Exception as e:

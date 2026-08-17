@@ -18,10 +18,11 @@ from Asgard.Heimdall.Security.Compliance.models.compliance_models import Complia
 from Asgard.Heimdall.Security.Compliance.services.compliance_reporter import ComplianceReporter
 from Asgard.Heimdall.Security.services.static_security_service import StaticSecurityService as _StaticSecuritySvc
 from Asgard.Heimdall.cli.handlers._security_dispatch import (
+    collect_dispatch_scan,
     count_lines_of_code,
     format_dispatch_text,
     load_heimdall_yml,
-    run_dispatch_scan,
+    mark_incomplete_security_report,
 )
 
 #: Best-effort rule_id/message substring -> VulnerabilityType mapping for
@@ -157,14 +158,16 @@ def run_security_analysis(args: argparse.Namespace, verbose: bool = False, analy
 
         # Route the full scan through the layered dispatch engine.
         dispatch_entries = []
+        dispatch_outcome = None
         if analysis_type == "all":
-            dispatch_entries = run_dispatch_scan(
+            dispatch_outcome = collect_dispatch_scan(
                 scan_path,
                 exclude_patterns=exclude_patterns,
                 include_test_context=include_test_context,
                 test_context_enabled=test_context_enabled,
                 strict_scan_paths=strict_scan_paths,
             )
+            dispatch_entries = dispatch_outcome.entries
 
         # StaticSecurityService's totals (and hence the summary header:
         # "Total Issues" / "Critical" / "security_score" / "is_passing")
@@ -196,6 +199,9 @@ def run_security_analysis(args: argparse.Namespace, verbose: bool = False, analy
             # consistent -- no separate hand-tally that the score misses.
             result.calculate_totals()
 
+        if dispatch_outcome is not None:
+            mark_incomplete_security_report(result, dispatch_outcome)
+
         report = service.generate_report(result, args.format)
         if args.format == "json":
             try:
@@ -216,7 +222,7 @@ def run_security_analysis(args: argparse.Namespace, verbose: bool = False, analy
             print(report)
             if dispatch_entries:
                 print(format_dispatch_text(dispatch_entries))
-        return 1 if result.has_issues else 0
+        return 1 if result.has_issues or result.domain_errors else 0
 
     except FileNotFoundError as e:
         print(f"Error: {e}")
