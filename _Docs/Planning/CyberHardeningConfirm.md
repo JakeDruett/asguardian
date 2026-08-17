@@ -73,7 +73,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0043 | Medium | W3 | Residual | Java/Go/C#/C++/shell still copy raw secret | JS/PHP/Ruby/Rust mask; other langs still code_snippet=line |
 | CH-0044 | Info | W5 | Confirmed |  | no-eval remediates to JSON.parse not Function |
 | CH-0045 | Low | W4 | Confirmed |  | bounded PHP regex + line cap |
-| CH-0046 | Medium | W5 | Confirmed |  | _esc on every interpolated smell field |
+| CH-0046 | Medium | W5 | Residual | file-length/scan HTML path unescaped | smell `_esc` holds; `quality_file_length` / `scan_html` still interpolate `scan_path` raw |
 | CH-0047 | Medium | W3 | Residual | sibling .key HMAC plant | unsigned JSON miss; env-less sibling key forges |
 | CH-0048 | Medium | W3 | Residual | sibling .key HMAC plant | HMAC+rehash; sibling key leftover; enabled default False |
 | CH-0049 | High | W1 | Confirmed |  | mypy/pyright runners isolated; planted plugins not loaded |
@@ -91,7 +91,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0061 | High | W1 | Confirmed |  | default 127.0.0.1; generated Flask debug=False |
 | CH-0062 | High | W1 | Confirmed |  | localhost default; http(s) upstream; path jail; same-host redirects |
 | CH-0063 | High | W1 | Confirmed |  | urljoin + path jail; encode params; same-host redirects |
-| CH-0064 | Medium | W5 | Confirmed |  | title escaped; contact href allowlisted; no custom_css |
+| CH-0064 | Medium | W5 | Residual | OpenAPI status_code unescaped in HTML | title/contact escaped; `generate_html_endpoint` interpolates raw `{status_code}` |
 | CH-0065 | Medium | W2 | Confirmed |  | sanitize_sql_default literals only |
 | CH-0066 | High | W1 | Residual | click/reload + many testers/security fetches ungated | start/login/enqueue/tester goto gated; click+reload and Freya Security/testers still raw goto |
 | CH-0067 | High | W5 | Residual | visual-regression HTML unescaped | crawler HTML/JUnit use esc/html_link/safe_src/safe_css; `_visual_regression_report` does not |
@@ -269,8 +269,8 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | Severity | Reopened | Residual | New Open (CHC) | Confirmed | Accepted still | Vacated |
 |----------|----------|----------|----------------|-----------|----------------|---------|
 | Critical | 0 | 0 | 0 | 0 | 0 | 0 |
-| High     | 0 | 8 | 3 | 20 | 0 | 0 |
-| Medium   | 0 | 13 | 7 | 46 | 0 | 0 |
+| High     | 0 | 8 | 4 | 20 | 0 | 0 |
+| Medium   | 0 | 15 | 8 | 44 | 0 | 0 |
 | Low      | 0 | 6 | 1 | 16 | 0 | 0 |
 | Info     | 0 | 2 | 0 | 3 | 0 | 0 |
 
@@ -417,6 +417,7 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 - `sla_checker` empty → 0 / BREACHED. `error_budget_calculator` / `sli_tracker` still treat zero events as 100% / 1.0.
 - Same class: `normalization/scoring.py` `multiplicative_security_score({})` is 100; `SecurityReport` defaults `score_counts or {}`. Incomplete CST (CHC-0009) still looks like a perfect score.
+- Same class (this pass): `APMReport.health_score` default 100 + `trace_aggregator.aggregate([])`; `vitals_calculator._calculate_score([])` → 100 / GOOD; empty image/link category scores still 100.
 
 ### CH-0101 — Residual (causal cycle walks)
 
@@ -433,6 +434,18 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 - **Original sink (closed):** `Reporting/github_formatter.py` percent-encodes `%` CR/LF `:` `/` `::` and strips C0.
 - **Leftover:** `Asgard/common/_format_methods.py` `format_result_github` still emits `file={file_path}::{message}` raw; `format_result_html` / `format_results_html` interpolate title/location/message without `html.escape`.
 - **Planned leftover fix:** share the GHA encoder; `html.escape(..., quote=True)` on HTML formatters.
+
+### CH-0064 — Residual (OpenAPI status_code HTML)
+
+- **Original sink (closed):** docs title `html.escape`; contact href `_safe_href` http(s)/mailto; `custom_css` not interpolated.
+- **Leftover:** `_docs_generator_helpers.generate_html_endpoint` ~189 interpolates `{status_code}` raw. A hostile OpenAPI response key is XSS if the HTML is served.
+- **Planned leftover fix:** `html.escape(status_code)` (and class tokens allowlisted).
+
+### CH-0046 — Residual (file-length / scan HTML)
+
+- **Original sink (closed):** smell HTML uses `_esc` on interpolated fields.
+- **Leftover:** `quality_file_length.py` HTML interpolates `scan_path` / `relative_path` raw; `scan_html.py` title/`detail` for ERROR raw.
+- **Planned leftover fix:** reuse `_esc` on every interpolated field.
 
 
 ## New findings
@@ -492,11 +505,11 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 - **Confidence:** High
 - **CWE / class:** CWE-22
 - **Primary file:** `Asgard/Volundr/Docker/services/dockerfile_generator.py`
-- **Also on trace:** none
+- **Also on trace:** `Asgard/Volundr/Compose/services/compose_generator.py`, `Asgard/Volundr/Docker/services/compose_generator.py`, `Asgard/Volundr/GitOps/services/argocd_generator.py`, `Asgard/Volundr/GitOps/services/flux_generator.py`, `Asgard/Volundr/Kubernetes/services/manifest_generator.py`, `Asgard/Volundr/Kustomize/services/overlay_generator.py`, `Asgard/Volundr/Kustomize/services/patch_generator.py`, `Asgard/Volundr/Kustomize/services/component_generator.py`
 - **Related original:** CH-0106
 - **Location:** `save_to_file` ~526-538
-- **Trace:** caller `filename` → `os.path.join(target_dir, filename)` → `open` with no `resolve`/`is_relative_to`
-- **Impact:** Hostile filename writes the generated Dockerfile outside `output_dir`. CLI default is `Dockerfile`.
+- **Trace:** caller `filename` → `os.path.join(target_dir, filename)` → `open` with no `resolve`/`is_relative_to`. Same join on compose/gitops/k8s/kustomize writers (name or `filename` as path key).
+- **Impact:** Hostile filename writes the generated Dockerfile outside `output_dir`. CLI default is `Dockerfile`. Sibling writers have the same jail miss.
 - **Evidence:** no jail; `.dockerignore` write is a fixed name under the same `target_dir`.
 - **Planned fix:** allowlist basename; `Path.resolve()` and require `is_relative_to(target_dir)`. Test `../evil`.
 - **Fix wave:** W2
@@ -621,14 +634,48 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 - **Fix wave:** W4
 
 
+### CHC-0012 — Forseti sourcemap `yaml.compose` uses unsafe Loader
+
+- **Status:** Open
+- **Severity:** High
+- **Confidence:** High
+- **CWE / class:** CWE-502
+- **Primary file:** `Asgard/Forseti/Reporting/utilities/sourcemap_loader.py`
+- **Also on trace:** Forseti reporters that call `load_with_sourcemap` / `build_sourcemap`
+- **Related original:** none
+- **Location:** `build_sourcemap` ~42-43
+- **Trace:** untrusted spec text → `yaml.compose(text)` (default `Loader`, not `SafeLoader`) while `load_with_sourcemap` uses `safe_load` only for the data object
+- **Impact:** `!!python/object` (or similar) in a spec can execute during sourcemap build even though the document load is safe.
+- **Evidence:** `yaml.compose(text)` has no `Loader=yaml.SafeLoader`.
+- **Planned fix:** `yaml.compose(text, Loader=yaml.SafeLoader)` (or `SafeComposer`). Test a `!!python/object/apply:os.system` plant does not run.
+- **Fix wave:** W1
+
+
+### CHC-0013 — Helm values `--environment` path not jailed
+
+- **Status:** Open
+- **Severity:** Medium
+- **Confidence:** High
+- **CWE / class:** CWE-22
+- **Primary file:** `Asgard/Volundr/cli/handlers_gitops.py`
+- **Also on trace:** `Asgard/Volundr/cli/_parser_commands_2.py`
+- **Related original:** CH-0106, CHC-0004
+- **Location:** `run_helm_values` ~184-187
+- **Trace:** CLI `--environment` → `Path(output_dir) / f"values-{environment}.yaml"` → `mkdir` + `write_text` with no allowlist / `resolve` / `is_relative_to`
+- **Impact:** `values-../../tmp/x.yaml` writes outside `output_dir`.
+- **Evidence:** pathlib splits `/` in the interpolated name; not the same join as CHC-0004 `filename` arg.
+- **Planned fix:** allowlist `^[A-Za-z0-9._-]+$`; resolve dest and require `is_relative_to(output_dir)`. Test `../../tmp/x`.
+- **Fix wave:** W2
+
+
 ## Confirmation progress
 
-Updated: 2026-08-17T02:15:00+00:00
-- remaining: 2074
-- completed: 1864
-- last CHC ID: CHC-0011
-- All live original CH-XXXX have verdicts.
-- Batch 12: Bragi Quality/QualityGate/Ratings remainder, Dashboard/CLI/common/config/MCP, Forseti CodeGen/JSONSchema/OpenAPI/Compatibility/Contracts/GraphQL/Database/Protobuf, Heimdall Security services+taint engine, Freya Integration/Responsive/Security/Visual.
-- New this batch: CHC-0008 YAML-cycle walks; CHC-0009 CST fail-open; CHC-0010 stub path; CHC-0011 CST recursion. CH-0067 and CH-0094 moved Confirmed→Residual.
-- Spot-check: type_checker→run_pyright isolated; esc() on dashboard pages; CodeGen confine+sanitize; $ref jail; secrets/injection confined walk; Freya Security raw goto/httpx (CH-0066 residual).
-- Next: remaining Forseti/Heimdall CLI/Freya/Verdandi/Volundr/Shared/_FutureItems, then fixtures.
+Updated: 2026-08-17T02:30:00+00:00
+- remaining: 1552
+- completed: 2386
+- last CHC ID: CHC-0013
+- All live original CH-XXXX have verdicts. Product packages drained.
+- Batch 13: remaining Forseti, Heimdall CLI/eval/Shared, Freya rest, Verdandi, Volundr, _FutureItems-Security.
+- New this batch: CHC-0012 yaml.compose unsafe Loader; CHC-0013 helm values --environment path. CH-0046 and CH-0064 moved Confirmed→Residual. CHC-0004 also-on-trace expanded to sibling writers.
+- Spot-check: MockServer 127.0.0.1+debug=False; sla_checker empty 0; scaffold still @v4; helm name RE; sourcemap yaml.compose; helm values path join.
+- Next: Asgard_Test fixtures/tests (~1552) then refresh init + Phase 4.

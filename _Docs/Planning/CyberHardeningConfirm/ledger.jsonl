@@ -1863,3 +1863,525 @@
 {"path":"Asgard/config/models_base.py","at":"2026-08-17T01:54:18+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
 {"path":"Asgard/config/models_quality.py","at":"2026-08-17T01:54:18+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
 {"path":"Asgard/config/models_security.py","at":"2026-08-17T01:54:18+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/AsyncAPI/services/asyncapi_validator_service.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Avro/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Avro/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Avro/models/_avro_base_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Avro/models/avro_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Avro/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Avro/services/_avro_compatibility_report_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Avro/services/_avro_compatibility_service_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Avro/services/_avro_validator_service_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Avro/services/avro_compatibility_service.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Avro/services/avro_validator_service.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Documentation/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Documentation/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Documentation/models/_docs_base_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Documentation/models/docs_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Documentation/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Documentation/services/_docs_generator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0064"],"summary":"status_code raw in HTML"}
+{"path":"Asgard/Forseti/Documentation/templates/base.html","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/LiveContract/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/LiveContract/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/LiveContract/models/live_contract_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/LiveContract/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/LiveContract/services/_dependency_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0063"],"summary":"drop // paths"}
+{"path":"Asgard/Forseti/LiveContract/services/_response_check_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/LiveContract/services/_url_safety.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0063"],"summary":"urljoin+path jail+same-host redirects"}
+{"path":"Asgard/Forseti/LiveContract/utilities/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/MockServer/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/MockServer/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/MockServer/models/_mock_base_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0061"],"summary":"host default 127.0.0.1"}
+{"path":"Asgard/Forseti/MockServer/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/MockServer/services/_mock_data_generator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/MockServer/services/_mock_server_parse_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"new-findings","finding_ids":["CHC-0002"],"summary":"feeds unsanitized OpenAPI into mock codegen"}
+{"path":"Asgard/Forseti/MockServer/services/mock_data_generator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Reporting/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Reporting/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Reporting/models/finding_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Reporting/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Reporting/services/finding_adapter_service.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Reporting/services/legacy_report_service.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Reporting/services/reporter_service.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Reporting/utilities/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Reporting/utilities/sourcemap_loader.py","at":"2026-08-17T02:02:46+00:00","disposition":"new-findings","finding_ids":["CHC-0012"],"summary":"yaml.compose default Loader on untrusted spec"}
+{"path":"Asgard/Forseti/Rules/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Rules/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Rules/models/_rule_base_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Rules/models/rule_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Rules/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Rules/services/_builtin_rules.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Rules/services/_suppression_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Rules/services/baseline_service.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Rules/services/profile_service.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Rules/services/rule_registry_service.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Rules/services/waiver_service.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Rules/utilities/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/Rules/utilities/rule_utils.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/__main__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/cli/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/cli/_handler_runner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/cli/_parser.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/cli/_parser_commands.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0061","CH-0062"],"summary":"proxy host default 127.0.0.1"}
+{"path":"Asgard/Forseti/cli/_parser_flags.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/cli/handlers_align.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/cli/handlers_async_mock_codegen.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0061","CH-0062"],"summary":"generate/proxy use localhost default"}
+{"path":"Asgard/Forseti/cli/handlers_compat.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/cli/handlers_docs_proto_avro_audit.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/cli/handlers_rules_baseline.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Forseti/cli/handlers_schema.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0063"],"summary":"contract test uses url safety"}
+{"path":"Asgard/Freya/Config/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Config/models/config_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Config/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Config/services/config_loader.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Console/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Console/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Console/models/console_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Console/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Console/services/_console_capture_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Console/services/console_capture.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"raw page.goto/httpx or dispatch without safe_goto"}
+{"path":"Asgard/Freya/Images/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Images/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Images/models/image_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Images/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Images/services/_image_scanner_checks.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Images/services/_image_scanner_checks_part2.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Images/services/_image_scanner_report.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0098"],"summary":"empty total_images score 100"}
+{"path":"Asgard/Freya/Images/services/image_optimization_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"raw page.goto/httpx or dispatch without safe_goto"}
+{"path":"Asgard/Freya/Links/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Links/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Links/models/link_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Links/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Links/services/_link_validator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0071"],"summary":"HEAD gated; seed goto leftover in link_validator"}
+{"path":"Asgard/Freya/Performance/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Performance/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Performance/models/_budget_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Performance/models/_performance_report_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Performance/models/_performance_timing_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Performance/models/performance_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Performance/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Performance/services/_archetype_detector.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Performance/services/_page_load_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Performance/services/_resource_timing_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Performance/services/budget_evaluator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Performance/services/page_load_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"raw page.goto/httpx or dispatch without safe_goto"}
+{"path":"Asgard/Freya/Performance/services/performance_delta.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Performance/services/resource_timing_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"raw page.goto/httpx or dispatch without safe_goto"}
+{"path":"Asgard/Freya/SEO/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/SEO/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/SEO/models/seo_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/SEO/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/SEO/services/_meta_tag_analyzers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/SEO/services/_robots_analyzer_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/SEO/services/_structured_data_checks.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/SEO/services/meta_tag_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"raw page.goto/httpx or dispatch without safe_goto"}
+{"path":"Asgard/Freya/SEO/services/robots_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"raw page.goto/httpx or dispatch without safe_goto"}
+{"path":"Asgard/Freya/SEO/services/structured_data_validator.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"raw page.goto/httpx or dispatch without safe_goto"}
+{"path":"Asgard/Freya/Scoring/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Scoring/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Scoring/models/scoring_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0073"],"summary":"NA never passing"}
+{"path":"Asgard/Freya/Scoring/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Scoring/services/epistemics.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/Scoring/services/quality_gate.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0073"],"summary":"NA/empty fail-closed"}
+{"path":"Asgard/Freya/Scoring/services/severity_mapper.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0073"],"summary":"unknown severity BLOCKER"}
+{"path":"Asgard/Freya/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/__main__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"raw page.goto/httpx or dispatch without safe_goto"}
+{"path":"Asgard/Freya/cli/_formatters.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_formatters_accessibility.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0067"],"summary":"esc/html_link/safe_css used"}
+{"path":"Asgard/Freya/cli/_formatters_images.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_formatters_perf_seo_security.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_formatters_performance.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_formatters_security_console_links.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_formatters_seo.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_formatters_seo_security_console_links.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_formatters_visual_responsive.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_handlers_accessibility.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"raw page.goto/httpx or dispatch without safe_goto"}
+{"path":"Asgard/Freya/cli/_handlers_config.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_handlers_images.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"raw page.goto/httpx or dispatch without safe_goto"}
+{"path":"Asgard/Freya/cli/_handlers_images_integration.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_handlers_integration.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"raw page.goto/httpx or dispatch without safe_goto"}
+{"path":"Asgard/Freya/cli/_handlers_perf_seo_security.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_handlers_performance.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"raw page.goto/httpx or dispatch without safe_goto"}
+{"path":"Asgard/Freya/cli/_handlers_seo_security_console_links.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"raw page.goto/httpx or dispatch without safe_goto"}
+{"path":"Asgard/Freya/cli/_handlers_visual_responsive.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0066"],"summary":"raw page.goto/httpx or dispatch without safe_goto"}
+{"path":"Asgard/Freya/cli/_parser.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_parser_flags.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_parser_subcommands_a.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_parser_subcommands_b.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_parser_subcommands_b1.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Freya/cli/_parser_subcommands_b2.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/__main__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/_security_dispatch.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0078","CHC-0009"],"summary":"confined walk; ignores analysis_truncated"}
+{"path":"Asgard/Heimdall/cli/handlers/baseline.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0010","CH-0013"],"summary":"jail+hashed messages"}
+{"path":"Asgard/Heimdall/cli/handlers/bugs.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/calibration.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0028"],"summary":"write_local_profile confined"}
+{"path":"Asgard/Heimdall/cli/handlers/codefix.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/coverage.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/deps.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/documentation.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/evaluation.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0092"],"summary":"unsigned calibration if HMAC unset"}
+{"path":"Asgard/Heimdall/cli/handlers/history.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/init_linter.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0096"],"summary":"project_name allowlist in initializer"}
+{"path":"Asgard/Heimdall/cli/handlers/issues.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0097"],"summary":"issue_id AND project_path"}
+{"path":"Asgard/Heimdall/cli/handlers/lang_analyzers.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0043"],"summary":"mask only if credential in rule_id"}
+{"path":"Asgard/Heimdall/cli/handlers/logic.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0090"],"summary":"exception fail-open exit 0"}
+{"path":"Asgard/Heimdall/cli/handlers/oop_arch.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/performance.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/profiles.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/quality_async.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/quality_code.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/quality_file_length.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0046"],"summary":"HTML scan_path unescaped"}
+{"path":"Asgard/Heimdall/cli/handlers/quality_imports.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/quality_typing.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/sbom.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/scan_html.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0046"],"summary":"title/ERROR detail unescaped"}
+{"path":"Asgard/Heimdall/cli/handlers/scan_steps.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/handlers/scan_steps_1_6.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0090","CHC-0009"],"summary":"ERROR exit 1; CST truncated ignored"}
+{"path":"Asgard/Heimdall/cli/handlers/scan_steps_7_11.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0090","CH-0078"],"summary":"ERROR exit 1; leftover rglob helper"}
+{"path":"Asgard/Heimdall/cli/handlers/security.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0088","CHC-0009"],"summary":"compliance exit 1; CST truncated ignored"}
+{"path":"Asgard/Heimdall/cli/handlers/taint.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CHC-0009"],"summary":"analysis_truncated unused"}
+{"path":"Asgard/Heimdall/cli/main.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/subparsers/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/subparsers/_analysis.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/subparsers/_calibration.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/subparsers/_management.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/subparsers/_management_a.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/subparsers/_management_b.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/subparsers/_quality.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/subparsers/_quality_checks.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/subparsers/_quality_core.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/cli/subparsers/_security.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/evaluation/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/evaluation/corpus.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0091"],"summary":"confine_eval_path on joins"}
+{"path":"Asgard/Heimdall/evaluation/dedup.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/evaluation/gate.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/evaluation/metrics.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/evaluation/report.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/evaluation/runner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/evaluation/spans.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/_language_loader.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/_parser_pool.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0095"],"summary":"this path capped; file_context leftover"}
+{"path":"Asgard/Heimdall/treesitter/_queries/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/_queries/cpp_queries.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/_queries/csharp_queries.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/_queries/go_queries.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/_queries/java_queries.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/_queries/javascript_queries.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/_queries/php_queries.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/_queries/python_queries.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/_queries/ruby_queries.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/_queries/rust_queries.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/_queries/typescript_queries.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/_query_runner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Heimdall/treesitter/ast_engine.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Init/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Init/_linter_tool_checker.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Init/_templates_typescript.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Init/templates.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0006"],"summary":"re-exports PRE_COMMIT_CONFIG without detect-secrets"}
+{"path":"Asgard/Shared/Issues/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Issues/infrastructure/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Issues/infrastructure/persistence/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Issues/infrastructure/persistence/issue_schema.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Issues/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Issues/models/issue_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Issues/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Issues/services/_issue_db.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Issues/services/_issue_queries.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Profiles/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Profiles/builtin/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Profiles/builtin/asgard_way_python.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Profiles/builtin/asgard_way_strict.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Profiles/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Profiles/models/profile_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Profiles/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/Profiles/services/profile_manager.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/common/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/common/_new_code_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Shared/common/language_registry.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/APM/models/apm_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0098"],"summary":"health_score default 100"}
+{"path":"Asgard/Verdandi/APM/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/APM/services/_aggregator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/APM/services/_graph_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/APM/services/_identity_resolver.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/APM/services/_span_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/APM/services/span_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/APM/services/trace_aggregator.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0098"],"summary":"empty traces inherit health 100"}
+{"path":"Asgard/Verdandi/APM/utilities/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Analysis/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Analysis/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Analysis/models/analysis_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Analysis/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Analysis/services/aggregation_service.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Analysis/services/apdex_calculator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Analysis/services/coordinated_omission.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Analysis/services/percentile_calculator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Analysis/services/trend_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Analysis/utilities/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Anomaly/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Anomaly/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Anomaly/models/anomaly_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0100"],"summary":"is_valid sample/std checks"}
+{"path":"Asgard/Verdandi/Anomaly/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Anomaly/services/_batch_detectors.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Anomaly/services/_comparator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Anomaly/services/_regression_statistics.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Anomaly/services/_stat_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Anomaly/services/regression_detector.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Anomaly/services/statistical_detector.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Anomaly/utilities/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Cache/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Cache/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Cache/models/cache_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Cache/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Cache/services/cache_calculator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Cache/services/eviction_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Cache/services/segmented_slo.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Cache/services/stampede_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Cache/services/warmup_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Cache/utilities/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Database/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Database/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Database/models/database_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Database/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Database/services/connection_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Database/services/pool_signature_detector.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Database/services/query_budget.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Database/services/query_metrics.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Database/services/throughput_calculator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Database/utilities/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Network/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Network/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Network/models/network_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Network/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Network/services/bandwidth_calculator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Network/services/dns_calculator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Network/services/latency_calculator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Network/services/phase_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Network/services/signature_classifier.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Network/services/use_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Network/utilities/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/SLO/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/SLO/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/SLO/models/slo_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0098"],"summary":"empty SLI success_rate 1.0"}
+{"path":"Asgard/Verdandi/SLO/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/SLO/services/_burn_rate_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/SLO/services/_sli_aggregation.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0098"],"summary":"empty period success_rate 1.0"}
+{"path":"Asgard/Verdandi/SLO/services/budget_policy.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0098"],"summary":"empty budget looks COMPLIANT"}
+{"path":"Asgard/Verdandi/SLO/services/burn_rate_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0098"],"summary":"empty traffic burn 0"}
+{"path":"Asgard/Verdandi/SLO/services/dynamic_budget.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0098"],"summary":"empty batch SLI 1.0"}
+{"path":"Asgard/Verdandi/SLO/services/portfolio_scorer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/SLO/services/tool_slo.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/SLO/utilities/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/System/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/System/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/System/models/system_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/System/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/System/services/cgroup_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0098"],"summary":"nr_periods<=0 verdict healthy"}
+{"path":"Asgard/Verdandi/System/services/cpu_calculator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/System/services/io_calculator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/System/services/memory_calculator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/System/services/psi_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0098"],"summary":"empty snapshots healthy"}
+{"path":"Asgard/Verdandi/System/services/use_red_correlator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/System/utilities/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Tracing/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Tracing/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Tracing/models/tracing_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Tracing/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Tracing/services/_path_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0101"],"summary":"_credit_slice no visited"}
+{"path":"Asgard/Verdandi/Tracing/services/_span_parsers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Tracing/services/critical_path_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0101"],"summary":"sweepline via unguarded credit"}
+{"path":"Asgard/Verdandi/Tracing/services/trace_parser.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Tracing/utilities/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Trend/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Trend/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Trend/models/trend_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Trend/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Trend/services/_forecast_methods.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Trend/services/_trend_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Trend/services/forecast_calculator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Trend/services/seasonal_decomposer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Trend/services/trend_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Trend/utilities/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Web/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Web/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Web/models/web_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Web/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Web/services/_vitals_recommendations.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Web/services/navigation_timing.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Web/services/resource_timing.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/Web/services/vitals_calculator.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0098"],"summary":"empty score 100 / GOOD"}
+{"path":"Asgard/Verdandi/Web/utilities/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/__main__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/cli/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0099"],"summary":"sketch-merge dispatch capped"}
+{"path":"Asgard/Verdandi/cli/_parser.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/cli/_parser_flags.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0099"],"summary":"flags match caps+jail"}
+{"path":"Asgard/Verdandi/cli/_parser_subcommands.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/cli/handlers_analysis.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0098"],"summary":"empty vitals exit 0"}
+{"path":"Asgard/Verdandi/cli/handlers_anomaly_trend.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/cli/handlers_apm_slo.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/cli/handlers_network.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/cli/handlers_new_apis.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0099"],"summary":"256 files/8MiB/cwd jail"}
+{"path":"Asgard/Verdandi/cli/handlers_slo_extras.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/cli/handlers_system.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Verdandi/cli/handlers_tracing.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/CICD/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/CICD/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/CICD/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Compose/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Compose/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Compose/models/compose_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0105"],"summary":"privileged rejected"}
+{"path":"Asgard/Volundr/Compose/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Compose/services/compose_generator.py","at":"2026-08-17T02:02:46+00:00","disposition":"new-findings","finding_ids":["CHC-0004"],"summary":"same unjailed join as dockerfile save_to_file"}
+{"path":"Asgard/Volundr/Compose/services/compose_generator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0105"],"summary":"build_service_dict raises privileged"}
+{"path":"Asgard/Volundr/Compose/services/compose_validator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Compose/services/compose_validator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Docker/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Docker/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Docker/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Docker/services/_package_manager_pass.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Docker/services/compose_generator.py","at":"2026-08-17T02:02:46+00:00","disposition":"new-findings","finding_ids":["CHC-0004"],"summary":"same unjailed join as dockerfile save_to_file"}
+{"path":"Asgard/Volundr/GitOps/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/GitOps/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/GitOps/models/gitops_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/GitOps/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/GitOps/services/argocd_generator.py","at":"2026-08-17T02:02:46+00:00","disposition":"new-findings","finding_ids":["CHC-0004"],"summary":"same unjailed join as dockerfile save_to_file"}
+{"path":"Asgard/Volundr/GitOps/services/argocd_generator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/GitOps/services/flux_generator.py","at":"2026-08-17T02:02:46+00:00","disposition":"new-findings","finding_ids":["CHC-0004"],"summary":"same unjailed join as dockerfile save_to_file"}
+{"path":"Asgard/Volundr/GitOps/services/flux_generator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Helm/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Helm/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Helm/models/helm_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0104","CH-0105"],"summary":"chart name RE; image_tag not latest"}
+{"path":"Asgard/Volundr/Helm/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Helm/services/_chart_generator_extras.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0104"],"summary":"include after name allowlist"}
+{"path":"Asgard/Volundr/Helm/services/_chart_generator_extras_part2.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Helm/services/chart_generator.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0104"],"summary":"writes under allowlisted name"}
+{"path":"Asgard/Volundr/Helm/services/chart_generator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Helm/services/values_generator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Kubernetes/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Kubernetes/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Kubernetes/models/kubernetes_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Kubernetes/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Kubernetes/services/manifest_generator.py","at":"2026-08-17T02:02:46+00:00","disposition":"new-findings","finding_ids":["CHC-0004"],"summary":"same unjailed join as dockerfile save_to_file"}
+{"path":"Asgard/Volundr/Kubernetes/services/manifest_generator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Kustomize/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Kustomize/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Kustomize/models/kustomize_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Kustomize/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Kustomize/services/base_generator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Kustomize/services/base_generator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Kustomize/services/component_generator.py","at":"2026-08-17T02:02:46+00:00","disposition":"new-findings","finding_ids":["CHC-0004"],"summary":"same unjailed join as dockerfile save_to_file"}
+{"path":"Asgard/Volundr/Kustomize/services/overlay_generator.py","at":"2026-08-17T02:02:46+00:00","disposition":"new-findings","finding_ids":["CHC-0004"],"summary":"same unjailed join as dockerfile save_to_file"}
+{"path":"Asgard/Volundr/Kustomize/services/overlay_generator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Kustomize/services/patch_generator.py","at":"2026-08-17T02:02:46+00:00","disposition":"new-findings","finding_ids":["CHC-0004"],"summary":"same unjailed join as dockerfile save_to_file"}
+{"path":"Asgard/Volundr/Kustomize/services/patch_generator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Scaffold/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Scaffold/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Scaffold/models/scaffold_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Scaffold/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Scaffold/services/_microservice_common_templates.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Scaffold/services/_microservice_python_templates.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Scaffold/services/_microservice_ts_go_templates.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Scaffold/services/_microservice_ts_go_templates_part2.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Scaffold/services/_monorepo_config_templates.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Scaffold/services/_monorepo_infra_templates.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0001"],"summary":"emits actions/checkout@v4"}
+{"path":"Asgard/Volundr/Scaffold/services/_monorepo_infra_templates_part2.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0001"],"summary":"CD checkout@v4"}
+{"path":"Asgard/Volundr/Scaffold/services/microservice_scaffold.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0106"],"summary":"_confine_scaffold_path"}
+{"path":"Asgard/Volundr/Scaffold/services/microservice_scaffold_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Scaffold/services/monorepo_scaffold.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0106","CH-0001"],"summary":"jail holds; still emits @v4"}
+{"path":"Asgard/Volundr/Scaffold/services/monorepo_scaffold_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Terraform/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Terraform/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Terraform/models/_hcl_safety.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Terraform/models/terraform_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0108"],"summary":"type/value unsanitized"}
+{"path":"Asgard/Volundr/Terraform/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Terraform/services/_module_builder_blocks_part2.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Terraform/services/_module_builder_generators.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0108"],"summary":"type = {var.type} raw"}
+{"path":"Asgard/Volundr/Terraform/services/module_builder.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Terraform/services/module_builder_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/models/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/models/canonical_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/models/rule_registry.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/models/score_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/models/validation_models.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/_dockerfile_validator_report.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/_terraform_aws_validators.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/_terraform_cloud_validators.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/_terraform_validator_report.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/dockerfile_validator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/dockerfile_validator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/external_tools.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/kubernetes_validator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/kubernetes_validator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/normalizers/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/normalizers/compose_normalizer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/normalizers/k8s_normalizer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/normalizers/pipeline_normalizer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/posture_index.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/render_pipeline.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/report_emitters.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/schema_binder.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/scoring_engine.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/scoring_profiles.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/semantic_policies.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/suppression_engine.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0107"],"summary":"refuse * + expiry"}
+{"path":"Asgard/Volundr/Validation/services/terraform_plan_reader.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/terraform_validator.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/terraform_validator_helpers.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/Validation/services/validation_engine.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0107"],"summary":"CI drops ignore_rules"}
+{"path":"Asgard/Volundr/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/__main__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/cli/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/cli/_parser.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/cli/_parser_commands_1.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/cli/_parser_commands_2.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/cli/_parser_flags.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/cli/handlers_compose_validate_scaffold.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/cli/handlers_gitops.py","at":"2026-08-17T02:02:46+00:00","disposition":"new-findings","finding_ids":["CHC-0013","CH-0001"],"summary":"helm values --environment path jail; seeds @v4"}
+{"path":"Asgard/Volundr/cli/handlers_infra.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/cli/handlers_posture.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"Asgard/Volundr/cli/handlers_score_gitops.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/.pre-commit-hooks.yaml","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/_url_safety.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0112"],"summary":"validate_target_url + safe opener"}
+{"path":"_FutureItems-Security/Tools_Security/api_security_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/auth_security_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/backdoor_detector.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/command_injection_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/container_security_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/data_exfil_detector.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/dependency_checker.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/deserialization_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/encryption_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/file_integrity_checker.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0109"],"summary":"unsigned baseline JSON"}
+{"path":"_FutureItems-Security/Tools_Security/frontend_security_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/git_security_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/hash_cracker.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/http_security_headers.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0112"],"summary":"safe opener invoked"}
+{"path":"_FutureItems-Security/Tools_Security/info_disclosure_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/input_validation_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/log_analyzer.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/malware_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/password_strength_checker.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/path_traversal_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/permission_auditor.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/port_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0112"],"summary":"validate_target_host"}
+{"path":"_FutureItems-Security/Tools_Security/race_condition_detector.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/redos_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/secrets_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"residual","finding_ids":["CH-0110","CH-0078"],"summary":"empty JSON green; unconfined walk"}
+{"path":"_FutureItems-Security/Tools_Security/security_misconfig_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/security_toolkit.py","at":"2026-08-17T02:02:46+00:00","disposition":"confirmed","finding_ids":["CH-0112"],"summary":"dispatches with allow-internal flag"}
+{"path":"_FutureItems-Security/Tools_Security/sensitive_data_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/sql_injection_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/ssrf_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/tests/__init__.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/tests/conftest.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/tests/test_scanners.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
+{"path":"_FutureItems-Security/Tools_Security/xss_scanner.py","at":"2026-08-17T02:02:46+00:00","disposition":"clean","finding_ids":[],"summary":"traced; no new issue / no reopen"}
