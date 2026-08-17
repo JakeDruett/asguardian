@@ -56,6 +56,11 @@ class TestSourcemap:
     def test_invalid_yaml_yields_empty_map(self):
         assert build_sourcemap("a: [unclosed") == {}
 
+    def test_python_object_tag_is_not_constructed(self):
+        # Unsafe Loader would construct this tag. SafeLoader must refuse it.
+        plant = "!!python/object/apply:builtins.exec\n- 'raise RuntimeError(\"constructed\")'\n"
+        assert build_sourcemap(plant) == {}
+
     def test_load_with_sourcemap(self, tmp_path):
         path = tmp_path / "doc.yaml"
         path.write_text(YAML_DOC)

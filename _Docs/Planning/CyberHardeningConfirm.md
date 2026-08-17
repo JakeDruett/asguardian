@@ -636,7 +636,8 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ### CHC-0012 — Forseti sourcemap `yaml.compose` uses unsafe Loader
 
-- **Status:** Open
+- **Status:** Fixed
+- **Implementation note:** `yaml.compose(..., Loader=SafeLoader)` plus refuse `python/*` tags. Test plants `!!python/object/apply`.
 - **Severity:** High
 - **Confidence:** High
 - **CWE / class:** CWE-502

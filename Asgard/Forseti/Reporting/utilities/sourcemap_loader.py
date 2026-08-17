@@ -36,15 +36,38 @@ def _walk(node: "yaml.Node", path: str, sourcemap: SourceMap) -> None:
             _walk(item, f"{path}/{index}", sourcemap)
 
 
+def _tag_is_core_yaml(tag: str) -> bool:
+    """Refuse python/* and other non-core tags (CHC-0012)."""
+    if not tag or tag == "!":
+        return True
+    if tag.startswith("tag:yaml.org,2002:"):
+        rest = tag[len("tag:yaml.org,2002:") :]
+        return not rest.startswith("python/")
+    return False
+
+
+def _assert_safe_nodes(node: "yaml.Node") -> None:
+    if not _tag_is_core_yaml(getattr(node, "tag", "") or ""):
+        raise yaml.YAMLError("unsafe YAML tag")
+    if isinstance(node, yaml.MappingNode):
+        for key_node, value_node in node.value:
+            _assert_safe_nodes(key_node)
+            _assert_safe_nodes(value_node)
+    elif isinstance(node, yaml.SequenceNode):
+        for item in node.value:
+            _assert_safe_nodes(item)
+
+
 def build_sourcemap(text: str) -> SourceMap:
     """Build a json-path -> (line, column) map for a YAML/JSON document."""
     sourcemap: SourceMap = {}
     try:
-        root = yaml.compose(text)
+        root = yaml.compose(text, Loader=yaml.SafeLoader)
+        if root is not None:
+            _assert_safe_nodes(root)
+            _walk(root, "", sourcemap)
     except yaml.YAMLError:
-        return sourcemap
-    if root is not None:
-        _walk(root, "", sourcemap)
+        return {}
     return sourcemap
 
 
