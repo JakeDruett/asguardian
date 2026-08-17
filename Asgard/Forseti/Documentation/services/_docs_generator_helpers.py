@@ -186,7 +186,7 @@ def generate_html_endpoint(endpoint: EndpointInfo) -> str:
                 code_class = "response-4xx"
             else:
                 code_class = "response-5xx"
-            parts.append(f"          <p><span class=\"response-code {code_class}\">{status_code}</span> {html.escape(response.get('description', ''))}</p>")
+            parts.append(f"          <p><span class=\"response-code {code_class}\">{html.escape(str(status_code))}</span> {html.escape(response.get('description', ''))}</p>")
     parts.extend(["        </div>", "      </div>"])
     return "\n".join(parts)
 

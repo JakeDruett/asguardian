@@ -447,24 +447,33 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ### CH-0067 — Residual (visual-regression HTML)
 
+- **Leftover status:** Fixed
+- **Implementation note:** html.escape on suite_name, baseline filename, method, status.
+
 - **Original sink (closed):** Freya crawler HTML/JUnit go through `esc` / `html_link` / `safe_src` / `safe_css` (`html_reporter.py`, `_crawler_report.py`).
 - **Leftover:** `Asgard/Freya/Visual/services/_visual_regression_report.py` interpolates `suite_name` and `Path(baseline_path).name` into HTML with no escape, then `write_text`.
 - **Planned leftover fix:** reuse `_report_escape.esc` on every interpolated field; scheme-allowlist any future `src`/`href`.
 
 ### CH-0094 — Residual (common formatter)
 
+- **Leftover status:** Fixed
+- **Implementation note:** GHA encoder escapes % CR/LF , : ; HTML formatters use html.escape.
 - **Original sink (closed):** `Reporting/github_formatter.py` percent-encodes `%` CR/LF `:` `/` `::` and strips C0.
 - **Leftover:** `Asgard/common/_format_methods.py` `format_result_github` still emits `file={file_path}::{message}` raw; `format_result_html` / `format_results_html` interpolate title/location/message without `html.escape`.
 - **Planned leftover fix:** share the GHA encoder; `html.escape(..., quote=True)` on HTML formatters.
 
 ### CH-0064 — Residual (OpenAPI status_code HTML)
 
+- **Leftover status:** Fixed
+- **Implementation note:** generate_html_endpoint html.escapes status_code.
 - **Original sink (closed):** docs title `html.escape`; contact href `_safe_href` http(s)/mailto; `custom_css` not interpolated.
 - **Leftover:** `_docs_generator_helpers.generate_html_endpoint` ~189 interpolates `{status_code}` raw. A hostile OpenAPI response key is XSS if the HTML is served.
 - **Planned leftover fix:** `html.escape(status_code)` (and class tokens allowlisted).
 
 ### CH-0046 — Residual (file-length / scan HTML)
 
+- **Leftover status:** Fixed
+- **Implementation note:** scan_html and quality HTML escape scan_path / relative_path.
 - **Original sink (closed):** smell HTML uses `_esc` on interpolated fields.
 - **Leftover:** `quality_file_length.py` HTML interpolates `scan_path` / `relative_path` raw; `scan_html.py` title/`detail` for ERROR raw.
 - **Planned leftover fix:** reuse `_esc` on every interpolated field.
