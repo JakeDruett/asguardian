@@ -98,7 +98,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0068 | High | W2 | Confirmed |  | confine_storage_path on load/delete/version; tests for ../ and symlink |
 | CH-0069 | High | W3 | Confirmed |  | password/token/cookie redacted to **** on generate+save |
 | CH-0070 | Medium | W4 | Confirmed |  | page.evaluate static fn + id arg |
-| CH-0071 | Medium | W1 | Residual | seed page.goto ungated | HEAD+redirects allowlisted; seed navigation is not |
+| CH-0071 | Medium | W1 | Residual | seed page.goto ungated | leftover Fixed: seed URL validated before Playwright launch |
 | CH-0072 | High | W2 | Confirmed |  | sanitize_output_name + confine_output_path on every write |
 | CH-0073 | Medium | W3 | Confirmed |  | empty scores → NA; unknown severity BLOCKER |
 | CH-0074 | Medium | W4 | Confirmed |  | hide_selectors via json.dumps arg not JS interpolate |
@@ -362,6 +362,8 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 
 ### CH-0071 — Residual (seed `page.goto`)
 
+- **Leftover status:** Fixed
+- **Implementation note:** `_extract_links` validates the seed URL before launching Playwright and navigates with `safe_goto` (resolve_host=True).
 - **Original sink (closed):** extracted-link HEADs go through `validate_link_url` / `validate_navigation_url` (http(s) only, block RFC1918 unless `allow_internal`); redirects re-validated before follow.
 - **Leftover:** `_extract_links` still `page.goto(url)` with no scheme/host policy (`link_validator.py` ~126-134). Seed navigation is ungated; only HEADs are.
 - **Planned leftover fix:** `safe_goto` / `validate_navigation_url` on the seed URL before Playwright navigation.
@@ -768,7 +770,7 @@ CHC Open remaining: none. Residual leftovers still Open.
 
 - Open CHC: 0
 - Fixed CHC: 13
-- Residual leftovers: 30 Open (CH-0066 leftover Fixed)
+- Residual leftovers: 29 Open (CH-0066/0071 leftovers Fixed)
 - Current wave: residuals
-- Next: CH-0071, CH-0110, CH-0008, CH-0111, CH-0020, CH-0043
+- Next: CH-0110, CH-0008, CH-0111, CH-0020, CH-0043
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`

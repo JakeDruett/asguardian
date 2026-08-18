@@ -125,12 +125,31 @@ class LinkValidator:
 
     async def _extract_links(self, url: str) -> List[Dict]:
         """Extract all links from a URL."""
+        from Asgard.Freya.Integration.services._url_safety import (
+            safe_goto,
+            validate_navigation_url,
+        )
+
+        validate_navigation_url(
+            url,
+            allow_internal=self.config.allow_internal,
+            resolver=self._resolver,
+            resolve_host=True,
+        )
         async with async_playwright() as p:
             browser = await p.chromium.launch(headless=True)
             page = await browser.new_page()
 
             try:
-                await page.goto(url, wait_until="domcontentloaded", timeout=30000)
+                await safe_goto(
+                    page,
+                    url,
+                    allow_internal=self.config.allow_internal,
+                    resolver=self._resolver,
+                    resolve_host=True,
+                    wait_until="domcontentloaded",
+                    timeout=30000,
+                )
                 return await self._extract_links_from_page(page, url)
             finally:
                 await browser.close()

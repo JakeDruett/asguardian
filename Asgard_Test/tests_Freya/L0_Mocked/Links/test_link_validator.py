@@ -169,3 +169,55 @@ class TestRedirectLocationPolicy:
         )
         assert result.status == LinkStatus.SKIPPED
         client.head.assert_not_called()
+
+
+class TestSeedNavigationPolicy:
+    @pytest.mark.asyncio
+    async def test_file_seed_rejected_before_playwright(self):
+        validator = _validator()
+        launched = False
+
+        class _PW:
+            async def __aenter__(self):
+                nonlocal launched
+                launched = True
+                return self
+
+            async def __aexit__(self, *_a):
+                return False
+
+        import Asgard.Freya.Links.services.link_validator as mod
+
+        original = mod.async_playwright
+        mod.async_playwright = lambda: _PW()
+        try:
+            with pytest.raises(ValueError, match="http or https"):
+                await validator._extract_links("file:///etc/passwd")
+        finally:
+            mod.async_playwright = original
+        assert launched is False
+
+    @pytest.mark.asyncio
+    async def test_loopback_seed_rejected_before_playwright(self):
+        validator = _validator()
+        launched = False
+
+        class _PW:
+            async def __aenter__(self):
+                nonlocal launched
+                launched = True
+                return self
+
+            async def __aexit__(self, *_a):
+                return False
+
+        import Asgard.Freya.Links.services.link_validator as mod
+
+        original = mod.async_playwright
+        mod.async_playwright = lambda: _PW()
+        try:
+            with pytest.raises(ValueError, match="internal or metadata"):
+                await validator._extract_links("http://127.0.0.1/admin")
+        finally:
+            mod.async_playwright = original
+        assert launched is False
