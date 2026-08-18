@@ -132,14 +132,16 @@ class ReDoSScanner:
             findings = self._scan_file(target)
             files_scanned = 1
         else:
-            for root, dirs, files in os.walk(target):
-                dirs[:] = [d for d in dirs if d not in skip]
-                for name in files:
-                    fp = Path(root) / name
-                    ff = self._scan_file(fp)
-                    if ff:
-                        findings.extend(ff)
-                        files_scanned += 1
+            from Asgard.Heimdall.Security.utilities._scan_utils import iter_confined_files
+
+            def _skip(path: Path) -> bool:
+                return path.name in skip
+
+            for fp in iter_confined_files(target, should_skip=_skip):
+                ff = self._scan_file(fp)
+                if ff:
+                    findings.extend(ff)
+                    files_scanned += 1
 
         by_severity: dict = {}
         by_type: dict = {}

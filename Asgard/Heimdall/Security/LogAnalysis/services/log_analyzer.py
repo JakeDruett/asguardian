@@ -110,21 +110,25 @@ class LogAnalyzer:
     def analyze_directory(self, directory: Path, patterns: Optional[List[str]] = None) -> LogAnalysisReport:
         report = LogAnalysisReport()
         ip_counts: Dict[str, int] = defaultdict(int)
-        for pattern in (patterns or _DEFAULT_LOG_PATTERNS):
-            for log_file in directory.rglob(pattern):
-                if not log_file.is_file():
-                    continue
-                try:
-                    with open(log_file, encoding="utf-8", errors="ignore") as f:
-                        for line_num, line in enumerate(f, 1):
-                            report.lines_analyzed += 1
-                            events = self._analyze_line(line, str(log_file), line_num)
-                            report.events.extend(events)
-                            for e in events:
-                                if e.source_ip:
-                                    ip_counts[e.source_ip] += 1
-                except OSError:
-                    pass
+        from fnmatch import fnmatch
+
+        from Asgard.Heimdall.Security.utilities._scan_utils import iter_confined_files
+
+        wanted = tuple(patterns or _DEFAULT_LOG_PATTERNS)
+        for log_file in iter_confined_files(directory):
+            if not any(fnmatch(log_file.name, pattern) for pattern in wanted):
+                continue
+            try:
+                with open(log_file, encoding="utf-8", errors="ignore") as f:
+                    for line_num, line in enumerate(f, 1):
+                        report.lines_analyzed += 1
+                        events = self._analyze_line(line, str(log_file), line_num)
+                        report.events.extend(events)
+                        for e in events:
+                            if e.source_ip:
+                                ip_counts[e.source_ip] += 1
+            except OSError:
+                pass
 
         self._aggregate(report, ip_counts)
         return report

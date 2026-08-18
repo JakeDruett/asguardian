@@ -81,7 +81,11 @@ def _collect_python_files(scan_path: Path, exclude_patterns: List[str]) -> List[
     files: List[Path] = []
     if scan_path.is_file():
         return [scan_path]
-    for py_file in scan_path.rglob("*.py"):
+    from Asgard.Bragi.Quality.languages._confined_walk import iter_confined_regular_files
+
+    for py_file in iter_confined_regular_files(scan_path):
+        if py_file.suffix != ".py":
+            continue
         if not _should_exclude(py_file, exclude_patterns):
             files.append(py_file)
     return sorted(files)

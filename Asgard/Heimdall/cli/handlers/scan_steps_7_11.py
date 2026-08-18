@@ -36,7 +36,11 @@ def _has_python_sources(scan_path, exclude_patterns=()) -> bool:
     if scan_path.is_file():
         return scan_path.suffix == ".py"
     excludes = set(exclude_patterns) | _LANG_PROBE_EXCLUDES
-    for path in scan_path.rglob("*.py"):
+    from Asgard.Bragi.Quality.languages._confined_walk import iter_confined_regular_files
+
+    for path in iter_confined_regular_files(scan_path):
+        if path.suffix != ".py":
+            continue
         if any(part in excludes for part in path.parts):
             continue
         return True

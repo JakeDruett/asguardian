@@ -75,18 +75,13 @@ def scan_directory(
     exclude_patterns: Optional[List[str]] = None,
 ) -> Iterator[Path]:
     """Yield absolute paths of code files under root, respecting exclusions."""
-    for dirpath, dirnames, filenames in os.walk(root):
-        # Prune excluded directories in-place so os.walk skips them
-        dirnames[:] = [
-            d for d in dirnames
-            if not is_excluded_path(os.path.join(dirpath, d), exclude_patterns)
-        ]
-        for filename in filenames:
-            full_path = os.path.join(dirpath, filename)
-            if is_excluded_path(full_path, exclude_patterns):
-                continue
-            if is_code_file(full_path, include_extensions):
-                yield Path(full_path)
+    from Asgard.Bragi.Quality.languages._confined_walk import iter_confined_regular_files
+
+    for full_path in iter_confined_regular_files(
+        Path(root), exclude_patterns=exclude_patterns
+    ):
+        if is_code_file(str(full_path), include_extensions):
+            yield full_path
 
 
 def discover_files(

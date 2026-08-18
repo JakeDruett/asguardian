@@ -395,6 +395,8 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 
 ### CH-0078 — Residual (sibling rglob walkers)
 
+- **Leftover status:** Fixed
+- **Implementation note:** Quality taint/debt, Heimdall taint, ReDoS/SSRF/Sensitive/Race, log analyzer, file_utils, and scan_steps_7_11 use confined walks.
 - **Original sink (closed):** `iter_confined_files` skips symlinks and jails resolve. Secrets/injection/crypto/config/deps + TLS certificate/cipher/protocol analyzers use it (re-confirmed this pass).
 - **Leftover:** still unconfined:
   - `Asgard/Bragi/Quality/services/taint/taint_analyzer.py` `Path.rglob("*")` then `read_text`

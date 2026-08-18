@@ -145,7 +145,9 @@ class TaintAnalyzer:
         if path.is_file():
             file_list = [path]
         else:
-            file_list = [p for p in path.rglob("*") if p.is_file()]
+            from Asgard.Bragi.Quality.languages._confined_walk import iter_confined_regular_files
+
+            file_list = list(iter_confined_regular_files(path))
 
         for file_path in file_list:
             lang = language or _detect_language(str(file_path))

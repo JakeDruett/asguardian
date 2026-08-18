@@ -283,9 +283,11 @@ class TechnicalDebtAnalyzer:
         if not path.exists():
             raise FileNotFoundError(f"Path does not exist: {path}")
 
+        from Asgard.Bragi.Quality.languages._confined_walk import iter_confined_regular_files
+
         all_files = [
-            f for f in path.rglob("*")
-            if f.is_file() and should_analyze_file(f.name, self.config)
+            f for f in iter_confined_regular_files(path)
+            if should_analyze_file(f.name, self.config)
         ]
         all_current_keys = set()
         for f in all_files:

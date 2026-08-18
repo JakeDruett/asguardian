@@ -142,3 +142,4 @@
 {"id":"CH-0101","at":"2026-08-17T20:02:00Z","commit":"d8df359","wave":"W4","summary":"Break causal-normalizer walks on cyclic parent spans"}
 {"id":"CH-0095","at":"2026-08-17T20:03:00Z","commit":"PENDING","wave":"W4","summary":"Cap FileParseContext disk read before parse"}
 {"id":"CH-0092","at":"2026-08-18T00:10:00Z","commit":"f508186","wave":"W3","summary":"Refuse unsigned calibration maps even when HMAC env unset"}
+{"id":"CH-0078","at":"2026-08-18T00:15:00Z","commit":"PENDING","wave":"W2","summary":"Route leftover rglob/os.walk scanners through confined walkers"}
