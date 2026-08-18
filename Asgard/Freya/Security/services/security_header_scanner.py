@@ -7,6 +7,7 @@ CSP, HSTS, X-Frame-Options, and other security headers.
 
 from datetime import datetime
 from typing import Dict, Optional
+from urllib.parse import urljoin
 
 import httpx
 
@@ -69,13 +70,15 @@ class SecurityHeaderScanner:
         self.config = config or SecurityConfig()
         self.csp_analyzer = CSPAnalyzer(config)
         self._http_client: Optional[httpx.AsyncClient] = None
+        self._resolver = None
+        self._max_redirects = 10
 
     async def _get_client(self) -> httpx.AsyncClient:
         """Get or create HTTP client."""
         if self._http_client is None:
             self._http_client = httpx.AsyncClient(
                 timeout=30.0,
-                follow_redirects=True,
+                follow_redirects=False,
             )
         return self._http_client
 
@@ -94,8 +97,40 @@ class SecurityHeaderScanner:
         report = SecurityHeaderReport(url=url)
 
         try:
+            from Asgard.Freya.Integration.services._url_safety import (
+                validate_navigation_url,
+            )
+
+            validate_navigation_url(
+                url,
+                allow_internal=self.config.allow_internal,
+                resolver=self._resolver,
+                resolve_host=True,
+            )
             client = await self._get_client()
-            response = await client.get(url)
+            current = url
+            response = None
+            for _ in range(self._max_redirects):
+                validate_navigation_url(
+                    current,
+                    allow_internal=self.config.allow_internal,
+                    resolver=self._resolver,
+                    resolve_host=True,
+                )
+                response = await client.get(current)
+                if response.is_redirect:
+                    location = response.headers.get("location")
+                    if not location:
+                        break
+                    current = urljoin(current, location)
+                    continue
+                break
+            else:
+                report.critical_issues.append("Too many redirects")
+                return report
+            if response is None:
+                report.critical_issues.append("Failed to fetch URL")
+                return report
 
             # Store all headers
             report.all_headers = dict(response.headers)
@@ -133,6 +168,8 @@ class SecurityHeaderScanner:
             # Calculate summary statistics
             self._calculate_summary(report)
 
+        except (ValueError, ConnectionError) as e:
+            report.critical_issues.append(f"Refusing URL: {e}")
         except httpx.HTTPError as e:
             report.critical_issues.append(f"Failed to fetch URL: {str(e)}")
 

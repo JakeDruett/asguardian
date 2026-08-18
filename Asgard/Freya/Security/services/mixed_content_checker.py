@@ -139,7 +139,8 @@ class MixedContentChecker:
                         requests.append(finding)
 
                 page.on("request", on_request)
-                await page.goto(url, wait_until="networkidle", timeout=60000)
+                from Asgard.Freya.Integration.services._url_safety import safe_goto
+                await safe_goto(page, url, wait_until="networkidle", timeout=60000)
                 html = ""
                 try:
                     html = await page.content()

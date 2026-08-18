@@ -339,6 +339,7 @@ class TestAuthentication:
             },
         )
         crawler = SiteCrawler(config)
+        crawler._resolver = lambda _host: ["93.184.216.34"]
         mock_page = AsyncMock()
         mock_page.goto = AsyncMock()
         mock_page.url = "https://example.com/login"

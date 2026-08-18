@@ -10,9 +10,10 @@ from typing import Any, Callable, List, Optional, Set
 from playwright.async_api import BrowserContext
 
 from Asgard.Freya.Integration.services._url_safety import (
+    install_navigation_guard,
     is_allowed_navigation_url,
     safe_goto,
-    validate_navigation_url,
+    safe_reload,
 )
 
 
@@ -78,6 +79,7 @@ async def discover_spa_items(
     discovered_types: Set[str] = set()
 
     page = await context.new_page()
+    await install_navigation_guard(page, allow_internal=allow_internal)
     try:
         if auth_storage:
             await safe_goto(
@@ -95,11 +97,12 @@ async def discover_spa_items(
                     }}
                 }}
             """, auth_storage)
-            await page.reload(wait_until="networkidle", timeout=30000)
-            validate_navigation_url(
-                page.url,
+            await safe_reload(
+                page,
                 allow_internal=allow_internal,
-                resolve_host=False,
+                resolve_host=True,
+                wait_until="networkidle",
+                timeout=30000,
             )
         else:
             await safe_goto(
@@ -160,7 +163,7 @@ async def discover_spa_items(
                             if not is_allowed_navigation_url(
                                 url_after,
                                 allow_internal=allow_internal,
-                                resolve_host=False,
+                                resolve_host=True,
                             ):
                                 await safe_goto(
                                     page,

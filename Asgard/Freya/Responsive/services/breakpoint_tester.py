@@ -81,7 +81,13 @@ class BreakpointTester:
                 page = await context.new_page()
 
                 try:
-                    await page.goto(url, wait_until="networkidle", timeout=30000)
+                    from Asgard.Freya.Integration.services._url_safety import (
+                        safe_goto,
+                    )
+
+                    await safe_goto(
+                        page, url, wait_until="networkidle", timeout=30000
+                    )
 
                     issues = []
 

@@ -30,6 +30,8 @@ from Asgard.Freya.Integration.services._crawler_report import (
     save_report,
 )
 from Asgard.Freya.Integration.services._url_safety import (
+    assert_current_navigation_url,
+    install_navigation_guard,
     safe_goto,
     validate_navigation_url,
 )
@@ -146,6 +148,10 @@ class SiteCrawler:
             context_options["user_agent"] = self.config.browser_config.user_agent
 
         context = await browser.new_context(**context_options)
+        await install_navigation_guard(
+            context,
+            allow_internal=self.config.allow_internal,
+        )
 
         if self.config.auth_config:
             await self._authenticate(context)
@@ -159,13 +165,19 @@ class SiteCrawler:
             return
 
         page = await context.new_page()
+        await install_navigation_guard(
+            page,
+            allow_internal=self.config.allow_internal,
+        )
 
         try:
             login_url = auth.get("login_url", self.config.start_url)
+            resolver = getattr(self, "_resolver", None)
             await safe_goto(
                 page,
                 login_url,
                 allow_internal=self.config.allow_internal,
+                resolver=resolver,
                 wait_until="networkidle",
                 timeout=30000,
             )
@@ -189,10 +201,12 @@ class SiteCrawler:
                     await page.wait_for_selector(auth["wait_for_selector"], timeout=10000)
                 else:
                     await asyncio.sleep(2)
-                validate_navigation_url(
-                    page.url,
+                assert_current_navigation_url(
+                    page,
                     allow_internal=self.config.allow_internal,
-                    resolve_host=False,
+                    resolver=resolver,
+                    resolve_host=True,
+                    fallback=login_url,
                 )
 
                 self._auth_storage = await page.evaluate("() => JSON.stringify(localStorage)")

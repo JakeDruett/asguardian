@@ -159,7 +159,10 @@ class SRIChecker:
             browser = await playwright_ctx.chromium.launch(headless=True)
             try:
                 page = await browser.new_page()
-                response = await page.goto(url, wait_until="networkidle", timeout=60000)
+                from Asgard.Freya.Integration.services._url_safety import safe_goto
+                response = await safe_goto(
+                    page, url, wait_until="networkidle", timeout=60000
+                )
                 elements = await page.evaluate(_ELEMENTS_JS)
 
                 # Static HTML vs live DOM: extra script srcs indicate

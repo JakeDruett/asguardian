@@ -226,6 +226,10 @@ class SecurityConfig(BaseModel):
 
     # Output
     output_format: str = Field("text", description="Output format")
+    allow_internal: bool = Field(
+        False,
+        description="Permit loopback/RFC1918/link-local scan targets",
+    )
 
 
 class SRIFinding(BaseModel):

@@ -7,8 +7,11 @@ No live network. Hostname checks use an injected resolver.
 import pytest
 
 from Asgard.Freya.Integration.services._url_safety import (
+    assert_current_navigation_url,
+    install_navigation_guard,
     is_allowed_navigation_url,
     safe_goto,
+    safe_reload,
     validate_navigation_url,
 )
 from Asgard.Freya.cli._parser import create_parser
@@ -64,6 +67,16 @@ class TestValidateNavigationUrl:
     def test_file_still_rejected_when_internal_opted_in(self):
         with pytest.raises(ValueError, match="http or https"):
             validate_navigation_url("file:///tmp/rejected", allow_internal=True)
+
+    def test_file_allowed_when_allow_file(self):
+        validate_navigation_url("file:///tmp/fixture.html", allow_file=True)
+
+    def test_remote_file_host_still_blocked(self):
+        with pytest.raises(ValueError, match="blocked host"):
+            validate_navigation_url(
+                "file://localhost/tmp/fixture.html",
+                allow_file=True,
+            )
 
     def test_https_public_ip_allowed(self):
         validate_navigation_url(f"https://{PUBLIC_IP}/")
@@ -147,3 +160,124 @@ class TestCrawlAllowInternalFlag:
         parser = create_parser()
         args = parser.parse_args(["crawl", "https://example.com"])
         assert args.allow_internal is False
+
+
+class TestPostNavigationResolveHost:
+    @pytest.mark.asyncio
+    async def test_reload_rejects_internal_landing(self):
+        page = type("Page", (), {})()
+
+        async def _reload(**_k):
+            page.url = "http://127.0.0.1/after-reload"
+            return None
+
+        page.reload = _reload
+        page.url = f"https://{PUBLIC_IP}/"
+        with pytest.raises(ValueError, match="internal or metadata"):
+            await safe_reload(page, resolve_host=True)
+
+    def test_assert_current_url_dns_checks_hostname(self):
+        page = type("Page", (), {"url": "https://internal.example.com/"})()
+        with pytest.raises(ValueError, match="internal or metadata"):
+            assert_current_navigation_url(
+                page,
+                resolver=_private_resolver,
+                resolve_host=True,
+            )
+
+    @pytest.mark.asyncio
+    async def test_guard_aborts_file_navigation(self):
+        aborted = []
+
+        class _Request:
+            url = "file:///tmp/rejected"
+
+            def is_navigation_request(self):
+                return True
+
+        class _Route:
+            request = _Request()
+
+            async def abort(self, _reason):
+                aborted.append(_reason)
+
+            async def continue_(self):
+                aborted.append("continued")
+
+        installed = {}
+
+        class _Page:
+            async def route(self, pattern, handler):
+                installed["pattern"] = pattern
+                installed["handler"] = handler
+
+        page = _Page()
+        await install_navigation_guard(page)
+        await installed["handler"](_Route())
+        assert aborted == ["blockedbyclient"]
+        assert installed["pattern"] == "**/*"
+
+
+class TestTesterAndHeaderPolicy:
+    @pytest.mark.asyncio
+    async def test_playwright_utils_navigate_rejects_file(self):
+        from Asgard.Freya.Integration.services.playwright_utils import PlaywrightUtils
+
+        page = type("Page", (), {"url": "about:blank"})()
+        called = False
+
+        async def _goto(*_a, **_k):
+            nonlocal called
+            called = True
+
+        page.goto = _goto
+        utils = PlaywrightUtils()
+        with pytest.raises(ValueError, match="http or https"):
+            await utils.navigate(page, "file:///tmp/rejected")
+        assert called is False
+
+    @pytest.mark.asyncio
+    async def test_header_scanner_rejects_file_without_fetch(self):
+        from Asgard.Freya.Security.services.security_header_scanner import (
+            SecurityHeaderScanner,
+        )
+
+        scanner = SecurityHeaderScanner()
+        scanner._resolver = _public_resolver
+        client = type("C", (), {})()
+        called = False
+
+        async def _get(*_a, **_k):
+            nonlocal called
+            called = True
+
+        client.get = _get
+        scanner._http_client = client
+        report = await scanner.scan("file:///tmp/rejected")
+        assert called is False
+        assert any("http or https" in issue for issue in report.critical_issues)
+
+    @pytest.mark.asyncio
+    async def test_header_scanner_rejects_redirect_to_rfc1918(self):
+        from Asgard.Freya.Security.services.security_header_scanner import (
+            SecurityHeaderScanner,
+        )
+        import httpx
+
+        scanner = SecurityHeaderScanner()
+        scanner._resolver = _public_resolver
+        client = type("C", (), {})()
+
+        async def _get(url):
+            if "redirect" in url:
+                return httpx.Response(
+                    302,
+                    headers={"location": "http://10.0.0.1/secret"},
+                    request=httpx.Request("GET", url),
+                )
+            raise AssertionError(f"unexpected fetch {url}")
+
+        client.get = _get
+        scanner._http_client = client
+        report = await scanner.scan(f"https://{PUBLIC_IP}/redirect")
+        assert any("internal or metadata" in issue for issue in report.critical_issues)

@@ -13,6 +13,10 @@ from Asgard.Freya.Integration.services._playwright_presets import (
     NETWORK_PRESETS,
     apply_network_conditions,
 )
+from Asgard.Freya.Integration.services._url_safety import (
+    install_navigation_guard,
+    safe_goto,
+)
 
 
 class PlaywrightUtils:
@@ -92,6 +96,7 @@ class PlaywrightUtils:
 
         assert self._browser is not None
         context = await self._browser.new_context(**context_options)
+        await install_navigation_guard(context)
 
         if network and network in NETWORK_PRESETS:
             await apply_network_conditions(context, NETWORK_PRESETS[network])
@@ -116,10 +121,18 @@ class PlaywrightUtils:
         self,
         page: Page,
         url: str,
-        wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = "networkidle"
+        wait_until: Literal["commit", "domcontentloaded", "load", "networkidle"] = "networkidle",
+        *,
+        allow_internal: bool = False,
     ) -> None:
         """Navigate to a URL and wait for the specified condition."""
-        await page.goto(url, wait_until=wait_until, timeout=self.config.timeout)
+        await safe_goto(
+            page,
+            url,
+            allow_internal=allow_internal,
+            wait_until=wait_until,
+            timeout=self.config.timeout,
+        )
 
     async def wait_for_network_idle(self, page: Page, timeout: int = 30000) -> None:
         """Wait for network to be idle."""

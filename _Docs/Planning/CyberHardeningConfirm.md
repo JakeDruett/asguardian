@@ -93,7 +93,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0063 | High | W1 | Confirmed |  | urljoin + path jail; encode params; same-host redirects |
 | CH-0064 | Medium | W5 | Residual | OpenAPI status_code unescaped in HTML | title/contact escaped; `generate_html_endpoint` interpolates raw `{status_code}` |
 | CH-0065 | Medium | W2 | Confirmed |  | sanitize_sql_default literals only |
-| CH-0066 | High | W1 | Residual | click/reload + many testers/security fetches ungated | start/login/enqueue/tester goto gated; click+reload and Freya Security/testers still raw goto |
+| CH-0066 | High | W1 | Residual | click/reload + testers/security fetches | leftover Fixed: guard + resolve_host after click/reload; testers/header via safe_goto |
 | CH-0067 | High | W5 | Residual | visual-regression HTML unescaped | crawler HTML/JUnit use esc/html_link/safe_src/safe_css; `_visual_regression_report` does not |
 | CH-0068 | High | W2 | Confirmed |  | confine_storage_path on load/delete/version; tests for ../ and symlink |
 | CH-0069 | High | W3 | Confirmed |  | password/token/cookie redacted to **** on generate+save |
@@ -336,6 +336,8 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 
 ### CH-0066 — Residual (click / reload / testers / security fetches)
 
+- **Leftover status:** Fixed
+- **Implementation note:** `install_navigation_guard` aborts file/ftp/javascript/data and off-policy navigations. Login submit and SPA reload/click re-validate `page.url` with `resolve_host=True`. Testers, screenshot helper, SRI/mixed, `PlaywrightUtils.navigate` use `safe_goto`. Header scanner validates URL and each redirect (no blind `follow_redirects`). L1 fixtures set `allow_file_default` only in that test package.
 - **Original sink (closed):** crawl `start_url` / `login_url` / discovery enqueue / tester `goto` use `validate_navigation_url` + `safe_goto`. SPA enqueue uses `should_crawl`. `file:` and literal RFC1918 are rejected before those `goto`s.
 - **Leftover:** Playwright still navigates **before** the allowlist on:
   - `site_crawler.py` login `submit` + `wait_for_url` (~183-196)
@@ -766,7 +768,7 @@ CHC Open remaining: none. Residual leftovers still Open.
 
 - Open CHC: 0
 - Fixed CHC: 13
-- Residual leftovers: 31 Open
+- Residual leftovers: 30 Open (CH-0066 leftover Fixed)
 - Current wave: residuals
-- Next: residual leftover planned fixes
+- Next: CH-0071, CH-0110, CH-0008, CH-0111, CH-0020, CH-0043
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`

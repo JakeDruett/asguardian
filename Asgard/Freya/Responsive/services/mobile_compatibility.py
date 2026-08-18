@@ -83,7 +83,13 @@ class MobileCompatibilityTester:
 
                 try:
                     start_time = time.time()
-                    response = await page.goto(url, wait_until="networkidle", timeout=30000)
+                    from Asgard.Freya.Integration.services._url_safety import (
+                        safe_goto,
+                    )
+
+                    response = await safe_goto(
+                        page, url, wait_until="networkidle", timeout=30000
+                    )
                     load_time = int((time.time() - start_time) * 1000)
 
                     if load_time_ms is None:

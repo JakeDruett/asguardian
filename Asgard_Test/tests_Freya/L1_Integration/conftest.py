@@ -492,6 +492,17 @@ async def page(browser_context: BrowserContext) -> Generator[Page, None, None]:
 # Helper Functions
 # =============================================================================
 
+@pytest.fixture(scope="session", autouse=True)
+def _freya_l1_allow_file_urls():
+    """L1 fixtures are local HTML files; production still refuses file:."""
+    from Asgard.Freya.Integration.services import _url_safety
+
+    previous = _url_safety.allow_file_default
+    _url_safety.allow_file_default = True
+    yield
+    _url_safety.allow_file_default = previous
+
+
 def file_url(file_path: Path) -> str:
     """
     Convert a file path to a file:// URL.

@@ -16,6 +16,10 @@ from urllib.parse import urlparse
 
 _ALLOWED_SCHEMES = frozenset({"http", "https"})
 
+# L1 Playwright fixtures set this so file:// HTML pages stay reachable.
+# Production callers must leave it False.
+allow_file_default = False
+
 _BLOCKED_HOSTNAMES = frozenset({
     "localhost",
     "localhost.localdomain",
@@ -109,6 +113,7 @@ def validate_navigation_url(
     url: str,
     *,
     allow_internal: bool = False,
+    allow_file: Optional[bool] = None,
     resolver: Optional[Callable[[str], Sequence[str]]] = None,
     resolve_host: bool = True,
 ) -> None:
@@ -118,6 +123,8 @@ def validate_navigation_url(
     Args:
         url: Candidate navigation or post-redirect page.url.
         allow_internal: Permit loopback, RFC1918, link-local, and metadata.
+        allow_file: Permit local ``file:`` URLs (L1 HTML fixtures). Defaults
+            to ``allow_file_default`` (False in production).
         resolver: Optional hostname resolver (returns IP strings). Defaults
             to socket.getaddrinfo when resolve_host is True.
         resolve_host: Resolve hostnames and check their addresses. Literal
@@ -131,8 +138,25 @@ def validate_navigation_url(
     if not candidate:
         raise ValueError("Navigation URL is required")
 
+    file_ok = allow_file_default if allow_file is None else allow_file
+
     parsed = urlparse(candidate)
     scheme = (parsed.scheme or "").lower()
+    if scheme == "file":
+        if not file_ok:
+            raise ValueError(
+                "Navigation URL scheme must be http or https, got 'file'"
+            )
+        host = parsed.hostname
+        if host and not allow_internal:
+            if _is_blocked_hostname(host):
+                raise ValueError(f"Refusing navigation to blocked host: {host}")
+            literal = _parse_literal_ip(host)
+            if literal is not None and _is_blocked_ip(literal):
+                raise ValueError(
+                    f"Refusing navigation to internal or metadata address: {literal}"
+                )
+        return
     if scheme not in _ALLOWED_SCHEMES:
         shown = scheme or "missing"
         raise ValueError(
@@ -173,6 +197,7 @@ def is_allowed_navigation_url(
     url: str,
     *,
     allow_internal: bool = False,
+    allow_file: Optional[bool] = None,
     resolver: Optional[Callable[[str], Sequence[str]]] = None,
     resolve_host: bool = False,
 ) -> bool:
@@ -181,6 +206,7 @@ def is_allowed_navigation_url(
         validate_navigation_url(
             url,
             allow_internal=allow_internal,
+            allow_file=allow_file,
             resolver=resolver,
             resolve_host=resolve_host,
         )
@@ -189,11 +215,78 @@ def is_allowed_navigation_url(
     return True
 
 
+def _landed_url(page: Any, fallback: str) -> str:
+    landed = getattr(page, "url", None)
+    if isinstance(landed, str) and landed:
+        return landed
+    return fallback
+
+
+def assert_current_navigation_url(
+    page: Any,
+    *,
+    allow_internal: bool = False,
+    allow_file: Optional[bool] = None,
+    resolver: Optional[Callable[[str], Sequence[str]]] = None,
+    resolve_host: bool = True,
+    fallback: str = "",
+) -> str:
+    """Re-validate the page's current URL. Default DNS-checks the host."""
+    landed = _landed_url(page, fallback)
+    validate_navigation_url(
+        landed,
+        allow_internal=allow_internal,
+        allow_file=allow_file,
+        resolver=resolver,
+        resolve_host=resolve_host,
+    )
+    return landed
+
+
+async def install_navigation_guard(
+    target: Any,
+    *,
+    allow_internal: bool = False,
+    allow_file: Optional[bool] = None,
+) -> None:
+    """Abort navigations (and file/ftp/data/javascript requests) that fail policy."""
+
+    async def _handler(route: Any) -> None:
+        request = route.request
+        url = getattr(request, "url", "") or ""
+        try:
+            is_nav = bool(request.is_navigation_request())
+        except Exception:
+            is_nav = True
+        lowered = url.lower()
+        is_blocked_scheme = lowered.startswith((
+            "file:",
+            "ftp:",
+            "javascript:",
+            "data:",
+        ))
+        if (is_nav or is_blocked_scheme) and not is_allowed_navigation_url(
+            url,
+            allow_internal=allow_internal,
+            allow_file=allow_file,
+            resolve_host=False,
+        ):
+            await route.abort("blockedbyclient")
+            return
+        await route.continue_()
+
+    route_fn = getattr(target, "route", None)
+    if route_fn is None:
+        return
+    await route_fn("**/*", _handler)
+
+
 async def safe_goto(
     page: Any,
     url: str,
     *,
     allow_internal: bool = False,
+    allow_file: Optional[bool] = None,
     resolver: Optional[Callable[[str], Sequence[str]]] = None,
     resolve_host: bool = False,
     **goto_kwargs: Any,
@@ -202,13 +295,36 @@ async def safe_goto(
     validate_navigation_url(
         url,
         allow_internal=allow_internal,
+        allow_file=allow_file,
         resolver=resolver,
         resolve_host=resolve_host,
     )
     result = await page.goto(url, **goto_kwargs)
     validate_navigation_url(
-        page.url,
+        _landed_url(page, url),
         allow_internal=allow_internal,
+        allow_file=allow_file,
+        resolver=resolver,
+        resolve_host=resolve_host,
+    )
+    return result
+
+
+async def safe_reload(
+    page: Any,
+    *,
+    allow_internal: bool = False,
+    allow_file: Optional[bool] = None,
+    resolver: Optional[Callable[[str], Sequence[str]]] = None,
+    resolve_host: bool = True,
+    **reload_kwargs: Any,
+) -> Any:
+    """Reload, then refuse the result if page.url fails the navigation policy."""
+    result = await page.reload(**reload_kwargs)
+    assert_current_navigation_url(
+        page,
+        allow_internal=allow_internal,
+        allow_file=allow_file,
         resolver=resolver,
         resolve_host=resolve_host,
     )
