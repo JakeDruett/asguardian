@@ -117,11 +117,11 @@ def _sign_payload(data: dict, key: bytes) -> str:
 
 
 def _verify_hmac(data: dict) -> None:
-    """When a key is configured, require a matching HMAC. No key = optional."""
+    """Require a matching HMAC. Unsigned maps are never trusted."""
     key = _hmac_key()
     expected = data.get("hmac")
     if key is None:
-        return
+        raise ValueError(_HMAC_ERROR)
     if not isinstance(expected, str) or not hmac.compare_digest(
         expected, _sign_payload(data, key)
     ):

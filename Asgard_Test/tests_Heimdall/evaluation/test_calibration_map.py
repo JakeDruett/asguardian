@@ -22,6 +22,7 @@ from Asgard.Heimdall.Security.normalization.calibration import (
     calibration_from_knots,
     default_calibration,
     load_calibration_map,
+    write_calibration_map,
 )
 from Asgard.Heimdall.Security.normalization.priority import confidence_bucket
 
@@ -29,7 +30,7 @@ from Asgard.Heimdall.Security.normalization.priority import confidence_bucket
 @pytest.fixture(autouse=True)
 def _clear_env_and_cache(monkeypatch, tmp_path):
     monkeypatch.delenv(CALIBRATION_MAP_ENV, raising=False)
-    monkeypatch.delenv(CALIBRATION_HMAC_ENV, raising=False)
+    monkeypatch.setenv(CALIBRATION_HMAC_ENV, "test-calibration-hmac-key")
     monkeypatch.setenv(CALIBRATION_DIR_ENV, str(tmp_path))
     from Asgard.Heimdall.Security.normalization import calibration as mod
     mod._default_cache.clear()
@@ -136,9 +137,7 @@ class TestApplication:
 
     def test_env_map_picked_up_and_cached(self, tmp_path, monkeypatch):
         path = tmp_path / "map.json"
-        path.write_text(json.dumps(
-            {"version": 1, "knots": [[0.0, 0.0], [1.0, 0.5]]}
-        ))
+        write_calibration_map(path, {"version": 1, "knots": [[0.0, 0.0], [1.0, 0.5]]})
         monkeypatch.setenv(CALIBRATION_MAP_ENV, str(path))
         assert calibrate_confidence(1.0) == pytest.approx(0.5)
         # Cached instance reused for the same env value.
@@ -162,9 +161,7 @@ class TestDispatchWiring:
         from Asgard.Heimdall.cli.handlers._security_dispatch import _entry
 
         path = tmp_path / "map.json"
-        path.write_text(json.dumps(
-            {"version": 1, "knots": [[0.0, 0.0], [1.0, 0.5]]}
-        ))
+        write_calibration_map(path, {"version": 1, "knots": [[0.0, 0.0], [1.0, 0.5]]})
         monkeypatch.setenv(CALIBRATION_MAP_ENV, str(path))
         from Asgard.Heimdall.Security.normalization import calibration as mod
         mod._default_cache.clear()
@@ -211,6 +208,16 @@ class TestJailAndHmac:
         with pytest.raises(ValueError, match="calibration directory"):
             cal.save_map("../escape.json")
         assert not (tmp_path.parent / "escape.json").exists()
+
+    def test_unsigned_map_rejected_when_hmac_env_unset(self, tmp_path, monkeypatch):
+        monkeypatch.delenv(CALIBRATION_HMAC_ENV, raising=False)
+        path = tmp_path / "unsigned.json"
+        path.write_text(json.dumps({
+            "version": 1,
+            "knots": [[0.0, 0.0], [1.0, 0.1]],
+        }))
+        with pytest.raises(ValueError, match="HMAC"):
+            load_calibration_map(path)
 
     def test_unsigned_planted_map_is_rejected(self, tmp_path, monkeypatch):
         monkeypatch.setenv(CALIBRATION_HMAC_ENV, "test-calibration-hmac-key")

@@ -431,6 +431,8 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ### CH-0092 — Residual (unsigned calibration map)
 
+- **Leftover status:** Fixed
+- **Implementation note:** load rejects unsigned maps whether or not HEIMDALL_CALIBRATION_HMAC_KEY is set.
 - Path jail + HMAC exist. HMAC is opt-in (`HEIMDALL_CALIBRATION_HMAC_KEY`); unsigned JSON under CWD still loads if env unset.
 
 ### CH-0095 — Residual (unbounded disk read)
