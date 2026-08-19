@@ -147,3 +147,4 @@
 {"id":"CH-0071","at":"2026-08-18T01:10:00Z","commit":"PENDING","wave":"W1","summary":"Validate link-validator seed URL before Playwright goto"}
 {"id":"CH-0110","at":"2026-08-19T00:00:00Z","commit":"PENDING","wave":"W1","summary":"Fail-closed empty/unreadable security-report JSON"}
 {"id":"CH-0008","at":"2026-08-19T00:10:00Z","commit":"PENDING","wave":"W2","summary":"Refuse BackendInit symlink directories; O_NOFOLLOW creates"}
+{"id":"CH-0043","at":"2026-08-19T00:20:00Z","commit":"PENDING","wave":"W3","summary":"Mask leftover Java/Go/C#/C++/shell credential snippets"}

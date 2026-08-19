@@ -5,6 +5,7 @@ from typing import List
 from Asgard.Bragi.Quality.languages.cpp.models.cpp_models import (
     CppFinding, CppRuleCategory, CppSeverity,
 )
+from Asgard.Bragi.Quality.utilities.secret_snippet import mask_quoted_literals
 
 
 def _finding(file_path, line_number, rule_id, category, severity, title, description, snippet="", fix=""):
@@ -98,7 +99,7 @@ def check_hardcoded_credentials(file_path: str, lines: List[str], enabled: bool 
         _finding(file_path, i + 1, "cpp.hardcoded-credentials", CppRuleCategory.SECURITY, CppSeverity.ERROR,
                  "Hardcoded Credential",
                  "Credentials stored directly in source code are a security risk.",
-                 line, "Use environment variables or a secrets manager.")
+                 mask_quoted_literals(line), "Use environment variables or a secrets manager.")
         for i, line in enumerate(lines) if pattern.search(line)
     ]
 

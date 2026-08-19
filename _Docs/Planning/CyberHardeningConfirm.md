@@ -437,6 +437,8 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ### CH-0043 — Residual (other-language snippets)
 
+- **Leftover status:** Fixed
+- **Implementation note:** Java/Go/C#/C++/shell credential rules now mask quoted literals via `mask_quoted_literals`.
 - JS/PHP/Ruby/Rust mask credential snippets. Java/Go/C#/C++/shell still set `code_snippet=line`.
 
 ### CH-0092 — Residual (unsigned calibration map)
@@ -774,7 +776,7 @@ CHC Open remaining: none.
 
 - Open CHC: 0
 - Fixed CHC: 13
-- Residual leftovers in progress (CH-0008 this commit)
+- Residual leftovers in progress (CH-0043 this commit)
 - Current wave: residuals
-- Next: CH-0043, CH-0098, CH-0111, CH-0020
+- Next: CH-0098, CH-0111, CH-0020
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`

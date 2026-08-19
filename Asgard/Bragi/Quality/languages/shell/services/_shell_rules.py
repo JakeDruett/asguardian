@@ -6,6 +6,7 @@ from Asgard.Bragi.Quality.languages.shell.models.shell_models import (
     ShellRuleCategory,
     ShellSeverity,
 )
+from Asgard.Bragi.Quality.utilities.secret_snippet import mask_quoted_literals
 
 _SHELL_SHEBANGS = (
     "#!/bin/bash",
@@ -127,7 +128,7 @@ def check_hardcoded_secret(file_path: str, lines: List[str], enabled: bool) -> L
                     "A variable with a sensitive name is assigned a string literal. "
                     "Hardcoded secrets should never be stored in source code."
                 ),
-                code_snippet=line,
+                code_snippet=mask_quoted_literals(line),
                 fix_suggestion="Read secrets from environment variables or a secrets manager.",
             ))
     return findings

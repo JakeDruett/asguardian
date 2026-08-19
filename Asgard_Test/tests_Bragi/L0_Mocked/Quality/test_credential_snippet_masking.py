@@ -8,7 +8,20 @@ from pathlib import Path
 from Asgard.Bragi.Quality.languages.javascript.services.js_analyzer import JSAnalyzer
 from Asgard.Bragi.Quality.languages.php.services.php_analyzer import PhpAnalyzer
 from Asgard.Bragi.Quality.languages.ruby.services.ruby_analyzer import RubyAnalyzer
+from Asgard.Bragi.Quality.languages.cpp.services._cpp_rules import (
+    check_hardcoded_credentials as check_cpp_hardcoded_credentials,
+)
+from Asgard.Bragi.Quality.languages.csharp.services._csharp_rules import (
+    check_no_hardcoded_credentials as check_csharp_hardcoded_credentials,
+)
+from Asgard.Bragi.Quality.languages.go.services._go_rules import (
+    check_no_hardcoded_credentials as check_go_hardcoded_credentials,
+)
+from Asgard.Bragi.Quality.languages.java.services._java_rules import (
+    check_no_hardcoded_credentials as check_java_hardcoded_credentials,
+)
 from Asgard.Bragi.Quality.languages.rust.services._rust_rules import check_hardcoded_credentials
+from Asgard.Bragi.Quality.languages.shell.services._shell_rules import check_hardcoded_secret
 from Asgard.Bragi.Quality.models.env_fallback_models import (
     EnvFallbackSeverity,
     EnvFallbackType,
@@ -103,6 +116,51 @@ class TestRustHardcodedCredentialSnippet:
     def test_fake_key_absent_from_finding(self):
         lines = [f'    let api_key = "{_FAKE_KEY}";']
         findings = check_hardcoded_credentials("main.rs", lines)
+        assert findings
+        dumped = json.dumps(findings[0].dict(), default=str)
+        _assert_secret_absent(_FAKE_KEY, findings[0].code_snippet, dumped)
+
+
+class TestJavaHardcodedCredentialSnippet:
+    def test_fake_key_absent_from_finding(self):
+        lines = [f'    String password = "{_FAKE_KEY}";']
+        findings = check_java_hardcoded_credentials("App.java", lines)
+        assert findings
+        dumped = json.dumps(findings[0].dict(), default=str)
+        _assert_secret_absent(_FAKE_KEY, findings[0].code_snippet, dumped)
+
+
+class TestGoHardcodedCredentialSnippet:
+    def test_fake_key_absent_from_finding(self):
+        lines = [f'    password := "{_FAKE_KEY}"']
+        findings = check_go_hardcoded_credentials("main.go", lines)
+        assert findings
+        dumped = json.dumps(findings[0].dict(), default=str)
+        _assert_secret_absent(_FAKE_KEY, findings[0].code_snippet, dumped)
+
+
+class TestCsharpHardcodedCredentialSnippet:
+    def test_fake_key_absent_from_finding(self):
+        lines = [f'    string password = "{_FAKE_KEY}";']
+        findings = check_csharp_hardcoded_credentials("App.cs", lines)
+        assert findings
+        dumped = json.dumps(findings[0].dict(), default=str)
+        _assert_secret_absent(_FAKE_KEY, findings[0].code_snippet, dumped)
+
+
+class TestCppHardcodedCredentialSnippet:
+    def test_fake_key_absent_from_finding(self):
+        lines = [f'    const char* password = "{_FAKE_KEY}";']
+        findings = check_cpp_hardcoded_credentials("app.cpp", lines)
+        assert findings
+        dumped = json.dumps(findings[0].dict(), default=str)
+        _assert_secret_absent(_FAKE_KEY, findings[0].code_snippet, dumped)
+
+
+class TestShellHardcodedCredentialSnippet:
+    def test_fake_key_absent_from_finding(self):
+        lines = [f'PASSWORD="{_FAKE_KEY}"']
+        findings = check_hardcoded_secret("setup.sh", lines, enabled=True)
         assert findings
         dumped = json.dumps(findings[0].dict(), default=str)
         _assert_secret_absent(_FAKE_KEY, findings[0].code_snippet, dumped)

@@ -5,6 +5,7 @@ from typing import List
 from Asgard.Bragi.Quality.languages.java.models.java_models import (
     JavaFinding, JavaRuleCategory, JavaSeverity,
 )
+from Asgard.Bragi.Quality.utilities.secret_snippet import mask_quoted_literals
 
 
 def _finding(file_path, line_number, rule_id, category, severity, title, description, snippet="", fix=""):
@@ -100,7 +101,7 @@ def check_no_hardcoded_credentials(file_path: str, lines: List[str], enabled: bo
                  JavaRuleCategory.SECURITY, JavaSeverity.ERROR,
                  "Hardcoded Credential",
                  "Credentials in source code are a security risk.",
-                 line, "Use environment variables or a secrets manager.")
+                 mask_quoted_literals(line), "Use environment variables or a secrets manager.")
         for i, line in enumerate(lines) if pattern.search(line)
     ]
 
