@@ -108,3 +108,36 @@ def test_load_directory_returns_defaults(tmp_path):
     config = load_architecture_config(str(tmp_path))
     assert len(config.layers) > 0
     assert any(layer.name == "domain" for layer in config.layers)
+
+
+def test_untyped_level_imports_and_fan_out_are_coerced(tmp_path):
+    yaml_content = """
+language: python
+layers:
+  - name: core
+    path_patterns:
+      - "*/core/*"
+    allowed_imports: core
+    forbidden_imports: [12, infra]
+    level: high
+  - name: infra
+    path_patterns:
+      - "*/infra/*"
+    allowed_imports: [core, 9]
+    level: 2
+rules:
+  max_module_fan_out: lots
+  detect_module_cycles: "yes"
+"""
+    path = tmp_path / "architecture.yml"
+    path.write_text(yaml_content, encoding="utf-8")
+    config = load_architecture_config(str(path))
+    core = next(layer for layer in config.layers if layer.name == "core")
+    infra = next(layer for layer in config.layers if layer.name == "infra")
+    assert core.allowed_imports == []
+    assert core.forbidden_imports == ["infra"]
+    assert core.level is None
+    assert infra.allowed_imports == ["core"]
+    assert infra.level == 2
+    assert config.rules.max_module_fan_out is None
+    assert config.rules.detect_module_cycles is True

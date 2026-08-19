@@ -435,6 +435,8 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ### CH-0020 — Residual (incomplete YAML coerce)
 
+- **Leftover status:** Fixed
+- **Implementation note:** Coerce `level` and `max_module_fan_out` to int or None; import lists keep strings only; bad `detect_module_cycles` falls back to True.
 - File/size/`layers` mapping checks exist. `level` / `allowed_imports` / `rules.max_module_fan_out` still untyped.
 
 ### CH-0043 — Residual (other-language snippets)
@@ -780,7 +782,6 @@ CHC Open remaining: none.
 
 - Open CHC: 0
 - Fixed CHC: 13
-- Residual leftovers in progress (CH-0111 this commit)
-- Current wave: residuals
-- Next: CH-0020
+- Residual leftovers: 0 Open
+- Current wave: residuals complete
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`

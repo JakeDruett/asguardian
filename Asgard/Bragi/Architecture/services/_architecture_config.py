@@ -62,6 +62,18 @@ def sanitize_path_patterns(patterns) -> list[str]:
     return cleaned
 
 
+def _str_list(value) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return [item for item in value if isinstance(item, str)]
+
+
+def _optional_int(value) -> Optional[int]:
+    if isinstance(value, bool) or not isinstance(value, int):
+        return None
+    return value
+
+
 def _parse_layer(layer: dict) -> LayerConfig:
     heuristics = layer.get("heuristics") or {}
     # New schema nests path patterns/suffixes/external anchors under
@@ -80,9 +92,9 @@ def _parse_layer(layer: dict) -> LayerConfig:
     return LayerConfig(
         name=layer["name"],
         path_patterns=path_patterns,
-        allowed_imports=layer.get("allowed_imports", []),
-        forbidden_imports=layer.get("forbidden_imports", []),
-        level=layer.get("level"),
+        allowed_imports=_str_list(layer.get("allowed_imports", [])),
+        forbidden_imports=_str_list(layer.get("forbidden_imports", [])),
+        level=_optional_int(layer.get("level")),
         suffixes=suffixes,
         external_imports=external_imports,
     )
@@ -124,9 +136,12 @@ def load_architecture_config(config_path: str) -> ArchitectureConfig:
         except (KeyError, TypeError, ValueError):
             continue
 
+    detect_cycles = rules_data.get("detect_module_cycles", True)
+    if not isinstance(detect_cycles, bool):
+        detect_cycles = True
     rules = RulesConfig(
-        max_module_fan_out=rules_data.get("max_module_fan_out"),
-        detect_module_cycles=rules_data.get("detect_module_cycles", True),
+        max_module_fan_out=_optional_int(rules_data.get("max_module_fan_out")),
+        detect_module_cycles=detect_cycles,
     )
 
     return ArchitectureConfig(
