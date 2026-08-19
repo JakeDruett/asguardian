@@ -285,6 +285,11 @@ python -m Volundr terraform generate \
   --output ./terraform/modules
 ```
 
+Names go through `hcl_quoted` / `require_hcl_identifier`. Variable
+`type`, output `value`, and validation expressions refuse CR/LF/`#`.
+Security-group egress is self-only (no `0.0.0.0/0`). See
+`_Docs/Architecture/Security_Hardening.md`.
+
 ## Related
 
 - [01-Overview.md](01-Overview.md) - Package overview

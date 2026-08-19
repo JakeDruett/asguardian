@@ -311,3 +311,6 @@ Tests use the following pytest markers:
 - `@pytest.mark.freya` - Freya module
 - `@pytest.mark.unit` - Unit tests
 - `@pytest.mark.fast` - Fast execution tests
+
+Navigation and report-escape rules: `_Docs/Architecture/Security_Hardening.md`
+and [Security-Module.md](Security-Module.md).

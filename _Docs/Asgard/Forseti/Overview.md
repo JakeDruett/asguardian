@@ -159,6 +159,14 @@ All commands support multiple output formats:
 - `1`: Validation errors or incompatibility detected
 - `2`: Configuration or input errors
 
+## Hardening
+
+Generated client/mock source allowlists identifiers and string-literal-escapes
+OpenAPI paths. `$ref` is jailed to the schema directory. GraphQL introspection
+and live probes are http(s) only with IP/redirect checks. Mock servers bind
+`127.0.0.1` with Flask `debug=False`. YAML uses `SafeLoader` and refuses
+alias-cycle walks. See `_Docs/Architecture/Security_Hardening.md`.
+
 ## Related Packages
 
 - **Heimdall**: Code quality analysis

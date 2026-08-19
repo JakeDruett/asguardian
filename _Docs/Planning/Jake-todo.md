@@ -23,3 +23,5 @@ Items that require a human (credentials, external systems) — cannot be done by
 ## 3. Optional: enable GitHub secret scanning on the repo
 
 - [ ] `primordial-creations/asguardian` is eligible but not enabled. Turning it on (Settings → Security → Code security and analysis) gives you server-side detection in addition to push protection.
+
+The repo already SHA-pins pre-commit hooks and includes `detect-secrets`. `asguardian init` Python templates emit the same hook. Live workflows SHA-pin Actions and do not editable-install on `pull_request`. Applied tree hardening is documented in `_Docs/Architecture/Security_Hardening.md`.

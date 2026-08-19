@@ -4,6 +4,12 @@
 
 The CICD module generates CI/CD pipeline configurations for multiple platforms including GitHub Actions, GitLab CI, Azure DevOps, and Jenkins.
 
+Generated GitHub Actions use SHA pins from `KNOWN_ACTION_PINS` (never
+`@vN`). Jenkins `run`/env values are quoted; env **keys** must match
+`[A-Za-z_][A-Za-z0-9_]*`. Pipeline names and output paths are jailed.
+CI suppressions require HMAC, an expiry, and refuse `*` targets. See
+`_Docs/Architecture/Security_Hardening.md`.
+
 ## Models
 
 ### CICDPlatform

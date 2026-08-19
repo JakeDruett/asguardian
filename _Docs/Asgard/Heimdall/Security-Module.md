@@ -674,6 +674,18 @@ print(f"  Low: {report.low_issues}")
 
 ---
 
+## Hardening
+
+- Walkers stay inside the scan root and skip file/dir symlinks.
+- Secret reports mask matched values (last-2 / length-only). Placeholders such as `test`/`example` only suppress a finding when the **whole** value is a placeholder.
+- Unpinned (`*`) dependencies are not treated as live-checked clean.
+- Missing tree-sitter grammar, parse failure, or a visitor crash marks the file truncated; the CLI degrades the score off 100 and exits 1.
+- Taint stub names are `[A-Za-z0-9_-]+` and must resolve under the stubs directory.
+- Parse size is checked before `read_bytes`. Git secret scan uses one `git grep -I`, not per-file `git show`.
+- Domain errors and incomplete CST fail `is_passing` / CLI exit 1.
+
+See `_Docs/Architecture/Security_Hardening.md`.
+
 ## Best Practices
 
 1. **Run regularly**: Include security scans in CI/CD pipelines
@@ -681,7 +693,7 @@ print(f"  Low: {report.low_issues}")
 3. **Exclude test fixtures**: Test files may contain intentional "secrets" for testing
 4. **Review all findings**: Some patterns may produce false positives
 5. **Fix critical issues first**: Prioritize by severity
-6. **Use baseline files**: Track security improvements over time
+6. **Use baseline files**: Track security improvements over time. Sign them with `ASGARD_BASELINE_HMAC_KEY` in CI.
 7. **Layer security checks**: Use access + auth + headers for API security
 8. **Container hardening**: Always run container analysis before deployment
 9. **Infrastructure review**: Run infra analysis on config files before deployment

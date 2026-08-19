@@ -554,3 +554,4 @@ Tests use the following pytest markers:
 - [13-Profiles-Module.md](13-Profiles-Module.md) - Quality profiles and rule sets
 - [14-Security-Advanced.md](14-Security-Advanced.md) - Taint analysis, hotspots, OWASP/CWE compliance, SBOM
 - [15-Reporting-Advanced.md](15-Reporting-Advanced.md) - Metrics history, PR decoration, MCP server
+- [Security Hardening](../../Architecture/Security_Hardening.md) - Scan jails, HMAC baselines, fail-closed grades

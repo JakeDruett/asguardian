@@ -268,6 +268,24 @@ class TestReDoSScannerPerformance:
 
 ---
 
+## Security-control tests
+
+Hardening invariants in `_Docs/Architecture/Security_Hardening.md` have
+targeted L0 tests. When you touch a jail, HMAC, escape, walker, bind, or
+fail-closed grade, keep or add a test that:
+
+- plants `../`, a dest symlink, or a parent-dir symlink and asserts no write/read outside the root
+- plants unsigned or sibling-`.key` cache/baseline JSON and asserts a miss / empty / `NOT_EVALUATED`
+- plants a quote, newline, or `@vN` in generated YAML/source/HTML and asserts refusal or escape
+- asserts empty/truncated analysis is **not** score 100 / letter A / exit 0
+- asserts a fake secret is absent in full from `code_snippet` and report JSON
+- asserts default bind is loopback and `0` / `::0` / `*` require `--expose`
+
+Use `neutral_tmp` (not raw `tmp_path`) for known-bad security fixtures so
+the test-path name does not mute the scanner.
+
+---
+
 ## Coverage Requirements
 
 | Scope | Minimum |

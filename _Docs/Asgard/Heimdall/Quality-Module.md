@@ -418,3 +418,8 @@ Covers:
 ```bash
 python -m Heimdall quality analyze <path> --languages=python,javascript,shell
 ```
+
+Language analyzers walk with confined iterators (no symlink escape).
+Hardcoded-credential findings mask quoted literals in `code_snippet`.
+Mypy/pyright run in an isolated workdir. Incremental/debt caches are
+HMAC-signed (env key only). See `_Docs/Architecture/Security_Hardening.md`.

@@ -97,3 +97,5 @@ python -m Heimdall ratings show <path>            # Show ratings with rationale
 ## Integration with Quality Gate
 
 The Ratings module feeds directly into the Quality Gate module. Letter ratings are evaluated using ordinal comparison (A=1, E=5), so a gate condition of `SecurityRating <= B` means A or B are both acceptable.
+
+Unmeasured dimensions are `N/A` and excluded from the overall letter. If any required dimension is missing, overall is `N/A`. D / E / `NOT_MEASURED` / domain errors exit 1. Empty analysis is not letter A.

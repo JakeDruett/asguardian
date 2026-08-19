@@ -256,3 +256,4 @@ Volundr works alongside other Asgard tools:
 - [04-Docker-Module.md](04-Docker-Module.md) - Docker module details
 - [05-CICD-Module.md](05-CICD-Module.md) - CICD module details
 - [06-CLI-Reference.md](06-CLI-Reference.md) - CLI command reference
+- [Security Hardening](../../Architecture/Security_Hardening.md) - Generator jails, HCL/Docker/Jenkins sanitizers, action pins
