@@ -44,7 +44,7 @@ def aggregate_by_period(
     for period_data in aggregated.values():
         total = period_data["total_events"]
         good = period_data["good_events"]
-        period_data["success_rate"] = good / total if total > 0 else 1.0
+        period_data["success_rate"] = good / total if total > 0 else 0.0
         period_data["failure_rate"] = 1.0 - period_data["success_rate"]
 
     return dict(sorted(aggregated.items()))

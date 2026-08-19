@@ -209,7 +209,7 @@ class SLITracker:
         good_events = sum(m.good_events for m in metrics)
         bad_events = total_events - good_events
 
-        success_rate = good_events / total_events if total_events > 0 else 1.0
+        success_rate = good_events / total_events if total_events > 0 else 0.0
 
         return {
             "total_events": total_events,

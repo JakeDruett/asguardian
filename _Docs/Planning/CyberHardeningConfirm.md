@@ -453,6 +453,8 @@ Same leftover class as CH-0011/CH-0051: unsigned JSON fail-closed; without the e
 
 ### CH-0098 — Residual (SLO empty = healthy)
 
+- **Leftover status:** Fixed
+- **Implementation note:** Zero-event SLI/period aggregation is 0; empty vitals are INSUFFICIENT_DATA/0; empty APM traces score 0.
 - `sla_checker` empty → 0 / BREACHED. `error_budget_calculator` / `sli_tracker` still treat zero events as 100% / 1.0.
 - Same class: `normalization/scoring.py` `multiplicative_security_score({})` is 100; `SecurityReport` defaults `score_counts or {}`. Incomplete CST (CHC-0009) still looks like a perfect score.
 - Same class (this pass): `APMReport.health_score` default 100 + `trace_aggregator.aggregate([])`; `vitals_calculator._calculate_score([])` → 100 / GOOD; empty image/link category scores still 100.
@@ -776,7 +778,7 @@ CHC Open remaining: none.
 
 - Open CHC: 0
 - Fixed CHC: 13
-- Residual leftovers in progress (CH-0043 this commit)
+- Residual leftovers in progress (CH-0098 this commit)
 - Current wave: residuals
-- Next: CH-0098, CH-0111, CH-0020
+- Next: CH-0111, CH-0020
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`

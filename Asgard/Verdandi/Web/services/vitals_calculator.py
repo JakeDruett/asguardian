@@ -409,7 +409,7 @@ class CoreWebVitalsCalculator:
     def _calculate_overall(self, ratings: List[VitalsRating]) -> VitalsRating:
         """Calculate overall rating (worst of all ratings)."""
         if not ratings:
-            return VitalsRating.GOOD
+            return VitalsRating.INSUFFICIENT_DATA
 
         if VitalsRating.POOR in ratings:
             return VitalsRating.POOR
@@ -420,12 +420,13 @@ class CoreWebVitalsCalculator:
     def _calculate_score(self, ratings: List[VitalsRating]) -> float:
         """Calculate overall score 0-100."""
         if not ratings:
-            return 100.0
+            return 0.0
 
         score_map = {
             VitalsRating.GOOD: 100,
             VitalsRating.NEEDS_IMPROVEMENT: 60,
             VitalsRating.POOR: 20,
+            VitalsRating.INSUFFICIENT_DATA: 0,
         }
 
         total = sum(score_map[r] for r in ratings)

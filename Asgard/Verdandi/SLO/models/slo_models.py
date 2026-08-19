@@ -114,7 +114,7 @@ class SLIMetric(BaseModel):
     def success_rate(self) -> float:
         """Calculate success rate from good/total events."""
         if self.total_events == 0:
-            return 1.0
+            return 0.0
         return self.good_events / self.total_events
 
     @property

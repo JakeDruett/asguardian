@@ -182,7 +182,7 @@ class TestSLIMetric:
             good_events=0,
             total_events=0,
         )
-        assert metric.success_rate == 1.0  # Defaults to 100%
+        assert metric.success_rate == 0.0  # Empty window is unknown, not 100%
 
     def test_sli_metric_failure_rate_property(self):
         """Test failure_rate property calculation."""

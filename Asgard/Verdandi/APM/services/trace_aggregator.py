@@ -80,6 +80,7 @@ class TraceAggregator:
                 generated_at=datetime.now(),
                 analysis_period_start=start_time,
                 analysis_period_end=end_time,
+                health_score=0.0,
             )
 
         all_spans: List[Span] = []
