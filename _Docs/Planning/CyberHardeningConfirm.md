@@ -417,6 +417,8 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 
 ### CH-0111 — Residual (`--protocols` CERT_NONE)
 
+- **Leftover status:** Fixed
+- **Implementation note:** Protocol probe verifies by default (`CERT_REQUIRED`); `--insecure` is labeled unauthenticated peek.
 - **Original sink (closed):** default `check_certificate` uses `CERT_REQUIRED`.
 - **Leftover:** `check_protocol_support` still `CERT_NONE` and connects to the operator host.
 - **Planned leftover fix:** use default context or label the probe unauthenticated.
@@ -778,7 +780,7 @@ CHC Open remaining: none.
 
 - Open CHC: 0
 - Fixed CHC: 13
-- Residual leftovers in progress (CH-0098 this commit)
+- Residual leftovers in progress (CH-0111 this commit)
 - Current wave: residuals
-- Next: CH-0111, CH-0020
+- Next: CH-0020
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`

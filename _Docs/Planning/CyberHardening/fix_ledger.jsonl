@@ -149,3 +149,4 @@
 {"id":"CH-0008","at":"2026-08-19T00:10:00Z","commit":"PENDING","wave":"W2","summary":"Refuse BackendInit symlink directories; O_NOFOLLOW creates"}
 {"id":"CH-0043","at":"2026-08-19T00:20:00Z","commit":"PENDING","wave":"W3","summary":"Mask leftover Java/Go/C#/C++/shell credential snippets"}
 {"id":"CH-0098","at":"2026-08-19T00:30:00Z","commit":"PENDING","wave":"W3","summary":"Empty SLI/vitals/APM score 0, not 100"}
+{"id":"CH-0111","at":"2026-08-19T00:40:00Z","commit":"PENDING","wave":"W3","summary":"Protocol probe verifies peer unless --insecure"}

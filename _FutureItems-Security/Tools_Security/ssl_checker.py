@@ -217,8 +217,13 @@ class SSLChecker:
         # Ensure score doesn't go below 0
         results['score'] = max(0, results['score'])
 
-    def check_protocol_support(self, host: str, port: int = 443) -> Dict:
-        """Check which SSL/TLS protocols are supported."""
+    def check_protocol_support(
+        self, host: str, port: int = 443, verify: bool = True
+    ) -> Dict:
+        """Check which SSL/TLS protocols are supported.
+
+        Default verifies the peer. Pass verify=False for an unauthenticated peek.
+        """
         protocols = {
             'SSLv2': ssl.PROTOCOL_SSLv23,
             'SSLv3': ssl.PROTOCOL_SSLv23,
@@ -227,7 +232,9 @@ class SSLChecker:
             'TLSv1.2': ssl.PROTOCOL_TLSv1_2 if hasattr(ssl, 'PROTOCOL_TLSv1_2') else None,
         }
 
-        supported = {}
+        supported = {
+            'unauthenticated_peek': not verify,
+        }
 
         for proto_name, proto_const in protocols.items():
             if proto_const is None:
@@ -236,8 +243,13 @@ class SSLChecker:
 
             try:
                 context = ssl.SSLContext(proto_const)
-                context.check_hostname = False
-                context.verify_mode = ssl.CERT_NONE
+                if verify:
+                    context.verify_mode = ssl.CERT_REQUIRED
+                    context.check_hostname = True
+                    context.load_default_certs()
+                else:
+                    context.check_hostname = False
+                    context.verify_mode = ssl.CERT_NONE
 
                 with socket.create_connection((host, port), timeout=self.timeout) as sock:
                     with context.wrap_socket(sock, server_hostname=host) as ssock:
@@ -377,8 +389,14 @@ def main():
         print("\n" + "-" * 40)
         print("PROTOCOL SUPPORT")
         print("-" * 40)
-        supported = checker.check_protocol_support(args.host, args.port)
+        supported = checker.check_protocol_support(
+            args.host, args.port, verify=not args.insecure
+        )
+        if supported.get("unauthenticated_peek"):
+            print("  (unauthenticated peek; scores are not from a verified peer)")
         for proto, status in supported.items():
+            if proto == "unauthenticated_peek":
+                continue
             if status is True:
                 print(f"  {proto}: ✓ Supported")
             elif status is False:
