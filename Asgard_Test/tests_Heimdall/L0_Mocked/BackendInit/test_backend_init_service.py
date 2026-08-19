@@ -548,3 +548,29 @@ class TestInitBackend:
     def test_empty_folder_name_is_rejected(self, tmp_path: Path) -> None:
         result = init_backend("", base_dir=tmp_path)
         assert result == 1
+
+    def test_subdirectory_symlink_is_refused(self, tmp_path: Path) -> None:
+        root = tmp_path / "proj"
+        root.mkdir()
+        outside = tmp_path / "outside"
+        outside.mkdir()
+        (outside / "keep.txt").write_text("keep\n", encoding="utf-8")
+        (root / "apis").symlink_to(outside)
+
+        result = init_backend("proj", base_dir=tmp_path)
+
+        assert result == 1
+        assert (root / "apis").is_symlink()
+        assert not (outside / "__init__.py").exists()
+        assert (outside / "keep.txt").read_text(encoding="utf-8") == "keep\n"
+
+    def test_root_symlink_is_refused(self, tmp_path: Path) -> None:
+        outside = tmp_path / "outside"
+        outside.mkdir()
+        (tmp_path / "proj").symlink_to(outside)
+
+        result = init_backend("proj", base_dir=tmp_path)
+
+        assert result == 1
+        assert not (outside / "apis").exists()
+        assert (tmp_path / "proj").is_symlink()

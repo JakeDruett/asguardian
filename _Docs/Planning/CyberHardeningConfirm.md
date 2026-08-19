@@ -385,6 +385,8 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 
 ### CH-0008 — Residual (parent-dir symlink)
 
+- **Leftover status:** Fixed
+- **Implementation note:** Refuse symlink project root and subdirs; create dirs with mkdir then re-check; writes use O_NOFOLLOW|O_EXCL.
 - **Original sink (closed):** leaf `.gitignore` / `_write_if_absent` skip `path.is_symlink()`.
 - **Leftover:** `mkdir` then write under `apis/` etc. follows a directory symlink. Populate-if-exists makes this reachable.
 - **Planned leftover fix:** refuse symlink directories; `O_NOFOLLOW` on create.
@@ -772,7 +774,7 @@ CHC Open remaining: none.
 
 - Open CHC: 0
 - Fixed CHC: 13
-- Residual leftovers in progress (CH-0110 this commit)
+- Residual leftovers in progress (CH-0008 this commit)
 - Current wave: residuals
-- Next: CH-0008, CH-0043, CH-0098, CH-0111, CH-0020
+- Next: CH-0043, CH-0098, CH-0111, CH-0020
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`

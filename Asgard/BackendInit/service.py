@@ -4,6 +4,7 @@ Backend initialization service.
 Scaffolds a standard backend project structure with opinionated defaults.
 """
 
+import os
 from pathlib import Path
 from typing import Optional
 
@@ -31,8 +32,29 @@ def _write_if_absent(path: Path, content: str) -> bool:
     """
     if path.is_symlink() or path.exists():
         return False
-    path.write_text(content, encoding="utf-8")
+    flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL
+    if hasattr(os, "O_NOFOLLOW"):
+        flags |= os.O_NOFOLLOW
+    try:
+        fd = os.open(path, flags, 0o644)
+    except OSError:
+        return False
+    with os.fdopen(fd, "w", encoding="utf-8") as handle:
+        handle.write(content)
     return True
+
+
+def _ensure_real_directory(path: Path) -> None:
+    """Create ``path`` as a real directory. Refuse symlink parents or leaves."""
+    if path.is_symlink():
+        raise ValueError(f"refusing symlink directory: {path}")
+    if path.exists():
+        if not path.is_dir():
+            raise ValueError(f"not a directory: {path}")
+        return
+    os.mkdir(path, 0o755)
+    if path.is_symlink():
+        raise ValueError(f"refusing symlink directory: {path}")
 
 
 def _ensure_gitignore(path: Path) -> None:
@@ -77,7 +99,10 @@ def _confined_project_root(folder_name: str, base_dir: Optional[Path]) -> Path:
     if raw.is_absolute() or ".." in raw.parts or "/" in name or "\\" in name:
         raise ValueError("folder_name must be a simple directory name")
     base = (base_dir or Path.cwd()).resolve()
-    root = (base / name).resolve()
+    dest = base / name
+    if dest.is_symlink():
+        raise ValueError("folder_name must not be a symlink")
+    root = dest.resolve()
     if not root.is_relative_to(base):
         raise ValueError("folder_name escapes the base directory")
     return root
@@ -96,10 +121,10 @@ def init_backend(folder_name: str, base_dir: Optional[Path] = None) -> int:
     """
     try:
         root = _confined_project_root(folder_name, base_dir)
+        _ensure_real_directory(root)
     except ValueError as exc:
         print(f"Error: {exc}")
         return 1
-    root.mkdir(parents=True, exist_ok=True)
 
     print(f"Initializing backend project in: {root}")
     print()
@@ -115,7 +140,11 @@ def init_backend(folder_name: str, base_dir: Optional[Path] = None) -> int:
 
     for dir_name, init_content in directories:
         directory = root / dir_name
-        directory.mkdir(exist_ok=True)
+        try:
+            _ensure_real_directory(directory)
+        except ValueError as exc:
+            print(f"Error: {exc}")
+            return 1
 
         init_file = directory / "__init__.py"
         written = _write_if_absent(init_file, init_content)
