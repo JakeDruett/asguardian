@@ -19,6 +19,11 @@ def test_scan_workflow_fail_closed():
     assert "continue-on-error" not in text
     assert "total_issues" in text
     assert "sys.exit(1)" in text
+    assert "test -s security-report.json" in text
+    assert "Unreadable security-report.json" in text
+    assert "has no scans" in text
+    assert "missing total_issues" in text
+    assert "s.get('total_issues', 0)" not in text
     assert os.path.isfile(
         os.path.join(_ROOT, "_FutureItems-Security", "Tools_Security", "security_api.py")
     )

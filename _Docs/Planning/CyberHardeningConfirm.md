@@ -376,6 +376,8 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 
 ### CH-0110 — Residual (empty JSON still green)
 
+- **Leftover status:** Fixed
+- **Implementation note:** Require non-empty `security-report.json`; unreadable/invalid JSON, empty `scans`, or missing/non-int/`< 0` `total_issues` fail the job.
 - **Original sink (closed):** workflow no longer `cd security-tools` or `continue-on-error`. SARIF empty-file check is fail-closed. SHA-pinned actions.
 - **Leftover:** critical gate treats failure as `total_issues < 0` (never true). Empty/zero-issue JSON stays green. No `test -s security-report.json`.
 - **Planned leftover fix:** fail if report missing/unreadable or `total_issues` parse fails; treat scanner crash as failure.
@@ -764,13 +766,13 @@ Updated: 2026-08-17T02:45:00+00:00
 | Low      | 0    | 1     | 0             |
 | Info     | 0    | 0     | 0             |
 
-CHC Open remaining: none. Residual leftovers still Open.
+CHC Open remaining: none.
 
 ## Implementation progress
 
 - Open CHC: 0
 - Fixed CHC: 13
-- Residual leftovers: 29 Open (CH-0066/0071 leftovers Fixed)
+- Residual leftovers in progress (CH-0110 this commit)
 - Current wave: residuals
-- Next: CH-0110, CH-0008, CH-0111, CH-0020, CH-0043
+- Next: CH-0008, CH-0043, CH-0098, CH-0111, CH-0020
 - Fix ledger: `_Docs/Planning/CyberHardening/fix_ledger.jsonl`

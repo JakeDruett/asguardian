@@ -64,20 +64,44 @@ jobs:
           name: security-report
           path: security-report.json
 
+      - name: Require JSON report
+        run: test -s security-report.json
+
       - name: Check for Critical Issues
         run: |
           python -c "
           import json, sys
-          data = json.load(open('security-report.json', encoding='utf-8'))
-          scans = data.get('scans', {})
-          failed = [k for k, s in scans.items() if s.get('total_issues', 0) < 0]
-          if failed:
-              print('::error::Scan failed for: ' + ', '.join(failed))
+          try:
+              with open('security-report.json', encoding='utf-8') as handle:
+                  data = json.load(handle)
+          except (OSError, json.JSONDecodeError) as exc:
+              print('::error::Unreadable security-report.json: ' + str(exc))
               sys.exit(1)
-          critical = sum(
-              s.get('by_severity', {}).get('CRITICAL', 0)
-              for s in scans.values()
-          )
+          if not isinstance(data, dict):
+              print('::error::security-report.json is not an object')
+              sys.exit(1)
+          scans = data.get('scans')
+          if not isinstance(scans, dict) or not scans:
+              print('::error::security-report.json has no scans')
+              sys.exit(1)
+          failed = []
+          for name, scan in scans.items():
+              if not isinstance(scan, dict) or 'total_issues' not in scan:
+                  failed.append(str(name))
+                  continue
+              total = scan['total_issues']
+              if type(total) is not int or total < 0:
+                  failed.append(str(name))
+          if failed:
+              print('::error::Scan failed or missing total_issues for: ' + ', '.join(failed))
+              sys.exit(1)
+          critical = 0
+          for scan in scans.values():
+              by_severity = scan.get('by_severity') if isinstance(scan, dict) else None
+              if isinstance(by_severity, dict):
+                  value = by_severity.get('CRITICAL', 0)
+                  if type(value) is int:
+                      critical += value
           if critical > 0:
               print(f'::error::Found {critical} critical security issues!')
               sys.exit(1)
