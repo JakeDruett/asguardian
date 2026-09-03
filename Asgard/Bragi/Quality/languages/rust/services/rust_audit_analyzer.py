@@ -196,6 +196,7 @@ class RustAuditAnalyzer:
             return None
 
         severity_str = ""
+        unscoreable_vector = False
         cvss = advisory.get("cvss")
         if isinstance(cvss, dict):
             # Defensive: not the real cargo-audit shape (which is a raw CVSS
@@ -204,7 +205,20 @@ class RustAuditAnalyzer:
             severity_str = str(cvss.get("severity", "")).lower()
         elif isinstance(cvss, str):
             severity_str = _cvss_v3_base_severity(cvss) or ""
-        severity = _RUSTSEC_SEVERITY_TO_TOOL.get(severity_str, ToolSeverity.WARNING)
+            # A present-but-unrecognised vector (verified against a real
+            # RustSec advisory-db checkout on 2026-09-03: 62/423 advisories
+            # carrying a `cvss` field used CVSS:4.0, which this parser does
+            # not compute) is not the same case as no CVSS data at all. The
+            # advisory-db entry is real and has a real, unknown severity --
+            # silently defaulting it to the same WARNING used for "no CVSS
+            # data" would repeat the exact silent-downgrade bug this
+            # function was written to fix, just for a newer vector format
+            # instead of a misread field name.
+            unscoreable_vector = cvss.startswith("CVSS:") and not severity_str
+        if unscoreable_vector:
+            severity = ToolSeverity.ERROR
+        else:
+            severity = _RUSTSEC_SEVERITY_TO_TOOL.get(severity_str, ToolSeverity.WARNING)
 
         pkg_name = package.get("name", "unknown")
         pkg_version = package.get("version", "")

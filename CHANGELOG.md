@@ -29,6 +29,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   all five toolchain analysers, and their CLI handlers, plus real-tool integration tests (skipped
   cleanly when the underlying tool is not installed) against new checked-in fixture projects
   (`Asgard_Test/fixtures/rust_toolchain_demo`, `Asgard_Test/fixtures/node_toolchain_demo`)
+- Go toolchain analysis, following the same shape as the Rust/Node work above: `quality go-vet`,
+  `quality go-build`, `quality go-fmt`, `quality go-test`, `quality go-vuln` (via `govulncheck`),
+  plus a fixture project and unit/integration tests
+- `.github/workflows/reusable-quality-gate.yml`: a `workflow_call` job any repo in the suite can
+  call to run the Rust/Node/Go toolchain analysers in its own CI without vendoring asguardian or
+  publishing it to PyPI first. See `_Docs/CI/Consumer-Wiring.md` for the exact per-repo snippet;
+  as of this entry no consumer repo has actually added the call yet.
+
+### Fixed
+- `quality rust-audit`: an advisory whose `cvss` field is a real, present vector this parser does
+  not understand (CVSS v4.0 -- confirmed against a real `rustsec/advisory-db` checkout, where
+  62/423 CVSS-bearing advisories are already v4) previously fell through to the same default
+  severity used for an advisory with no CVSS data at all, silently downgrading a real, unscored
+  vulnerability. It now fails safe to `error` instead of guessing `warning`.
 
 ## [1.2.0] - 2026-03-12
 

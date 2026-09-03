@@ -249,6 +249,57 @@ class TestRustAuditAnalyzerRealCvssShape:
         assert finding.severity == "error"
 
 
+# Verified against a real `git clone --depth 1 https://github.com/rustsec/
+# advisory-db` checkout on 2026-09-03: 423 real advisories carry a `cvss`
+# field, and 62 of them (~15%, RustSec has started publishing these) are
+# CVSS:4.0 vectors, which _cvss_v3_base_severity correctly declines to score
+# (it only understands v3.x) rather than mis-scoring. Before this fixture
+# was added, that None fell through the *same* WARNING default used for
+# "no CVSS data at all" -- silently downgrading a real, present-but-
+# unscored advisory exactly the way the pre-fix `.get("severity")` bug
+# silently downgraded every advisory. This is a real vector taken from that
+# corpus (RUSTSEC-2026-0146), not a synthetic one.
+_AUDIT_JSON_CVSS_V4_SHAPE = """
+{
+  "vulnerabilities": {
+    "found": true,
+    "count": 1,
+    "list": [
+      {
+        "advisory": {
+          "id": "RUSTSEC-2026-0146",
+          "title": "Example CVSS v4 advisory",
+          "description": "Detailed description.",
+          "url": "https://rustsec.org/advisories/RUSTSEC-2026-0146",
+          "cvss": "CVSS:4.0/AV:N/AC:L/AT:N/PR:N/UI:N/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N"
+        },
+        "package": {"name": "example", "version": "0.1.0"}
+      }
+    ]
+  }
+}
+"""
+
+
+class TestRustAuditAnalyzerCvssV4Vector:
+    def test_unscoreable_real_world_vector_fails_safe_not_silent(self, tmp_path: Path, monkeypatch):
+        (tmp_path / "Cargo.lock").write_text("# lock\n", encoding="utf-8")
+        monkeypatch.setattr(rust_audit_analyzer, "find_optional_executable", lambda *a, **k: "/usr/bin/cargo-audit")
+        monkeypatch.setattr(
+            rust_audit_analyzer,
+            "run_tool",
+            lambda cmd, cwd, timeout: ToolRunResult(
+                returncode=1, stdout=_AUDIT_JSON_CVSS_V4_SHAPE, stderr=""
+            ),
+        )
+        report = RustAuditAnalyzer(RustAuditConfig(scan_path=tmp_path)).analyze()
+        assert report.total_findings == 1
+        # Must not land on the same "warning" default used for advisories
+        # with no CVSS data at all -- that would silently downgrade a real,
+        # unscored vulnerability the same way the original bug did.
+        assert report.findings[0].severity == "error"
+
+
 @pytest.mark.skipif(shutil.which("cargo") is None, reason="cargo not installed in this environment")
 class TestRustClippyRealToolIntegration:
     """Exercises real cargo clippy against the checked-in fixture crate."""
