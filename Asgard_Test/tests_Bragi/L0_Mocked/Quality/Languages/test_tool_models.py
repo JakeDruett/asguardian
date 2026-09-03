@@ -53,6 +53,10 @@ class TestToolReportCounters:
         report = ToolReport()
         assert report.tools_unavailable == []
 
+    def test_tool_failed_defaults_to_false(self):
+        report = ToolReport()
+        assert report.tool_failed is False
+
     def test_dict_round_trips_all_stored_fields(self):
         report = ToolReport(scan_path="/tmp/x", language="rust", tool="cargo-clippy")
         report.add_finding(_finding(ToolSeverity.ERROR))

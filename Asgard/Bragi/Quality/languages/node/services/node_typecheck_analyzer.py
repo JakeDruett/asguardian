@@ -62,11 +62,13 @@ class NodeTypecheckAnalyzer:
 
         if result.timed_out:
             report.tools_unavailable.append(f"tsc timed out after {self._config.timeout_seconds}s")
+            report.tool_failed = True
             report.scan_duration_seconds = (datetime.now() - start).total_seconds()
             return report
 
         combined_output = result.stdout + result.stderr
         files_seen = set()
+        diagnostics_found = 0
         for line in combined_output.splitlines():
             match = _DIAGNOSTIC_RE.match(line.strip())
             if not match:
@@ -74,8 +76,21 @@ class NodeTypecheckAnalyzer:
             finding = self._finding_from_match(match, path)
             files_seen.add(finding.file_path)
             report.add_finding(finding)
+            diagnostics_found += 1
             if self._config.max_findings and report.total_findings >= self._config.max_findings:
                 break
+
+        # tsc's exit codes with --noEmit are 0 (no diagnostics) or 1
+        # (diagnostics present, all reported as per-file lines above and
+        # already accounted for). Any other exit code with zero parsed
+        # diagnostics means tsc itself failed to run (bad tsconfig, a
+        # missing/misconfigured toolchain) rather than that the project has
+        # no type errors, and must not be reported as a clean scan.
+        if diagnostics_found == 0 and result.returncode not in (0, 1):
+            detail_lines = (result.stderr or result.stdout or "").strip().splitlines()
+            detail = detail_lines[-1] if detail_lines else "produced no parseable diagnostics"
+            report.tools_unavailable.append(f"tsc failed to run (exit {result.returncode}): {detail}")
+            report.tool_failed = True
 
         report.files_analyzed = len(files_seen)
         report.scan_duration_seconds = (datetime.now() - start).total_seconds()

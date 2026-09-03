@@ -201,6 +201,30 @@ class TestNodeTypecheckAnalyzerParsing:
         report = NodeTypecheckAnalyzer(NodeTypecheckConfig(scan_path=project_dir)).analyze()
         assert report.total_findings == 0
 
+    def test_fatal_tsc_failure_with_no_diagnostics_is_reported_not_clean(self, tmp_path: Path, monkeypatch):
+        # A malformed tsconfig.json (or a broken toolchain) makes tsc exit
+        # with a fatal, non-per-file error such as "error TS18002: The
+        # 'files' list in config file 'tsconfig.json' is empty." That line
+        # has no "file(line,col):" prefix, so it never matches
+        # _DIAGNOSTIC_RE. Zero parsed diagnostics must not be read as "no
+        # type errors" when tsc did not actually complete a check.
+        project_dir = _project(tmp_path)
+        (project_dir / "tsconfig.json").write_text("{}\n", encoding="utf-8")
+        monkeypatch.setattr(node_typecheck_analyzer, "resolve_node_tool", lambda *a, **k: ["/usr/bin/tsc"])
+        monkeypatch.setattr(
+            node_typecheck_analyzer,
+            "run_tool",
+            lambda cmd, cwd, timeout: ToolRunResult(
+                returncode=3,
+                stdout="",
+                stderr="error TS18002: The 'files' list in config file 'tsconfig.json' is empty.\n",
+            ),
+        )
+        report = NodeTypecheckAnalyzer(NodeTypecheckConfig(scan_path=project_dir)).analyze()
+        assert report.total_findings == 0
+        assert report.tools_unavailable
+        assert "TS18002" in report.tools_unavailable[0]
+
 
 _NODE_TOOLS_PRESENT = all(
     shutil.which(tool) is not None for tool in ("node", "npm", "eslint", "tsc")

@@ -15,7 +15,7 @@ from Asgard.Bragi.Quality.languages.common.tool_models import (
     ToolSeverity,
 )
 from Asgard.Bragi.Quality.languages.common.tool_runner import ToolNotAvailableError
-from Asgard.Heimdall.cli.handlers import lang_analyzers, toolchain_analyzers
+from Asgard.Heimdall.cli.handlers import toolchain_analyzers
 from Asgard.Heimdall.cli.handlers.lang_analyzers import run_rust_analysis
 from Asgard.Heimdall.cli.handlers.toolchain_analyzers import (
     run_node_audit_analysis,
@@ -104,6 +104,25 @@ class TestRunRustAuditAnalysis:
         assert code == 0
         captured = capsys.readouterr()
         assert "cargo install cargo-audit" in captured.out
+
+    def test_tool_crash_with_zero_findings_still_returns_exit_1(self, tmp_path: Path, monkeypatch, capsys):
+        # A distinct case from "not installed" above: cargo-audit WAS found
+        # and invoked but crashed mid-run (unparseable output, a timeout, a
+        # non-zero exit with no output). Zero findings here must not read as
+        # a clean pass -- report.tool_failed is how the analyser tells the
+        # CLI the scan never actually completed.
+        report = ToolReport(scan_path=str(tmp_path), language="rust", tool="cargo-audit")
+        report.tools_unavailable.append("cargo-audit produced unparseable output in .")
+        report.tool_failed = True
+        monkeypatch.setattr(
+            toolchain_analyzers.RustAuditAnalyzer, "analyze",
+            lambda self, scan_path=None: report,
+        )
+        args = _make_namespace(path=str(tmp_path), format="text", timeout=60)
+        code = run_rust_audit_analysis(args)
+        assert code == 1
+        captured = capsys.readouterr()
+        assert "unparseable output" in captured.out
 
 
 class TestRunNodeLintAnalysis:

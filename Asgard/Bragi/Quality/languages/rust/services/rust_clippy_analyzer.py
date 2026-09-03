@@ -102,6 +102,7 @@ class RustClippyAnalyzer:
             report.tools_unavailable.append(
                 f"cargo clippy timed out after {self._config.timeout_seconds}s in {crate_dir}"
             )
+            report.tool_failed = True
             return
 
         if not result.stdout and result.returncode not in (0, 101):
@@ -109,6 +110,7 @@ class RustClippyAnalyzer:
             report.tools_unavailable.append(
                 f"cargo clippy failed to run in {crate_dir}: {detail[0]}"
             )
+            report.tool_failed = True
             return
 
         # cargo clippy --all-targets re-checks a binary crate once per target

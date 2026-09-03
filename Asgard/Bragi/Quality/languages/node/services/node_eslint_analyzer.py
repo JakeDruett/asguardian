@@ -68,12 +68,14 @@ class NodeEslintAnalyzer:
 
         if result.timed_out:
             report.tools_unavailable.append(f"eslint timed out after {self._config.timeout_seconds}s")
+            report.tool_failed = True
             report.scan_duration_seconds = (datetime.now() - start).total_seconds()
             return report
 
         if not result.stdout.strip():
             detail = (result.stderr or "produced no output").strip().splitlines()[-1:] or ["produced no output"]
             report.tools_unavailable.append(f"eslint failed to run: {detail[0]}")
+            report.tool_failed = True
             report.scan_duration_seconds = (datetime.now() - start).total_seconds()
             return report
 
@@ -81,6 +83,7 @@ class NodeEslintAnalyzer:
             file_results = json.loads(result.stdout)
         except json.JSONDecodeError:
             report.tools_unavailable.append("eslint produced unparseable output")
+            report.tool_failed = True
             report.scan_duration_seconds = (datetime.now() - start).total_seconds()
             return report
 

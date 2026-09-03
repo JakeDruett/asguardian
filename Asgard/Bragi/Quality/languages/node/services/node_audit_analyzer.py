@@ -60,12 +60,14 @@ class NodeAuditAnalyzer:
 
         if result.timed_out:
             report.tools_unavailable.append(f"npm audit timed out after {self._config.timeout_seconds}s")
+            report.tool_failed = True
             report.scan_duration_seconds = (datetime.now() - start).total_seconds()
             return report
 
         if not result.stdout.strip():
             detail = (result.stderr or "produced no output").strip().splitlines()[-1:] or ["produced no output"]
             report.tools_unavailable.append(f"npm audit failed to run: {detail[0]}")
+            report.tool_failed = True
             report.scan_duration_seconds = (datetime.now() - start).total_seconds()
             return report
 
@@ -73,6 +75,7 @@ class NodeAuditAnalyzer:
             payload = json.loads(result.stdout)
         except json.JSONDecodeError:
             report.tools_unavailable.append("npm audit produced unparseable output")
+            report.tool_failed = True
             report.scan_duration_seconds = (datetime.now() - start).total_seconds()
             return report
 
@@ -83,6 +86,7 @@ class NodeAuditAnalyzer:
         if top_level_error:
             summary = top_level_error.get("summary") or top_level_error.get("code") or "unknown error"
             report.tools_unavailable.append(f"npm audit could not reach the registry: {summary}")
+            report.tool_failed = True
             report.scan_duration_seconds = (datetime.now() - start).total_seconds()
             return report
 

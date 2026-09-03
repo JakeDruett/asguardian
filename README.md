@@ -243,11 +243,30 @@ asgard heimdall quality node-audit ./frontend
 asgard heimdall quality node-typecheck ./frontend
 ```
 
-Each of these requires the underlying tool to be installed. When it is not, the command prints a
+Each of these requires the underlying tool to be installed. `rust-clippy`, `node-lint`, and
+`node-typecheck` require their tool (cargo, eslint, tsc); when it is missing, the command prints a
 clear, actionable message (what to install and how) and exits non-zero -- it never crashes with a
-raw traceback. A project missing the tool's own configuration (no ESLint config, no
+raw traceback. `rust-audit`'s `cargo-audit` and `node-audit`'s `npm` (bundled with Node) are
+treated as optional: when `cargo-audit` specifically is not installed, the command instead exits
+0 with an actionable note, so a missing optional scanner does not fail a pipeline that has not
+opted into it. A project missing the tool's own configuration (no ESLint config, no
 tsconfig.json, no Cargo.toml/Cargo.lock under the scanned path) is reported the same way: a
-skipped, non-fatal note rather than a failure.
+skipped, non-fatal note and exit 0. In every case, a tool that WAS found and invoked but crashed,
+timed out, or produced output the analyser could not parse is a distinct, always-non-zero outcome
+even if it happens to find zero issues -- that failure is never presented as a clean scan.
+
+**Security note: these commands execute the scanned project's own toolchain.** Unlike Heimdall's
+Python type-check orchestration (which runs mypy/Pyright from an isolated, empty working
+directory with Asgard-owned config so a hostile tree's `pylintrc`/`mypy.ini` cannot run arbitrary
+init-hooks), `cargo clippy`, `cargo-audit`, ESLint, and `tsc` are all invoked with the scanned
+project directory as their working directory, because each needs its own `Cargo.toml`,
+`eslint.config.*`/`.eslintrc.*`, or `tsconfig.json` to run at all. That means running any of these
+five commands against an untrusted or unreviewed tree can execute that tree's own build scripts
+(`build.rs`, package install/postinstall scripts under `npm audit`'s dependency resolution) and
+plugin/loader configuration (a custom ESLint plugin, a `tsconfig.json` `extends` chain, a Cargo
+build script) with the same privileges as the `asgard` process itself. Only run these commands
+against code you already trust, the same way you would before running `cargo build`, `npm
+install`, or `tsc` directly in that tree.
 
 ## Python API
 

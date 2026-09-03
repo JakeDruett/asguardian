@@ -102,7 +102,7 @@ class TestRustClippyAnalyzerParsing:
         assert report.error_count == 1
 
     def test_note_level_messages_are_ignored(self, tmp_path: Path, monkeypatch):
-        crate_dir = _crate(tmp_path)
+        _crate(tmp_path)  # crate on disk; unused var flagged by lint, not needed here
         monkeypatch.setattr(rust_clippy_analyzer, "require_executable", lambda *a, **k: "/usr/bin/cargo")
         monkeypatch.setattr(
             rust_clippy_analyzer,
@@ -113,7 +113,7 @@ class TestRustClippyAnalyzerParsing:
         assert report.total_findings == 0
 
     def test_duplicate_diagnostics_across_targets_are_deduplicated(self, tmp_path: Path, monkeypatch):
-        crate_dir = _crate(tmp_path)
+        _crate(tmp_path)  # crate on disk; unused var flagged by lint, not needed here
         monkeypatch.setattr(rust_clippy_analyzer, "require_executable", lambda *a, **k: "/usr/bin/cargo")
         doubled = "\n".join([_CLIPPY_MESSAGE_LINE, _CLIPPY_MESSAGE_LINE])
         monkeypatch.setattr(
@@ -125,7 +125,7 @@ class TestRustClippyAnalyzerParsing:
         assert report.total_findings == 1
 
     def test_non_compiler_message_reasons_are_skipped(self, tmp_path: Path, monkeypatch):
-        crate_dir = _crate(tmp_path)
+        _crate(tmp_path)  # crate on disk; unused var flagged by lint, not needed here
         monkeypatch.setattr(rust_clippy_analyzer, "require_executable", lambda *a, **k: "/usr/bin/cargo")
         monkeypatch.setattr(
             rust_clippy_analyzer,
@@ -136,7 +136,7 @@ class TestRustClippyAnalyzerParsing:
         assert report.total_findings == 0
 
     def test_timeout_is_reported_not_raised(self, tmp_path: Path, monkeypatch):
-        crate_dir = _crate(tmp_path)
+        _crate(tmp_path)  # crate on disk; unused var flagged by lint, not needed here
         monkeypatch.setattr(rust_clippy_analyzer, "require_executable", lambda *a, **k: "/usr/bin/cargo")
         monkeypatch.setattr(
             rust_clippy_analyzer,
@@ -199,6 +199,54 @@ class TestRustAuditAnalyzerParsing:
         assert finding.severity == "error"
         assert finding.category == "dependency"
         assert "example" in finding.title
+
+
+# The real cargo-audit `--json` output stores an advisory's `cvss` as a raw
+# CVSS vector STRING (e.g. "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"),
+# never as a {"severity": ...} object. _AUDIT_JSON above uses the dict shape
+# only because RustAuditAnalyzer accepts it defensively; this fixture uses
+# the real shape so the severity derivation is exercised against what
+# cargo-audit actually emits.
+_AUDIT_JSON_REAL_CVSS_SHAPE = """
+{
+  "vulnerabilities": {
+    "found": true,
+    "count": 1,
+    "list": [
+      {
+        "advisory": {
+          "id": "RUSTSEC-2021-0002",
+          "title": "Remote code execution in example crate",
+          "description": "Detailed description.",
+          "url": "https://rustsec.org/advisories/RUSTSEC-2021-0002",
+          "cvss": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+        },
+        "package": {"name": "example", "version": "0.1.0"}
+      }
+    ]
+  }
+}
+"""
+
+
+class TestRustAuditAnalyzerRealCvssShape:
+    def test_string_cvss_vector_is_scored_not_ignored(self, tmp_path: Path, monkeypatch):
+        (tmp_path / "Cargo.lock").write_text("# lock\n", encoding="utf-8")
+        monkeypatch.setattr(rust_audit_analyzer, "find_optional_executable", lambda *a, **k: "/usr/bin/cargo-audit")
+        monkeypatch.setattr(
+            rust_audit_analyzer,
+            "run_tool",
+            lambda cmd, cwd, timeout: ToolRunResult(
+                returncode=1, stdout=_AUDIT_JSON_REAL_CVSS_SHAPE, stderr=""
+            ),
+        )
+        report = RustAuditAnalyzer(RustAuditConfig(scan_path=tmp_path)).analyze()
+        assert report.total_findings == 1
+        finding = report.findings[0]
+        # AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H is a canonical 9.8 (critical)
+        # vector; a naive `cvss.get("severity")` read (the pre-fix behaviour)
+        # would silently fall back to "warning" for every real advisory.
+        assert finding.severity == "error"
 
 
 @pytest.mark.skipif(shutil.which("cargo") is None, reason="cargo not installed in this environment")

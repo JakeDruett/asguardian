@@ -84,6 +84,16 @@ class ToolReport(BaseModel):
             "from a hard failure: the report is still valid, just partial."
         ),
     )
+    tool_failed: bool = Field(
+        False,
+        description=(
+            "True when the orchestrated tool was found and invoked but did not "
+            "complete a real scan (crashed, timed out, or produced output the "
+            "analyser could not parse). Distinct from a merely empty scan (no "
+            "matching files/manifest, or the tool itself not installed): a CLI "
+            "caller must not report this outcome as a clean pass."
+        ),
+    )
 
     class Config:
         use_enum_values = True
