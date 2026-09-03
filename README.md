@@ -306,4 +306,4 @@ Asgard/
 
 ## License
 
-Polyform Noncommercial License 1.0.0 — free for personal and non-commercial use. Commercial use requires a separate license. See [LICENSE](LICENSE) for details.
+Proprietary. All rights reserved. Commercial use requires a separate, written licensing agreement with the owner. See [LICENSE](LICENSE) for details.

@@ -7,7 +7,7 @@ name = "asguardian"
 dynamic = ["version"]
 description = "Asguardian - Universal Development Tools Suite"
 readme = "README.md"
-license = {text = "Polyform Noncommercial 1.0.0"}
+license = {text = "Proprietary"}
 requires-python = ">=3.11"
 authors = [
     {name = "Asgard Contributors"}
