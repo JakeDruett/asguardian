@@ -3,8 +3,9 @@ Heimdall CLI - Quality checks subparser registration.
 
 Registers thread-safety, race-conditions, daemon-threads, future-leaks,
 blocking-async, resource-cleanup, error-handling, documentation, naming,
-bugs, javascript, typescript, and shell subcommands onto a quality_subparsers
-object.
+bugs, javascript, typescript, shell, rust, rust-clippy, rust-audit,
+node-lint, node-audit, and node-typecheck subcommands onto a
+quality_subparsers object.
 """
 
 import argparse
@@ -23,6 +24,12 @@ from Asgard.Heimdall.cli.common import (
     add_js_args,
     add_ts_args,
     add_shell_args,
+    add_rust_args,
+    add_rust_clippy_args,
+    add_rust_audit_args,
+    add_node_lint_args,
+    add_node_audit_args,
+    add_node_typecheck_args,
 )
 
 
@@ -161,3 +168,77 @@ def register_quality_check_subcommands(quality_subparsers) -> None:
         ),
     )
     add_shell_args(quality_shell)
+
+    quality_rust = quality_subparsers.add_parser(
+        "rust",
+        help="Analyze Rust files for security and quality issues (pattern-based, no toolchain required)",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  heimdall quality rust ./src\n"
+            "  heimdall quality rust ./src --severity high\n"
+            "  heimdall quality rust ./src --format json\n"
+        ),
+    )
+    add_rust_args(quality_rust)
+
+    quality_rust_clippy = quality_subparsers.add_parser(
+        "rust-clippy",
+        help="Run cargo clippy over every crate found under a path (requires cargo)",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  heimdall quality rust-clippy ./my-crate\n"
+            "  heimdall quality rust-clippy ./my-crate --format json\n"
+            "  heimdall quality rust-clippy ./my-crate --timeout 600\n"
+        ),
+    )
+    add_rust_clippy_args(quality_rust_clippy)
+
+    quality_rust_audit = quality_subparsers.add_parser(
+        "rust-audit",
+        help="Scan Cargo.lock for known vulnerabilities via cargo-audit (requires cargo-audit)",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  heimdall quality rust-audit ./my-crate\n"
+            "  heimdall quality rust-audit ./my-crate --format json\n"
+        ),
+    )
+    add_rust_audit_args(quality_rust_audit)
+
+    quality_node_lint = quality_subparsers.add_parser(
+        "node-lint",
+        help="Run the project's own ESLint over a Node project (requires an ESLint config)",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  heimdall quality node-lint ./frontend\n"
+            "  heimdall quality node-lint ./frontend --format json\n"
+        ),
+    )
+    add_node_lint_args(quality_node_lint)
+
+    quality_node_audit = quality_subparsers.add_parser(
+        "node-audit",
+        help="Scan package.json/package-lock.json for known vulnerabilities via npm audit",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  heimdall quality node-audit ./frontend\n"
+            "  heimdall quality node-audit ./frontend --format json\n"
+        ),
+    )
+    add_node_audit_args(quality_node_audit)
+
+    quality_node_typecheck = quality_subparsers.add_parser(
+        "node-typecheck",
+        help="Run tsc --noEmit over a TypeScript project (requires tsconfig.json)",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  heimdall quality node-typecheck ./frontend\n"
+            "  heimdall quality node-typecheck ./frontend --format json\n"
+        ),
+    )
+    add_node_typecheck_args(quality_node_typecheck)

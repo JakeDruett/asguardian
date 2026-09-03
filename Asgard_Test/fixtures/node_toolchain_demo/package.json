@@ -1,0 +1,9 @@
+{
+  "name": "asguardian-node-toolchain-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fixture with deliberate ESLint, npm audit, and tsc defects for Asgard's Node toolchain-orchestration tests.",
+  "dependencies": {
+    "lodash": "4.17.4"
+  }
+}

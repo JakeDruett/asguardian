@@ -34,6 +34,12 @@ from Asgard.Heimdall.cli.handlers import (
     run_js_analysis,
     run_ts_analysis,
     run_shell_analysis,
+    run_rust_analysis,
+    run_rust_clippy_analysis,
+    run_rust_audit_analysis,
+    run_node_lint_analysis,
+    run_node_audit_analysis,
+    run_node_typecheck_analysis,
     run_config_secrets_analysis,
     run_hotspots_analysis,
     run_compliance_analysis,
@@ -92,6 +98,12 @@ def dispatch_analysis(args, verbose: bool) -> None:
             print("  javascript      Analyze JavaScript files for quality issues")
             print("  typescript      Analyze TypeScript files for quality issues")
             print("  shell           Analyze shell/bash scripts for quality and security issues")
+            print("  rust            Analyze Rust files for quality issues (pattern-based)")
+            print("  rust-clippy     Run cargo clippy over Rust crates (requires cargo)")
+            print("  rust-audit      Scan Cargo.lock for known vulnerabilities (requires cargo-audit)")
+            print("  node-lint       Run the project's own ESLint over a Node project")
+            print("  node-audit      Scan package.json/package-lock.json via npm audit")
+            print("  node-typecheck  Run tsc --noEmit over a TypeScript project")
             print("\nUse 'heimdall quality <subcommand> -h' for help on a specific subcommand.")
             sys.exit(1)
 
@@ -122,6 +134,12 @@ def dispatch_analysis(args, verbose: bool) -> None:
             "javascript": lambda: run_js_analysis(args, verbose),
             "typescript": lambda: run_ts_analysis(args, verbose),
             "shell": lambda: run_shell_analysis(args, verbose),
+            "rust": lambda: run_rust_analysis(args, verbose),
+            "rust-clippy": lambda: run_rust_clippy_analysis(args, verbose),
+            "rust-audit": lambda: run_rust_audit_analysis(args, verbose),
+            "node-lint": lambda: run_node_lint_analysis(args, verbose),
+            "node-audit": lambda: run_node_audit_analysis(args, verbose),
+            "node-typecheck": lambda: run_node_typecheck_analysis(args, verbose),
         }
 
         if args.quality_command in handlers:

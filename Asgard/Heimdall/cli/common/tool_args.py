@@ -168,6 +168,89 @@ def add_shell_args(parser: argparse.ArgumentParser) -> None:
     )
 
 
+def add_rust_args(parser: argparse.ArgumentParser) -> None:
+    """Add Rust pattern analysis arguments to a parser."""
+    parser.add_argument(
+        "path",
+        type=str,
+        nargs="?",
+        default=".",
+        help="Root path to scan (default: current directory)",
+    )
+    parser.add_argument(
+        "--format",
+        "-f",
+        choices=["text", "json"],
+        default="text",
+        help="Output format (default: text)",
+    )
+    parser.add_argument(
+        "--exclude",
+        "-x",
+        type=str,
+        nargs="+",
+        default=[],
+        help="Additional patterns to exclude",
+    )
+    parser.add_argument(
+        "--disable",
+        type=str,
+        nargs="+",
+        default=[],
+        dest="disabled_rules",
+        help="Rule IDs to disable",
+    )
+
+
+def _add_toolchain_common_args(parser: argparse.ArgumentParser, timeout_default: int) -> None:
+    """Shared path/format/timeout arguments for toolchain-orchestrating analysers."""
+    parser.add_argument(
+        "path",
+        type=str,
+        nargs="?",
+        default=".",
+        help="Root path to scan (default: current directory)",
+    )
+    parser.add_argument(
+        "--format",
+        "-f",
+        choices=["text", "json"],
+        default="text",
+        help="Output format (default: text)",
+    )
+    parser.add_argument(
+        "--timeout",
+        type=int,
+        default=timeout_default,
+        help=f"Subprocess timeout in seconds (default: {timeout_default})",
+    )
+
+
+def add_rust_clippy_args(parser: argparse.ArgumentParser) -> None:
+    """Add cargo clippy orchestration arguments to a parser."""
+    _add_toolchain_common_args(parser, timeout_default=300)
+
+
+def add_rust_audit_args(parser: argparse.ArgumentParser) -> None:
+    """Add cargo-audit orchestration arguments to a parser."""
+    _add_toolchain_common_args(parser, timeout_default=180)
+
+
+def add_node_lint_args(parser: argparse.ArgumentParser) -> None:
+    """Add ESLint orchestration arguments to a parser."""
+    _add_toolchain_common_args(parser, timeout_default=300)
+
+
+def add_node_audit_args(parser: argparse.ArgumentParser) -> None:
+    """Add npm audit orchestration arguments to a parser."""
+    _add_toolchain_common_args(parser, timeout_default=180)
+
+
+def add_node_typecheck_args(parser: argparse.ArgumentParser) -> None:
+    """Add tsc orchestration arguments to a parser."""
+    _add_toolchain_common_args(parser, timeout_default=300)
+
+
 def add_issues_args(parser: argparse.ArgumentParser) -> None:
     """Add common issue tracking arguments to a parser."""
     parser.add_argument(

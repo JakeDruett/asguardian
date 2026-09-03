@@ -91,6 +91,14 @@ from Asgard.Heimdall.cli.handlers.lang_analyzers import (
     run_js_analysis,
     run_ts_analysis,
     run_shell_analysis,
+    run_rust_analysis,
+)
+from Asgard.Heimdall.cli.handlers.toolchain_analyzers import (
+    run_rust_clippy_analysis,
+    run_rust_audit_analysis,
+    run_node_lint_analysis,
+    run_node_audit_analysis,
+    run_node_typecheck_analysis,
 )
 from Asgard.Heimdall.cli.handlers.issues import (
     run_issues_command,
@@ -192,6 +200,12 @@ __all__ = [
     "run_js_analysis",
     "run_ts_analysis",
     "run_shell_analysis",
+    "run_rust_analysis",
+    "run_rust_clippy_analysis",
+    "run_rust_audit_analysis",
+    "run_node_lint_analysis",
+    "run_node_audit_analysis",
+    "run_node_typecheck_analysis",
     "run_issues_command",
     "_run_issues_list",
     "_run_issues_show",

@@ -212,6 +212,42 @@ asgard heimdall codefix ./src
 | JavaScript | no-eval, no-debugger, no-var, eqeqeq, no-console, complexity (12 rules) |
 | TypeScript | All JS rules + no-explicit-any, no-any-cast, no-non-null-assertion, prefer-interface |
 | Shell/Bash | eval injection, curl --insecure, hardcoded secrets, missing set -e/u (12 rules) |
+| Rust | unsafe blocks, unwrap/expect, transmute, raw pointer deref, command injection, hardcoded credentials (8 pattern rules) |
+
+Rust and Node also have toolchain-orchestrating analysers that run the ecosystem's own tools
+instead of pattern rules -- see [Toolchain-Orchestrated Analysis](#toolchain-orchestrated-analysis)
+below.
+
+## Toolchain-Orchestrated Analysis
+
+For Rust and Node, Heimdall orchestrates each ecosystem's own mature tools rather than
+reimplementing their analysis in Python: `cargo clippy`, `cargo-audit`, ESLint, `npm audit`, and
+`tsc`. Findings are normalised into the same rating/gate/issue-tracking model used everywhere
+else in Heimdall, regardless of which tool produced them.
+
+```bash
+# Rust: cargo clippy lint diagnostics (requires cargo + clippy)
+asgard heimdall quality rust-clippy ./my-crate
+
+# Rust: Cargo.lock vulnerability scan against the RustSec advisory database
+# (requires the separate cargo-audit plugin: cargo install cargo-audit)
+asgard heimdall quality rust-audit ./my-crate
+
+# Node: the project's own configured ESLint (requires an ESLint config)
+asgard heimdall quality node-lint ./frontend
+
+# Node: package.json/package-lock.json vulnerability scan via npm audit
+asgard heimdall quality node-audit ./frontend
+
+# Node: TypeScript compiler diagnostics (requires tsconfig.json)
+asgard heimdall quality node-typecheck ./frontend
+```
+
+Each of these requires the underlying tool to be installed. When it is not, the command prints a
+clear, actionable message (what to install and how) and exits non-zero -- it never crashes with a
+raw traceback. A project missing the tool's own configuration (no ESLint config, no
+tsconfig.json, no Cargo.toml/Cargo.lock under the scanned path) is reported the same way: a
+skipped, non-fatal note rather than a failure.
 
 ## Python API
 
@@ -253,6 +289,12 @@ asgard heimdall quality bugs <path>
 asgard heimdall quality javascript <path>
 asgard heimdall quality typescript <path>
 asgard heimdall quality shell <path>
+asgard heimdall quality rust <path>
+asgard heimdall quality rust-clippy <path>
+asgard heimdall quality rust-audit <path>
+asgard heimdall quality node-lint <path>
+asgard heimdall quality node-audit <path>
+asgard heimdall quality node-typecheck <path>
 
 asgard heimdall security hotspots <path>
 asgard heimdall security compliance <path>
