@@ -36,6 +36,25 @@ with `yaml.safe_load`. The workflow-level checkout/install/dispatch wiring
 itself was not exercised inside a real GitHub Actions runner, since none is
 available in this sandbox -- treat that part as reviewed, not proven.
 
+## Ordering constraint: asguardian must merge first
+
+**Do not apply the snippets below yet.** They all reference
+`primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@main`,
+and that workflow does not exist on `main` -- it was added on
+`claude/gaia-compatibility-matrix` and is unmerged. Verified 2026-09-03:
+`git ls-tree origin/main -- .github/workflows/` has no
+`reusable-quality-gate.yml`.
+
+A `uses:` pointing at a workflow that is not on the referenced ref fails at
+job-startup with a workflow-not-found error, so wiring a consumer repo today
+buys that repo an immediately-red CI job that no code change can fix. The
+order is: merge this branch to asguardian `main` first, confirm the workflow
+resolves there, then apply the per-repo snippets.
+
+Pinning a consumer to `@claude/gaia-compatibility-matrix` to get around this
+is not a fix -- it leaves a dangling ref in every consumer the moment the
+branch is deleted after merge.
+
 ## Per-repo snippets
 
 Verified against each repo's actual source in this sandbox before writing --
