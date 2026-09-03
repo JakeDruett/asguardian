@@ -4,8 +4,8 @@ Heimdall CLI - Quality checks subparser registration.
 Registers thread-safety, race-conditions, daemon-threads, future-leaks,
 blocking-async, resource-cleanup, error-handling, documentation, naming,
 bugs, javascript, typescript, shell, rust, rust-clippy, rust-audit,
-node-lint, node-audit, and node-typecheck subcommands onto a
-quality_subparsers object.
+node-lint, node-audit, node-typecheck, go, go-vet, go-build, go-fmt,
+go-test, and go-vuln subcommands onto a quality_subparsers object.
 """
 
 import argparse
@@ -30,6 +30,12 @@ from Asgard.Heimdall.cli.common import (
     add_node_lint_args,
     add_node_audit_args,
     add_node_typecheck_args,
+    add_go_args,
+    add_go_vet_args,
+    add_go_build_args,
+    add_go_fmt_args,
+    add_go_test_args,
+    add_go_vuln_args,
 )
 
 
@@ -242,3 +248,76 @@ def register_quality_check_subcommands(quality_subparsers) -> None:
         ),
     )
     add_node_typecheck_args(quality_node_typecheck)
+
+    quality_go = quality_subparsers.add_parser(
+        "go",
+        help="Analyze Go files for security and quality issues (pattern-based, no toolchain required)",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  heimdall quality go ./src\n"
+            "  heimdall quality go ./src --severity high\n"
+            "  heimdall quality go ./src --format json\n"
+        ),
+    )
+    add_go_args(quality_go)
+
+    quality_go_vet = quality_subparsers.add_parser(
+        "go-vet",
+        help="Run go vet over every module found under a path (requires go)",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  heimdall quality go-vet ./my-service\n"
+            "  heimdall quality go-vet ./my-service --format json\n"
+        ),
+    )
+    add_go_vet_args(quality_go_vet)
+
+    quality_go_build = quality_subparsers.add_parser(
+        "go-build",
+        help="Run go build over every module found under a path to detect compile failures (requires go)",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  heimdall quality go-build ./my-service\n"
+            "  heimdall quality go-build ./my-service --format json\n"
+        ),
+    )
+    add_go_build_args(quality_go_build)
+
+    quality_go_fmt = quality_subparsers.add_parser(
+        "go-fmt",
+        help="Run gofmt -l to detect Go formatting drift (requires go)",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  heimdall quality go-fmt ./my-service\n"
+            "  heimdall quality go-fmt ./my-service --format json\n"
+        ),
+    )
+    add_go_fmt_args(quality_go_fmt)
+
+    quality_go_test = quality_subparsers.add_parser(
+        "go-test",
+        help="Run go test -json over every module found under a path and report failing tests (requires go)",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  heimdall quality go-test ./my-service\n"
+            "  heimdall quality go-test ./my-service --format json\n"
+        ),
+    )
+    add_go_test_args(quality_go_test)
+
+    quality_go_vuln = quality_subparsers.add_parser(
+        "go-vuln",
+        help="Scan Go modules for known vulnerabilities via govulncheck (requires govulncheck)",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=(
+            "Examples:\n"
+            "  heimdall quality go-vuln ./my-service\n"
+            "  heimdall quality go-vuln ./my-service --format json\n"
+        ),
+    )
+    add_go_vuln_args(quality_go_vuln)

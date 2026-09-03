@@ -40,6 +40,12 @@ from Asgard.Heimdall.cli.handlers import (
     run_node_lint_analysis,
     run_node_audit_analysis,
     run_node_typecheck_analysis,
+    run_go_analysis,
+    run_go_vet_analysis,
+    run_go_build_analysis,
+    run_go_fmt_analysis,
+    run_go_test_analysis,
+    run_go_vuln_analysis,
     run_config_secrets_analysis,
     run_hotspots_analysis,
     run_compliance_analysis,
@@ -104,6 +110,12 @@ def dispatch_analysis(args, verbose: bool) -> None:
             print("  node-lint       Run the project's own ESLint over a Node project")
             print("  node-audit      Scan package.json/package-lock.json via npm audit")
             print("  node-typecheck  Run tsc --noEmit over a TypeScript project")
+            print("  go              Analyze Go files for quality issues (pattern-based)")
+            print("  go-vet          Run go vet over Go modules (requires go)")
+            print("  go-build        Run go build over Go modules to detect compile failures (requires go)")
+            print("  go-fmt          Run gofmt -l to detect formatting drift (requires go)")
+            print("  go-test         Run go test -json and report failing tests (requires go)")
+            print("  go-vuln         Scan Go modules for known vulnerabilities via govulncheck")
             print("\nUse 'heimdall quality <subcommand> -h' for help on a specific subcommand.")
             sys.exit(1)
 
@@ -140,6 +152,12 @@ def dispatch_analysis(args, verbose: bool) -> None:
             "node-lint": lambda: run_node_lint_analysis(args, verbose),
             "node-audit": lambda: run_node_audit_analysis(args, verbose),
             "node-typecheck": lambda: run_node_typecheck_analysis(args, verbose),
+            "go": lambda: run_go_analysis(args, verbose),
+            "go-vet": lambda: run_go_vet_analysis(args, verbose),
+            "go-build": lambda: run_go_build_analysis(args, verbose),
+            "go-fmt": lambda: run_go_fmt_analysis(args, verbose),
+            "go-test": lambda: run_go_test_analysis(args, verbose),
+            "go-vuln": lambda: run_go_vuln_analysis(args, verbose),
         }
 
         if args.quality_command in handlers:

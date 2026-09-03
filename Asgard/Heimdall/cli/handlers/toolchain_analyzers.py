@@ -1,9 +1,10 @@
 """
 Heimdall CLI handlers for toolchain-orchestrating quality analysers.
 
-Unlike lang_analyzers.py (regex-based, dependency-free JS/TS/Rust scans),
+Unlike lang_analyzers.py (regex-based, dependency-free JS/TS/Rust/Go scans),
 these handlers shell out to each ecosystem's own tool (cargo clippy,
-cargo-audit, ESLint, npm audit, tsc) via
+cargo-audit, ESLint, npm audit, tsc, go vet, go build, gofmt, go test,
+govulncheck) via
 Asgard.Bragi.Quality.languages.common.tool_runner. A missing tool raises
 ToolNotAvailableError with an actionable install message, caught here and
 printed the same way run_type_check_analysis already handles a missing
@@ -31,6 +32,18 @@ from Asgard.Bragi.Quality.languages.rust.models.rust_toolchain_models import (
 )
 from Asgard.Bragi.Quality.languages.rust.services.rust_audit_analyzer import RustAuditAnalyzer
 from Asgard.Bragi.Quality.languages.rust.services.rust_clippy_analyzer import RustClippyAnalyzer
+from Asgard.Bragi.Quality.languages.go.models.go_toolchain_models import (
+    GoBuildConfig,
+    GoFmtConfig,
+    GoTestConfig,
+    GoVetConfig,
+    GoVulnConfig,
+)
+from Asgard.Bragi.Quality.languages.go.services.go_build_analyzer import GoBuildAnalyzer
+from Asgard.Bragi.Quality.languages.go.services.go_fmt_analyzer import GoFmtAnalyzer
+from Asgard.Bragi.Quality.languages.go.services.go_test_analyzer import GoTestAnalyzer
+from Asgard.Bragi.Quality.languages.go.services.go_vet_analyzer import GoVetAnalyzer
+from Asgard.Bragi.Quality.languages.go.services.go_vuln_analyzer import GoVulnAnalyzer
 
 
 def _print_report(report: ToolReport, title: str, output_format: str, verbose: bool) -> int:
@@ -193,6 +206,126 @@ def run_node_typecheck_analysis(args: argparse.Namespace, verbose: bool = False)
         )
         report = NodeTypecheckAnalyzer(config).analyze()
         return _print_report(report, "NODE TYPESCRIPT TYPE CHECK REPORT", getattr(args, "format", "text"), verbose)
+
+    except ToolNotAvailableError as exc:
+        print(f"Error: {exc}")
+        return 1
+    except Exception as exc:
+        print(f"Error: {exc}")
+        if verbose:
+            _traceback.print_exc()
+        return 1
+
+
+def run_go_vet_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
+    try:
+        scan_path = Path(args.path).resolve()
+        if not scan_path.exists():
+            print(f"Error: Path does not exist: {scan_path}")
+            return 1
+
+        config = GoVetConfig(
+            scan_path=scan_path,
+            timeout_seconds=getattr(args, "timeout", 180),
+        )
+        report = GoVetAnalyzer(config).analyze()
+        return _print_report(report, "GO VET ANALYSIS REPORT", getattr(args, "format", "text"), verbose)
+
+    except ToolNotAvailableError as exc:
+        print(f"Error: {exc}")
+        return 1
+    except Exception as exc:
+        print(f"Error: {exc}")
+        if verbose:
+            _traceback.print_exc()
+        return 1
+
+
+def run_go_build_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
+    try:
+        scan_path = Path(args.path).resolve()
+        if not scan_path.exists():
+            print(f"Error: Path does not exist: {scan_path}")
+            return 1
+
+        config = GoBuildConfig(
+            scan_path=scan_path,
+            timeout_seconds=getattr(args, "timeout", 300),
+        )
+        report = GoBuildAnalyzer(config).analyze()
+        return _print_report(report, "GO BUILD ANALYSIS REPORT", getattr(args, "format", "text"), verbose)
+
+    except ToolNotAvailableError as exc:
+        print(f"Error: {exc}")
+        return 1
+    except Exception as exc:
+        print(f"Error: {exc}")
+        if verbose:
+            _traceback.print_exc()
+        return 1
+
+
+def run_go_fmt_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
+    try:
+        scan_path = Path(args.path).resolve()
+        if not scan_path.exists():
+            print(f"Error: Path does not exist: {scan_path}")
+            return 1
+
+        config = GoFmtConfig(
+            scan_path=scan_path,
+            timeout_seconds=getattr(args, "timeout", 120),
+        )
+        report = GoFmtAnalyzer(config).analyze()
+        return _print_report(report, "GOFMT ANALYSIS REPORT", getattr(args, "format", "text"), verbose)
+
+    except ToolNotAvailableError as exc:
+        print(f"Error: {exc}")
+        return 1
+    except Exception as exc:
+        print(f"Error: {exc}")
+        if verbose:
+            _traceback.print_exc()
+        return 1
+
+
+def run_go_test_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
+    try:
+        scan_path = Path(args.path).resolve()
+        if not scan_path.exists():
+            print(f"Error: Path does not exist: {scan_path}")
+            return 1
+
+        config = GoTestConfig(
+            scan_path=scan_path,
+            timeout_seconds=getattr(args, "timeout", 600),
+        )
+        report = GoTestAnalyzer(config).analyze()
+        return _print_report(report, "GO TEST RESULTS REPORT", getattr(args, "format", "text"), verbose)
+
+    except ToolNotAvailableError as exc:
+        print(f"Error: {exc}")
+        return 1
+    except Exception as exc:
+        print(f"Error: {exc}")
+        if verbose:
+            _traceback.print_exc()
+        return 1
+
+
+def run_go_vuln_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
+    try:
+        scan_path = Path(args.path).resolve()
+        if not scan_path.exists():
+            print(f"Error: Path does not exist: {scan_path}")
+            return 1
+
+        config = GoVulnConfig(
+            scan_path=scan_path,
+            timeout_seconds=getattr(args, "timeout", 300),
+        )
+        report = GoVulnAnalyzer(config).analyze()
+        return _print_report(report, "GO DEPENDENCY VULNERABILITY REPORT", getattr(args, "format", "text"), verbose)
 
     except ToolNotAvailableError as exc:
         print(f"Error: {exc}")
