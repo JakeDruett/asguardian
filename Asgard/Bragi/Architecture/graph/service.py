@@ -262,19 +262,24 @@ class ArchGraphService:
     def _cache_path(self, scan_path: Path) -> Path:
         return scan_path / BOUNDS_CACHE_RELATIVE_PATH
 
-    def _hmac_key(self, scan_path: Path) -> bytes:
-        from Asgard.common._hmac_env import hmac_key_from_env
+    def _key_path(self, scan_path: Path) -> Path:
+        cache_file = self._cache_path(scan_path)
+        return cache_file.with_name(cache_file.name + ".key")
+
+    def _hmac_key(self, scan_path: Path, *, create: bool = True) -> Optional[bytes]:
+        from Asgard.common._hmac_env import hmac_key_from_env, persisted_hmac_key
 
         env = hmac_key_from_env(_HMAC_ENV)
         if env is not None:
             return env
-        if getattr(self, "_ephemeral_hmac", None) is None:
-            self._ephemeral_hmac = os.urandom(32)
-        return self._ephemeral_hmac
+        return persisted_hmac_key(self._key_path(scan_path), create=create)
 
-    def _sign_bounds(self, scan_path: Path, payload: dict) -> str:
+    def _sign_bounds(self, scan_path: Path, payload: dict, *, create: bool = True) -> Optional[str]:
+        key = self._hmac_key(scan_path, create=create)
+        if key is None:
+            return None
         canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str)
-        return hmac.new(self._hmac_key(scan_path), canonical.encode("utf-8"), hashlib.sha256).hexdigest()
+        return hmac.new(key, canonical.encode("utf-8"), hashlib.sha256).hexdigest()
 
     @staticmethod
     def _hydrate_bounds(raw) -> Dict[str, LevelBounds]:
@@ -305,8 +310,11 @@ class ArchGraphService:
             if not isinstance(data, dict):
                 return None
             expected = data.pop("hmac", None)
-            if not isinstance(expected, str) or not hmac.compare_digest(
-                expected, self._sign_bounds(scan_path, data)
+            computed = self._sign_bounds(scan_path, data, create=False)
+            if (
+                not isinstance(expected, str)
+                or computed is None
+                or not hmac.compare_digest(expected, computed)
             ):
                 return None
             if data.get("version") != BOUNDS_CACHE_VERSION:

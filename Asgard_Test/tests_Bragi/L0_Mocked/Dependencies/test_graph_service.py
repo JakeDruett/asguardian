@@ -354,3 +354,60 @@ class TestCacheHardening:
         service.build(tmp_path)
         assert service.last_file_cache_hits == 0
         assert service.derived_cache_hit is False
+
+    def test_second_instance_verifies_first_instances_cache_without_env_key(
+        self, tmp_path, monkeypatch,
+    ):
+        """Cross-process cache hit: a *different* DependencyGraphService
+        instance (standing in for a separate CLI run) must actually verify a
+        cache written by an earlier instance, with no HMAC env var set. Before
+        the persisted-.key-file fix, each instance minted its own
+        os.urandom(32) signing key, so a fresh instance's HMAC check on a
+        prior instance's disk cache always failed and the cache was silently
+        treated as absent on every single run.
+        """
+        monkeypatch.delenv(HMAC_ENV, raising=False)
+        monkeypatch.delenv("ASGARD_NO_CACHE", raising=False)
+        make_cycle_repo(tmp_path)
+
+        writer = DependencyGraphService(DependencyConfig(scan_path=tmp_path))
+        writer.build(tmp_path)
+        path = self._cache_path(tmp_path)
+        assert path.exists()
+        key_file = path.with_name(path.name + ".key")
+        assert key_file.exists()
+        assert len(key_file.read_bytes()) == 32
+
+        reader = DependencyGraphService(DependencyConfig(scan_path=tmp_path))
+        reader.build(tmp_path)
+        assert reader.last_file_cache_hits > 0
+        assert reader.derived_cache_hit is True
+
+    def test_unsigned_planted_cache_without_any_key_material_is_a_miss(
+        self, tmp_path, monkeypatch,
+    ):
+        """Guards the *other* hole in the same code path: `_load_cache` used
+        to skip HMAC verification entirely (treating the payload as trusted)
+        whenever `_hmac_key(create=False)` returned None -- which is exactly
+        the state of a completely fresh checkout with no env key and no
+        `.key` file on disk yet. An attacker (or a stale/foreign cache file)
+        could plant an unsigned cache and have it silently accepted as the
+        real dependency graph. No key material must ever mean "trust it",
+        only "cache miss".
+        """
+        monkeypatch.delenv(HMAC_ENV, raising=False)
+        monkeypatch.delenv("ASGARD_NO_CACHE", raising=False)
+        make_cycle_repo(tmp_path)
+        path = self._cache_path(tmp_path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({
+            "version": CACHE_VERSION,
+            "files": {"a.py": {"content_hash": "00" * 32}},
+            "derived": {"graph_key": "00" * 32},
+        }))
+        assert not path.with_name(path.name + ".key").exists()
+
+        service = DependencyGraphService(DependencyConfig(scan_path=tmp_path))
+        service.build(tmp_path)
+        assert service.last_file_cache_hits == 0
+        assert service.derived_cache_hit is False

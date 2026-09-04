@@ -252,6 +252,33 @@ class TestIncrementalEquivalence:
             assert first[module].min_level == second[module].min_level
             assert first[module].max_level == second[module].max_level
 
+    def test_second_instance_verifies_first_instances_cache_without_env_key(self, tmp_path, monkeypatch):
+        """Cross-process HMAC round-trip: a *different* ArchGraphService
+        instance (standing in for a separate CLI run) must be able to verify
+        (not just silently recompute past) a bounds cache written by an
+        earlier instance, with no HMAC env var set. Before the persisted-
+        .key-file fix, each instance minted its own os.urandom(32) signing
+        key, so a fresh instance's HMAC check always failed and
+        `_load_bounds_cache` always returned None -- the cache existed on
+        disk but could never actually be read back.
+        """
+        monkeypatch.delenv("ASGARD_NO_CACHE", raising=False)
+        monkeypatch.delenv("ASGARD_ARCH_BOUNDS_HMAC_KEY", raising=False)
+        _write_project(tmp_path, CLEAN_PROJECT)
+        cfg = default_architecture_config()
+
+        writer = ArchGraphService(config=cfg, dep_config=DependencyConfig(scan_path=tmp_path))
+        writer.infer(tmp_path)
+        cache_file = tmp_path / ".asgard_cache" / "bragi_arch_bounds.json"
+        assert cache_file.exists()
+        key_file = tmp_path / ".asgard_cache" / "bragi_arch_bounds.json.key"
+        assert key_file.exists()
+        assert len(key_file.read_bytes()) == 32
+
+        reader = ArchGraphService(config=cfg, dep_config=DependencyConfig(scan_path=tmp_path))
+        loaded = reader._load_bounds_cache(tmp_path)
+        assert loaded is not None, "fresh instance must verify the sibling-process cache, not treat it as untrusted"
+
     def test_unsigned_or_malformed_bounds_cache_is_a_miss(self, tmp_path, monkeypatch):
         monkeypatch.delenv("ASGARD_NO_CACHE", raising=False)
         monkeypatch.setenv("ASGARD_ARCH_BOUNDS_HMAC_KEY", "test-arch-bounds")

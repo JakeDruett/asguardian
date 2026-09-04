@@ -17,6 +17,7 @@ from Asgard.Heimdall.Security.FileIntegrity.models.file_integrity_models import 
 
 _SKIP_DIRS = {".git", "node_modules", "__pycache__", ".venv", "venv", "dist", "build"}
 _SKIP_EXTS = {".pyc", ".pyo", ".so", ".dylib", ".o"}
+_HMAC_ENV = "ASGARD_INTEGRITY_HMAC_KEY"
 
 
 class FileIntegrityChecker:
@@ -141,19 +142,23 @@ class FileIntegrityChecker:
         finally:
             os.close(fd)
 
-    def _hmac_key(self) -> bytes:
-        from Asgard.common._hmac_env import hmac_key_from_env
+    def _key_path(self) -> Path:
+        return self.baseline_file.with_name(self.baseline_file.name + ".key")
 
-        env = hmac_key_from_env("ASGARD_INTEGRITY_HMAC_KEY")
+    def _hmac_key(self, *, create: bool) -> Optional[bytes]:
+        from Asgard.common._hmac_env import hmac_key_from_env, persisted_hmac_key
+
+        env = hmac_key_from_env(_HMAC_ENV)
         if env is not None:
             return env
-        if getattr(self, "_ephemeral_hmac", None) is None:
-            self._ephemeral_hmac = os.urandom(32)
-        return self._ephemeral_hmac
+        return persisted_hmac_key(self._key_path(), create=create)
 
-    def _sign_files(self, files: dict) -> str:
+    def _sign_files(self, files: dict, *, create: bool) -> Optional[str]:
+        key = self._hmac_key(create=create)
+        if key is None:
+            return None
         payload = json.dumps(files, sort_keys=True, separators=(",", ":")).encode("utf-8")
-        return hmac.new(self._hmac_key(), payload, hashlib.sha256).hexdigest()
+        return hmac.new(key, payload, hashlib.sha256).hexdigest()
 
     def _save_baseline(self) -> None:
         if self.baseline_file.is_symlink():
@@ -162,7 +167,7 @@ class FileIntegrityChecker:
         data = {
             "created": datetime.now().isoformat(),
             "files": files,
-            "hmac": self._sign_files(files),
+            "hmac": self._sign_files(files, create=True),
         }
         flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, "O_NOFOLLOW", 0)
         payload = json.dumps(data, indent=2).encode("utf-8")
@@ -180,8 +185,11 @@ class FileIntegrityChecker:
             data = json.loads(self._read_nofollow(self.baseline_file).decode("utf-8"))
             files = data["files"]
             expected = data.get("hmac")
-            if not isinstance(expected, str) or not hmac.compare_digest(
-                expected, self._sign_files(files)
+            computed = self._sign_files(files, create=False)
+            if (
+                not isinstance(expected, str)
+                or computed is None
+                or not hmac.compare_digest(expected, computed)
             ):
                 return False
             self._baseline = {path: FileRecord(**rec) for path, rec in files.items()}

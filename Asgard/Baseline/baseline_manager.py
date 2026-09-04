@@ -83,19 +83,20 @@ class BaselineManager:
     def _key_path(self) -> Path:
         return self.baseline_path.with_name(self.baseline_path.name + ".key")
 
-    def _hmac_key(self) -> bytes:
-        from Asgard.common._hmac_env import hmac_key_from_env
+    def _hmac_key(self, *, create: bool = True) -> Optional[bytes]:
+        from Asgard.common._hmac_env import hmac_key_from_env, persisted_hmac_key
 
         env = hmac_key_from_env(_HMAC_ENV)
         if env is not None:
             return env
-        if getattr(self, "_ephemeral_hmac", None) is None:
-            self._ephemeral_hmac = os.urandom(32)
-        return self._ephemeral_hmac
+        return persisted_hmac_key(self._key_path(), create=create)
 
-    def _sign_payload(self, payload: dict) -> str:
+    def _sign_payload(self, payload: dict, *, create: bool = True) -> Optional[str]:
+        key = self._hmac_key(create=create)
+        if key is None:
+            return None
         canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str)
-        return hmac.new(self._hmac_key(), canonical.encode("utf-8"), hashlib.sha256).hexdigest()
+        return hmac.new(key, canonical.encode("utf-8"), hashlib.sha256).hexdigest()
 
     def load(self) -> BaselineFile:
         """Load the baseline file. HMAC mismatch fail-closes to an empty baseline."""
@@ -112,8 +113,11 @@ class BaselineManager:
                 self._baseline = BaselineFile(project_path=str(self.project_path))
                 return self._baseline
             expected = data.pop("hmac", None)
-            if not isinstance(expected, str) or not hmac.compare_digest(
-                expected, self._sign_payload(data)
+            computed = self._sign_payload(data, create=False)
+            if (
+                not isinstance(expected, str)
+                or computed is None
+                or not hmac.compare_digest(expected, computed)
             ):
                 self._baseline = BaselineFile(project_path=str(self.project_path))
                 return self._baseline
