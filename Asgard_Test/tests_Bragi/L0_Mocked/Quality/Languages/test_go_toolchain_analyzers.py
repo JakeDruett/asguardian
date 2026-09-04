@@ -7,8 +7,8 @@ run_tool/require_executable/find_optional_executable so the parsing logic
 is exercised without depending on the go toolchain actually being
 installed. A separate, skip-cleanly integration test near the bottom of
 this file exercises the real tools against the checked-in fixture module
-(and, for go build, against the real GAIA/Keryx checkout's known-broken
-`replace` directive) when they are available.
+(and, for go build, against a second checked-in fixture whose `replace`
+directive can never resolve) when they are available.
 """
 
 import json
@@ -546,7 +546,6 @@ def _is_complete_json(line: str) -> bool:
 # ---------------------------------------------------------------------------
 
 _GO_TOOLS_PRESENT = all(shutil.which(tool) is not None for tool in ("go", "gofmt"))
-_KERYX_PATH = Path("/home/user/GAIA/Keryx")
 
 
 @pytest.mark.skipif(not _GO_TOOLS_PRESENT, reason="go/gofmt not installed in this environment")
@@ -593,20 +592,38 @@ class TestGoRealToolIntegration:
 
 
 @pytest.mark.skipif(not _GO_TOOLS_PRESENT, reason="go not installed in this environment")
-@pytest.mark.skipif(not _KERYX_PATH.is_dir(), reason="GAIA/Keryx checkout not present in this sandbox")
-class TestGoBuildRealKeryxFailure:
+class TestGoBuildRealBrokenReplaceFailure:
     """
-    GAIA/Keryx's go.mod replaces gaia/lexicon with a relative sibling path
-    that only resolves from inside a full GAIA checkout with Lexicon cloned
-    next to it -- this sandbox's actual layout (GAIA and Lexicon as
-    siblings under /home/user, not GAIA/Lexicon) reproduces that failure
-    for real, making it a genuine compile-failure fixture rather than a
-    synthetic one.
+    Exercises GoBuildAnalyzer against a real, unresolved `replace` directive
+    -- a genuine `go build` compile failure, not a synthetic ToolFinding.
+
+    This used to point at the real GAIA/Keryx checkout, whose own go.mod
+    replaces gaia/lexicon with a relative sibling path (`../Lexicon/
+    LexiconGo`) that only fails to resolve when GAIA and Lexicon are cloned
+    as true siblings under the same parent directory. That made the test
+    dependent on an accident of sandbox layout: a Lexicon checkout later
+    appearing *nested inside* GAIA/ (GAIA/Lexicon/LexiconGo) made the
+    relative path resolve after all, so the "known failing" build started
+    succeeding -- a change in checkout layout, not in GoBuildAnalyzer's
+    correctness, silently flipped this test's assumption.
+
+    The checked-in go_toolchain_broken_replace fixture reproduces the same
+    class of failure deterministically: its go.mod's `replace` points at a
+    relative sibling path (`../does-not-exist-on-disk/...`) chosen
+    specifically so that it can never resolve, regardless of what other
+    repositories happen to be checked out alongside this one.
     """
 
-    def test_real_keryx_checkout_produces_a_real_build_failure_finding(self):
-        report = GoBuildAnalyzer(GoBuildConfig(scan_path=_KERYX_PATH, timeout_seconds=120)).analyze()
+    def _fixture_copy(self, tmp_path: Path) -> Path:
+        fixture_src = Path(__file__).resolve().parents[4] / "fixtures" / "go_toolchain_broken_replace"
+        module_copy = tmp_path / "go_toolchain_broken_replace"
+        shutil.copytree(fixture_src, module_copy)
+        return module_copy
+
+    def test_unresolved_replace_produces_a_real_build_failure_finding(self, tmp_path: Path):
+        module_copy = self._fixture_copy(tmp_path)
+        report = GoBuildAnalyzer(GoBuildConfig(scan_path=module_copy, timeout_seconds=120)).analyze()
         assert not report.tool_failed
         assert report.total_findings >= 1
         assert all(f.rule_id == "go-build" for f in report.findings)
-        assert any("lexicon" in f.description.lower() for f in report.findings)
+        assert any("does-not-exist-on-disk" in f.description.lower() for f in report.findings)
