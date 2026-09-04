@@ -13,6 +13,7 @@ Session scope: `tests_Bragi` + `tests_Heimdall` (excluding the network-dependent
 | Legacy scanner compliance (L5) | Same — `tree-sitter` not installed | Environment artefact | Fixed by the same install. |
 | SBOM generator (3 tests) | Tests pre-date the real transitive-closure feature (Plan 03 Phase C) and assumed zero closure | Test-side defect | Updated 3 tests to pass `SBOMConfig(include_transitive=False)`, matching what they actually exercise (dedup / purl / editable-install skip), independent of what the sandbox happens to have installed. |
 | Debt-state-store, incremental-cache, differential-gate, `_hash_cache` incremental mixin | **Real product bug**: HMAC signing key for the on-disk cache was regenerated with `os.urandom(32)` on every call/instance and never persisted, so a signature written by one `save()` could never be verified by a later, separate `load()`. Every affected cache silently treated *every* run as a cold cache (or refused to load) unless a caller manually set an env-var key. `_key_path()` methods existed in 3 of the 4 files but were dead code — never called. | Real bug (cache never round-trips) | Implemented the sibling `.key` file persistence the docstrings already promised (`0o600`, symlink-guarded, `O_NOFOLLOW`) in all 4 affected modules. Verified via the existing `TestHmacPersistence` / round-trip tests, which now pass. |
+| Same anti-pattern, 7 more files (FileIntegrity checker, triage cache, Architecture graph service, license/vuln/dependency-graph caches, baseline manager) | Same root cause, confirmed by repo-wide sweep; `graph_service.py` additionally trusted an unsigned payload outright with no key | Real bug (cache never round-trips; one unsigned-trust hole) | Follow-up pass: added round-trip tests for all 7, then applied the same fix via a new shared `persisted_hmac_key()` helper. `graph_service.py`'s unsigned-trust path now rejects instead of trusting. All 7 pass. |
 | L14 NodeGoat JS `test_xss_detected` | **Real, documented detection-scope gap** (see below) — not fixed | Real bug / known scanner limitation | Left failing; documented, not weakened. |
 
 ## C pointer taint analysis — priority item, verified NOT a detection bug
@@ -96,12 +97,17 @@ a real, user-visible correctness bug: "incremental" scanning was not
 incremental across process boundaries without manually exporting an env-var
 HMAC key.
 
-### Related, NOT fixed this session — same anti-pattern found elsewhere
+### Related — same anti-pattern found elsewhere, now fixed (follow-up session)
 
-The same `_ephemeral_hmac = os.urandom(32)` pattern (with `_key_path()` dead
-or absent) also exists in, but none of these currently have failing test
-coverage to verify a fix against, so they were left untouched to avoid a
-blind change:
+**Update (follow-up pass, same 2026-09-04 date):** the same
+`_ephemeral_hmac = os.urandom(32)` pattern (with `_key_path()` dead or
+absent) was also confirmed in the seven files below. The original pass left
+them untouched because none had failing test coverage to verify a fix
+against; this follow-up pass added round-trip regression tests for each
+(mirroring `TestHmacPersistence`) and then applied the identical
+sibling-`.key`-file fix, extracted into one shared helper —
+`persisted_hmac_key()` in `Asgard/common/_hmac_env.py` — instead of a fifth
+copy-paste, exactly as this doc originally recommended:
 
 - `Asgard/Heimdall/Security/FileIntegrity/services/file_integrity_checker.py`
 - `Asgard/Heimdall/Security/triage/services/triage_cache.py`
@@ -111,9 +117,26 @@ blind change:
 - `Asgard/Bragi/Dependencies/services/graph_service.py`
 - `Asgard/Baseline/baseline_manager.py`
 
-**Follow-up recommended**: apply the same sibling-`.key`-file fix to these
-seven files (ideally by extracting one shared helper instead of a fifth
-copy-paste) — flagged here so it isn't lost.
+A repo-wide sweep for the same class of bug (a signing/verification key
+minted per-instance where verification happens in a separate process or
+run) found no further instances — these seven, plus the four fixed in the
+original pass, account for every `os.urandom(32)`-as-signing-key call site
+in `Asgard/`.
+
+`Asgard/Bragi/Dependencies/services/graph_service.py` additionally had a
+second, more severe hole in the same method: `_load_cache` would trust an
+**unsigned** cache payload outright whenever no HMAC key was available,
+instead of refusing to load it. Fixed alongside the key-persistence change —
+it now rejects an unsigned payload rather than trusting it.
+
+New/updated regression tests, all passing:
+`Asgard_Test/tests_Bragi/L0_Mocked/Architecture/test_graph_layer_inference.py`,
+`Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_graph_service.py`,
+`Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_license_cache.py`,
+`Asgard_Test/tests_Bragi/L0_Mocked/Dependencies/test_vulnerability_checker_network.py`,
+`Asgard_Test/tests_Heimdall/L0_Mocked/Security/test_file_integrity_checker.py`,
+`Asgard_Test/tests_Heimdall/L0_Mocked/Triage/test_triage_cache.py`,
+`Asgard_Test/tests_Heimdall/L0_Mocked/test_baseline.py`.
 
 ## L14 NodeGoat JS `test_xss_detected` — real detection-scope gap, left failing
 
@@ -157,7 +180,16 @@ artefact of the missing tree-sitter extra suppressing collection of
 AST-dependent tests).
 
 After: 1 known, documented failure (`TestNodeGoatJS::test_xss_detected`,
-real coverage gap, tracked above) + `TestNodeGoatJS::test_open_redirect_or_
-ssrf_detectable`/`test_tpr_exceeds_30pct` and `test_throughput` unaffected
-(verify independently — TPR/throughput checks pass; only the specific
-XSS-rule assertion fails). All other targeted clusters pass.
+real coverage gap, tracked above). `TestNodeGoatJS::test_open_redirect_or_
+ssrf_detectable`, `test_tpr_exceeds_30pct`, and `test_throughput` are
+confirmed unaffected — verified by direct run
+(`pytest .../TestNodeGoatJS`: 1 failed, 3 passed), not just inferred. All
+other targeted clusters pass, including the follow-up 7-file HMAC-key
+cluster above.
+
+**Confirmed current totals (follow-up pass, verified by direct run):**
+`tests_Bragi` (excluding the network-dependent `Heimdall/L14_Industry`, i.e.
+`tests_Bragi/L14_Industry` itself included since its fixtures are local, not
+network) = 2288 passed / 1 known failure / 3 skipped. `tests_Heimdall`
+(excluding `L14_Industry`) = 2545 passed / 0 failed. Matches the session
+baseline exactly — no regression from either pass.
