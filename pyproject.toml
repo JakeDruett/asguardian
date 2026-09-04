@@ -53,6 +53,11 @@ test = [
     "pytest-asyncio>=0.21.0",
     "pytest-mock>=3.10.0",
     "pytest-cov>=4.0.0",
+    # The C/JS/TS pointer-taint and multi-language engines degrade safely to
+    # analysis_truncated=True when tree-sitter is absent, so the suite that
+    # exercises their real detection needs the grammars actually installed.
+    # Without this, CI silently ran those tests against the degraded path.
+    "asguardian[treesitter]",
 ]
 ast = [
     "tree-sitter>=0.23",
