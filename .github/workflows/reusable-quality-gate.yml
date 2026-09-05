@@ -11,10 +11,19 @@
 #
 #   jobs:
 #     quality-gate:
-#       uses: primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@main
+#       uses: primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@<sha>
 #       with:
 #         language: rust
 #         scan-path: .
+#
+# Pin `<sha>` to a full 40-character commit SHA once this workflow is on
+# `main`. A reusable workflow referenced by branch is a live dependency on
+# whatever that branch happens to contain at run time -- the same supply-chain
+# exposure every `uses:` in this file is SHA-pinned to avoid, inherited by the
+# consumer. `_Docs/CI/Consumer-Wiring.md` still shows `@main` throughout, on
+# purpose: this workflow is not on `main` yet, so there is no SHA to pin to and
+# the snippets there are explicitly marked do-not-apply-yet. Pinning is the
+# end state, to be done in the same pass that lifts that ordering constraint.
 #
 # See _Docs/CI/Consumer-Wiring.md for the exact snippet per language and
 # the per-repo list this was written against.

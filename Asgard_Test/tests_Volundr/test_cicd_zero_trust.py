@@ -235,6 +235,11 @@ class TestRepoWorkflowPins:
                 path = os.path.join(folder, name)
                 text = open(path, encoding="utf-8").read()
                 for line in text.splitlines():
+                    if line.lstrip().startswith("#"):
+                        # A commented-out `uses:` is documentation, not a step
+                        # this workflow runs. This assertion is about live
+                        # references, as its name says.
+                        continue
                     match = self._USES_RE.search(line)
                     if not match:
                         continue

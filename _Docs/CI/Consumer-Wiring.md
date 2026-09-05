@@ -45,6 +45,13 @@ and that workflow does not exist on `main` -- it was added on
 `git ls-tree origin/main -- .github/workflows/` has no
 `reusable-quality-gate.yml`.
 
+Once it is merged, replace `@main` with a full 40-character commit SHA in every
+snippet below, in the same pass that lifts this ordering constraint. `@main` is a
+live dependency on whatever that branch contains at run time; `reusable-quality-
+gate.yml` SHA-pins every action it uses for exactly that reason, and a consumer
+referencing it by branch gives that back. `@main` here is a placeholder for a ref
+that does not exist yet, not the intended end state.
+
 A `uses:` pointing at a workflow that is not on the referenced ref fails at
 job-startup with a workflow-not-found error, so wiring a consumer repo today
 buys that repo an immediately-red CI job that no code change can fix. The
