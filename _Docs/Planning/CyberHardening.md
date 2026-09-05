@@ -433,10 +433,18 @@ Every inventoried code file is traced (not merely grepped). Findings include cro
 
 ### CH-0023 — Local `CLAUDE.md` is documented as credential-bearing and is gitignored
 
-- **Status:** Fixed
-- **Fixed in:** bfdd668
-- **Fixed at:** 2026-08-16T11:26:00Z
-- **Implementation note:** Keep CLAUDE.md gitignored and untracked; test asserts the ignore. Rotation and GitHub secret scanning remain Jake-todo human items.
+- **Status:** Superseded 2026-09-05 — the ignore is gone and the file is tracked; the premise it rested on no longer holds. Standing question for Jake below.
+- **Originally fixed in:** bfdd668
+- **Originally fixed at:** 2026-08-16T11:26:00Z
+- **Implementation note:** The original fix kept `CLAUDE.md` gitignored and untracked, with a test asserting the ignore. Commit `ec7652a` ("CLAUDE.md structural parity across the suite") then committed the file deliberately and removed the `.gitignore` entry, in this repository and in every other one in the workspace, making it the standard home for the shared global rules and the Claude service-credential runbook. Restoring the ignore would not untrack the file, so the original assertion is now inert as well as contradicted.
+
+  The finding's basis was that the file is "credential-bearing". It is not, and re-reading it is what settles this: every credential in it is a *location* plus the command that fetches it at runtime (`~/.vault-claude/claude.env`, `secrets/claude/gitea`, `vault write ... role_id="$VAULT_ROLE_ID"`). No secret value is written down. Checked against all eleven `CLAUDE.md` files in the workspace: none contains a literal credential.
+
+  What is committed is still real reconnaissance material — internal IP addresses, service-account names, and the exact sudo capability matrix for the `claude` identity. Whether that is acceptable is a decision about the workspace-wide convention, not something a test in this repository settles, so it is left to Jake rather than reverted here.
+
+  `Asgard_Test/tests_Volundr/test_claude_md_ignored.py` now enforces the half that survives and is worth holding either way: the committed instruction file may describe how to obtain a credential, but must never contain one. Verified against five planted fixtures (a bare assignment, a Vault `hvs.` token, an OpenAI `sk-` key, a lowercase `mySecret =`, and a Slack `xoxb-` token); each is caught, and the real file passes.
+
+- **Standing question for Jake:** keep `CLAUDE.md` committed (accepting the topology disclosure, with the no-literal-credentials test as the guard), or untrack it across all eleven repositories and restore the ignore. Rotation and GitHub secret scanning remain Jake-todo human items either way.
 - **Severity:** Info
 - **Confidence:** High
 - **CWE / class:** CWE-540

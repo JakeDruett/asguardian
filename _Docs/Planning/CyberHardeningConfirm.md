@@ -50,7 +50,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0020 | Info | W5 | Residual | level/import lists untyped | file/size/layers checks exist; planned coerce incomplete |
 | CH-0021 | Low | W4 | Confirmed |  | bounded regex + skip lines >4096 |
 | CH-0022 | Medium | W4 | Confirmed |  | iterative walk + RecursionError contained |
-| CH-0023 | Info | W1 | Confirmed |  | CLAUDE.md gitignored with credential comment |
+| CH-0023 | Info | W1 | Superseded 2026-09-05 |  | Ignore removed and file committed workspace-wide by `ec7652a`; no literal credential in any of the eleven CLAUDE.md files; test now enforces that instead. Keep-or-untrack is Jake's call — see CH-0023 in CyberHardening.md |
 | CH-0024 | High | W1 | Residual | textconv/filter drivers | named git-config vectors isolated; local textconv still runs |
 | CH-0025 | Low | W4 | Confirmed |  | hunk/blame caps return INSUFFICIENT_DATA |
 | CH-0026 | Medium | W2 | Confirmed |  | LANGUAGE_ID_RE + is_relative_to profiles_dir |
@@ -170,7 +170,7 @@ Every inventoried code file is traced again (not merely grepped, not merely comp
 | CH-0020 | Fixed | Info | W5 | `Asgard/Bragi/Architecture/services/_architecture_config.py` | `Asgard/Bragi/Architecture/graph/service.py`, `from_yaml` |
 | CH-0021 | Fixed | Low | W4 | `Asgard/Bragi/Architecture/services/_generic_solid_checks.py` | `Asgard/Bragi/Architecture/services/_treesitter_solid_checks.py` |
 | CH-0022 | Fixed | Medium | W4 | `Asgard/Bragi/Architecture/services/_treesitter_solid_checks.py` | `Asgard/Bragi/Architecture/services/solid_validator.py`, `analyze_file_generic`, `analyze_multilang` |
-| CH-0023 | Fixed | Info | W1 | `.gitignore` | `CLAUDE.md` |
+| CH-0023 | Superseded 2026-09-05 | Info | W1 | `Asgard_Test/tests_Volundr/test_claude_md_ignored.py` | `CLAUDE.md` |
 | CH-0024 | Fixed | High | W1 | `Asgard/Bragi/Calibration/services/szz.py` | `Asgard/Bragi/Calibration/services/rule_validator.py`, `Asgard/Bragi/Quality/services/_git_friction.py`, `Asgard/Bragi/QualityGate/services/_git_diff.py`, `Asgard/Bragi/QualityGate/services/_hotspot_ranker.py`, `Asgard/Heimdall/Security/Git/services/git_scanner.py`, `Asgard/Heimdall/cli/handlers/new_code.py` (+4) |
 | CH-0025 | Fixed | Low | W4 | `Asgard/Bragi/Calibration/services/szz.py` | `Asgard/Bragi/Calibration/services/rule_validator.py` |
 | CH-0026 | Fixed | Medium | W2 | `Asgard/Bragi/Calibration/services/profile_service.py` | `Asgard/Bragi/Calibration/models/calibration_models.py`, `LanguageProfile.language` |
