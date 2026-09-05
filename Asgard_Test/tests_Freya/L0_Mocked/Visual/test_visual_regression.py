@@ -423,6 +423,43 @@ class TestHelperMethods:
         html_content = report_path.read_text()
         assert "Test Suite" in html_content
 
+    @pytest.mark.L0
+    def test_generate_html_report_escapes_untrusted_text(self, tmp_path):
+        """A suite name or baseline filename must not become markup.
+
+        The escape() calls in _visual_regression_report were unreachable until
+        the module-shadowing bug in generate_html_report was fixed -- the
+        function raised UnboundLocalError before reaching any of them -- so
+        nothing had ever verified that they escape anything.
+        """
+        from Asgard.Freya.Visual.models.visual_models import RegressionReport, VisualComparisonResult
+
+        payload = "<script>alert('xss')</script>"
+
+        results = [
+            VisualComparisonResult(
+                baseline_path=f"/tmp/{payload}.png",
+                comparison_path="/tmp/comparison.png",
+                similarity_score=0.98,
+                is_similar=True,
+            )
+        ]
+
+        report = RegressionReport(
+            suite_name=payload,
+            total_comparisons=1,
+            passed_comparisons=1,
+            failed_comparisons=0,
+            results=results,
+            overall_similarity=0.98,
+        )
+
+        tester = VisualRegressionTester(output_directory=str(tmp_path))
+        html_content = tester._generate_html_report(report).read_text(encoding="utf-8")
+
+        assert "<script>alert" not in html_content
+        assert "&lt;script&gt;" in html_content
+
 
 class TestErrorHandling:
     @pytest.mark.L0
