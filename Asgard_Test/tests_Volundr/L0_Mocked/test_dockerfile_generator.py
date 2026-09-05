@@ -7,6 +7,7 @@ Tests the Dockerfile generation service.
 import pytest
 from unittest.mock import Mock, patch, mock_open, MagicMock
 import os
+from pathlib import Path
 
 from Asgard.Volundr.Docker.models.docker_models import (
     DockerfileConfig,
@@ -563,64 +564,84 @@ class TestDockerfileGeneratorBestPracticeScore:
 @pytest.mark.unit
 @pytest.mark.fast
 class TestDockerfileGeneratorSaveToFile:
-    """Test save_to_file method"""
+    """Test save_to_file method.
 
-    @patch('builtins.open', new_callable=mock_open)
-    @patch('os.makedirs')
-    def test_save_to_file_creates_directory(self, mock_makedirs, mock_file):
-        """Test that save_to_file creates output directory"""
-        generator = DockerfileGenerator(output_dir="/tmp/test")
+    These assert what save_to_file produces, not which stdlib calls it makes.
+    An earlier version patched `os.makedirs` and `builtins.open` and asserted
+    they were called; `save_to_file` now goes through
+    `Asgard.Volundr._output_jail.confine_output_file` and `Path.write_text`,
+    so those assertions were checking an implementation it no longer has --
+    and, because the writes were mocked out, would have passed just as
+    happily if it wrote nothing at all.
+
+    They also take `tmp_path` rather than the hardcoded "/tmp/test" and
+    "/default/path" the mocked versions used. Those paths were only ever
+    notional while `open` was patched; once the real write landed, the suite
+    created them on the machine running it.
+    """
+
+    def test_save_to_file_creates_directory(self, tmp_path):
+        """save_to_file creates the output directory if it does not exist."""
+        target = tmp_path / "not" / "yet" / "there"
+        generator = DockerfileGenerator(output_dir=str(target))
         stage = BuildStage(name="", base_image="python:3.12-slim")
         config = DockerfileConfig(name="test", stages=[stage])
 
         result = generator.generate(config)
-        file_path = generator.save_to_file(result, "/tmp/test")
+        file_path = generator.save_to_file(result, str(target))
 
-        mock_makedirs.assert_called_once_with("/tmp/test", exist_ok=True)
-        assert file_path == "/tmp/test/Dockerfile"
+        assert target.is_dir()
+        assert file_path == str(target / "Dockerfile")
 
-    @patch('builtins.open', new_callable=mock_open)
-    @patch('os.makedirs')
-    def test_save_to_file_writes_content(self, mock_makedirs, mock_file):
-        """Test that save_to_file writes Dockerfile content"""
+    def test_save_to_file_writes_content(self, tmp_path):
+        """save_to_file writes the generated Dockerfile content to disk."""
         generator = DockerfileGenerator()
         stage = BuildStage(name="", base_image="python:3.12-slim")
         config = DockerfileConfig(name="test", stages=[stage])
 
         result = generator.generate(config)
-        generator.save_to_file(result, "/tmp/test")
+        file_path = generator.save_to_file(result, str(tmp_path))
 
-        mock_file.assert_called_once()
-        handle = mock_file()
-        handle.write.assert_called_once()
-        written_content = handle.write.call_args[0][0]
-        assert "FROM python:3.12-slim" in written_content
+        written = Path(file_path).read_text(encoding="utf-8")
+        assert "FROM python:3.12-slim" in written
+        assert written == result.dockerfile_content
 
-    @patch('builtins.open', new_callable=mock_open)
-    @patch('os.makedirs')
-    def test_save_to_file_custom_filename(self, mock_makedirs, mock_file):
-        """Test save_to_file with custom filename"""
+    def test_save_to_file_custom_filename(self, tmp_path):
+        """save_to_file honours an explicit filename."""
         generator = DockerfileGenerator()
         stage = BuildStage(name="", base_image="python:3.12-slim")
         config = DockerfileConfig(name="test", stages=[stage])
 
         result = generator.generate(config)
-        file_path = generator.save_to_file(result, "/tmp/test", filename="Dockerfile.dev")
+        file_path = generator.save_to_file(result, str(tmp_path), filename="Dockerfile.dev")
 
-        assert file_path == "/tmp/test/Dockerfile.dev"
+        assert file_path == str(tmp_path / "Dockerfile.dev")
+        assert (tmp_path / "Dockerfile.dev").is_file()
 
-    @patch('builtins.open', new_callable=mock_open)
-    @patch('os.makedirs')
-    def test_save_to_file_uses_default_output_dir(self, mock_makedirs, mock_file):
-        """Test save_to_file uses generator's default output_dir when not specified"""
-        generator = DockerfileGenerator(output_dir="/default/path")
+    def test_save_to_file_uses_default_output_dir(self, tmp_path):
+        """save_to_file falls back to the generator's own output_dir."""
+        generator = DockerfileGenerator(output_dir=str(tmp_path))
         stage = BuildStage(name="", base_image="python:3.12-slim")
         config = DockerfileConfig(name="test", stages=[stage])
 
         result = generator.generate(config)
         file_path = generator.save_to_file(result)
 
-        assert file_path == "/default/path/Dockerfile"
+        assert file_path == str(tmp_path / "Dockerfile")
+        assert (tmp_path / "Dockerfile").is_file()
+
+    def test_save_to_file_rejects_a_path_escaping_the_output_dir(self, tmp_path):
+        """The output jail rejects a filename that would write outside the dir."""
+        generator = DockerfileGenerator(output_dir=str(tmp_path))
+        stage = BuildStage(name="", base_image="python:3.12-slim")
+        config = DockerfileConfig(name="test", stages=[stage])
+
+        result = generator.generate(config)
+
+        with pytest.raises(ValueError):
+            generator.save_to_file(result, str(tmp_path), filename="../escaped")
+
+        assert not (tmp_path.parent / "escaped").exists()
 
 
 @pytest.mark.L0
