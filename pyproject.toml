@@ -58,6 +58,14 @@ test = [
     # exercises their real detection needs the grammars actually installed.
     # Without this, CI silently ran those tests against the degraded path.
     "asguardian[treesitter]",
+    # Same reasoning, for a security test rather than a detection one:
+    # test_planted_pylint_init_hook_not_executed asserts that a scanned
+    # repository's .pylintrc cannot run arbitrary code inside the scanner via
+    # init-hook. It skips itself when pylint is not on PATH, so CI -- which
+    # installs only .[test] -- had never run it. mypy and ruff are already
+    # installed by the workflow; pylint was the one linter the isolation
+    # suite needs and nothing provided.
+    "pylint>=3.0",
 ]
 ast = [
     "tree-sitter>=0.23",
