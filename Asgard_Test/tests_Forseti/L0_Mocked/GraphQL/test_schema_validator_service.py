@@ -72,9 +72,39 @@ class TestSchemaValidatorServiceValidateFile:
         assert result.type_count > 0
         assert result.field_count > 0
 
+    def test_validate_reports_a_read_failure_as_invalid(self, tmp_path, monkeypatch):
+        """A schema file the service cannot read must never validate as valid.
+
+        The chmod-based test below can only run as a non-root user. This one
+        raises the same PermissionError from the read itself, so the branch is
+        covered on every machine, root or not.
+        """
+        schema_file = tmp_path / "schema.graphql"
+        schema_file.write_text("type Query { test: String }")
+
+        def deny(*args, **kwargs):
+            raise PermissionError(13, "Permission denied")
+
+        monkeypatch.setattr(
+            "Asgard.Forseti.GraphQL.services.schema_validator_service.load_schema_file",
+            deny,
+        )
+
+        result = SchemaValidatorService().validate(schema_file)
+
+        assert result.is_valid is False
+        assert any("Failed to read schema file" in e.message for e in result.errors)
+
     def test_validate_unreadable_file(self, tmp_path):
         """Test validation of a file that can't be read."""
         import os
+
+        if os.geteuid() == 0:
+            pytest.skip(
+                "requires a non-root identity: euid 0 holds CAP_DAC_OVERRIDE, so the "
+                "chmod 000 below does not deny the read and the unreadable-file branch "
+                "this asserts is never reached"
+            )
 
         bad_file = tmp_path / "unreadable.graphql"
         bad_file.write_text("type Query { test: String }")
