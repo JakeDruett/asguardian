@@ -779,6 +779,11 @@ class TestExternalLint:
         workflows.mkdir(parents=True)
         for rel_path, content in result.files.items():
             (workflows / os.path.basename(rel_path)).write_text(content)
+        # actionlint's project autodetection requires both ".github/workflows"
+        # and a ".git" directory (see actionlint's project.go) -- without a
+        # real Git repository here it refuses to run at all ("no project was
+        # found"), rather than reporting on the workflow files themselves.
+        subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
         proc = subprocess.run(
             ["actionlint"], cwd=tmp_path, capture_output=True, text=True,
         )
