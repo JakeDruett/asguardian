@@ -188,6 +188,20 @@ jobs:
           echo "c7187db94eeeeca956519a6af171adc31453941a1e777961f6e680f697c8c507  hadolint" | sha256sum -c -
           install -m 0755 hadolint "$bindir/hadolint"
 
+          # cargo-audit v0.22.2 -- the prebuilt musl binary, so no Rust toolchain
+          # is needed in CI. Like hadolint, this release publishes no checksum
+          # asset (.sha256 is a 404), so the pin is a hash computed at authoring
+          # time. Unlike hadolint there is no second distribution channel to
+          # corroborate it against, so treat this as the weakest pin in this step
+          # and re-verify on any version bump.
+          #
+          # Without it, Heimdall's rust-audit tests skip themselves rather than
+          # run -- they were skipping in CI for exactly that reason.
+          curl -fsSL -o cargo-audit.tgz "https://github.com/rustsec/rustsec/releases/download/cargo-audit%2Fv0.22.2/cargo-audit-x86_64-unknown-linux-musl-v0.22.2.tgz"
+          echo "7fb9497f8594b389e5fce5ef9b92db08432996895b2e0c5a0167a69ed445c428  cargo-audit.tgz" | sha256sum -c -
+          tar xzf cargo-audit.tgz
+          install -m 0755 cargo-audit-x86_64-unknown-linux-musl-v0.22.2/cargo-audit "$bindir/cargo-audit"
+
           cd - >/dev/null
           rm -rf "$workdir"
 
