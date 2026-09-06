@@ -124,6 +124,71 @@ jobs:
       - name: Install the Chromium playwright is pinned against
         run: python -m playwright install --with-deps chromium
 
+      # Thirteen L3_Contract tests across Volundr (external_tools.py,
+      # render_pipeline.py) skip themselves unless kubeconform, actionlint,
+      # kustomize, kubectl, and hadolint are on PATH. None of these are
+      # compiled or installed through pip/npm setup hooks -- each is a single
+      # pinned prebuilt release binary fetched over plain curl and checksum-
+      # verified, so this runs identically on both the trusted push/main path
+      # and the package-free pull_request path without reopening the "PR code
+      # never executes through a setup hook" boundary the step above exists to
+      # preserve. `go install`-from-source was how these were first obtained
+      # locally, but building three Go binaries from scratch on every one of
+      # the three matrix legs, every run, buys nothing a pinned release
+      # binary doesn't already give (Go itself isn't otherwise needed here) --
+      # so this fetches the same pinned versions as prebuilt release assets
+      # instead, which is seconds of network I/O rather than a compile.
+      - name: Install external lint/validation CLIs (kubeconform, actionlint, kustomize, kubectl, hadolint)
+        run: |
+          set -euo pipefail
+          bindir="$HOME/.local/bin"
+          mkdir -p "$bindir"
+          echo "$bindir" >> "$GITHUB_PATH"
+          workdir="$(mktemp -d)"
+          cd "$workdir"
+
+          # kubeconform v0.8.0 -- checksum from the release's own CHECKSUMS file.
+          curl -fsSL -o kubeconform.tar.gz "https://github.com/yannh/kubeconform/releases/download/v0.8.0/kubeconform-linux-amd64.tar.gz"
+          echo "9bc2bffbf71f261128533edaf912153948b7ff238f9a531ae6d34466ec287883  kubeconform.tar.gz" | sha256sum -c -
+          tar -xzf kubeconform.tar.gz kubeconform
+          install -m 0755 kubeconform "$bindir/kubeconform"
+
+          # actionlint v1.7.12 -- checksum from the release's own checksums file.
+          curl -fsSL -o actionlint.tar.gz "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_1.7.12_linux_amd64.tar.gz"
+          echo "8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8  actionlint.tar.gz" | sha256sum -c -
+          tar -xzf actionlint.tar.gz actionlint
+          install -m 0755 actionlint "$bindir/actionlint"
+
+          # kustomize v5.8.1 -- checksum from the release's own checksums.txt.
+          curl -fsSL -o kustomize.tar.gz "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.8.1/kustomize_v5.8.1_linux_amd64.tar.gz"
+          echo "029a7f0f4e1932c52a0476cf02a0fd855c0bb85694b82c338fc648dcb53a819d  kustomize.tar.gz" | sha256sum -c -
+          tar -xzf kustomize.tar.gz kustomize
+          install -m 0755 kustomize "$bindir/kustomize"
+
+          # kubectl v1.37.0 (client only) -- render_pipeline.py's only use of it
+          # is the offline `kubectl kustomize <path>` render fallback, never a
+          # live cluster; checksum from dl.k8s.io's own .sha256 sidecar file.
+          curl -fsSL -o kubectl "https://dl.k8s.io/release/v1.37.0/bin/linux/amd64/kubectl"
+          echo "6129359f4e1f3848a5572ccb0b26cf28b8ca08cef38c95a765b2f64a2c961a2f  kubectl" | sha256sum -c -
+          install -m 0755 kubectl "$bindir/kubectl"
+
+          # hadolint v2.15.1 -- upstream publishes no checksum sidecar for this
+          # asset (unlike the three tools above), so this pins against the
+          # sha256 computed once, by hand, at authoring time, rather than an
+          # upstream-supplied value.
+          curl -fsSL -o hadolint "https://github.com/hadolint/hadolint/releases/download/v2.15.1/hadolint-Linux-x86_64"
+          echo "c7187db94eeeeca956519a6af171adc31453941a1e777961f6e680f697c8c507  hadolint" | sha256sum -c -
+          install -m 0755 hadolint "$bindir/hadolint"
+
+          cd - >/dev/null
+          rm -rf "$workdir"
+
+          kubeconform -v
+          actionlint -version
+          kustomize version
+          kubectl version --client
+          hadolint --version
+
       - name: Run tests
         run: pytest Asgard_Test/ -v --tb=short --ignore=Asgard_Test/fixtures
         env:
