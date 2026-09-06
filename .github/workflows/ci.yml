@@ -98,11 +98,31 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[test]"
 
+      # Deliberately does not install the package itself: a pull request's code
+      # must not be executed through setup hooks on a trusted runner. That means
+      # this list stands in for pyproject.toml's [test] extra by hand, and it had
+      # drifted from it -- so on pull requests, which is the gate that actually
+      # reviews changes, the tree-sitter grammars and pylint were absent and
+      # playwright was unpinned. The [test] extra's own comments say those
+      # dependencies exist because "CI silently ran those tests against the
+      # degraded path" and a security test "had never run"; both were still true
+      # here. Keep this list in step with [test] and [treesitter] in
+      # pyproject.toml.
       - name: Install test deps without editable package (pull_request)
         if: github.event_name == 'pull_request'
         run: |
           python -m pip install --upgrade pip
-          pip install "pytest>=7.0.0" "pytest-asyncio>=0.21.0" "pytest-mock>=3.10.0" "pytest-cov>=4.0.0" pydantic pyyaml playwright httpx
+          pip install "pytest>=7.0.0" "pytest-asyncio>=0.21.0" "pytest-mock>=3.10.0" "pytest-cov>=4.0.0" pydantic pyyaml httpx \
+            "playwright==1.56.0" "pylint>=3.0" \
+            "tree-sitter==0.25.2" tree-sitter-python tree-sitter-javascript tree-sitter-typescript \
+            tree-sitter-java tree-sitter-go tree-sitter-ruby tree-sitter-php \
+            tree-sitter-c-sharp tree-sitter-cpp tree-sitter-rust tree-sitter-c
+
+      # The 79 Freya L1 tests skip themselves unless a real Chromium matching
+      # the pinned playwright is launchable. Without this they were skipping in
+      # CI, silently, whatever the pin said.
+      - name: Install the Chromium playwright is pinned against
+        run: python -m playwright install --with-deps chromium
 
       - name: Run tests
         run: pytest Asgard_Test/ -v --tb=short --ignore=Asgard_Test/fixtures
