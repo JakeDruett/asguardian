@@ -173,9 +173,17 @@ jobs:
           install -m 0755 kubectl "$bindir/kubectl"
 
           # hadolint v2.15.1 -- upstream publishes no checksum sidecar for this
-          # asset (unlike the three tools above), so this pins against the
-          # sha256 computed once, by hand, at authoring time, rather than an
-          # upstream-supplied value.
+          # asset (unlike the three tools above), so there is no upstream-supplied
+          # value to pin against.
+          #
+          # Corroborated instead across two independent distribution channels:
+          # this GitHub release binary and the binary bundled inside the
+          # hadolint-py wheel on PyPI hash identically to
+          # c7187db94eeeeca956519a6af171adc31453941a1e777961f6e680f697c8c507.
+          # Two separate publishing paths agreeing is weaker than a signed
+          # upstream checksum but much stronger than one locally computed hash,
+          # since tampering would have to reach both. Re-verify the same way if
+          # this pin is ever moved to a new version.
           curl -fsSL -o hadolint "https://github.com/hadolint/hadolint/releases/download/v2.15.1/hadolint-Linux-x86_64"
           echo "c7187db94eeeeca956519a6af171adc31453941a1e777961f6e680f697c8c507  hadolint" | sha256sum -c -
           install -m 0755 hadolint "$bindir/hadolint"
