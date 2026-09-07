@@ -142,3 +142,32 @@ class TestTriageCacheIntegrity:
             "hmac": "00" * 32,
         }))
         assert cache.get(key) is None
+
+    def test_second_instance_can_read_first_instances_entry(self, tmp_path, monkeypatch):
+        """Cross-process cache hit: a *different* TriageCache object (standing
+        in for a separate scan invocation) must be able to verify an entry
+        written by an earlier instance, with no HMAC env var set. Before the
+        persisted-.key-file fix, each instance minted its own os.urandom(32)
+        key that lived only on that object, so a fresh instance's get() always
+        HMAC-mismatched and returned a miss.
+        """
+        monkeypatch.delenv(HMAC_ENV, raising=False)
+        key = _hex_key("3")
+        writer = TriageCache(root=tmp_path)
+        writer.set(key, _verdict(TriageLabel.LIKELY_REAL, "cross-process", 0.7))
+
+        reader = TriageCache(root=tmp_path)
+        hit = reader.get(key)
+        assert hit is not None
+        assert hit.label == TriageLabel.LIKELY_REAL
+        assert hit.rationale == "cross-process"
+        assert hit.from_cache is True
+
+    def test_key_file_persisted_at_0600_in_cache_dir(self, tmp_path, monkeypatch):
+        monkeypatch.delenv(HMAC_ENV, raising=False)
+        cache = TriageCache(root=tmp_path)
+        cache.set(_hex_key("4"), _verdict())
+        key_file = tmp_path / ".key"
+        assert key_file.exists()
+        assert stat.S_IMODE(key_file.stat().st_mode) == 0o600
+        assert len(key_file.read_bytes()) == 32

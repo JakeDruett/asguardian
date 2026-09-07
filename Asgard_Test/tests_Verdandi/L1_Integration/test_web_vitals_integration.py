@@ -261,12 +261,20 @@ class TestWebVitalsIntegration:
         assert result.overall_rating == VitalsRating.NEEDS_IMPROVEMENT
 
     def test_vitals_empty_input(self):
-        """Test workflow with no metrics provided."""
+        """No metrics is INSUFFICIENT_DATA, not a perfect score.
+
+        This asserted GOOD with score 100.0, which said a page nobody
+        measured is a page with flawless vitals. `_calculate_overall` returns
+        INSUFFICIENT_DATA for an empty rating list and `_calculate_score`
+        returns 0.0, matching how the distribution path already suppresses a
+        rating below MIN_SAMPLES (and how CrUX suppresses low-traffic
+        segments). The test was the stale half.
+        """
         data = CoreWebVitalsInput()
         result = self.calculator.calculate_from_input(data)
 
-        assert result.overall_rating == VitalsRating.GOOD
-        assert result.score == 100.0
+        assert result.overall_rating == VitalsRating.INSUFFICIENT_DATA
+        assert result.score == 0.0
         assert len(result.recommendations) == 0
 
     def test_vitals_direct_calculation_method(self):

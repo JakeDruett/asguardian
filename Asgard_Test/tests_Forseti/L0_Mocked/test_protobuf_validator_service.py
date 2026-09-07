@@ -11,6 +11,7 @@ Tests the ProtobufValidatorService for:
 - Error and warning reporting
 """
 
+import os
 import pytest
 import tempfile
 from pathlib import Path
@@ -117,8 +118,35 @@ message Message {
         finally:
             Path(temp_path).unlink()
 
+    def test_validate_file_reports_a_read_failure_as_invalid(self, tmp_path, monkeypatch):
+        """A proto file the service cannot read must never validate as valid.
+
+        The chmod-based test below can only run as a non-root user. This one
+        raises the same PermissionError from the read itself, so the branch is
+        covered on every machine, root or not.
+        """
+        proto_file = tmp_path / "svc.proto"
+        proto_file.write_text('syntax = "proto3";\npackage svc;\n')
+
+        def deny(self, *args, **kwargs):
+            raise PermissionError(13, "Permission denied")
+
+        monkeypatch.setattr(Path, "read_text", deny)
+
+        result = ProtobufValidatorService().validate_file(proto_file)
+
+        assert result.is_valid is False
+        assert any("Failed to read proto file" in e.message for e in result.errors)
+
     def test_validate_file_read_error(self):
         """Test validation when file cannot be read."""
+        if os.geteuid() == 0:
+            pytest.skip(
+                "requires a non-root identity: euid 0 holds CAP_DAC_OVERRIDE, so the "
+                "chmod 000 below does not deny the read and the read-error branch this "
+                "asserts is never reached"
+            )
+
         service = ProtobufValidatorService()
 
         with tempfile.NamedTemporaryFile(mode='w', suffix='.proto', delete=False) as f:

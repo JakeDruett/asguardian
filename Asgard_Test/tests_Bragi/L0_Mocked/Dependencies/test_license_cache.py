@@ -67,6 +67,27 @@ class TestLicenseDiskCache:
         second = LicenseDiskCache(tmp_path, expiry_days=7)
         assert second.get("pkg", "1.0.0")["license_name"] == "MIT"
 
+    def test_persists_across_instances_without_env_hmac_key(self, tmp_path, monkeypatch):
+        """Cross-process cache hit with no ASGARD_LICENSE_HMAC_KEY set at all --
+        the persisted sibling .key file must be what makes verification work.
+        Before the fix, each instance minted its own os.urandom(32) key, so
+        `second`'s HMAC check on `first`'s cache always failed.
+        """
+        monkeypatch.delenv(HMAC_ENV, raising=False)
+        first = LicenseDiskCache(tmp_path, expiry_days=7)
+        first.put("pkg", {"version": "1.0.0", "license_name": "MIT"})
+        first.save()
+
+        cache_file = tmp_path / CACHE_RELATIVE_PATH
+        key_file = cache_file.with_name(cache_file.name + ".key")
+        assert key_file.exists()
+        assert len(key_file.read_bytes()) == 32
+
+        second = LicenseDiskCache(tmp_path, expiry_days=7)
+        record = second.get("pkg", "1.0.0")
+        assert record is not None
+        assert record["license_name"] == "MIT"
+
     def test_expiry_honours_cache_expiry_days(self, tmp_path, license_hmac):
         cache = LicenseDiskCache(tmp_path, expiry_days=7)
         cache.put("pkg", {"version": "1.0.0", "license_name": "MIT"})

@@ -8,6 +8,10 @@ from Asgard.Bragi.Quality.languages.javascript.services.js_analyzer import JSAna
 from Asgard.Bragi.Quality.languages.typescript.services.ts_analyzer import TSAnalyzer
 from Asgard.Bragi.Quality.languages.shell.models.shell_models import ShellAnalysisConfig
 from Asgard.Bragi.Quality.languages.shell.services.shell_analyzer import ShellAnalyzer
+from Asgard.Bragi.Quality.languages.rust.models.rust_models import RustScanConfig
+from Asgard.Bragi.Quality.languages.rust.services.rust_analyzer import RustAnalyzer
+from Asgard.Bragi.Quality.languages.go.models.go_models import GoScanConfig
+from Asgard.Bragi.Quality.languages.go.services.go_analyzer import GoAnalyzer
 from Asgard.Bragi.Quality.utilities.secret_snippet import mask_quoted_literals
 
 
@@ -163,6 +167,173 @@ def run_ts_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
         out_lines.append("=" * 70)
         print("\n".join(out_lines))
         return 1 if report.error_count > 0 else 0
+
+    except Exception as exc:
+        print(f"Error: {exc}")
+        if verbose:
+            _traceback.print_exc()
+        return 1
+
+
+def run_rust_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
+    try:
+        scan_path = Path(args.path).resolve()
+        if not scan_path.exists():
+            print(f"Error: Path does not exist: {scan_path}")
+            return 1
+
+        exclude = list(args.exclude) if getattr(args, "exclude", None) else []
+        disabled = list(args.disabled_rules) if getattr(args, "disabled_rules", None) else []
+
+        config = RustScanConfig(
+            scan_path=scan_path,
+            exclude_patterns=[
+                "*/test*", "*_test*", "*/vendor/*", "*/node_modules/*",
+                "*/.git/*", "*/build/*", "*/dist/*", "*/target/*",
+            ] + exclude,
+            rules={rule_id: False for rule_id in disabled},
+        )
+        analyzer = RustAnalyzer(config)
+        report = analyzer.analyze()
+
+        error_count = sum(1 for f in report.findings if _severity_str(f.severity) == "error")
+        warning_count = sum(1 for f in report.findings if _severity_str(f.severity) == "warning")
+        info_count = sum(1 for f in report.findings if _severity_str(f.severity) == "info")
+
+        output_format = getattr(args, "format", "text")
+        if output_format == "json":
+            payload = report.dict()
+            # total_findings/error_count/warning_count/info_count are computed
+            # properties on RustReport, not stored fields, so .dict() omits
+            # them -- set explicitly to keep JSON output shaped like every
+            # other language analyzer's report.
+            payload["total_findings"] = report.total_findings
+            payload["error_count"] = error_count
+            payload["warning_count"] = warning_count
+            payload["info_count"] = info_count
+            for item in payload.get("findings") or []:
+                if "credential" in (item.get("rule_id") or "").lower():
+                    item["code_snippet"] = mask_quoted_literals(item.get("code_snippet") or "")
+            print(json.dumps(payload, default=str, indent=2))
+            return 1 if error_count > 0 else 0
+
+        out_lines = [
+            "",
+            "=" * 70,
+            "  RUST ANALYSIS REPORT",
+            "=" * 70,
+            f"  Scan Path:       {report.scan_path}",
+            f"  Total Findings:  {report.total_findings}",
+            f"  Errors:          {error_count}",
+            f"  Warnings:        {warning_count}",
+            f"  Info:            {info_count}",
+            "",
+        ]
+        if report.findings:
+            out_lines.extend(["-" * 70, "  FINDINGS", "-" * 70, ""])
+            for finding in report.findings:
+                severity_label = _severity_str(finding.severity).upper()
+                out_lines.append(f"  [{severity_label}] {finding.rule_id}: {finding.title}")
+                out_lines.append(f"  File: {finding.file_path}:{finding.line_number}")
+                snippet = _finding_snippet_for_output(finding).strip()
+                if snippet:
+                    out_lines.append(f"  Code: {snippet}")
+                if verbose:
+                    out_lines.append(f"  Description: {finding.description}")
+                    if finding.fix_suggestion:
+                        out_lines.append(f"  Fix: {finding.fix_suggestion}")
+                out_lines.append("")
+        else:
+            out_lines.extend(["  No findings detected.", ""])
+        out_lines.append("=" * 70)
+        print("\n".join(out_lines))
+        return 1 if error_count > 0 else 0
+
+    except Exception as exc:
+        print(f"Error: {exc}")
+        if verbose:
+            _traceback.print_exc()
+        return 1
+
+
+def _severity_str(severity) -> str:
+    value = severity.value if hasattr(severity, "value") else severity
+    return str(value).lower()
+
+
+def run_go_analysis(args: argparse.Namespace, verbose: bool = False) -> int:
+    try:
+        scan_path = Path(args.path).resolve()
+        if not scan_path.exists():
+            print(f"Error: Path does not exist: {scan_path}")
+            return 1
+
+        exclude = list(args.exclude) if getattr(args, "exclude", None) else []
+        disabled = list(args.disabled_rules) if getattr(args, "disabled_rules", None) else []
+
+        config = GoScanConfig(
+            scan_path=scan_path,
+            exclude_patterns=[
+                "*/test*", "*_test*", "*/vendor/*", "*/node_modules/*",
+                "*/.git/*", "*/build/*", "*/dist/*",
+            ] + exclude,
+            rules={rule_id: False for rule_id in disabled},
+        )
+        analyzer = GoAnalyzer(config)
+        report = analyzer.analyze()
+
+        error_count = sum(1 for f in report.findings if _severity_str(f.severity) == "error")
+        warning_count = sum(1 for f in report.findings if _severity_str(f.severity) == "warning")
+        info_count = sum(1 for f in report.findings if _severity_str(f.severity) == "info")
+
+        output_format = getattr(args, "format", "text")
+        if output_format == "json":
+            payload = report.dict()
+            # total_findings is a computed property on GoReport, not a
+            # stored field, so .dict() omits it -- set explicitly, along
+            # with the derived severity counts, to keep JSON output shaped
+            # like every other language analyzer's report.
+            payload["total_findings"] = report.total_findings
+            payload["error_count"] = error_count
+            payload["warning_count"] = warning_count
+            payload["info_count"] = info_count
+            for item in payload.get("findings") or []:
+                if "credential" in (item.get("rule_id") or "").lower():
+                    item["code_snippet"] = mask_quoted_literals(item.get("code_snippet") or "")
+            print(json.dumps(payload, default=str, indent=2))
+            return 1 if error_count > 0 else 0
+
+        out_lines = [
+            "",
+            "=" * 70,
+            "  GO ANALYSIS REPORT",
+            "=" * 70,
+            f"  Scan Path:       {report.scan_path}",
+            f"  Total Findings:  {report.total_findings}",
+            f"  Errors:          {error_count}",
+            f"  Warnings:        {warning_count}",
+            f"  Info:            {info_count}",
+            "",
+        ]
+        if report.findings:
+            out_lines.extend(["-" * 70, "  FINDINGS", "-" * 70, ""])
+            for finding in report.findings:
+                severity_label = _severity_str(finding.severity).upper()
+                out_lines.append(f"  [{severity_label}] {finding.rule_id}: {finding.title}")
+                out_lines.append(f"  File: {finding.file_path}:{finding.line_number}")
+                snippet = _finding_snippet_for_output(finding).strip()
+                if snippet:
+                    out_lines.append(f"  Code: {snippet}")
+                if verbose:
+                    out_lines.append(f"  Description: {finding.description}")
+                    if finding.fix_suggestion:
+                        out_lines.append(f"  Fix: {finding.fix_suggestion}")
+                out_lines.append("")
+        else:
+            out_lines.extend(["  No findings detected.", ""])
+        out_lines.append("=" * 70)
+        print("\n".join(out_lines))
+        return 1 if error_count > 0 else 0
 
     except Exception as exc:
         print(f"Error: {exc}")

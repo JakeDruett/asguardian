@@ -170,7 +170,12 @@ class TestSBOMGenerator:
             req_file = Path(tmpdir) / "requirements.txt"
             req_file.write_text("requests==2.28.0\nrequests==2.28.0\n")
 
-            generator = SBOMGenerator()
+            # Transitive closure (Plan 03 Phase C) is orthogonal to what this
+            # test checks (declared-root dedup) and would otherwise pull in
+            # requests' installed transitive deps, making total_components
+            # depend on what happens to be installed in the environment.
+            config = SBOMConfig(include_transitive=False)
+            generator = SBOMGenerator(config)
             document = generator.generate(tmpdir)
 
             assert document.total_components == 1
@@ -181,7 +186,8 @@ class TestSBOMGenerator:
             req_file = Path(tmpdir) / "requirements.txt"
             req_file.write_text("requests==2.28.0\n")
 
-            generator = SBOMGenerator()
+            config = SBOMConfig(include_transitive=False)
+            generator = SBOMGenerator(config)
             document = generator.generate(tmpdir)
 
             assert len(document.components) == 1
@@ -343,7 +349,8 @@ class TestSBOMGenerator:
             req_file = Path(tmpdir) / "requirements.txt"
             req_file.write_text("-e .\nrequests==2.28.0\n")
 
-            generator = SBOMGenerator()
+            config = SBOMConfig(include_transitive=False)
+            generator = SBOMGenerator(config)
             document = generator.generate(tmpdir)
 
             assert document.total_components == 1

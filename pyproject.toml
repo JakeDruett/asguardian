@@ -7,7 +7,7 @@ name = "asguardian"
 dynamic = ["version"]
 description = "Asguardian - Universal Development Tools Suite"
 readme = "README.md"
-license = {text = "Polyform Noncommercial 1.0.0"}
+license = {text = "Proprietary"}
 requires-python = ">=3.11"
 authors = [
     {name = "Asgard Contributors"}
@@ -39,16 +39,38 @@ classifiers = [
 dependencies = [
     "pydantic>=2.0.0",
     "pyyaml>=6.0",
-    "playwright>=1.40.0",
+    # Pinned to the exact release whose bundled browsers.json expects
+    # chromium/chromium-headless-shell revision 1194 -- the build actually
+    # present at /opt/pw-browsers in this environment. Any other playwright
+    # version expects a different revision and silently skips the Freya
+    # browser tests instead of launching against a mismatched build.
+    "playwright==1.56.0",
     "httpx>=0.24.0",
+    "networkx>=3.0",
 ]
 
 [project.optional-dependencies]
+viz = [
+    "matplotlib>=3.7.0",
+]
 test = [
     "pytest>=7.0.0",
     "pytest-asyncio>=0.21.0",
     "pytest-mock>=3.10.0",
     "pytest-cov>=4.0.0",
+    # The C/JS/TS pointer-taint and multi-language engines degrade safely to
+    # analysis_truncated=True when tree-sitter is absent, so the suite that
+    # exercises their real detection needs the grammars actually installed.
+    # Without this, CI silently ran those tests against the degraded path.
+    "asguardian[treesitter]",
+    # Same reasoning, for a security test rather than a detection one:
+    # test_planted_pylint_init_hook_not_executed asserts that a scanned
+    # repository's .pylintrc cannot run arbitrary code inside the scanner via
+    # init-hook. It skips itself when pylint is not on PATH, so CI -- which
+    # installs only .[test] -- had never run it. mypy and ruff are already
+    # installed by the workflow; pylint was the one linter the isolation
+    # suite needs and nothing provided.
+    "pylint>=3.0",
 ]
 ast = [
     "tree-sitter>=0.23",

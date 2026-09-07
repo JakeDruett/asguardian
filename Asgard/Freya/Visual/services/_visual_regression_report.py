@@ -4,8 +4,8 @@ Freya Visual Regression HTML report generation.
 Report builder extracted from visual_regression.py.
 """
 
-import html
 from datetime import datetime
+from html import escape
 from pathlib import Path
 
 from Asgard.Freya.Visual.models.visual_models import RegressionReport
@@ -13,10 +13,10 @@ from Asgard.Freya.Visual.models.visual_models import RegressionReport
 
 def generate_html_report(report: RegressionReport, output_directory: Path) -> Path:
     """Generate HTML report for regression suite."""
-    html = f"""<!DOCTYPE html>
+    document = f"""<!DOCTYPE html>
 <html>
 <head>
-    <title>Visual Regression Report - {html.escape(report.suite_name)}</title>
+    <title>Visual Regression Report - {escape(report.suite_name)}</title>
     <style>
         body {{ font-family: Arial, sans-serif; margin: 20px; }}
         .summary {{ background: #f5f5f5; padding: 20px; border-radius: 5px; }}
@@ -30,7 +30,7 @@ def generate_html_report(report: RegressionReport, output_directory: Path) -> Pa
     </style>
 </head>
 <body>
-    <h1>Visual Regression Report: {html.escape(report.suite_name)}</h1>
+    <h1>Visual Regression Report: {escape(report.suite_name)}</h1>
     <div class="summary">
         <p><strong>Total:</strong> {report.total_comparisons}</p>
         <p class="pass"><strong>Passed:</strong> {report.passed_comparisons}</p>
@@ -44,21 +44,21 @@ def generate_html_report(report: RegressionReport, output_directory: Path) -> Pa
         status_class = "test-pass" if result.is_similar else "test-fail"
         status = "PASS" if result.is_similar else "FAIL"
 
-        html += f"""
+        document += f"""
     <div class="test-case {status_class}">
-        <h3>{html.escape(Path(result.baseline_path).name)} - {html.escape(status)}</h3>
+        <h3>{escape(Path(result.baseline_path).name)} - {escape(status)}</h3>
         <p><strong>Similarity:</strong> {result.similarity_score:.2%}</p>
-        <p><strong>Method:</strong> {html.escape(str(result.comparison_method.value))}</p>
+        <p><strong>Method:</strong> {escape(str(result.comparison_method.value))}</p>
         <p><strong>Differences:</strong> {len(result.difference_regions)}</p>
     </div>
 """
 
-    html += """
+    document += """
 </body>
 </html>
 """
 
     report_path = output_directory / "reports" / f"report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.html"
-    report_path.write_text(html)
+    report_path.write_text(document, encoding="utf-8")
 
     return report_path

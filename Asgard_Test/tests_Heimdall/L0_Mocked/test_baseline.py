@@ -625,6 +625,37 @@ class TestFuzzyEmptyMessageSuppression:
 
 
 class TestBaselineIdentityAndHmac:
+    def test_second_instance_honours_first_instances_baseline_without_env_key(
+        self, tmp_path, monkeypatch,
+    ):
+        """Cross-process round-trip with no ASGARD_BASELINE_HMAC_KEY set: a
+        *different* BaselineManager instance (standing in for a separate CI
+        run reading `.asgard-baseline.json`) must still suppress a violation
+        an earlier instance baselined. Before the persisted-.key-file fix,
+        each instance minted its own os.urandom(32) signing key, so a fresh
+        instance's HMAC check on a prior instance's baseline always failed,
+        silently discarding the entire baseline (and un-suppressing every
+        previously-accepted violation) on every separate run.
+        """
+        monkeypatch.delenv("ASGARD_BASELINE_HMAC_KEY", raising=False)
+
+        class FakeViolation:
+            def __init__(self):
+                self.file_path = str(tmp_path / "a.py")
+                self.line_number = 10
+                self.message = "known issue"
+
+        writer = BaselineManager(project_path=tmp_path)
+        writer.create_from_violations([FakeViolation()], "lint")
+
+        key_file = writer.baseline_path.with_name(writer.baseline_path.name + ".key")
+        assert key_file.exists()
+        assert len(key_file.read_bytes()) == 32
+
+        reader = BaselineManager(project_path=tmp_path)
+        remaining = reader.filter_violations([FakeViolation()], "lint")
+        assert remaining == []
+
     def test_same_locus_different_message_is_not_suppressed(self, tmp_path):
         class FakeViolation:
             def __init__(self, message):

@@ -105,13 +105,44 @@ def _read_nofollow(path: Path) -> bytes:
         os.close(fd)
 
 
-def _hmac_key(scan_root: Path) -> bytes:
+def _hmac_key(scan_root: Path, *, create: bool = True) -> Optional[bytes]:
+    """Signing key for debt-state HMAC: env var, else a persisted sibling
+    `.key` file at `0o600` (created on first ``save_state`` if missing) so
+    a later, separate process's ``load_state`` can still verify the
+    signature -- without this, every run generated a fresh random key and
+    the cache could never round-trip, silently forcing a full rescan every
+    time."""
     from Asgard.common._hmac_env import hmac_key_from_env
 
     env = hmac_key_from_env(_HMAC_ENV)
     if env is not None:
         return env
-    return os.urandom(32)
+    key_path = _key_path(scan_root)
+    existing = None
+    if key_path.exists() and not key_path.is_symlink():
+        try:
+            existing = _read_nofollow(key_path)
+        except (OSError, ValueError):
+            existing = None
+    if existing is not None and len(existing) == 32:
+        return existing
+    if not create:
+        return None
+    if key_path.is_symlink():
+        return None
+    new_key = os.urandom(32)
+    flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        key_path.parent.mkdir(parents=True, exist_ok=True)
+        fd = os.open(key_path, flags, 0o600)
+        try:
+            os.write(fd, new_key)
+        finally:
+            os.close(fd)
+        os.chmod(key_path, 0o600)
+    except OSError:
+        return None
+    return new_key
 
 
 def _canonical_payload(data: dict) -> dict:
@@ -123,9 +154,12 @@ def _canonical_payload(data: dict) -> dict:
     return payload
 
 
-def _sign_state(scan_root: Path, data: dict) -> str:
+def _sign_state(scan_root: Path, data: dict, *, create: bool = True) -> Optional[str]:
+    key = _hmac_key(scan_root, create=create)
+    if key is None:
+        return None
     canonical = json.dumps(_canonical_payload(data), sort_keys=True, separators=(",", ":"), default=str)
-    return hmac.new(_hmac_key(scan_root), canonical.encode("utf-8"), hashlib.sha256).hexdigest()
+    return hmac.new(key, canonical.encode("utf-8"), hashlib.sha256).hexdigest()
 
 
 def load_state(scan_root: Path) -> DebtState:
@@ -139,8 +173,11 @@ def load_state(scan_root: Path) -> DebtState:
         if not isinstance(data, dict) or data.get("schema_version") != STATE_SCHEMA_VERSION:
             return empty
         expected = data.get("hmac")
-        if not isinstance(expected, str) or not hmac.compare_digest(
-            expected, _sign_state(scan_root, data)
+        computed = _sign_state(scan_root, data, create=False)
+        if (
+            not isinstance(expected, str)
+            or computed is None
+            or not hmac.compare_digest(expected, computed)
         ):
             return empty
         data.pop("hmac", None)

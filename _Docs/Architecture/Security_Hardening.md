@@ -33,7 +33,7 @@ Set these in CI if you persist signed state:
 
 `--expose` is required to bind a non-loopback host. `--insecure` / `verify=False` is an unauthenticated TLS peek and is labeled as such.
 
-`CLAUDE.md` is gitignored (local credentials). Rotate anything that ever sat in it — see `_Docs/Planning/Jake-todo.md`.
+`CLAUDE.md` is tracked following workspace standardization (`ec7652a`). CH-0023's original ignore requirement is superseded: the file documents credential locations and retrieval commands, not literal credentials. `Asgard_Test/tests_Volundr/test_claude_md_ignored.py` enforces that no literal credentials are committed. Internal topology disclosure remains a workspace policy decision. Rotate any historical exposed credentials — see `_Docs/Planning/Jake-todo.md`.
 
 ## CI and supply chain
 

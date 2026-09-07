@@ -87,21 +87,66 @@ def check_command_injection(file_path: str, lines: List[str], enabled: bool = Tr
     ]
 
 
+# Browser DOM sinks: assigning anything but a literal to innerHTML/outerHTML, or
+# calling document.write with anything but a literal.
+_XSS_DOM_SINK = re.compile(
+    # The negative lookahead excludes whitespace as well as the quote characters.
+    # Without that, `\s*` backtracks to zero width, the lookahead then sees a
+    # space rather than the quote that follows it, and `x.innerHTML = "literal"`
+    # matches -- a false positive the original single-sink version of this rule
+    # carried.
+    r'(?:\.(?:inner|outer)HTML\s*=\s*(?![\s"\'`])|document\.write(?:ln)?\s*\(\s*(?![\s"\'`]))'
+)
+
+# React's explicit escape hatch from JSX escaping -- the direct analogue of Go's
+# template.HTML() cast, which go.xss already flags.
+_XSS_REACT_SINK = re.compile(r'dangerouslySetInnerHTML')
+
+# Server response sinks. res.write/res.end/res.send write straight into the
+# response body with no escaping of any kind, so a non-literal argument is the
+# server-side equivalent of the innerHTML case above.
+_XSS_RESPONSE_SINK = re.compile(
+    r'\bres(?:ponse)?\.(?:write|end|send)\s*\(\s*(?![\s"\'`)])'
+)
+
+# The same response calls, plus header writes, carrying request-derived data on
+# the same line -- the direct analogue of php.xss's `echo $_GET`.
+_XSS_REQUEST_ECHO = re.compile(
+    r'\bres(?:ponse)?\.(?:write|writeHead|end|send|setHeader)\s*\([^)]*\breq(?:uest)?\.'
+)
+
+
 def check_xss(file_path: str, lines: List[str], enabled: bool = True) -> List[JSFinding]:
-    """js.xss: innerHTML or document.write with variable."""
+    """js.xss: unescaped output to a browser DOM sink or an HTTP response body."""
     if not enabled:
         return []
-    pattern = re.compile(r'(?:\.innerHTML\s*=\s*(?!["\'`])|document\.write\s*\(\s*(?!["\']))')
-    return [
-        _make_finding(
-            file_path, i + 1, "js.xss",
-            JSRuleCategory.SECURITY, JSSeverity.ERROR,
-            "Cross-Site Scripting (XSS) via innerHTML or document.write",
-            "Writing unsanitised data to innerHTML or document.write enables XSS attacks.",
-            line, "Use textContent instead of innerHTML, or sanitise input with DOMPurify."
-        )
-        for i, line in enumerate(lines) if pattern.search(line)
-    ]
+    findings = []
+    for i, line in enumerate(lines):
+        if len(line) > 4096:
+            # Minified bundles produce one enormous line whose every construct
+            # matches something. php.xss skips these for the same reason.
+            continue
+        if _XSS_DOM_SINK.search(line) or _XSS_REACT_SINK.search(line):
+            findings.append(_make_finding(
+                file_path, i + 1, "js.xss",
+                JSRuleCategory.SECURITY, JSSeverity.ERROR,
+                "Cross-Site Scripting (XSS) via a DOM sink",
+                "Writing unsanitised data to innerHTML, outerHTML, document.write or "
+                "dangerouslySetInnerHTML enables XSS attacks.",
+                line, "Use textContent instead of innerHTML, or sanitise input with DOMPurify."
+            ))
+        elif _XSS_RESPONSE_SINK.search(line) or _XSS_REQUEST_ECHO.search(line):
+            findings.append(_make_finding(
+                file_path, i + 1, "js.xss",
+                JSRuleCategory.SECURITY, JSSeverity.ERROR,
+                "Cross-Site Scripting (XSS) via an HTTP response body",
+                "res.write/res.end/res.send emit their argument into the response body "
+                "verbatim, with no escaping. Writing a non-literal value -- especially one "
+                "derived from the request -- into an HTML response enables XSS.",
+                line, "Render through a template that escapes by default, or escape the "
+                      "value explicitly before writing it."
+            ))
+    return findings
 
 
 def check_path_traversal(file_path: str, lines: List[str], enabled: bool = True) -> List[JSFinding]:

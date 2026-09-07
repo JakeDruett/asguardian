@@ -156,16 +156,12 @@ class TriageCache:
         return self._dir_is_private()
 
     def _hmac_key(self, *, create: bool = False) -> Optional[bytes]:
-        from Asgard.common._hmac_env import hmac_key_from_env
+        from Asgard.common._hmac_env import hmac_key_from_env, persisted_hmac_key
 
         env = hmac_key_from_env(HMAC_ENV)
         if env is not None:
             return env
-        if create:
-            if getattr(self, "_ephemeral_hmac", None) is None:
-                self._ephemeral_hmac = os.urandom(32)
-            return self._ephemeral_hmac
-        return getattr(self, "_ephemeral_hmac", None)
+        return persisted_hmac_key(self._key_path(), create=create)
 
     def _sign(self, payload: dict, key: bytes) -> str:
         canonical = json.dumps(

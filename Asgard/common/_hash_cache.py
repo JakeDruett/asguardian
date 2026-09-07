@@ -66,19 +66,50 @@ class FileHashCache:
             raise ValueError("cache_path must stay under the project path")
         return dest
 
-    def _hmac_key(self) -> bytes:
+    def _key_path(self) -> Path:
+        return self.cache_file.with_name(self.cache_file.name + ".key")
+
+    def _hmac_key(self, *, create: bool = True) -> Optional[bytes]:
         from Asgard.common._hmac_env import hmac_key_from_env
 
         env = hmac_key_from_env(_HMAC_ENV)
         if env is not None:
             return env
-        if getattr(self, "_ephemeral_hmac", None) is None:
-            self._ephemeral_hmac = os.urandom(32)
-        return self._ephemeral_hmac
+        key_path = self._key_path()
+        if key_path.exists() and not key_path.is_symlink():
+            try:
+                flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
+                fd = os.open(key_path, flags)
+                try:
+                    existing = os.read(fd, 64)
+                finally:
+                    os.close(fd)
+            except OSError:
+                existing = b""
+            if len(existing) == 32:
+                return existing
+        if not create or key_path.is_symlink():
+            return None
+        new_key = os.urandom(32)
+        flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, "O_NOFOLLOW", 0)
+        try:
+            key_path.parent.mkdir(parents=True, exist_ok=True)
+            fd = os.open(key_path, flags, 0o600)
+            try:
+                os.write(fd, new_key)
+            finally:
+                os.close(fd)
+            os.chmod(key_path, 0o600)
+        except OSError:
+            return None
+        return new_key
 
-    def _sign(self, payload: dict) -> str:
+    def _sign(self, payload: dict, *, create: bool = True) -> Optional[str]:
+        key = self._hmac_key(create=create)
+        if key is None:
+            return None
         canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str)
-        return hmac.new(self._hmac_key(), canonical.encode("utf-8"), hashlib.sha256).hexdigest()
+        return hmac.new(key, canonical.encode("utf-8"), hashlib.sha256).hexdigest()
 
     def load(self) -> bool:
         """
@@ -96,8 +127,11 @@ class FileHashCache:
                 self._entries = {}
                 return False
             expected = data.pop("hmac", None)
-            if not isinstance(expected, str) or not hmac.compare_digest(
-                expected, self._sign(data)
+            computed = self._sign(data, create=False)
+            if (
+                not isinstance(expected, str)
+                or computed is None
+                or not hmac.compare_digest(expected, computed)
             ):
                 self._entries = {}
                 return False

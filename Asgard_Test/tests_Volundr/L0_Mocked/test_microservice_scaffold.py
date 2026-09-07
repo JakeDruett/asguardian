@@ -479,22 +479,49 @@ class TestMicroserviceScaffoldFileStructure:
 class TestMicroserviceScaffoldSaveToDirectory:
     """Test save_to_directory method"""
 
-    @patch('os.makedirs')
-    @patch('builtins.open', create=True)
-    def test_save_to_directory_creates_files(self, mock_open, mock_makedirs):
-        """save_to_directory uses os.makedirs + open() to create the project."""
-        scaffold = MicroserviceScaffold(output_dir="/tmp/test")
+    def test_save_to_directory_creates_files(self, tmp_path):
+        """save_to_directory writes every generated directory and file to disk.
+
+        An earlier version patched `os.makedirs` and `builtins.open` and
+        asserted they were called. `save_to_directory` now goes through
+        `_confine_scaffold_path` with `Path.mkdir` and `Path.write_text`, so
+        neither is called any more -- and with the writes mocked out the test
+        would have passed even if nothing were written. It also used a
+        hardcoded "/tmp/test" rather than a per-test directory.
+        """
+        scaffold = MicroserviceScaffold(output_dir=str(tmp_path))
         config = ServiceConfig(
             name="save-test",
             language=Language.PYTHON,
         )
 
         report = scaffold.generate(config)
-        output_path = scaffold.save_to_directory(report, "/tmp/test")
+        output_path = scaffold.save_to_directory(report, str(tmp_path))
 
-        assert mock_makedirs.called
-        assert mock_open.called
         assert output_path is not None
+        assert report.files, "the scaffold should generate at least one file"
+
+        for directory in report.directories:
+            assert (tmp_path / directory).is_dir(), f"missing directory {directory}"
+
+        for file_entry in report.files:
+            written = tmp_path / file_entry.path
+            assert written.is_file(), f"missing file {file_entry.path}"
+            assert written.read_text(encoding="utf-8") == file_entry.content
+
+    def test_save_to_directory_rejects_a_path_escaping_the_output_dir(self, tmp_path):
+        """The scaffold path jail rejects an entry that would escape."""
+        from Asgard.Volundr.Scaffold.models.scaffold_models import FileEntry, ScaffoldReport
+
+        scaffold = MicroserviceScaffold(output_dir=str(tmp_path))
+        config = ServiceConfig(name="escape-test", language=Language.PYTHON)
+        report = scaffold.generate(config)
+        report.files = [FileEntry(path="../escaped.txt", content="nope")]
+
+        with pytest.raises(ValueError):
+            scaffold.save_to_directory(report, str(tmp_path))
+
+        assert not (tmp_path.parent / "escaped.txt").exists()
 
     @patch('pathlib.Path.mkdir')
     @patch('pathlib.Path.write_text')
