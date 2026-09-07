@@ -16,7 +16,7 @@ permissions:
 jobs:
   security-scan:
     name: Security Analysis
-    runs-on: ubuntu-latest
+    runs-on: arc-x86
     timeout-minutes: 30
     permissions:
       contents: read
@@ -109,7 +109,7 @@ jobs:
 
   secrets-scan:
     name: Secrets Detection
-    runs-on: ubuntu-latest
+    runs-on: arc-x86
 
     steps:
       - name: Checkout code
@@ -133,7 +133,7 @@ jobs:
 
   dependency-check:
     name: Dependency Security
-    runs-on: ubuntu-latest
+    runs-on: arc-x86
 
     steps:
       - name: Checkout code
@@ -152,7 +152,7 @@ jobs:
 
   code-quality:
     name: Code Security Quality
-    runs-on: ubuntu-latest
+    runs-on: arc-x86
 
     steps:
       - name: Checkout code
@@ -178,7 +178,7 @@ jobs:
 
   test-scanners:
     name: Test Scanners
-    runs-on: ubuntu-latest
+    runs-on: arc-x86
 
     steps:
       - name: Checkout code

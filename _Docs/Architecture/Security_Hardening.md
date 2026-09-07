@@ -39,7 +39,7 @@ Set these in CI if you persist signed state:
 
 Live workflows (`.github/workflows/ci.yml`, `publish.yml`, `l8-perf-budgets.yml`) SHA-pin every `uses:`, set `permissions`, `timeout-minutes`, and `persist-credentials: false`.
 
-- **PR jobs** run on `ubuntu-latest` and do **not** `pip install -e`. Push-to-main may editable-install.
+- **All jobs** run on the local cluster's `arc-x86` runner scale set, with no GitHub-hosted fallback. Pull requests and pushes install the dependencies needed by their checks.
 - **Publish** is split: build (no OIDC) / attest / publish. Environment `pypi`. Tags `v[0-9].*`.
 - **L8** workflow stays `if: false` until Jake enables it. It already has `contents: read` and the PR install split.
 - **Pre-commit** hook `rev`s are SHAs; extras use `==`; `detect-secrets` is installed. `asguardian init` Python templates include the same hook.

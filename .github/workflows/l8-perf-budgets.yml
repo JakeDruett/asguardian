@@ -24,7 +24,7 @@ jobs:
   l8-budgets:
     # DISABLED: flip to a real condition (or remove) to enable.
     if: false
-    runs-on: ubuntu-latest
+    runs-on: arc-x86
     timeout-minutes: 20
     permissions:
       contents: read
