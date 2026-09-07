@@ -43,7 +43,7 @@ def _run(cmd: List[str], stdin_text: Optional[str] = None) -> subprocess.Complet
     )
 
 
-def run_kubeconform(content: str, kubernetes_version: str = "1.29") -> List[ValidationResult]:
+def run_kubeconform(content: str, kubernetes_version: str = "1.29.0") -> List[ValidationResult]:
     """Run kubeconform -strict against rendered manifests (offline schemas)."""
     if not is_available("kubeconform"):
         return []

@@ -212,6 +212,61 @@ asgard heimdall codefix ./src
 | JavaScript | no-eval, no-debugger, no-var, eqeqeq, no-console, complexity (12 rules) |
 | TypeScript | All JS rules + no-explicit-any, no-any-cast, no-non-null-assertion, prefer-interface |
 | Shell/Bash | eval injection, curl --insecure, hardcoded secrets, missing set -e/u (12 rules) |
+| Rust | unsafe blocks, unwrap/expect, transmute, raw pointer deref, command injection, hardcoded credentials (8 pattern rules) |
+
+Rust and Node also have toolchain-orchestrating analysers that run the ecosystem's own tools
+instead of pattern rules -- see [Toolchain-Orchestrated Analysis](#toolchain-orchestrated-analysis)
+below.
+
+## Toolchain-Orchestrated Analysis
+
+For Rust and Node, Heimdall orchestrates each ecosystem's own mature tools rather than
+reimplementing their analysis in Python: `cargo clippy`, `cargo-audit`, ESLint, `npm audit`, and
+`tsc`. Findings are normalised into the same rating/gate/issue-tracking model used everywhere
+else in Heimdall, regardless of which tool produced them.
+
+```bash
+# Rust: cargo clippy lint diagnostics (requires cargo + clippy)
+asgard heimdall quality rust-clippy ./my-crate
+
+# Rust: Cargo.lock vulnerability scan against the RustSec advisory database
+# (requires the separate cargo-audit plugin: cargo install cargo-audit)
+asgard heimdall quality rust-audit ./my-crate
+
+# Node: the project's own configured ESLint (requires an ESLint config)
+asgard heimdall quality node-lint ./frontend
+
+# Node: package.json/package-lock.json vulnerability scan via npm audit
+asgard heimdall quality node-audit ./frontend
+
+# Node: TypeScript compiler diagnostics (requires tsconfig.json)
+asgard heimdall quality node-typecheck ./frontend
+```
+
+Each of these requires the underlying tool to be installed. `rust-clippy`, `node-lint`, and
+`node-typecheck` require their tool (cargo, eslint, tsc); when it is missing, the command prints a
+clear, actionable message (what to install and how) and exits non-zero -- it never crashes with a
+raw traceback. `rust-audit`'s `cargo-audit` and `node-audit`'s `npm` (bundled with Node) are
+treated as optional: when `cargo-audit` specifically is not installed, the command instead exits
+0 with an actionable note, so a missing optional scanner does not fail a pipeline that has not
+opted into it. A project missing the tool's own configuration (no ESLint config, no
+tsconfig.json, no Cargo.toml/Cargo.lock under the scanned path) is reported the same way: a
+skipped, non-fatal note and exit 0. In every case, a tool that WAS found and invoked but crashed,
+timed out, or produced output the analyser could not parse is a distinct, always-non-zero outcome
+even if it happens to find zero issues -- that failure is never presented as a clean scan.
+
+**Security note: these commands execute the scanned project's own toolchain.** Unlike Heimdall's
+Python type-check orchestration (which runs mypy/Pyright from an isolated, empty working
+directory with Asgard-owned config so a hostile tree's `pylintrc`/`mypy.ini` cannot run arbitrary
+init-hooks), `cargo clippy`, `cargo-audit`, ESLint, and `tsc` are all invoked with the scanned
+project directory as their working directory, because each needs its own `Cargo.toml`,
+`eslint.config.*`/`.eslintrc.*`, or `tsconfig.json` to run at all. That means running any of these
+five commands against an untrusted or unreviewed tree can execute that tree's own build scripts
+(`build.rs`, package install/postinstall scripts under `npm audit`'s dependency resolution) and
+plugin/loader configuration (a custom ESLint plugin, a `tsconfig.json` `extends` chain, a Cargo
+build script) with the same privileges as the `asgard` process itself. Only run these commands
+against code you already trust, the same way you would before running `cargo build`, `npm
+install`, or `tsc` directly in that tree.
 
 ## Python API
 
@@ -253,6 +308,12 @@ asgard heimdall quality bugs <path>
 asgard heimdall quality javascript <path>
 asgard heimdall quality typescript <path>
 asgard heimdall quality shell <path>
+asgard heimdall quality rust <path>
+asgard heimdall quality rust-clippy <path>
+asgard heimdall quality rust-audit <path>
+asgard heimdall quality node-lint <path>
+asgard heimdall quality node-audit <path>
+asgard heimdall quality node-typecheck <path>
 
 asgard heimdall security hotspots <path>
 asgard heimdall security compliance <path>
@@ -306,4 +367,4 @@ Asgard/
 
 ## License
 
-Polyform Noncommercial License 1.0.0 — free for personal and non-commercial use. Commercial use requires a separate license. See [LICENSE](LICENSE) for details.
+Proprietary. All rights reserved. Commercial use requires a separate, written licensing agreement with the owner. See [LICENSE](LICENSE) for details.

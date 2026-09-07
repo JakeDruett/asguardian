@@ -277,7 +277,11 @@ class TestNodeGoatJS:
         _assert_throughput("NodeGoat/JS", total_lines, elapsed)
 
     # NodeGoat uses MongoDB — no SQL. Injection is via NoSQL operator injection
-    # (not detectable by SQL regex rules). XSS is via res.send with req.query.
+    # (not detectable by SQL regex rules). The XSS this asserts is the SSRF-to-XSS
+    # in app/routes/research.js: an attacker-controlled URL is fetched and its
+    # response body written straight back with res.write under a text/html
+    # content type. Not `res.send` with `req.query`, as an earlier version of this
+    # comment said — there is no such call anywhere in the corpus.
     def test_xss_detected(self):
         report = JSAnalyzer().analyze(scan_path=str(self.CORPUS))
         xss = [f for f in report.findings if "xss" in f.rule_id.lower()]

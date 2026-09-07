@@ -6,9 +6,8 @@ Builds NetworkX dependency graphs from analyzed imports.
 
 import time
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Set
 
-import matplotlib.pyplot as plt
 import networkx as nx
 
 from Asgard.Bragi.Dependencies.models.dependency_models import (
@@ -22,8 +21,9 @@ class GraphBuilder:
     """
     Builds dependency graphs from analyzed imports.
 
-    Uses NetworkX for graph operations and matplotlib for visualization.
-    Both packages are required dependencies.
+    Uses NetworkX for graph operations. NetworkX is a core dependency; matplotlib
+    image rendering lives separately in graph_visualizer.py (the "viz" optional
+    extra) so importing this module never requires matplotlib to be installed.
     """
 
     def __init__(self, config: Optional[DependencyConfig] = None):
@@ -218,52 +218,6 @@ class GraphBuilder:
                 for tgt in deps
             ],
         }
-
-    def visualize(
-        self,
-        scan_path: Optional[Path] = None,
-        output_path: Optional[Path] = None,
-        figsize: Tuple[int, int] = (12, 8)
-    ) -> None:
-        """
-        Visualize the dependency graph using matplotlib.
-
-        Args:
-            scan_path: Root path to scan
-            output_path: Path to save the image
-            figsize: Figure size (width, height)
-
-        """
-        graph = self.build_graph(scan_path)
-
-        fig, ax = plt.subplots(figsize=figsize)
-
-        # Use spring layout for positioning
-        pos = nx.spring_layout(graph, k=2, iterations=50)
-
-        # Draw the graph
-        nx.draw(
-            graph,
-            pos,
-            ax=ax,
-            with_labels=True,
-            node_color="lightblue",
-            node_size=2000,
-            font_size=8,
-            font_weight="bold",
-            arrows=True,
-            arrowsize=15,
-            edge_color="gray",
-            alpha=0.7,
-        )
-
-        ax.set_title("Module Dependencies")
-
-        if output_path:
-            plt.savefig(output_path, dpi=150, bbox_inches="tight")
-            plt.close()
-        else:
-            plt.show()
 
     def get_metrics(
         self, scan_path: Optional[Path] = None

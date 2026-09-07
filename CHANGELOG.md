@@ -7,6 +7,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Rust quality analysis, wired into the CLI for the first time: `quality rust` (pattern-based,
+  the existing regex analyser -- unsafe blocks, unwrap/expect, transmute, raw pointer deref,
+  command injection, hardcoded credentials, integer overflow, path traversal)
+- Toolchain-orchestrated analysis: a new language-agnostic `ToolFinding`/`ToolReport` model
+  (`Asgard.Bragi.Quality.languages.common`) for analysers that shell out to an ecosystem's own
+  tools instead of reimplementing analysis, so ratings/gates/issue tracking work identically
+  regardless of language or tool
+  - `quality rust-clippy`: cargo clippy lint diagnostics (requires cargo + clippy)
+  - `quality rust-audit`: Cargo.lock vulnerability scan against the RustSec advisory database
+    (requires the separate `cargo-audit` plugin)
+  - `quality node-lint`: the project's own configured ESLint (flat config or legacy `.eslintrc.*`)
+  - `quality node-audit`: package.json/package-lock.json vulnerability scan via `npm audit`
+  - `quality node-typecheck`: TypeScript compiler diagnostics via `tsc --noEmit`
+  - Every toolchain command reports a missing tool as a clear, actionable install message and a
+    non-zero exit code rather than crashing; a project missing the tool's own configuration
+    (no ESLint config, no tsconfig.json, no Cargo.toml/Cargo.lock) is reported as a skipped,
+    non-fatal condition
+- L0 unit tests for the new toolchain-orchestration models, subprocess/tool-discovery helpers,
+  all five toolchain analysers, and their CLI handlers, plus real-tool integration tests (skipped
+  cleanly when the underlying tool is not installed) against new checked-in fixture projects
+  (`Asgard_Test/fixtures/rust_toolchain_demo`, `Asgard_Test/fixtures/node_toolchain_demo`)
+- Go toolchain analysis, following the same shape as the Rust/Node work above: `quality go-vet`,
+  `quality go-build`, `quality go-fmt`, `quality go-test`, `quality go-vuln` (via `govulncheck`),
+  plus a fixture project and unit/integration tests
+- `.github/workflows/reusable-quality-gate.yml`: a `workflow_call` job any repo in the suite can
+  call to run the Rust/Node/Go toolchain analysers in its own CI without vendoring asguardian or
+  publishing it to PyPI first. See `_Docs/CI/Consumer-Wiring.md` for the exact per-repo snippet;
+  as of this entry no consumer repo has actually added the call yet.
+
+### Fixed
+- `quality rust-audit`: an advisory whose `cvss` field is a real, present vector this parser does
+  not understand (CVSS v4.0 -- confirmed against a real `rustsec/advisory-db` checkout, where
+  62/423 CVSS-bearing advisories are already v4) previously fell through to the same default
+  severity used for an advisory with no CVSS data at all, silently downgrading a real, unscored
+  vulnerability. It now fails safe to `error` instead of guessing `warning`.
+
 ## [1.2.0] - 2026-03-12
 
 ### Changed

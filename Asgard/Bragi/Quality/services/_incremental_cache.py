@@ -25,6 +25,7 @@ DEFAULT_CACHE_PATH = ".asgard-cache.json"
 
 _HASH_RE = re.compile(r"^[0-9a-f]{64}$")
 _MAX_CACHE_BYTES = 8 * 1024 * 1024
+_MAX_KEY_BYTES = 64
 _MAX_ENTRIES = 10_000
 _MAX_PATH_LEN = 4096
 _MAX_RESULT_BYTES = 64 * 1024
@@ -193,11 +194,27 @@ class FileHashCache:
         env = hmac_key_from_env(HMAC_ENV)
         if env is not None:
             return env
-        if create:
-            if getattr(self, "_ephemeral_hmac", None) is None:
-                self._ephemeral_hmac = os.urandom(32)
-            return self._ephemeral_hmac
-        return getattr(self, "_ephemeral_hmac", None)
+        key_path = self._key_path()
+        existing = _read_nofollow(key_path, max_bytes=_MAX_KEY_BYTES)
+        if existing is not None and len(existing) == 32:
+            return existing
+        if not create:
+            return None
+        if key_path.is_symlink():
+            return None
+        new_key = os.urandom(32)
+        flags = os.O_WRONLY | os.O_CREAT | os.O_TRUNC | getattr(os, "O_NOFOLLOW", 0)
+        try:
+            key_path.parent.mkdir(parents=True, exist_ok=True)
+            fd = os.open(key_path, flags, 0o600)
+            try:
+                os.write(fd, new_key)
+            finally:
+                os.close(fd)
+            os.chmod(key_path, 0o600)
+        except OSError:
+            return None
+        return new_key
 
     def _sign(self, payload: dict, key: bytes) -> str:
         body = dict(payload)

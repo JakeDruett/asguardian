@@ -235,6 +235,11 @@ class TestRepoWorkflowPins:
                 path = os.path.join(folder, name)
                 text = open(path, encoding="utf-8").read()
                 for line in text.splitlines():
+                    if line.lstrip().startswith("#"):
+                        # A commented-out `uses:` is documentation, not a step
+                        # this workflow runs. This assertion is about live
+                        # references, as its name says.
+                        continue
                     match = self._USES_RE.search(line)
                     if not match:
                         continue
@@ -774,6 +779,11 @@ class TestExternalLint:
         workflows.mkdir(parents=True)
         for rel_path, content in result.files.items():
             (workflows / os.path.basename(rel_path)).write_text(content)
+        # actionlint's project autodetection requires both ".github/workflows"
+        # and a ".git" directory (see actionlint's project.go) -- without a
+        # real Git repository here it refuses to run at all ("no project was
+        # found"), rather than reporting on the workflow files themselves.
+        subprocess.run(["git", "init", "-q"], cwd=tmp_path, check=True)
         proc = subprocess.run(
             ["actionlint"], cwd=tmp_path, capture_output=True, text=True,
         )

@@ -8,12 +8,14 @@ All tests run in headless mode suitable for CI/CD environments.
 """
 
 import asyncio
+import subprocess
 import sys
 from pathlib import Path
 from typing import Generator
 
 import pytest
 from playwright.async_api import async_playwright, Browser, BrowserContext, Page
+from playwright.async_api import Error as PlaywrightError
 
 # Add project root to path
 project_root = Path(__file__).parent.parent.parent.parent
@@ -426,6 +428,82 @@ def sample_visual_page(html_fixtures_dir) -> Path:
 # Playwright Browser Fixtures
 # =============================================================================
 
+_BROWSER_LAUNCH_ERROR: "str | None" = None
+_BROWSER_PROBED = False
+
+
+_PROBE_SOURCE = """
+import sys
+from playwright.sync_api import sync_playwright
+
+try:
+    with sync_playwright() as p:
+        p.chromium.launch(headless=True).close()
+except Exception as exc:
+    sys.stdout.write(str(exc).strip().splitlines()[0])
+    sys.exit(1)
+sys.exit(0)
+"""
+
+
+def _browser_launch_error() -> "str | None":
+    """Return why a Chromium launch fails here, or None if it works.
+
+    Probed once per session and cached.
+
+    The probe runs in a subprocess, which matters: this directory sits beside
+    Freya's L0 suites, which patch `async_playwright` inside the modules under
+    test. An in-process probe run after those is answering a question about a
+    session whose playwright surface other tests have been reaching into, and
+    it gave the wrong answer -- reporting a launchable browser in a
+    package-wide run on a machine where every real launch failed. A fresh
+    interpreter cannot be affected by any of that.
+    """
+    global _BROWSER_LAUNCH_ERROR, _BROWSER_PROBED
+    if _BROWSER_PROBED:
+        return _BROWSER_LAUNCH_ERROR
+
+    completed = subprocess.run(
+        [sys.executable, "-c", _PROBE_SOURCE],
+        capture_output=True,
+        text=True,
+        timeout=120,
+    )
+    if completed.returncode != 0:
+        _BROWSER_LAUNCH_ERROR = (
+            completed.stdout.strip()
+            or completed.stderr.strip().splitlines()[-1:] and completed.stderr.strip().splitlines()[-1]
+            or f"probe exited {completed.returncode}"
+        )
+    _BROWSER_PROBED = True
+    return _BROWSER_LAUNCH_ERROR
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _require_a_launchable_browser():
+    """Skip this directory when no Playwright browser can be launched.
+
+    Every test here drives a real Chromium, and the Freya services under test
+    launch their own browsers rather than taking one from a fixture -- so the
+    `browser` fixture below does not gate them. Without this probe, a machine
+    with no matching browser build reports dozens of Freya failures, each
+    carrying Playwright's "please run playwright install" banner, which reads
+    as the package being broken rather than a dependency being absent.
+
+    This can only ever skip, never pass something that would otherwise fail:
+    the probe launches a browser and closes it, and asserts nothing about
+    Freya.
+    """
+    error = _browser_launch_error()
+    if error:
+        pytest.skip(
+            "Freya L1 integration tests need a launchable Playwright Chromium, and "
+            f"the probe launch failed: {error}. Install the browsers matching the "
+            "installed playwright package (`playwright install chromium`), or point "
+            "PLAYWRIGHT_BROWSERS_PATH at a build of the revision it expects."
+        )
+
+
 @pytest.fixture(scope="session")
 def event_loop():
     """
@@ -444,11 +522,27 @@ async def browser() -> Generator[Browser, None, None]:
     """
     Create a Playwright browser instance for the test session.
 
+    Skips rather than errors when no browser is installed. Every test in this
+    directory drives a real Chromium; without one there is nothing to
+    integrate against, and Playwright's "Executable doesn't exist ... please
+    run playwright install" is raised once per test, which reads as dozens of
+    Freya failures rather than one missing dependency. A skip says which it
+    is. It also stays a skip and never a silent pass: these tests assert
+    nothing without the browser fixture.
+
     Yields:
         Browser: Chromium browser instance
     """
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
+        try:
+            browser = await p.chromium.launch(headless=True)
+        except PlaywrightError as exc:
+            pytest.skip(
+                "Freya L1 integration tests need a Playwright Chromium build, and "
+                f"launching one failed: {exc}. Install the browsers matching the "
+                "installed playwright package (`playwright install chromium`), or "
+                "point PLAYWRIGHT_BROWSERS_PATH at a build of the right revision."
+            )
         yield browser
         await browser.close()
 

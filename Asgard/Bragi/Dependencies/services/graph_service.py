@@ -473,16 +473,12 @@ class DependencyGraphService:
         return cache_file.with_name(cache_file.name + ".key")
 
     def _hmac_key(self, scan_path: Path, *, create: bool = False) -> Optional[bytes]:
-        from Asgard.common._hmac_env import hmac_key_from_env
+        from Asgard.common._hmac_env import hmac_key_from_env, persisted_hmac_key
 
         env = hmac_key_from_env(HMAC_ENV)
         if env is not None:
             return env
-        if create:
-            if getattr(self, "_ephemeral_hmac", None) is None:
-                self._ephemeral_hmac = os.urandom(32)
-            return self._ephemeral_hmac
-        return getattr(self, "_ephemeral_hmac", None)
+        return persisted_hmac_key(self._key_path(scan_path), create=create)
 
     def _sign(self, payload: dict, key: bytes) -> str:
         return _sign_cache(payload, key)
@@ -507,11 +503,12 @@ class DependencyGraphService:
                 "derived": data.get("derived"),
             }
             key = self._hmac_key(scan_path, create=False)
-            if key is not None:
-                if not isinstance(expected, str) or not hmac.compare_digest(
-                    expected, self._sign(unsigned, key)
-                ):
-                    return {}
+            if (
+                key is None
+                or not isinstance(expected, str)
+                or not hmac.compare_digest(expected, self._sign(unsigned, key))
+            ):
+                return {}
             files = _sanitize_files(unsigned["files"])
             derived = _sanitize_derived(unsigned["derived"])
             return {"version": CACHE_VERSION, "files": files, "derived": derived}

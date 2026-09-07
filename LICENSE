@@ -1,80 +1,46 @@
-Polyform Noncommercial License 1.0.0
+PROPRIETARY SOFTWARE LICENSE
 
-<https://polyformproject.org/licenses/noncommercial/1.0.0>
+Copyright (c) 2026 Jake Druett. All rights reserved.
 
-Acceptance
+This software and its associated documentation, design documents, research
+notes, benchmarks, and all other materials in this repository (collectively,
+the "Software") are the proprietary and confidential property of Jake Druett
+(the "Owner").
 
-In order to get any license under these terms, you must agree
-to them as both strict obligations and conditions to all
-your licenses.
+NO LICENSE IS GRANTED.
 
-Use Grant
+No person or entity is granted any right to use, copy, modify, merge, publish,
+distribute, sublicense, sell, host, reverse engineer, or create derivative
+works of the Software, in whole or in part, in source or binary form, except
+under a separate written commercial licensing agreement signed by the Owner.
 
-The licensor grants you a copyright license for the
-software to do everything you might do with the software
-for noncommercial purposes and to make and share adaptations
-of the software for noncommercial purposes.
+Possession of a copy of the Software, whether obtained with or without the
+Owner's consent, confers no license and no rights of use.
 
-Noncommercial Purposes
+Unauthorized use, reproduction, or distribution of the Software, or of any
+portion of it, is a violation of applicable copyright and trade secret law and
+may result in civil and criminal penalties.
 
-Any purpose is a noncommercial purpose that is not primarily
-intended for or directed toward commercial advantage or
-monetary compensation.
+To obtain a commercial license, contact: jakedruett@gmail.com
 
-Patent License
+THIRD-PARTY COMPONENTS
 
-The licensor grants you a patent license for the software
-that covers patent claims the licensor can license, or
-becomes able to license, that you would infringe by using
-the software.
+This repository may vendor third-party dependencies under directories such as
+`vendor/`, `node_modules/`, or `third_party/`. Those components remain the
+property of their respective copyright holders and are governed exclusively by
+their own license files, which are retained alongside them as those licenses
+require. Nothing in this file alters, supersedes, or revokes the terms of any
+third-party license, and nothing in those third-party licenses grants any
+right to the Software.
 
-Fair Use
+Where present, attribution for those components -- each one's name, version,
+declared license, and full license text -- is collected in
+THIRD-PARTY-NOTICES.md at the root of this repository. That file must
+accompany any distribution of the Software.
 
-You may have "fair use" rights for the software under the
-law. These terms do not limit them.
-
-Free Trial
-
-Use to evaluate whether the software suits a particular
-application for no more than 30 days, on behalf of you or
-your company, is use for a noncommercial purpose.
-
-No Other Rights
-
-These terms do not allow you to sublicense or transfer any
-of your licenses to anyone else, or prevent the licensor
-from granting licenses to anyone else. These terms do not
-imply any other licenses.
-
-Patent Defense
-
-If you make any written claim that the software infringes
-or contributes to infringement of any patent, your patent
-license for the software granted under these terms ends
-immediately. If your company makes such a claim, your
-patent license ends immediately for work on behalf of your
-company.
-
-Violations
-
-The first time you are notified in writing that you have
-violated any of these terms, or done anything with the
-software not covered by your licenses, your licenses can
-nonetheless continue if you come into compliance within 32
-days after receiving that notice. If you do not come into
-compliance, your licenses end permanently.
-
-If you violate these terms, or do anything with the software
-not covered by your licenses, and such violation or action
-persists for more than 30 days after you learn of it or
-receive notice of it, your licenses end permanently.
-
-A licensee who has lost licenses may regain them by getting
-explicit permission from the licensor.
-
-Disclaimer
-
-***The software comes as is, without any warranty at
-all. As far as the law allows, the licensor will not be
-liable to anyone for any damages related to the software
-or this license, under any kind of legal claim.***
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+OWNER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION
+WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

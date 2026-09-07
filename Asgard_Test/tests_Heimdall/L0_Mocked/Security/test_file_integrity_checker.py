@@ -124,3 +124,55 @@ class TestFileIntegrityHmacAndAdds:
         checker.create_baseline(tmp_path)
         mode = stat.S_IMODE(os.stat(baseline_file).st_mode)
         assert mode == 0o600
+
+
+class TestFileIntegrityCrossProcessPersistence:
+    """A separate FileIntegrityChecker *instance* (standing in for a separate
+    process/CLI invocation) must be able to verify a baseline written by an
+    earlier instance, with no HMAC env var set. Before the fix, each instance
+    minted its own os.urandom(32) signing key that was never persisted, so
+    this cross-instance verify always failed the HMAC check and
+    verify_integrity() always raised FileNotFoundError.
+    """
+
+    def test_second_instance_can_verify_first_instances_baseline(self, tmp_path, monkeypatch):
+        monkeypatch.delenv("ASGARD_INTEGRITY_HMAC_KEY", raising=False)
+        baseline_file = str(tmp_path / ".baseline.json")
+        (tmp_path / "data.txt").write_text("stable content")
+
+        writer = FileIntegrityChecker(baseline_file=baseline_file)
+        writer.create_baseline(tmp_path)
+
+        reader = FileIntegrityChecker(baseline_file=baseline_file)
+        report = reader.verify_integrity(tmp_path)
+        assert len(report.modified) == 0
+        assert report.ok_count == 1
+
+    def test_key_file_persisted_sibling_to_baseline_at_0600(self, tmp_path, monkeypatch):
+        monkeypatch.delenv("ASGARD_INTEGRITY_HMAC_KEY", raising=False)
+        baseline_file = tmp_path / ".baseline.json"
+        (tmp_path / "data.txt").write_text("x")
+        checker = FileIntegrityChecker(baseline_file=str(baseline_file))
+        checker.create_baseline(tmp_path)
+
+        key_file = tmp_path / ".baseline.json.key"
+        assert key_file.exists()
+        assert stat.S_IMODE(os.stat(key_file).st_mode) == 0o600
+        assert len(key_file.read_bytes()) == 32
+
+    def test_tampered_baseline_still_rejected_across_instances(self, tmp_path, monkeypatch):
+        monkeypatch.delenv("ASGARD_INTEGRITY_HMAC_KEY", raising=False)
+        baseline_file = tmp_path / ".baseline.json"
+        (tmp_path / "data.txt").write_text("original")
+        writer = FileIntegrityChecker(baseline_file=str(baseline_file))
+        writer.create_baseline(tmp_path)
+
+        data = json.loads(baseline_file.read_text())
+        rec = next(iter(data["files"].values()))
+        rec["sha256"] = "f" * 64
+        rec["md5"] = "e" * 32
+        baseline_file.write_text(json.dumps(data))
+
+        reader = FileIntegrityChecker(baseline_file=str(baseline_file))
+        with pytest.raises(FileNotFoundError):
+            reader.verify_integrity(tmp_path)

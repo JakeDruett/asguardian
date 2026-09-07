@@ -121,6 +121,69 @@ class TestJsXss:
         findings = [f for f in report.findings if f.rule_id == "js.xss"]
         assert findings[0].category == JSRuleCategory.SECURITY
 
+    def test_inner_html_with_string_literal_not_flagged(self):
+        # `\s*` used to backtrack to zero width, so the negative lookahead saw
+        # the space rather than the quote after it and a literal assignment was
+        # reported. The lookahead now excludes whitespace too.
+        code = 'element.innerHTML = "<b>static</b>";\n'
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "ui.js").write_text(code)
+            report = JSAnalyzer().analyze(scan_path=d)
+        assert not [f for f in report.findings if f.rule_id == "js.xss"]
+
+    def test_outer_html_with_variable_flagged(self):
+        code = 'element.outerHTML = userInput;\n'
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "ui.js").write_text(code)
+            report = JSAnalyzer().analyze(scan_path=d)
+        assert any(f.rule_id == "js.xss" for f in report.findings)
+
+    def test_dangerously_set_inner_html_flagged(self):
+        code = 'const El = () => <div dangerouslySetInnerHTML={{ __html: body }} />;\n'
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "ui.js").write_text(code)
+            report = JSAnalyzer().analyze(scan_path=d)
+        assert any(f.rule_id == "js.xss" for f in report.findings)
+
+    def test_res_write_with_variable_flagged(self):
+        # The server-side counterpart of innerHTML: res.write emits its argument
+        # into the response body verbatim, with no escaping.
+        code = 'res.write(body);\n'
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "server.js").write_text(code)
+            report = JSAnalyzer().analyze(scan_path=d)
+        assert any(f.rule_id == "js.xss" for f in report.findings)
+
+    def test_res_write_with_string_literal_not_flagged(self):
+        code = 'res.write("<h1>Static heading</h1>");\n'
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "server.js").write_text(code)
+            report = JSAnalyzer().analyze(scan_path=d)
+        assert not [f for f in report.findings if f.rule_id == "js.xss"]
+
+    def test_res_send_with_request_data_flagged(self):
+        code = 'res.send(req.query.q);\n'
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "server.js").write_text(code)
+            report = JSAnalyzer().analyze(scan_path=d)
+        assert any(f.rule_id == "js.xss" for f in report.findings)
+
+    def test_res_json_not_flagged(self):
+        # res.json serialises rather than emitting raw bytes, so it is not a
+        # sink for this rule and must not be treated as one.
+        code = 'res.json({ ok: true, count: n });\n'
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "server.js").write_text(code)
+            report = JSAnalyzer().analyze(scan_path=d)
+        assert not [f for f in report.findings if f.rule_id == "js.xss"]
+
+    def test_bare_res_end_not_flagged(self):
+        code = 'res.end();\n'
+        with tempfile.TemporaryDirectory() as d:
+            (Path(d) / "server.js").write_text(code)
+            report = JSAnalyzer().analyze(scan_path=d)
+        assert not [f for f in report.findings if f.rule_id == "js.xss"]
+
 
 class TestJsPathTraversal:
     def test_fs_read_file_with_req_param_flagged(self):
