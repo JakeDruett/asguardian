@@ -1,0 +1,25 @@
+name: UAT Source Guard
+
+on:
+  pull_request_target:
+    branches: [uat, UAT]
+    types: [opened, synchronize, reopened, edited]
+
+permissions:
+  contents: read
+
+jobs:
+  require-main-source:
+    runs-on: arc-x86
+    steps:
+      - name: Require main from this repository
+        env:
+          SOURCE_REPOSITORY: ${{ github.event.pull_request.head.repo.full_name }}
+          TARGET_REPOSITORY: ${{ github.repository }}
+          SOURCE_BRANCH: ${{ github.event.pull_request.head.ref }}
+        run: |
+          if [ "$SOURCE_REPOSITORY" != "$TARGET_REPOSITORY" ] || [ "$SOURCE_BRANCH" != main ]; then
+            echo "::error::UAT accepts pull requests only from this repository's main branch."
+            exit 1
+          fi
+
