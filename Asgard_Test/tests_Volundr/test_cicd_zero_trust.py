@@ -255,15 +255,14 @@ class TestRepoWorkflowPins:
             os.path.join(self._REPO_ROOT, ".github", "dependabot.yml")
         )
 
-    def test_ci_pull_request_not_on_shared_arc(self):
+    def test_ci_uses_local_cluster_for_every_event(self):
         path = os.path.join(self._REPO_ROOT, ".github", "workflows", "ci.yml")
         text = open(path, encoding="utf-8").read()
         data = yaml.safe_load(text)
         assert data["concurrency"]["cancel-in-progress"] is True
         for job_name, job in data["jobs"].items():
             runs_on = job["runs-on"]
-            assert "ubuntu-latest" in str(runs_on), job_name
-            assert "pull_request" in str(runs_on), job_name
+            assert runs_on == "arc-x86", job_name
             assert job.get("timeout-minutes") == 30, job_name
         assert "persist-credentials: false" in text
         assert "pip install -e" in text
@@ -281,11 +280,11 @@ class TestRepoWorkflowPins:
         assert on_block["push"]["tags"] == ["v[0-9].*"]
         jobs = data["jobs"]
         assert "id-token" not in (jobs["build"].get("permissions") or {})
-        assert jobs["build"]["runs-on"] == "ubuntu-latest"
+        assert jobs["build"]["runs-on"] == "arc-x86"
         pub = jobs["publish"]
         assert pub["environment"] == "pypi"
         assert pub["permissions"]["id-token"] == "write"
-        assert pub["runs-on"] == "ubuntu-latest"
+        assert pub["runs-on"] == "arc-x86"
         assert pub["needs"] == ["build", "provenance"]
         assert jobs["provenance"]["permissions"]["attestations"] == "write"
         uses = [
@@ -307,7 +306,7 @@ class TestRepoWorkflowPins:
         data = yaml.safe_load(text)
         assert data.get("permissions") == {"contents": "read"} or data.get("permissions") == {}
         job = data["jobs"]["l8-budgets"]
-        assert job["runs-on"] == "ubuntu-latest"
+        assert job["runs-on"] == "arc-x86"
         assert job.get("timeout-minutes") == 20
         assert "persist-credentials: false" in text
         # Editable install of the PR tree must be gated off pull_request (CHC-0001).
