@@ -74,7 +74,12 @@ Asgard is used in GAIA's CI/CD pipeline and development workflow:
 - Quality gates run as part of the test coverage matrix via Hercules
 
 ---
+## Security
+
+Default path is offline, fail-closed, and localhost-bound. Scanners jail paths, skip scan-tree symlinks, mask secrets in reports, and treat empty/unsigned analysis as incomplete — not a perfect score. Full control list: [[Architecture/Security_Hardening]].
+
 ## Related Documentation
 - [[Asgard Package]] - Detailed package documentation
+- [[Architecture/Security_Hardening]] - Applied hardening invariants
 - [[04 - DevOps]] - CI/CD and deployment
 - [[97-Standards]] - Code quality standards

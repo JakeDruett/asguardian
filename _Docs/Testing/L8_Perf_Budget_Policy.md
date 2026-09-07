@@ -4,6 +4,11 @@ Status: ACTIVE for local runs; CI enforcement drafted but **not enabled**
 (`.github/workflows/l8-perf-budgets.yml` carries `if: false` on every job —
 enabling it, and deciding whether it gates merges, is Jake's call).
 
+The draft is already hardened: `permissions: contents: read`,
+`persist-credentials: false`, SHA-pinned actions, `timeout-minutes`, and
+no unguarded `pip install -e` on `pull_request`. Do not flip `if: false`
+without keeping that split. See `_Docs/Architecture/Security_Hardening.md`.
+
 ## What is enforced
 
 All budgets live in one file: `Asgard_Test/L8_budgets.yaml`.

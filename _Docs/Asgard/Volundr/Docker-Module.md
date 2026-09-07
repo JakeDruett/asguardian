@@ -331,6 +331,11 @@ python -m Volundr docker compose \
   --output ./docker
 ```
 
+Instruction fields, including `SecretMount` id/target, pass
+`_require_safe_field`. `save_to_file` is jailed under the output dir.
+Generated scan workflows emit SHA-pinned Actions. See
+`_Docs/Architecture/Security_Hardening.md`.
+
 ## Related
 
 - [01-Overview.md](01-Overview.md) - Package overview

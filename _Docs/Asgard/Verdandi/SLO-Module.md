@@ -6,6 +6,11 @@ Error budgets, SLI tracking, and multi-window burn-rate alerting for
 Service Level Objectives. Consumes standard good/total event counts —
 no assumptions about any particular infrastructure.
 
+Empty windows are unknown, not healthy: SLA compliance on `[]` is 0 /
+BREACHED; SLI / error-budget with zero events is 0 / `UNKNOWN`, never
+100%. Same rule on empty vitals (`INSUFFICIENT_DATA`, score 0) and empty
+APM traces (`health_score` 0). See `_Docs/Architecture/Security_Hardening.md`.
+
 ## Burn Rate Semantics
 
 `burn_rate = observed_failure_rate / allowed_failure_rate`

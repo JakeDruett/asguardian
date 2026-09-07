@@ -46,6 +46,10 @@ re-implement from these). **The one live planning document going forward is
 `_Docs/Planning/MasterPlan/00_MasterPlan.md`** — phased, dependency-ordered, with a
 completion ledger at the bottom of what Wave 5 closed and what's still open.
 
+**CyberHardening is applied.** Audit + fixes + confirmation + leftovers
+are closed. Durable controls: `_Docs/Architecture/Security_Hardening.md`.
+Per-finding commits: `git log --grep=CH-`.
+
 ---
 
 ## What's left — and who owns it

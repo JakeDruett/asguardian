@@ -330,3 +330,4 @@ python -m pytest Asgard/Verdandi/Verdandi_Test/L0_Mocked/test_vitals_calculator.
 - [05-System-Module.md](05-System-Module.md) - System module details
 - [06-Network-Module.md](06-Network-Module.md) - Network module details
 - [07-Cache-Module.md](07-Cache-Module.md) - Cache module details
+- [Security Hardening](../../Architecture/Security_Hardening.md) - Empty telemetry is not a perfect score

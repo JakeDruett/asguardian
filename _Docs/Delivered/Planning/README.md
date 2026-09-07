@@ -33,3 +33,11 @@ codebase and the residual gaps implemented and merged; full suite green
 historical record. The single live plan is now
 `_Docs/Planning/MasterPlan/00_MasterPlan.md`; per-wave evidence remains in
 `UPLIFT_STATUS.md` at the repo root.
+
+## CyberHardening (2026-08-16–19)
+
+Full-tree audit (`CH-0001`–`CH-0115`), implementation, confirmation
+(`CHC-0001`–`CHC-0013`), and Residual leftover fixes are **done**. The
+Planning backlogs were folded into `_Docs/Architecture/Security_Hardening.md`
+and the package docs, then deleted. Reconstruct a single finding with
+`git log --grep=CH-00XX`.

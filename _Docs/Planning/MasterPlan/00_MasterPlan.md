@@ -1,9 +1,15 @@
 # Asgard Master Plan — remaining work, sequenced
 
-**Last updated:** 2026-08-13 (post Wave 5 — all unblocked Phase 1-4 items DONE).
+**Last updated:** 2026-08-19 (CyberHardening applied and documented).
 All original uplift plans are DELIVERED and archived under `_Docs/Delivered/Planning/`
 (see its `README.md` for the ledger; per-wave evidence in `UPLIFT_STATUS.md` at repo root).
 Full suite is green: **10,621 passed / 0 failed / 11 skipped** (post Wave 5).
+
+**CyberHardening (2026-08-16–19) is complete.** 114 live findings + 13
+confirmation findings + Residual leftovers are Fixed. Durable controls
+live in `_Docs/Architecture/Security_Hardening.md` and the package docs
+that point at it. Per-finding traces are `git log --grep=CH-`. The
+Planning CyberHardening backlogs were removed after that fold-in.
 
 This document is now the single live plan. Phases are ordered by dependency; within a
 phase, items are independent and parallelizable. Invariants apply throughout: never mute
@@ -78,6 +84,13 @@ intra-procedural only.
 
 **Remaining (updated):**
 - Phase 0 unchanged (Jake: credentials, CI enablement incl. the drafted L8 workflow, pin-map SHA verification, CVE corpus).
+
+## CyberHardening completion (2026-08-19)
+
+Tree-wide security audit, implementation, confirmation, and leftover
+fixes are done. Controls (fail-closed grades, path jails, env-only HMAC,
+localhost bind, secret masking, SHA-pinned CI) are documented in
+`_Docs/Architecture/Security_Hardening.md`. No Open findings remain.
 - Phase 2.2 ratchet: 224 allowlisted models still need L3 tests (see `Asgard_Test/L3_Meta/l3_uncovered_allowlist.txt`); includes Asgard.config-owned models no wave-agent owned.
 - Phase 2.4 continue: Heimdall coverage re-measure (timed out >25min with --cov; needs bounded strategy), Bragi uplift (66.5%), Forseti benchmark-plugin collection errors (28, pre-existing), Reporting `_history_db.py`.
 - Phase 5 unchanged (research-gated).

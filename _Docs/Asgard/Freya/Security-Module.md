@@ -9,6 +9,13 @@ directive analysis, Subresource Integrity (SRI) on cross-origin scripts
 and stylesheets, and mixed-content (`http://` on an `https://` page)
 detection.
 
+Navigation (crawl, testers, SRI/mixed, header scan, link-validator seed)
+goes through `validate_navigation_url` / `safe_goto`. `file:` / ftp /
+javascript / data and off-policy hosts are aborted. Header fetches
+re-validate each redirect (no blind `follow_redirects`). HTML/JUnit
+reports escape interpolated fields. Auth fields are redacted on save.
+See `_Docs/Architecture/Security_Hardening.md`.
+
 Per DEEPTHINK_06, external observation reliably proves the *absence* of a
 defense, almost never the *effectiveness* of one — reports are framed as
 **Threat Mitigation**, never "Secure"/"Vulnerable". The headline metric

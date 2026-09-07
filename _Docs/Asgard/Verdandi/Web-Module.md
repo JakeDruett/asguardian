@@ -347,3 +347,6 @@ class ResourceTimingResult(BaseModel):
 | FCP | <= 1.8s | <= 3.0s | > 3.0s |
 
 **Note**: INP (Interaction to Next Paint) replaced FID as a Core Web Vital in March 2024.
+
+No samples is `INSUFFICIENT_DATA` and score 0 — not GOOD / 100. See
+`_Docs/Architecture/Security_Hardening.md`.

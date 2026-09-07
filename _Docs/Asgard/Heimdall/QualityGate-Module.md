@@ -101,6 +101,10 @@ Letter ratings (A-E) are compared ordinally: A=1 (best), E=5 (worst). So `LESS_T
 | `WARNING` | All error conditions passed, but warning conditions failed |
 | `NOT_COMPUTED` | Insufficient data to evaluate |
 
+## Hardening
+
+Unsigned or rewritten fingerprint baselines fail closed (`NOT_EVALUATED`). HMAC keys come from `ASGARD_QG_HMAC_KEY` only — sibling `.key` files are not used to verify. Empty fuzzy messages are not a file+type wildcard. Unmeasured ratings are `N/A`, not A. See `_Docs/Architecture/Security_Hardening.md`.
+
 ## CLI Usage
 
 ```bash
