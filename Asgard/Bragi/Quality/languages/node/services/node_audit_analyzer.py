@@ -97,6 +97,8 @@ class NodeAuditAnalyzer:
             if finding is not None:
                 report.add_finding(finding)
                 if self._config.max_findings and report.total_findings >= self._config.max_findings:
+                    report.tool_failed = True
+                    report.tools_unavailable.append("npm audit finding limit reached; remaining vulnerabilities are unverified")
                     break
 
         report.scan_duration_seconds = (datetime.now() - start).total_seconds()

@@ -1,225 +1,133 @@
-# Wiring consumer repos into asguardian's CI
+# Wiring consumer repositories into the quality gate
 
-Status as of 2026-09-03: asguardian's toolchain analysers (Rust, Node, Go --
-see `Asgard/Bragi/Quality/languages/{rust,node,go}/`) exist and are exercised
-by asguardian's own test suite, but **no other repo in the suite runs
-`asgard`/`heimdall` in its own CI**. Grepping every listed repo's
-`.github/workflows/*.yml` for `asguardian`/`asgard`/`heimdall` returned no
-hits anywhere except this repo. The analysers exist; nothing calls them yet.
+The reusable workflow is tracked on main. The revised workflow must be committed
+and made reachable before consumers select its SHA; local source tests do not
+prove a consumer Actions run. Existing native CI gates remain required.
 
-This doc exists because asguardian's own scope (per `CLAUDE.md`) is limited to
-this repository -- wiring another repo's CI has to happen in that repo, by
-whoever is working there. `.github/workflows/reusable-quality-gate.yml` in
-this repo (added alongside this doc) is the piece asguardian itself can
-provide: a `workflow_call` job that checks out this repo, installs it from
-source, and runs the right `heimdall quality <check>` commands for a given
-language. Each consumer repo still needs one small block added to call it.
+## Installed command names
 
-## The reusable workflow
+Use `asguardian` for the unified CLI, `asguardian-dashboard` for the dashboard,
+and `asguardian-mcp` for the MCP server. The `asgard`, `asgard-dashboard`, and
+`asgard-mcp` spellings are compatibility aliases to the same package entrypoints.
+Module commands such as `heimdall` remain supported. The reusable gate invokes
+`python -m Asgard.cli` from its selected interpreter; no executable rename is
+needed in that workflow.
+
+The source tests load the declared entrypoints and exercise real help and
+argument parsing without starting servers or analyzers. Trusted push CI also
+checks the installed console scripts outside the repository directory. Actual
+consumer installation and execution on arc-x86 remain required. An alias does
+not add a new command protocol: Hercules L13's `scan --target ... --output ...`
+invocation still needs a separate adapter to the supported module commands and
+report format.
+
+## Source identity
+
+Pin each caller's `uses:` to a reviewed full 40-character commit SHA. The gate
+checks out and verifies `job.workflow_repository` at `job.workflow_sha`, so the
+installed analyzer belongs to that same workflow revision. It never uses
+`github.sha`, `github.workflow_sha`, or a floating `main` checkout for the analyzer.
+GitHub documents that the `github` context belongs to the caller, while the
+[`job.workflow_*` properties identify the called workflow](https://docs.github.com/en/actions/reference/workflows-and-actions/contexts#job-context).
+
+GitHub Enterprise Server does not expose these job identity properties. There,
+set `asguardian-ref` to the same full SHA used in `uses:`; branch/tag/short SHA
+inputs are rejected. If job identity is available, a differing explicit input is
+rejected. GHES cannot independently verify equality to the outer `uses:` ref;
+that remains a caller review requirement. Missing identity and missing fallback
+fail before either checkout. An optional `asguardian-token` secret can supply
+read access to private analyzer source; the default caller token may lack that
+cross-repository permission. Credentials are not persisted in either checkout.
+
+The caller is checked out under `caller/`, and analyzer source under
+`.asguardian-src/`. Scan paths are confined to the caller checkout, including
+resolved symlinks. This prevents analyzer fixture projects from being selected
+when the caller lacks a manifest. Each job targets one explicit project root;
+use a job per project for monorepositories.
+
+## Project and tool contract
+
+| Language | Required inputs and committed files |
+| --- | --- |
+| Node | `package.json`, npm lockfile, and locked devDependencies; selected `node-lint` needs local ESLint config, selected `node-typecheck` needs `tsconfig.json` and TypeScript |
+| Rust | `Cargo.toml`, exact `rust-toolchain` release; `rust-audit` additionally requires `Cargo.lock` and exact `cargo-audit-version` |
+| Go | `go.mod` supplies the Go toolchain; `go-vuln` additionally requires exact `govulncheck-version` |
+
+Empty `checks` selects all checks for the language. Set an explicit subset for
+projects without TypeScript or another intentionally unused check. Unknown,
+cross-language, empty-list entries and duplicate checks fail configuration.
+Requested checks cannot report missing tools/configuration as a passing result.
+The runner checks report identity, errors, unavailable tools, subprocess status
+and JSON validity, and attempts every selected check before failing the job.
+Finding limits remain bounded: reaching a Node, Rust, Go vulnerability or Go formatting finding cap marks the
+remaining output unverified and fails the gate, including warnings-only output.
+Nonzero TypeScript/Clippy results without parsed errors also fail; startup or
+manifest errors cannot become an empty successful scan.
+
+Node installs use `npm ci --include=dev --ignore-scripts`; neither global latest
+ESLint/TypeScript nor downloaded npx cache entries substitute for declared
+project tools. The committed wrappers force the analyzer to use local npx
+resolution after installed-binary validation. Lifecycle scripts do not run.
+Projects requiring generated artifacts or native dependency install hooks need
+a reviewed CI preparation path before adopting this reusable gate; a failed
+install/check must not be changed to an ignored failure. This workflow currently
+supports npm lockfiles, not guessed Yarn/pnpm installation commands.
+
+For npm workspaces, `node-install-path` may point at the ancestor lockfile root,
+while `scan-path` selects a member with its own manifest/config. Run `node-audit`
+in a separate job targeting the lockfile root. Private registry and external
+source dependencies must already have a supported authentication/preparation
+path; the gate does not invent private dependency checkouts or credentials.
+
+Rust audit installs are version-selected with `cargo install --locked`, and Go
+vulnerability tooling requires an exact module release; no `latest` fallback
+exists. Consumers choose reviewed supported tool versions rather than copying
+an unverified release from this document. The selected Rust release is also
+passed as `RUSTUP_TOOLCHAIN` to audit-tool
+installation and analyzer subprocesses, taking precedence over caller
+`rust-toolchain.toml` files and rustup directory overrides. Runtime Python dependencies are
+installed from the selected analyzer's project metadata. They retain the
+package's declared version ranges; the immutable analyzer commit is not a claim
+of a fully locked Python environment or immutable vulnerability databases.
+
+## Caller templates
+
+Replace `REVIEWED_40_CHARACTER_SHA` with a reachable commit containing this change.
+The placeholders intentionally do not masquerade as verified releases.
 
 ```yaml
 jobs:
-  quality-gate:
-    uses: primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@main
-    with:
-      language: rust   # or node, or go
-      scan-path: .      # path within the caller repo to scan
-```
-
-Verified locally in this sandbox (not via a real Actions run -- no CI runner
-available here): the underlying command the workflow issues,
-`heimdall quality go-vet Asgard_Test/fixtures/go_toolchain_demo`, installed
-correctly from `pip install -e .` and produced the expected real finding
-against the checked-in fixture, with the expected nonzero exit code; a
-clean check (`go-fmt` on the same fixture) exited 0. The YAML was validated
-with `yaml.safe_load`. The workflow-level checkout/install/dispatch wiring
-itself was not exercised inside a real GitHub Actions runner, since none is
-available in this sandbox -- treat that part as reviewed, not proven.
-
-## Ordering constraint: asguardian must merge first
-
-**Do not apply the snippets below yet.** They all reference
-`primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@main`,
-and that workflow does not exist on `main` -- it was added on
-`claude/gaia-compatibility-matrix` and is unmerged. Verified 2026-09-03:
-`git ls-tree origin/main -- .github/workflows/` has no
-`reusable-quality-gate.yml`.
-
-Once it is merged, replace `@main` with a full 40-character commit SHA in every
-snippet below, in the same pass that lifts this ordering constraint. `@main` is a
-live dependency on whatever that branch contains at run time; `reusable-quality-
-gate.yml` SHA-pins every action it uses for exactly that reason, and a consumer
-referencing it by branch gives that back. `@main` here is a placeholder for a ref
-that does not exist yet, not the intended end state.
-
-A `uses:` pointing at a workflow that is not on the referenced ref fails at
-job-startup with a workflow-not-found error, so wiring a consumer repo today
-buys that repo an immediately-red CI job that no code change can fix. The
-order is: merge this branch to asguardian `main` first, confirm the workflow
-resolves there, then apply the per-repo snippets.
-
-Pinning a consumer to `@claude/gaia-compatibility-matrix` to get around this
-is not a fix -- it leaves a dangling ref in every consumer the moment the
-branch is deleted after merge.
-
-## Per-repo snippets
-
-Verified against each repo's actual source in this sandbox before writing --
-noted per entry. Add a new job to the repo's existing CI workflow (or a new
-`.github/workflows/asguardian-quality-gate.yml`); do not replace existing
-jobs.
-
-### GVR-Database (Rust)
-
-Verified: `Cargo.toml` at repo root and in `Benchmarking/`.
-`.github/workflows/` already has `dependency-scan.yml` and
-`dependency-gate.yml` -- check those aren't already doing what `rust-audit`
-would add before wiring this in; they may overlap.
-
-```yaml
-jobs:
-  asguardian-quality-gate:
-    uses: primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@main
-    with:
-      language: rust
-      scan-path: .
-```
-
-### Lexicon (Rust, Go, Node -- three separate jobs, one per language surface)
-
-Verified: `LexiconRust/Cargo.toml`, `LexiconGo/go.mod`,
-`LexiconTypescript/package.json` all present.
-`.github/workflows/lexicon-polyglot.yml` is the existing multi-language CI
-entry point -- add these as new jobs there rather than a new file, so they
-run alongside the existing per-language jobs it already has.
-
-```yaml
-jobs:
-  asguardian-rust-gate:
-    uses: primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@main
-    with:
-      language: rust
-      scan-path: LexiconRust
-
-  asguardian-go-gate:
-    uses: primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@main
-    with:
-      language: go
-      scan-path: LexiconGo
-
-  asguardian-node-gate:
-    uses: primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@main
+  node-quality:
+    uses: primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@REVIEWED_40_CHARACTER_SHA
     with:
       language: node
-      scan-path: LexiconTypescript
+      scan-path: path/to/package
+      checks: node-lint,node-typecheck
+      node-version: '20'
 ```
 
-### Kairos (Node)
+For Rust, set `language: rust`, the actual Cargo project `scan-path`, an exact
+`rust-toolchain: 'X.Y.Z'`, and (when selecting `rust-audit`) a reviewed
+`cargo-audit-version: 'X.Y.Z'`. For Go, set `language: go`, the actual Go module
+`scan-path`, and (when selecting `go-vuln`) a reviewed
+`govulncheck-version: 'vX.Y.Z'`. These version placeholders must be replaced.
 
-Verified: `package.json` at repo root. Note Kairos already calls into
-asguardian at the *application* layer (`server/.../Asgard/` routes proxy to
-`heimdall` as a subprocess per Kairos' own prompt-continue file) -- that is
-a different integration from CI gating the Kairos repo's own code quality,
-and both are worth having. `.github/workflows/test.yml` is the existing test
-entry point.
+Candidate project roots from the initial inventory are GVR-Database (`.`),
+Lexicon (`LexiconRust`, `LexiconGo`, `LexiconTypescript`), Kairos (Node roots),
+Panoptes (`.` for Go), Minos (`streaming`), Hercules (`language-packages/go`),
+and GAIA (`Keryx`). Revalidate each current manifest, lockfile and external
+module dependency before wiring. In particular, GAIA's Lexicon path must be
+materialized by its actual CI dependency contract; a local nested checkout
+is not evidence that a clean runner contains that path. Talos needs a current
+Node project inventory; the old Rust premise was not supported by source.
 
-```yaml
-jobs:
-  asguardian-quality-gate:
-    uses: primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@main
-    with:
-      language: node
-      scan-path: .
-```
+## Evidence still required for rollout
 
-### Panoptes (Go)
-
-Verified: `go.mod` (module `github.com/primordial-creations/Panoptes`) at
-repo root. `.github/workflows/ci.yml` is the existing entry point.
-
-```yaml
-jobs:
-  asguardian-quality-gate:
-    uses: primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@main
-    with:
-      language: go
-      scan-path: .
-```
-
-### Minos (Go, streaming edge only -- the control plane is Python/FastAPI)
-
-Verified: `streaming/go.mod` (module
-`github.com/primordial-creations/Minos/streaming`). Per Minos' own
-`CLAUDE.md`, the streaming edge is a separate Go module built with its own
-toolchain, not part of the root `pyproject.toml` -- scope the scan path to
-`streaming/` accordingly. `.github/workflows/ci.yml` is the existing entry
-point.
-
-```yaml
-jobs:
-  asguardian-go-gate:
-    uses: primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@main
-    with:
-      language: go
-      scan-path: streaming
-```
-
-### Hercules (Go tooling)
-
-Verified: `language-packages/go/go.mod` (module
-`github.com/hercules-framework/testing-go`). This is the Go language package
-under Hercules' multi-language framework support, not the API/scheduler
-services (those are Python). No existing Go CI job found for it.
-
-```yaml
-jobs:
-  asguardian-go-gate:
-    uses: primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@main
-    with:
-      language: go
-      scan-path: language-packages/go
-```
-
-### GAIA -- Keryx (Go)
-
-Verified: `GAIA/Keryx/go.mod` (module `gaia/keryx`), with an existing
-`.github/workflows/Keryx-go-test.yml` for its own test suite. That workflow
-already exists and is the natural place to add a quality-gate job alongside
-the test job rather than a new file.
-
-```yaml
-jobs:
-  asguardian-quality-gate:
-    uses: primordial-creations/asguardian/.github/workflows/reusable-quality-gate.yml@main
-    with:
-      language: go
-      scan-path: Keryx
-```
-
-Note: `Keryx/go.mod` has `replace gaia/lexicon => ../Lexicon/LexiconGo`,
-resolved relative to `Keryx/`. In this sandbox that resolves because
-`GAIA/Lexicon` exists as a checkout nested under `GAIA/`; a real CI checkout
-of only the `GAIA` repo needs that sibling path to exist too (it does, since
-`Lexicon` lives inside the `GAIA` monorepo tree here) -- this is a note for
-whoever wires it, not something asguardian's workflow can control.
-
-### Talos -- premise not confirmed, flagged rather than wired
-
-The original handover entry ("Rust ... Talos") does not match what is in this
-sandbox: `find /home/user/Talos -iname "Cargo.toml" -o -iname "*.rs"`
-returns nothing. Talos' repo tree here is `ServiceLayer/`, `Gateways/`,
-`TalosServer/`, `RemoteServer/`, `CLI/`, `userInterfaces/`, with a root
-`package.json` and no Rust source at all. `.github/workflows/` has
-`talos.yaml`, `talos-mobile-ci.yaml`, `promote-to-uat.yaml` (`.yaml`, not
-`.yml` -- easy to miss with a `*.yml` glob). Rather than write a Rust snippet
-for code that is not there, or an unfounded Node snippet for code I have not
-read closely enough to characterise correctly, this is left for whoever
-verifies Talos' actual current language mix.
-
-## Not attempted here
-
-Every snippet above is unapplied -- CRITICAL SCOPE LIMIT for this pass was
-"only modify files inside asguardian", and several of these repos have other
-agents working in them concurrently. Apply the relevant block by hand (or
-task an agent already working in that repo to add it), then confirm with a
-real run rather than trusting this doc's local-only verification.
+Run real consumer CI at the selected revisions for at least one Rust, Node and
+Go project. Retain analyzer checkout SHA, dependency/tool versions and check
+reports. Exercise a deliberate violation, missing configuration and missing
+tool as failing cases, including a workspace Node project and a private-source
+consumer where applicable. Confirm runner permissions, checkout access, private
+package access and caller branch protection independently. Local helper tests
+cover dispatch, source selection and fail-closed results; they do not establish
+these external conditions or prove project quality.

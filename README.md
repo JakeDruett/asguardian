@@ -10,85 +10,94 @@ pip install asguardian
 
 Python 3.11 or higher is required.
 
+The installed commands are `asguardian`, `asguardian-dashboard`, and
+`asguardian-mcp`. The former documented names `asgard`, `asgard-dashboard`, and
+`asgard-mcp` are compatibility aliases for the same entrypoints; their help uses
+the canonical `asguardian` names. Module commands such as `heimdall` also remain
+available. From a source checkout, run `python -m Asgard.cli --help`.
+
 ## Quick Start
 
 ### Static Analysis and Code Quality
 
 ```bash
 # Analyse a project directory
-asgard heimdall analyze ./src
+asguardian heimdall quality analyze ./src
 
 # Get letter ratings (A–E) for Maintainability, Reliability, and Security
-asgard heimdall ratings ./src
+asguardian heimdall ratings ./src
 
 # Check quality gate (pass/fail against thresholds)
-asgard heimdall gate ./src
+asguardian heimdall gate ./src
 
 # Check for security vulnerabilities
-asgard heimdall security scan ./src
+asguardian heimdall security scan ./src
 
 # View tracked issues with lifecycle states
-asgard heimdall issues ./src
+asguardian heimdall issues ./src
 ```
 
 ### Security Scanning
 
 ```bash
 # Detect security hotspots requiring manual review
-asgard heimdall security hotspots ./src
+asguardian heimdall security hotspots ./src
 
 # OWASP Top 10 and CWE Top 25 compliance report
-asgard heimdall security compliance ./src
+asguardian heimdall security compliance ./src
 
 # Taint analysis: source-to-sink injection tracking
-asgard heimdall security taint ./src
+asguardian heimdall security taint ./src
 ```
 
 ### API and Schema Validation
 
 ```bash
 # Validate an OpenAPI specification
-asgard forseti validate openapi.yaml
+asguardian forseti openapi validate openapi.yaml
 
 # Check for breaking changes between two specs
-asgard forseti breaking-changes old.yaml new.yaml
+asguardian forseti contract check-compat old.yaml new.yaml
 
 # Validate a GraphQL schema
-asgard forseti validate schema.graphql
+asguardian forseti graphql validate schema.graphql
 ```
 
 ### Web and UI Testing
 
 ```bash
 # Crawl a site and check for broken links
-asgard freya crawl http://localhost:3000
+asguardian freya crawl http://localhost:3000
 
 # Run image optimisation scan
-asgard freya images http://localhost:3000
+asguardian freya images audit http://localhost:3000
 ```
 
 ### Performance Metrics
 
 ```bash
-# Calculate web vitals from a metrics file
-asgard verdandi report ./metrics.json
+# Generate a performance report from a metrics file
+asguardian verdandi report generate ./metrics.json
 
 # Check SLO compliance
-asgard verdandi slo ./metrics.json
+asguardian verdandi slo calculate ./metrics.json
 ```
 
 ### Infrastructure Generation
 
 ```bash
 # Generate Kubernetes manifests
-asgard volundr generate kubernetes --name myapp --image myapp:latest
+asguardian volundr kubernetes generate --name myapp --image myapp:latest
 
 # Generate a Dockerfile
-asgard volundr generate dockerfile --lang python
+asguardian volundr docker dockerfile --name myapp --base python:3.12-slim
 
 # Generate a GitHub Actions CI/CD pipeline
-asgard volundr generate ci github
+asguardian volundr cicd generate --name myapp --platform github_actions
 ```
+
+Dockerfile generation requires an explicit base image; a `--lang` preset option
+is not implemented.
 
 ## Web Dashboard
 
@@ -98,10 +107,10 @@ Asguardian includes a standalone web dashboard that displays your project's qual
 
 ```bash
 # Start on the default port (8080)
-asgard-dashboard --path ./src
+asguardian-dashboard --path ./src
 
 # Specify a custom port
-asgard-dashboard --path ./src --port 9090
+asguardian-dashboard --path ./src --port 9090
 ```
 
 Then open `http://localhost:8080` in your browser.
@@ -112,7 +121,7 @@ The dashboard provides three pages:
 - **Issues** — filterable table of all tracked issues with severity and lifecycle status
 - **History** — trend view of analysis snapshots over time
 
-The `heimdall dashboard` command is an alias for `asgard-dashboard`.
+The `heimdall dashboard` command is an alias for `asguardian-dashboard`.
 
 ## MCP Server (AI Agent Integration)
 
@@ -121,7 +130,7 @@ Asguardian includes a JSON-RPC MCP server that exposes analysis results to AI co
 ### Start the MCP server
 
 ```bash
-asgard-mcp --path ./src
+asguardian-mcp --path ./src
 ```
 
 ### Configure Claude Code
@@ -132,7 +141,7 @@ Add the following to your `.claude/mcp.json` (or Claude Code settings):
 {
   "mcpServers": {
     "asguardian": {
-      "command": "asgard-mcp",
+      "command": "asguardian-mcp",
       "args": ["--path", "/path/to/your/project"]
     }
   }
@@ -147,11 +156,15 @@ Asguardian ships with built-in quality profiles that group rules into named sets
 
 ```bash
 # List available profiles
-asgard heimdall profiles list
+asguardian heimdall profiles list
 
-# Run analysis using a specific profile
-asgard heimdall analyze ./src --profile "Asgard Way - Strict"
+# Inspect the strict quality profile
+asguardian heimdall profiles show "Asgard Way - Strict"
 ```
+
+The CLI supports profile inspection and management. Passing a named profile
+directly to `quality analyze` through `--profile` is not implemented and remains
+an integration task.
 
 Built-in profiles:
 
@@ -164,25 +177,29 @@ Built-in profiles:
 
 ```bash
 # Evaluate the built-in "Asgard Way" gate
-asgard heimdall gate ./src
+asguardian heimdall gate ./src
 
 # Specify a custom gate configuration
-asgard heimdall gate ./src --gate my-gate.yaml
+asguardian heimdall gate ./src --gate my-gate.yaml
 ```
 
 A gate returns `PASSED` or `FAILED` with a per-condition breakdown. Exit code is `0` for pass and `1` for failure, making it suitable for CI/CD pipelines.
 
 ## New Code Period
 
-Track metrics specifically for code changed since a baseline commit or date.
+Identify new and modified files since a reference commit or date.
 
 ```bash
-# Metrics for code changed since a git tag
-asgard heimdall new-code ./src --since v1.0.0
+# Detect code changed since a git tag
+asguardian heimdall new-code detect ./src --since-version v1.0.0
 
-# Metrics for code changed in the last 30 days
-asgard heimdall new-code ./src --days 30
+# Detect code changed since a chosen date
+asguardian heimdall new-code detect ./src --since-date 2026-01-01
 ```
+
+Use an explicit date, branch, or version reference. Relative `--days` filtering
+and running quality metrics over only this detected change set remain integration
+tasks; `new-code detect` reports the changed files and line count.
 
 ## SBOM Generation
 
@@ -190,10 +207,10 @@ Generate a Software Bill of Materials in industry-standard formats.
 
 ```bash
 # SPDX 2.3 format
-asgard heimdall sbom ./src --format spdx
+asguardian heimdall sbom ./src --format spdx
 
 # CycloneDX 1.4 format
-asgard heimdall sbom ./src --format cyclonedx
+asguardian heimdall sbom ./src --format cyclonedx
 ```
 
 ## Auto CodeFix
@@ -201,7 +218,7 @@ asgard heimdall sbom ./src --format cyclonedx
 Get template-based fix suggestions for common rule violations.
 
 ```bash
-asgard heimdall codefix ./src
+asguardian heimdall codefix ./src
 ```
 
 ## Language Support
@@ -227,31 +244,31 @@ else in Heimdall, regardless of which tool produced them.
 
 ```bash
 # Rust: cargo clippy lint diagnostics (requires cargo + clippy)
-asgard heimdall quality rust-clippy ./my-crate
+asguardian heimdall quality rust-clippy ./my-crate
 
 # Rust: Cargo.lock vulnerability scan against the RustSec advisory database
 # (requires the separate cargo-audit plugin: cargo install cargo-audit)
-asgard heimdall quality rust-audit ./my-crate
+asguardian heimdall quality rust-audit ./my-crate
 
 # Node: the project's own configured ESLint (requires an ESLint config)
-asgard heimdall quality node-lint ./frontend
+asguardian heimdall quality node-lint ./frontend
 
 # Node: package.json/package-lock.json vulnerability scan via npm audit
-asgard heimdall quality node-audit ./frontend
+asguardian heimdall quality node-audit ./frontend
 
 # Node: TypeScript compiler diagnostics (requires tsconfig.json)
-asgard heimdall quality node-typecheck ./frontend
+asguardian heimdall quality node-typecheck ./frontend
 ```
 
 Each of these requires the underlying tool to be installed. `rust-clippy`, `node-lint`, and
 `node-typecheck` require their tool (cargo, eslint, tsc); when it is missing, the command prints a
 clear, actionable message (what to install and how) and exits non-zero -- it never crashes with a
-raw traceback. `rust-audit`'s `cargo-audit` and `node-audit`'s `npm` (bundled with Node) are
-treated as optional: when `cargo-audit` specifically is not installed, the command instead exits
-0 with an actionable note, so a missing optional scanner does not fail a pipeline that has not
-opted into it. A project missing the tool's own configuration (no ESLint config, no
-tsconfig.json, no Cargo.toml/Cargo.lock under the scanned path) is reported the same way: a
-skipped, non-fatal note and exit 0. In every case, a tool that WAS found and invoked but crashed,
+raw traceback. Explicitly requesting any toolchain check, including `rust-audit` or `go-vuln`,
+requires that scanner to run: a missing tool or configuration (no ESLint config,
+tsconfig.json, Cargo.toml/Cargo.lock, package.json, or go.mod under the scanned path) produces
+an incomplete-scan diagnostic and exits non-zero. Run only the checks applicable to your project.
+The Python report retains `tools_unavailable` separately from `tool_failed` so callers can
+distinguish missing prerequisites from execution errors. In every case, a tool that was invoked but crashed,
 timed out, or produced output the analyser could not parse is a distinct, always-non-zero outcome
 even if it happens to find zero issues -- that failure is never presented as a clean scan.
 
@@ -264,7 +281,7 @@ project directory as their working directory, because each needs its own `Cargo.
 five commands against an untrusted or unreviewed tree can execute that tree's own build scripts
 (`build.rs`, package install/postinstall scripts under `npm audit`'s dependency resolution) and
 plugin/loader configuration (a custom ESLint plugin, a `tsconfig.json` `extends` chain, a Cargo
-build script) with the same privileges as the `asgard` process itself. Only run these commands
+build script) with the same privileges as the `asguardian` process itself. Only run these commands
 against code you already trust, the same way you would before running `cargo build`, `npm
 install`, or `tsc` directly in that tree.
 
@@ -287,50 +304,50 @@ from Asgard.Volundr.Kubernetes.services import ManifestGenerator
 
 ## CLI Reference
 
-### Unified CLI (`asgard`)
+### Unified CLI (`asguardian`)
 
 ```
-asgard heimdall analyze <path>
-asgard heimdall ratings <path>
-asgard heimdall gate <path>
-asgard heimdall profiles list
-asgard heimdall history <path>
-asgard heimdall new-code <path>
-asgard heimdall issues <path>
-asgard heimdall sbom <path>
-asgard heimdall codefix <path>
-asgard heimdall mcp-server
-asgard heimdall dashboard
+asguardian heimdall quality analyze <path>
+asguardian heimdall ratings <path>
+asguardian heimdall gate <path>
+asguardian heimdall profiles list
+asguardian heimdall history show <path>
+asguardian heimdall new-code detect <path>
+asguardian heimdall issues <path>
+asguardian heimdall sbom <path>
+asguardian heimdall codefix <path>
+asguardian heimdall mcp-server
+asguardian heimdall dashboard
 
-asgard heimdall quality documentation <path>
-asgard heimdall quality naming <path>
-asgard heimdall quality bugs <path>
-asgard heimdall quality javascript <path>
-asgard heimdall quality typescript <path>
-asgard heimdall quality shell <path>
-asgard heimdall quality rust <path>
-asgard heimdall quality rust-clippy <path>
-asgard heimdall quality rust-audit <path>
-asgard heimdall quality node-lint <path>
-asgard heimdall quality node-audit <path>
-asgard heimdall quality node-typecheck <path>
+asguardian heimdall quality documentation <path>
+asguardian heimdall quality naming <path>
+asguardian heimdall quality bugs <path>
+asguardian heimdall quality javascript <path>
+asguardian heimdall quality typescript <path>
+asguardian heimdall quality shell <path>
+asguardian heimdall quality rust <path>
+asguardian heimdall quality rust-clippy <path>
+asguardian heimdall quality rust-audit <path>
+asguardian heimdall quality node-lint <path>
+asguardian heimdall quality node-audit <path>
+asguardian heimdall quality node-typecheck <path>
 
-asgard heimdall security hotspots <path>
-asgard heimdall security compliance <path>
-asgard heimdall security taint <path>
+asguardian heimdall security hotspots <path>
+asguardian heimdall security compliance <path>
+asguardian heimdall security taint <path>
 
-asgard freya crawl <url>
-asgard freya images <url>
+asguardian freya crawl <url>
+asguardian freya images audit <url>
 
-asgard forseti validate <spec>
-asgard forseti breaking-changes <old> <new>
+asguardian forseti openapi validate <spec>
+asguardian forseti contract check-compat <old> <new>
 
-asgard verdandi report <metrics>
-asgard verdandi slo <metrics>
+asguardian verdandi report generate <metrics>
+asguardian verdandi slo calculate <metrics>
 
-asgard volundr generate kubernetes
-asgard volundr generate dockerfile
-asgard volundr generate ci
+asguardian volundr kubernetes generate --name <name> --image <image>
+asguardian volundr docker dockerfile --name <name> --base <base-image>
+asguardian volundr cicd generate --name <name> --platform github_actions
 ```
 
 ### Standalone entry points
@@ -341,8 +358,8 @@ freya          Individual Freya CLI
 forseti        Individual Forseti CLI
 verdandi       Individual Verdandi CLI
 volundr        Individual Volundr CLI
-asgard-mcp     Start the MCP JSON-RPC server
-asgard-dashboard   Start the web dashboard
+asguardian-mcp     Start the MCP JSON-RPC server
+asguardian-dashboard   Start the web dashboard
 ```
 
 ## Project Structure

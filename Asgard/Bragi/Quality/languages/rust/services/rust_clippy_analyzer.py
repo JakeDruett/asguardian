@@ -105,19 +105,12 @@ class RustClippyAnalyzer:
             report.tool_failed = True
             return
 
-        if not result.stdout and result.returncode not in (0, 101):
-            detail = (result.stderr or "unknown error").strip().splitlines()[-1:] or ["unknown error"]
-            report.tools_unavailable.append(
-                f"cargo clippy failed to run in {crate_dir}: {detail[0]}"
-            )
-            report.tool_failed = True
-            return
-
         # cargo clippy --all-targets re-checks a binary crate once per target
         # (lib, bin, tests, examples) and emits the same diagnostic under each
         # target that shares the file, so de-duplicate on identity rather than
         # dropping --all-targets and losing coverage of test/example code.
         seen: set = set()
+        errors_before = report.error_count
         for line in result.stdout.splitlines():
             line = line.strip()
             if not line:
@@ -126,9 +119,12 @@ class RustClippyAnalyzer:
                 payload = json.loads(line)
             except json.JSONDecodeError:
                 continue
-            if payload.get("reason") != "compiler-message":
+            if not isinstance(payload, dict) or payload.get("reason") != "compiler-message":
                 continue
-            finding = self._finding_from_message(payload.get("message") or {}, crate_dir, root)
+            message = payload.get("message")
+            if not isinstance(message, dict):
+                continue
+            finding = self._finding_from_message(message, crate_dir, root)
             if finding is None:
                 continue
             identity = (finding.rule_id, finding.file_path, finding.line_number, finding.column)
@@ -137,7 +133,19 @@ class RustClippyAnalyzer:
             seen.add(identity)
             report.add_finding(finding)
             if self._config.max_findings and report.total_findings >= self._config.max_findings:
-                return
+                report.tool_failed = True
+                report.tools_unavailable.append("cargo clippy finding limit reached; remaining diagnostics are unverified")
+                break
+
+        # Cargo uses 101 for manifest/registry failures as well as diagnosed
+        # compilation errors. Empty or unparseable output cannot turn it green.
+        if result.returncode != 0 and report.error_count == errors_before:
+            detail = (result.stderr or result.stdout or "no parseable error diagnostics").strip().splitlines()
+            report.tools_unavailable.append(
+                f"cargo clippy failed to run (exit {result.returncode}) in {crate_dir}: "
+                f"{detail[-1] if detail else 'no parseable error diagnostics'}"
+            )
+            report.tool_failed = True
 
     def _finding_from_message(self, message: dict, crate_dir: Path, root: Path) -> Optional[ToolFinding]:
         level = message.get("level", "")

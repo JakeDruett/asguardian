@@ -49,15 +49,15 @@ from Asgard.Bragi.Quality.languages.go.services.go_vuln_analyzer import GoVulnAn
 def _print_report(report: ToolReport, title: str, output_format: str, verbose: bool) -> int:
     """Render a ToolReport as text or JSON and return the process exit code.
 
-    report.tool_failed marks a genuine execution failure (crash, timeout,
-    unparseable output) as distinct from a legitimate empty scan (no
-    matching files/manifest, or the tool not installed): it must fail the
-    exit code even when zero findings were produced, or a CI pipeline gating
-    on this command cannot tell "clean" from "never actually ran".
+    Every caller explicitly requests a toolchain check. Missing tools or
+    configuration therefore fail that request even though the library keeps
+    them distinct from an execution failure in report.tool_failed. A gate
+    must not confuse either incomplete outcome with a completed clean scan.
     """
+    exit_code = 1 if (report.error_count > 0 or report.tool_failed or report.tools_unavailable) else 0
     if output_format == "json":
         print(json.dumps(report.dict(), default=str, indent=2))
-        return 1 if (report.error_count > 0 or report.tool_failed) else 0
+        return exit_code
 
     out_lines = [
         "",
@@ -74,9 +74,9 @@ def _print_report(report: ToolReport, title: str, output_format: str, verbose: b
         f"  Duration:        {report.scan_duration_seconds:.2f}s",
         "",
     ]
-    if report.tools_unavailable:
-        out_lines.extend(["-" * 70, "  SKIPPED", "-" * 70, ""])
-        for note in report.tools_unavailable:
+    if report.tools_unavailable or report.tool_failed:
+        out_lines.extend(["-" * 70, "  SCAN INCOMPLETE", "-" * 70, ""])
+        for note in report.tools_unavailable or ["The requested tool did not complete its scan."]:
             out_lines.append(f"  - {note}")
         out_lines.append("")
     if report.findings:
@@ -90,11 +90,11 @@ def _print_report(report: ToolReport, title: str, output_format: str, verbose: b
                 if finding.fix_suggestion:
                     out_lines.append(f"  Fix: {finding.fix_suggestion}")
             out_lines.append("")
-    elif not report.tools_unavailable:
+    elif not report.tools_unavailable and not report.tool_failed:
         out_lines.extend(["  No findings detected.", ""])
     out_lines.append("=" * 70)
     print("\n".join(out_lines))
-    return 1 if (report.error_count > 0 or report.tool_failed) else 0
+    return exit_code
 
 
 def run_rust_clippy_analysis(args: argparse.Namespace, verbose: bool = False) -> int:

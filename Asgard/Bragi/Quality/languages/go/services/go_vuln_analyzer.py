@@ -200,6 +200,8 @@ class GoVulnAnalyzer:
         for finding in best_by_osv.values():
             report.add_finding(finding)
             if self._config.max_findings and report.total_findings >= self._config.max_findings:
+                report.tool_failed = True
+                report.tools_unavailable.append("govulncheck finding limit reached; remaining vulnerabilities are unverified")
                 return
 
     @staticmethod

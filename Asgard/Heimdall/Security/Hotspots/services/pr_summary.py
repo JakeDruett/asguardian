@@ -69,7 +69,7 @@ def build_pr_hotspot_comments(
         lines.append(f"- {category}: {count}")
     lines += [
         "",
-        "Run `asgard heimdall hotspots <path>` for the full list. Each item "
+        "Run `asguardian heimdall security hotspots <path>` for the full list. Each item "
         "requires an individual SAFE_IN_CONTEXT justification or a fix — "
         "bulk-marking is not available by design.",
     ]

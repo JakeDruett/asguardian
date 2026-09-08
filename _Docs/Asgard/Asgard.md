@@ -19,51 +19,51 @@ pip install asguardian
 
 | Tool | Purpose | CLI Prefix |
 |------|---------|------------|
-| [[Asgard/Forseti/01-Overview\|Forseti]] | API and schema validation (OpenAPI, GraphQL, JSON Schema, AsyncAPI, Avro) | `asgard forseti` |
-| [[Asgard/Freya/01-Overview\|Freya]] | Web and UI testing (crawling, accessibility, visual regression, responsive checks) | `asgard freya` |
-| [[Asgard/Heimdall/01-Overview\|Heimdall]] | Static analysis, code quality, security scanning, quality gates | `asgard heimdall` |
-| [[Asgard/Verdandi/01-Overview\|Verdandi]] | Performance metrics, SLO compliance, web vitals analysis | `asgard verdandi` |
-| [[Asgard/Volundr/01-Overview\|Volundr]] | Infrastructure generation (Kubernetes, Terraform, Docker, CI/CD) | `asgard volundr` |
+| [[Asgard/Forseti/01-Overview\|Forseti]] | API and schema validation (OpenAPI, GraphQL, JSON Schema, AsyncAPI, Avro) | `asguardian forseti` |
+| [[Asgard/Freya/01-Overview\|Freya]] | Web and UI testing (crawling, accessibility, visual regression, responsive checks) | `asguardian freya` |
+| [[Asgard/Heimdall/01-Overview\|Heimdall]] | Static analysis, code quality, security scanning, quality gates | `asguardian heimdall` |
+| [[Asgard/Verdandi/01-Overview\|Verdandi]] | Performance metrics, SLO compliance, web vitals analysis | `asguardian verdandi` |
+| [[Asgard/Volundr/01-Overview\|Volundr]] | Infrastructure generation (Kubernetes, Terraform, Docker, CI/CD) | `asguardian volundr` |
 
 ---
 ## Quick Start
 
 ### Static Analysis and Code Quality
 ```bash
-asgard heimdall analyze ./src
-asgard heimdall ratings ./src
-asgard heimdall gate ./src
+asguardian heimdall quality analyze ./src
+asguardian heimdall ratings ./src
+asguardian heimdall gate ./src
 ```
 
 ### Security Scanning
 ```bash
-asgard heimdall security scan ./src
-asgard heimdall security hotspots ./src
-asgard heimdall security compliance ./src
+asguardian heimdall security scan ./src
+asguardian heimdall security hotspots ./src
+asguardian heimdall security compliance ./src
 ```
 
 ### API Validation
 ```bash
-asgard forseti validate openapi.yaml
-asgard forseti breaking-changes old.yaml new.yaml
+asguardian forseti openapi validate openapi.yaml
+asguardian forseti contract check-compat old.yaml new.yaml
 ```
 
 ### Web Testing
 ```bash
-asgard freya crawl http://localhost:3000
-asgard freya images http://localhost:3000
+asguardian freya crawl http://localhost:3000
+asguardian freya images audit http://localhost:3000
 ```
 
 ### Performance
 ```bash
-asgard verdandi report ./metrics.json
-asgard verdandi slo ./metrics.json
+asguardian verdandi report generate ./metrics.json
+asguardian verdandi slo calculate ./metrics.json
 ```
 
 ### Infrastructure
 ```bash
-asgard volundr k8s generate ./deployment.yaml
-asgard volundr docker generate ./Dockerfile
+asguardian volundr k8s generate --name myapp --image myapp:latest --output-dir ./manifests
+asguardian volundr docker dockerfile --name myapp --base python:3.12-slim --output-dir .
 ```
 
 ---
