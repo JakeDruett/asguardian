@@ -34,6 +34,26 @@ _RUSTSEC_SEVERITY_TO_TOOL = {
 
 INSTALL_HINT = "Install with: cargo install cargo-audit"
 
+
+def _vulnerability_entries(payload: object) -> list:
+    """Validate the RustSec report envelope before interpreting an empty scan."""
+    if not isinstance(payload, dict):
+        raise ValueError("expected a JSON report object")
+    if "error" in payload:
+        raise ValueError(f"reported an error: {payload['error']}")
+    vulnerabilities = payload.get("vulnerabilities")
+    if not isinstance(vulnerabilities, dict):
+        raise ValueError("missing vulnerabilities report")
+    entries = vulnerabilities.get("list")
+    found = vulnerabilities.get("found")
+    count = vulnerabilities.get("count")
+    if not isinstance(entries, list) or type(found) is not bool or type(count) is not int:
+        raise ValueError("expected vulnerabilities.list, boolean found, and integer count")
+    if count != len(entries) or found != bool(entries):
+        raise ValueError("vulnerability count/found does not match the reported list")
+    return entries
+
+
 # CVSS v3.1 base metric weights, per the published FIRST.org specification
 # (https://www.first.org/cvss/v3.1/specification-document, sections 7.4/7.5).
 # cargo-audit's `--json` output stores an advisory's `cvss` field as this raw
@@ -175,25 +195,58 @@ class RustAuditAnalyzer:
             return
 
         try:
+            vulnerabilities = _vulnerability_entries(payload)
+        except ValueError as exc:
+            report.tools_unavailable.append(
+                f"cargo-audit failed in {lock_dir} (exit {result.returncode}): {exc}"
+            )
+            report.tool_failed = True
+            return
+
+        # Exit 1 can mean vulnerabilities or denied advisory warnings. An
+        # empty report with a nonzero exit must not become a successful gate;
+        # nor may a valid partial report hide an invocation error (exit 2+).
+        if result.returncode not in (0, 1) or (result.returncode == 1) != bool(vulnerabilities):
+            detail = result.stderr.strip().splitlines()
+            reason = detail[-1] if detail else "exit status does not match the reported vulnerabilities"
+            report.tools_unavailable.append(
+                f"cargo-audit failed in {lock_dir} (exit {result.returncode}): {reason}"
+            )
+            report.tool_failed = True
+
+        try:
             relative_lock = str((lock_dir / "Cargo.lock").resolve().relative_to(root))
         except ValueError:
             relative_lock = str(lock_dir / "Cargo.lock")
 
-        vulnerabilities = (payload.get("vulnerabilities") or {}).get("list") or []
-        for vuln in vulnerabilities:
-            finding = self._finding_from_vulnerability(vuln, relative_lock)
-            if finding is not None:
+        for index, vuln in enumerate(vulnerabilities):
+            try:
+                finding = self._finding_from_vulnerability(vuln, relative_lock)
+            except (AttributeError, TypeError, ValueError) as exc:
+                report.tools_unavailable.append(
+                    f"cargo-audit produced an invalid vulnerability entry {index + 1} in {lock_dir}: {exc}"
+                )
+                report.tool_failed = True
+                continue
+            # Still validate the remaining entries after reaching the output
+            # limit: a malformed tail must not hide an incomplete report.
+            if not self._config.max_findings or report.total_findings < self._config.max_findings:
                 report.add_finding(finding)
                 if self._config.max_findings and report.total_findings >= self._config.max_findings:
-                    return
+                    report.tool_failed = True
+                    report.tools_unavailable.append("cargo-audit finding limit reached; remaining vulnerabilities are unverified")
 
     @staticmethod
-    def _finding_from_vulnerability(vuln: dict, relative_lock: str) -> Optional[ToolFinding]:
-        advisory = vuln.get("advisory") or {}
-        package = vuln.get("package") or {}
-        advisory_id = advisory.get("id", "")
-        if not advisory_id:
-            return None
+    def _finding_from_vulnerability(vuln: dict, relative_lock: str) -> ToolFinding:
+        if not isinstance(vuln, dict):
+            raise ValueError("expected a vulnerability object")
+        advisory = vuln.get("advisory")
+        package = vuln.get("package")
+        if not isinstance(advisory, dict) or not isinstance(package, dict):
+            raise ValueError("expected advisory and package objects")
+        advisory_id = advisory.get("id")
+        if not isinstance(advisory_id, str) or not advisory_id.strip():
+            raise ValueError("missing or invalid advisory id")
 
         severity_str = ""
         unscoreable_vector = False

@@ -105,6 +105,8 @@ class GoFmtAnalyzer:
             else:
                 self._add_drift_finding(line, module_dir, root, report)
             if self._config.max_findings and report.total_findings >= self._config.max_findings:
+                report.tool_failed = True
+                report.tools_unavailable.append("gofmt finding limit reached; remaining diagnostics are unverified")
                 return
 
     @staticmethod

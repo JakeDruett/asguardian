@@ -21,4 +21,4 @@ class RustAuditConfig(BaseModel):
     """Configuration for cargo-audit orchestration."""
     scan_path: Path = Field(default_factory=lambda: Path("."))
     timeout_seconds: int = Field(default=180)
-    max_findings: int = Field(default=1000)
+    max_findings: int = Field(default=1000, ge=0)

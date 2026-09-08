@@ -1,6 +1,7 @@
 """Tests for the Rust/Node toolchain-orchestrating quality CLI handlers."""
 
 import argparse
+import importlib
 import json
 import shutil
 import tempfile
@@ -101,9 +102,10 @@ class TestRunRustAuditAnalysis:
         )
         args = _make_namespace(path=str(tmp_path), format="text", timeout=60)
         code = run_rust_audit_analysis(args)
-        assert code == 0
+        assert code == 1
         captured = capsys.readouterr()
         assert "cargo install cargo-audit" in captured.out
+        assert "SCAN INCOMPLETE" in captured.out
 
     def test_tool_crash_with_zero_findings_still_returns_exit_1(self, tmp_path: Path, monkeypatch, capsys):
         # A distinct case from "not installed" above: cargo-audit WAS found
@@ -166,6 +168,108 @@ class TestRunNodeTypecheckAnalysis:
         )
         args = _make_namespace(path=str(tmp_path), format="text", timeout=60)
         assert run_node_typecheck_analysis(args) == 0
+
+
+@pytest.mark.parametrize("output_format", ["text", "json"])
+@pytest.mark.parametrize(
+    ("handler_name", "analyzer_name", "prerequisite"),
+    [
+        ("run_rust_clippy_analysis", "RustClippyAnalyzer", "Cargo.toml"),
+        ("run_rust_audit_analysis", "RustAuditAnalyzer", "Cargo.lock"),
+        ("run_node_lint_analysis", "NodeEslintAnalyzer", "ESLint configuration"),
+        ("run_node_audit_analysis", "NodeAuditAnalyzer", "package.json"),
+        ("run_node_typecheck_analysis", "NodeTypecheckAnalyzer", "tsconfig.json"),
+        ("run_go_vet_analysis", "GoVetAnalyzer", "go.mod"),
+        ("run_go_build_analysis", "GoBuildAnalyzer", "go.mod"),
+        ("run_go_fmt_analysis", "GoFmtAnalyzer", "go.mod"),
+        ("run_go_test_analysis", "GoTestAnalyzer", "go.mod"),
+        ("run_go_vuln_analysis", "GoVulnAnalyzer", "go.mod"),
+    ],
+)
+def test_explicit_check_with_missing_configuration_fails(
+    tmp_path, monkeypatch, capsys, output_format, handler_name, analyzer_name, prerequisite,
+):
+    module = importlib.import_module(getattr(toolchain_analyzers, analyzer_name).__module__)
+    for discovery in ("require_executable", "find_optional_executable", "resolve_node_tool"):
+        if hasattr(module, discovery):
+            monkeypatch.setattr(module, discovery, lambda *args: "/available/tool")
+
+    def must_not_run(*args, **kwargs):
+        pytest.fail("A check with missing configuration must not invoke a tool")
+
+    monkeypatch.setattr(module, "run_tool", must_not_run)
+    args = _make_namespace(path=str(tmp_path), format=output_format, timeout=60)
+    assert getattr(toolchain_analyzers, handler_name)(args) == 1
+    output = capsys.readouterr().out
+    assert prerequisite in output
+    if output_format == "json":
+        payload = json.loads(output)
+        assert payload["tools_unavailable"]
+        assert payload["tool_failed"] is False  # Missing prerequisites, not a crashed tool.
+    else:
+        assert "SCAN INCOMPLETE" in output
+        assert "No findings detected" not in output
+
+
+@pytest.mark.parametrize("output_format", ["text", "json"])
+@pytest.mark.parametrize(
+    ("handler_name", "analyzer_name", "tool"),
+    [
+        ("run_rust_audit_analysis", "RustAuditAnalyzer", "cargo-audit"),
+        ("run_go_vuln_analysis", "GoVulnAnalyzer", "govulncheck"),
+    ],
+)
+def test_explicit_optional_tool_request_fails_when_tool_is_absent(
+    tmp_path, monkeypatch, capsys, output_format, handler_name, analyzer_name, tool,
+):
+    module = importlib.import_module(getattr(toolchain_analyzers, analyzer_name).__module__)
+    monkeypatch.setattr(module, "find_optional_executable", lambda *args: None)
+    args = _make_namespace(path=str(tmp_path), format=output_format, timeout=60)
+    assert getattr(toolchain_analyzers, handler_name)(args) == 1
+    output = capsys.readouterr().out
+    assert tool in output
+    assert "Install" in output
+    if output_format == "json":
+        assert json.loads(output)["tools_unavailable"]
+
+
+@pytest.mark.parametrize("output_format", ["text", "json"])
+def test_rust_audit_error_response_fails_through_cli(tmp_path, monkeypatch, capsys, output_format):
+    from Asgard.Bragi.Quality.languages.common.tool_runner import ToolRunResult
+    from Asgard.Bragi.Quality.languages.rust.services import rust_audit_analyzer
+
+    (tmp_path / "Cargo.lock").write_text("# lock\n", encoding="utf-8")
+    monkeypatch.setattr(rust_audit_analyzer, "find_optional_executable", lambda *args: "/available/cargo-audit")
+    monkeypatch.setattr(
+        rust_audit_analyzer, "run_tool",
+        lambda *args, **kwargs: ToolRunResult(2, '{"error":"advisory database unavailable"}', ""),
+    )
+    args = _make_namespace(path=str(tmp_path), format=output_format, timeout=60)
+    assert run_rust_audit_analysis(args) == 1
+    output = capsys.readouterr().out
+    assert "advisory database unavailable" in output
+    if output_format == "json":
+        assert json.loads(output)["tool_failed"] is True
+    else:
+        assert "No findings detected" not in output
+
+
+@pytest.mark.parametrize("output_format", ["text", "json"])
+def test_partial_warning_report_with_missing_prerequisites_is_not_success(output_format, capsys):
+    report = ToolReport(tools_unavailable=["A required project configuration is missing."])
+    report.add_finding(_finding(ToolSeverity.WARNING))
+    assert toolchain_analyzers._print_report(report, "CHECK", output_format, False) == 1
+    output = capsys.readouterr().out
+    assert "configuration is missing" in output
+    assert "clippy::len_zero" in output
+
+
+def test_execution_failure_without_details_does_not_print_a_clean_scan(capsys):
+    report = ToolReport(tool_failed=True)
+    assert toolchain_analyzers._print_report(report, "CHECK", "text", False) == 1
+    output = capsys.readouterr().out
+    assert "did not complete" in output
+    assert "No findings detected" not in output
 
 
 @pytest.fixture

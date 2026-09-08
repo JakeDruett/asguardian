@@ -1,5 +1,11 @@
 # asguardian
 
+## Mandatory Git workflow
+
+- Never commit directly on `main`; create or switch to a non-`main` working branch before editing.
+- Commit the work on that branch and integrate it into `main` only through a pull-request merge or local non-fast-forward merge.
+- If work is already uncommitted on `main`, branch first. Never push a direct, non-merge commit to `main`, and do not push any ref unless Jake explicitly requests it.
+
 Asguardian is a comprehensive suite of development quality assurance tools for Python projects,
 published as the `asguardian` package (CLI entry point `asgard`). It covers static analysis and
 code quality (Heimdall), security scanning (SAST/DAST/dependency/taint), API and schema

@@ -243,6 +243,7 @@ def main(args=None):
     _NO_REPORT = {"mcp-server", "dashboard", "install-browsers"}
     _open_browser = getattr(args, "open_browser", False)
     _capture_output = args.command not in _NO_REPORT and args.command != "scan"
+    _machine_readable = getattr(args, "format", "text") == "json"
 
     _buf: io.StringIO = io.StringIO()
     _tee = _TeeStream(sys.stdout, _buf)
@@ -273,7 +274,9 @@ def main(args=None):
                     _cmd_label = f"{args.command} {sub}"
                 _title = f"Heimdall - {_cmd_label}"
                 report_path = _save_html_report(_captured, _title)
-                print(f"Report saved: {report_path}", file=sys.__stdout__)
+                # Keep HTML artifacts/browser behavior while preserving JSON
+                # stdout as a single machine-readable document.
+                print(f"Report saved: {report_path}", file=sys.stderr if _machine_readable else sys.__stdout__)
                 if _open_browser:
                     _open_in_browser(report_path)
 
