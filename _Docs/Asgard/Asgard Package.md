@@ -53,10 +53,10 @@ pip install asguardian
 ---
 ## CLI Reference
 
-The main entry point is `asgard` (or `python -m Asgard.cli`):
+The main entry point is `asguardian` (or `python -m Asgard.cli`):
 
 ```
-asgard <tool> <command> [options]
+asguardian <tool> <command> [options]
 ```
 
 Where `<tool>` is one of: `forseti`, `freya`, `heimdall`, `verdandi`, `volundr`.
@@ -69,7 +69,7 @@ See individual tool documentation for detailed CLI references:
 ---
 ## Security
 
-`Asgard/common/_hmac_env.py` (env-only HMAC keys), `_bind_host.py` (localhost / `--expose`), and package jails/escapers implement the tree-wide hardening in [[Architecture/Security_Hardening]]. `asgard init-backend` refuses symlink directories and writes with `O_NOFOLLOW`.
+`Asgard/common/_hmac_env.py` (env-only HMAC keys), `_bind_host.py` (localhost / `--expose`), and package jails/escapers implement the tree-wide hardening in [[Architecture/Security_Hardening]]. `asguardian init-backend` refuses symlink directories and writes with `O_NOFOLLOW`.
 
 ## Related Documentation
 - [[Asgard]] - Asgard overview

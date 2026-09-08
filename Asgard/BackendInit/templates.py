@@ -115,9 +115,9 @@ Routers are files contained in the `apis/` directory.
 Run Asgard quality checks before committing:
 
 ```bash
-asgard heimdall quality lazy-imports .
-asgard heimdall quality typing .
-asgard heimdall security scan .
+asguardian heimdall quality lazy-imports .
+asguardian heimdall quality typing .
+asguardian heimdall security scan .
 ```
 """
 

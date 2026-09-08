@@ -1,7 +1,7 @@
 """
 BackendInit - Backend project scaffolding.
 
-Provides the `asgard init-backend` command for initialising a standard
+Provides the `asguardian init-backend` command for initialising a standard
 backend project structure with opinionated directory layout, boilerplate
 files, and coding standards documentation.
 """

@@ -68,7 +68,6 @@ class NodeTypecheckAnalyzer:
 
         combined_output = result.stdout + result.stderr
         files_seen = set()
-        diagnostics_found = 0
         for line in combined_output.splitlines():
             match = _DIAGNOSTIC_RE.match(line.strip())
             if not match:
@@ -76,17 +75,15 @@ class NodeTypecheckAnalyzer:
             finding = self._finding_from_match(match, path)
             files_seen.add(finding.file_path)
             report.add_finding(finding)
-            diagnostics_found += 1
             if self._config.max_findings and report.total_findings >= self._config.max_findings:
+                report.tool_failed = True
+                report.tools_unavailable.append("tsc finding limit reached; remaining diagnostics are unverified")
                 break
 
-        # tsc's exit codes with --noEmit are 0 (no diagnostics) or 1
-        # (diagnostics present, all reported as per-file lines above and
-        # already accounted for). Any other exit code with zero parsed
-        # diagnostics means tsc itself failed to run (bad tsconfig, a
-        # missing/misconfigured toolchain) rather than that the project has
-        # no type errors, and must not be reported as a clean scan.
-        if diagnostics_found == 0 and result.returncode not in (0, 1):
+        # Exit 1 is also used for startup/configuration failures with no
+        # per-file diagnostic. Every nonzero result must explain its failure
+        # through parsed errors or remain a failed, unverified invocation.
+        if report.error_count == 0 and result.returncode != 0:
             detail_lines = (result.stderr or result.stdout or "").strip().splitlines()
             detail = detail_lines[-1] if detail_lines else "produced no parseable diagnostics"
             report.tools_unavailable.append(f"tsc failed to run (exit {result.returncode}): {detail}")

@@ -99,6 +99,8 @@ class NodeEslintAnalyzer:
                 if finding is not None:
                     report.add_finding(finding)
                     if self._config.max_findings and report.total_findings >= self._config.max_findings:
+                        report.tool_failed = True
+                        report.tools_unavailable.append("eslint finding limit reached; remaining diagnostics are unverified")
                         report.scan_duration_seconds = (datetime.now() - start).total_seconds()
                         return report
 

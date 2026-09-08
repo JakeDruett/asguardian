@@ -81,7 +81,8 @@ class ToolReport(BaseModel):
         description=(
             "Human-readable reasons the scan skipped part of its work, e.g. "
             "'no Cargo.toml found' or 'cargo-audit is not installed'. Distinct "
-            "from a hard failure: the report is still valid, just partial."
+            "from an execution failure: the report is valid but incomplete. "
+            "An explicitly requested CLI check exits nonzero for this outcome."
         ),
     )
     tool_failed: bool = Field(

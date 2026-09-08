@@ -18,7 +18,7 @@ l8-perf-budgets.yml}`, and the full `asguardian/Asgard_Test/` directory tree, in
 - **Repo:** asguardian — a suite of Python development-QA tools (Heimdall: static analysis;
   Forseti: SAST/DAST/dependency/taint security scanning; Freya: web/UI testing; Verdandi:
   performance metrics; Volundr: infrastructure generation), published as the `asguardian` package
-  (`asgard` CLI), plus a web dashboard and an MCP server. Single git working tree, single `origin`
+  (`asguardian` CLI), plus a web dashboard and an MCP server. Single git working tree, single `origin`
   (`primordial-creations/asguardian`). Python 3.11+ required.
 - **Canonical `source.repo` (template §0.1): `gitea.internal/asguardian/asguardian`.** No existing Branch 1 of §0.1's decision tree applies: this repo is one working tree with one `origin` and splitting supplies no independent benefit for its toolchain, so the single-repo shape is used, not because a per-product rule mandates it.
   `hercules.yaml` found anywhere in the repo — fresh adoption, no drift to fix.
